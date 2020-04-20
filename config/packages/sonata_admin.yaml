@@ -1,8 +1,28 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: 'Temerso'
     dashboard:
         blocks:
-            - { type: sonata.admin.block.admin_list, position: left }
+#            - { type: sonata.admin.block.admin_list, position: left }
+            -
+                class:    col-lg-3 col-xs-6
+                position: top
+                type:     sonata.admin.block.stats
+                settings:
+                    code: sonata.user.admin.user
+                    icon: fa-users
+                    text: Список пользователей
+                    filters:
+                        status: { type: 3, value: 0 }
+
+            -
+                class:    col-lg-3 col-xs-6
+                position: top
+                type:     sonata.admin.block.stats
+                settings:
+                    code:  sonata.user.admin.group
+                    icon:  fa-group
+                    text:  Список ролей
+                    color: bg-green
     options:
         legacy_twig_text_extension: false
     security:

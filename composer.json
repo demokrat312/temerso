@@ -8,6 +8,7 @@
         "sensio/framework-extra-bundle": "^5.1",
         "sonata-project/admin-bundle": "^3.64",
         "sonata-project/doctrine-orm-admin-bundle": "^3.17",
+        "sonata-project/translation-bundle": "^2.5",
         "sonata-project/user-bundle": "^4.5",
         "symfony/acl-bundle": "^2.0",
         "symfony/asset": "4.4.*",
