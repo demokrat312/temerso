@@ -2,7 +2,19 @@ parameters:
 # ... some parameters
 
 services:
-    App\Admin\CardAdmin:
-        arguments: [~, App\Entity\Card, ~]
+    App\Admin\Reference\RefInnerCoatingAdmin:
+        arguments: [~, App\Entity\Reference\RefInnerCoating, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Карточка, group: Карточка, show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, label: Внутреннее покрытие, group: Справочники, show_in_dashboard: true }
+    App\Admin\Reference\RefHardbandingNippleAdmin:
+        arguments: [~, App\Entity\Reference\RefHardbandingNipple, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Хардбендинг, group: Справочники, show_in_dashboard: true }
+    App\Admin\Reference\RefTypeThreadAdmin:
+        arguments: [~, App\Entity\Reference\RefTypeThread, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Тип резьбы, group: Справочники, show_in_dashboard: true }
+    App\Admin\Reference\RefWarehouseAdmin:
+        arguments: [~, App\Entity\Reference\RefWarehouse, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: № Склада, group: Справочники, show_in_dashboard: true }

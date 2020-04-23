@@ -39,12 +39,12 @@ use Doctrine\ORM\Mapping as ORM;
  * З-185 (NC-70),
  * З-189,
  * З-201 (8 5/8 Reg),
- * З-203 (NC-77)
+ * З-203 (NC-77),
  *Также для администратора будет доступен функционал по внесению новых значений списка этой характеристики
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\TypeThreadRepository")
  */
-class RefTypeThread extends \App\Classes\ReferenceParent
+class RefTypeThread extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

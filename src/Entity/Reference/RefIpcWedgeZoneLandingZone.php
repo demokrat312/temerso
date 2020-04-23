@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\IpcWedgeZoneLandingZoneRepository")
  */
-class RefIpcWedgeZoneLandingZone extends \App\Classes\ReferenceParent
+class RefIpcWedgeZoneLandingZone extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\StatePersistentRepository")
  */
-class RefStatePersistent extends \App\Classes\ReferenceParent
+class RefStatePersistent extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

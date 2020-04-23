@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\NippleThreadRepository")
  */
-class RefNippleThread extends \App\Classes\ReferenceParent
+class RefNippleThread extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

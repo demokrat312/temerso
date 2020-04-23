@@ -11,11 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  * Premium - Премиум,
  * Premium, reduced TSR - Премиум со сниженным коэфициентом на кручение,
  * Class 2 - Класс 2,
- * Scrap - Брак окончательный
+ * Scrap - Брак окончательный,
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\WearClassRepository")
  */
-class RefWearClass extends \App\Classes\ReferenceParent
+class RefWearClass extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\PipeStrengthGroupRepository")
  */
-class RefPipeStrengthGroup extends \App\Classes\ReferenceParent
+class RefPipeStrengthGroup extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

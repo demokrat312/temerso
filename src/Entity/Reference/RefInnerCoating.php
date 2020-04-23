@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\InnerCoatingRepository")
  */
-class RefInnerCoating extends \App\Classes\ReferenceParent
+class RefInnerCoating extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

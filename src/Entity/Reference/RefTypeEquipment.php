@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * В наименовании оборудования  (см.73 строку этого листа) нужно выводить только аббревиатуру, без расшифровки. В графе тип оборудования непосредственно в карточке -указывать аббревиатуру + расшифровку
  * @ORM\Entity(repositoryClass="App\Repository\Reference\TypeEquipmentRepository")
  */
-class RefTypeEquipment extends \App\Classes\ReferenceParent
+class RefTypeEquipment extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

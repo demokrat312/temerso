@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\HardbendigNippleStateRepository")
  */
-class RefHardbandingNippleState extends \App\Classes\ReferenceParent
+class RefHardbandingNippleState extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

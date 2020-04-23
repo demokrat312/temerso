@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\NippleThreadConditionRepository")
  */
-class RefNippleThreadCondition extends \App\Classes\ReferenceParent
+class RefNippleThreadCondition extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

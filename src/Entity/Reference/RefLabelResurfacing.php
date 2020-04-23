@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\LabelResurfacingRepository")
  */
-class RefLabelResurfacing extends \App\Classes\ReferenceParent
+class RefLabelResurfacing extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()

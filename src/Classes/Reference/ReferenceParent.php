@@ -6,7 +6,7 @@
  * Time: 21:35
  */
 
-namespace App\Classes;
+namespace App\Classes\Reference;
 
 /**
  * @method  getValue()

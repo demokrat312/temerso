@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\LockClassNippleRepository")
  */
-class RefLockClassNipple extends \App\Classes\ReferenceParent
+class RefLockClassNipple extends \App\Classes\Reference\ReferenceParent
 {
     /**
      * @ORM\Id()
