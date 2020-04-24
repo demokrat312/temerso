@@ -19,3 +19,5 @@ doctrine:
                 alias: App
             SonataUserBundle: ~
             FOSUserBundle: ~
+            SonataMediaBundle: ~
+            ApplicationSonataMediaBundle: ~

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefHardbandingNippleState;
 use App\Entity\Reference\RefInnerCoating;
@@ -20,6 +21,8 @@ use App\Entity\Reference\RefTypeThread;
 use App\Entity\Reference\RefVisualControl;
 use App\Entity\Reference\RefWarehouse;
 use App\Entity\Reference\RefWearClass;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -530,6 +533,16 @@ class Card
      * @ORM\Column(type="integer", nullable=true)
      */
     private $the_ultimate_tensile_load_of_the_pipe;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"})
+     */
+    private $media;
+
+    public function __construct()
+    {
+        $this->media = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -1384,6 +1397,32 @@ class Card
     public function setTheUltimateTensileLoadOfThePipe(?int $the_ultimate_tensile_load_of_the_pipe): self
     {
         $this->the_ultimate_tensile_load_of_the_pipe = $the_ultimate_tensile_load_of_the_pipe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedium( $medium): self
+    {
+        if ($medium && !$this->media->contains($medium)) {
+            $this->media[] = $medium;
+        }
+
+        return $this;
+    }
+
+    public function removeMedium( $medium): self
+    {
+        if ($this->media->contains($medium)) {
+            $this->media->removeElement($medium);
+        }
 
         return $this;
     }

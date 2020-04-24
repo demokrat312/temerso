@@ -4,7 +4,6 @@ namespace App\Admin;
 
 
 use App\Classes\MainAdmin;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -27,8 +26,9 @@ class CardAdmin extends MainAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->with("left", ['class' => 'col-md-6', 'description' => 'Lorem ipsum', 'label' => 'Характеристики'])
+            ->with("left", ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
             ->add('id')
+            ->add('media', null, ['label' => 'Медиа'])
             ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
             ->add('status', null, ['label' => 'Статус'])
             ->add('location', null, ['label' => 'Местоположение'])
@@ -64,7 +64,7 @@ class CardAdmin extends MainAdmin
             ->add('ref_hardbanding_nipple', ModelType::class, ['label' => 'Хардбендинг (ниппель)'])
             ->add('ref_hardbanding_coupling', ModelType::class, ['label' => 'Хардбендинг (муфта)'])
             // end left
-            ->end()->with('right', ['class' => 'col-md-6', 'description' => 'Lorem ipsum', 'label' => 'Характеристики'])
+            ->end()->with('right', ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
             // start right
             ->add('bt_certificate_number', null, ['label' => 'Номер Сертификата на комплект БТ'])
             ->add('ref_wear_class', null, ['label' => 'Класс износа'])
@@ -142,17 +142,8 @@ class CardAdmin extends MainAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-//            ->add('image', 'collection', array(
-//                 'entry_type' => 'sonata_media_type',
-//                 'entry_options' => array(
-//                     'provider' => 'sonata.media.provider.image',
-//                     'context'  => 'default',
-//                     'empty_on_new' => true,
-//                 ),
-//                 'allow_add' => true,
-//                 'by_reference' => false,
-//             ))
-            ->with("left", ['class' => 'col-md-6', 'description' => 'Lorem ipsum', 'label' => 'Характеристики'])
+            ->tab('general', ['label' => 'Главная'])
+            ->with("left", ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
             ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
             ->add('status', null, ['label' => 'Статус'])
             ->add('location', null, ['label' => 'Местоположение'])
@@ -188,7 +179,7 @@ class CardAdmin extends MainAdmin
             ->add('ref_hardbanding_nipple', ModelType::class, ['label' => 'Хардбендинг (ниппель)'])
             ->add('ref_hardbanding_coupling', ModelType::class, ['label' => 'Хардбендинг (муфта)'])
             // end left
-            ->end()->with('right', ['class' => 'col-md-6', 'description' => 'Lorem ipsum', 'label' => 'Характеристики'])
+            ->end()->with('right', ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
             // start right
             ->add('bt_certificate_number', null, ['label' => 'Номер Сертификата на комплект БТ'])
             ->add('ref_wear_class', null, ['label' => 'Класс износа'])
@@ -227,7 +218,24 @@ class CardAdmin extends MainAdmin
             ->add('the_ultimate_tensile', null, ['label' => 'Предельная растягивающая нагрузка замка, Кн'])
             ->add('the_ultimate_torque_of_the_tube', null, ['label' => 'Предельный  момент кручения  трубы, кНм'])
             ->add('the_ultimate_tensile_load_of_the_pipe', null, ['label' => 'Предельная растягивающая нагрузка трубы, Кн'])
+            ->end()->end()->tab('media', ['label' => 'Медиа'])->with('media', ['label' => 'Медиа'])
+
+            ->add('media', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
+                'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+                'label' => 'Медиа',
+                'entry_options' => array(
+                    'provider' => 'sonata.media.provider.image',
+                    'context' => 'card',
+                    'empty_on_new' => false,
+                    'new_on_update' => false,
+                ),
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ))
             ->end();
+
+
     }
 
     /**
