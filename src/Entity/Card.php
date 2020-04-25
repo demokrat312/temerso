@@ -535,13 +535,37 @@ class Card
     private $the_ultimate_tensile_load_of_the_pipe;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"})     *
+     * @ORM\JoinTable(
+     *     name="card_image_media",
+     *     joinColumns={
+     *          @ORM\JoinColumn(name="card_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(name="media_id", referencedColumnName="id")
+     *     }
+     * )
      */
-    private $media;
+    private $images;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="card_file_media",
+     *     joinColumns={
+     *          @ORM\JoinColumn(name="card_id", referencedColumnName="id")
+     *     },
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(name="media_id", referencedColumnName="id")
+     *     }
+     * )
+     */
+    private $files;
 
     public function __construct()
     {
-        $this->media = new ArrayCollection();
+        $this->images = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1404,24 +1428,50 @@ class Card
     /**
      * @return Collection|Media[]
      */
-    public function getMedia(): Collection
+    public function getImages(): Collection
     {
-        return $this->media;
+        return $this->images;
     }
 
-    public function addMedium( $medium): self
+    public function addImage(Media $image): self
     {
-        if ($medium && !$this->media->contains($medium)) {
-            $this->media[] = $medium;
+        if (!$this->images->contains($image)) {
+            $this->images[] = $image;
         }
 
         return $this;
     }
 
-    public function removeMedium( $medium): self
+    public function removeImage(Media $image): self
     {
-        if ($this->media->contains($medium)) {
-            $this->media->removeElement($medium);
+        if ($this->images->contains($image)) {
+            $this->images->removeElement($image);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(Media $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files[] = $file;
+        }
+
+        return $this;
+    }
+
+    public function removeFile(Media $file): self
+    {
+        if ($this->files->contains($file)) {
+            $this->files->removeElement($file);
         }
 
         return $this;

@@ -7,8 +7,10 @@ use App\Classes\MainAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * Created by PhpStorm.
@@ -18,7 +20,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
  */
 class CardAdmin extends MainAdmin
 {
-    public $supportsPreviewMode = true;
+//    public $supportsPreviewMode = true;
 
     /**
      * {@inheritdoc}
@@ -28,7 +30,8 @@ class CardAdmin extends MainAdmin
         $showMapper
             ->with("left", ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
             ->add('id')
-            ->add('media', null, ['label' => 'Медиа'])
+            ->add('images', null, ['label' => 'Изображения'])
+            ->add('files', null, ['label' => 'Файлы'])
             ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
             ->add('status', null, ['label' => 'Статус'])
             ->add('location', null, ['label' => 'Местоположение'])
@@ -220,9 +223,13 @@ class CardAdmin extends MainAdmin
             ->add('the_ultimate_tensile_load_of_the_pipe', null, ['label' => 'Предельная растягивающая нагрузка трубы, Кн'])
             ->end()->end()->tab('media', ['label' => 'Медиа'])->with('media', ['label' => 'Медиа'])
 
-            ->add('media', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
+            // \Symfony\Component\Form\Extension\Core\Type\CollectionType
+            // \Sonata\Form\Type\CollectionType
+            // \Sonata\CoreBundle\Form\Type\CollectionType
+            // \Sonata\AdminBundle\Form\Type\CollectionType
+            ->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
                 'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
-                'label' => 'Медиа',
+                'label' => 'Изображения',
                 'entry_options' => array(
                     'provider' => 'sonata.media.provider.image',
                     'context' => 'card',
@@ -233,6 +240,50 @@ class CardAdmin extends MainAdmin
                 'by_reference' => false,
                 'allow_delete' => true,
             ))
+            ->add('files', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
+                'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+                'label' => 'Файлы',
+                'entry_options' => array(
+                    'provider' => 'sonata.media.provider.file',
+                    'context' => 'card',
+                    'empty_on_new' => false,
+                    'new_on_update' => false,
+                ),
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ))
+//            ->add('media', \Sonata\Form\Type\CollectionType::class, [
+//                'type_options' => [
+//                    // Prevents the "Delete" option from being displayed
+//                    'delete' => false,
+//                    'delete_options' => [
+//                        // You may otherwise choose to put the field but hide it
+//                        'type'         => HiddenType::class,
+//                        // In that case, you need to fill in the options as well
+//                        'type_options' => [
+//                            'mapped'   => false,
+//                            'required' => false,
+//                        ]
+//                    ]
+//                ]
+//            ], [
+//                'link_parameters' => array(
+//                    'context' => 'card',
+//                ),
+//                'btn_add' => 'add',
+//                'edit' => 'inline',
+//                'inline' => 'table',
+//                'sortable' => 'position',
+////                'admin_code' => 'sonata.media.admin.media',
+//            ])
+//                ->add('media', ModelListType::class, [], [
+//                'link_parameters' => [
+//                    'context' => 'card',
+//                    'hide_context' => true,
+//                    'mode' => 'tree','multiple' => true,
+//                ],
+//            ])
             ->end();
 
 
