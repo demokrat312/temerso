@@ -1433,9 +1433,9 @@ class Card
         return $this->images;
     }
 
-    public function addImage(Media $image): self
+    public function addImage($image): self
     {
-        if (!$this->images->contains($image)) {
+        if ($image && !$this->images->contains($image)) {
             $this->images[] = $image;
         }
 
@@ -1459,9 +1459,9 @@ class Card
         return $this->files;
     }
 
-    public function addFile(Media $file): self
+    public function addFile($file): self
     {
-        if (!$this->files->contains($file)) {
+        if ($file && !$this->files->contains($file)) {
             $this->files[] = $file;
         }
 
