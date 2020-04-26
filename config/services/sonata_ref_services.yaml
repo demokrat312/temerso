@@ -5,7 +5,7 @@ services:
     App\Admin\Reference\RefInnerCoatingAdmin:
         arguments: [~, App\Entity\Reference\RefInnerCoating, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Внутреннее покрытие, group: Справочники, show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, label: Внутреннее покрытие, group: Справочники, show_in_dashboard: true, icon: '<i class="fa fa-list"></i>' }
     App\Admin\Reference\RefHardbandingNippleAdmin:
         arguments: [~, App\Entity\Reference\RefHardbandingNipple, ~]
         tags:

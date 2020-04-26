@@ -22,6 +22,12 @@ class CardAdmin extends MainAdmin
 {
 //    public $supportsPreviewMode = true;
 
+    public function configure()
+    {
+        parent::configure();
+        $this->classnameLabel = "Card";
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -114,7 +120,12 @@ class CardAdmin extends MainAdmin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
-        $this->addIdentifier($listMapper, 'id');
+        $listMapper
+//            ->add('id', 'currency', array_merge(self::VIEW_LINK, [
+//                'currency' => 'getGeneralName'
+//            ]))
+            ->add('generalName');
+//            ->add('id', null, self::VIEW_LINK);
 
         // Name of the action (show, edit, history, delete, etc)
         $listMapper->add('_action', null, [

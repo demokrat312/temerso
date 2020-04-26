@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
+use App\Classes\CardTrait;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefHardbandingNippleState;
 use App\Entity\Reference\RefInnerCoating;
@@ -30,6 +31,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Card
 {
+    use CardTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -47,7 +49,7 @@ class Card
     /**
      * Статус
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $status;
 
@@ -61,7 +63,7 @@ class Card
     /**
      * Наработка моточасов
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $operating_hours;
 
@@ -75,56 +77,56 @@ class Card
     /**
      * Серийный № метки RFID
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $rfid_tag_serial_no;
 
     /**
      * № Метки RFID
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $rfid_tag_no;
 
     /**
      * Серийный № трубы
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $pipe_serial_number;
 
     /**
      * Серийный № ниппеля
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $serial_no_of_nipple;
 
     /**
      * Серийный № муфты
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $coupling_serial_number;
 
     /**
      * Серийный № после ремонта
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $serial_no_after_repair;
 
     /**
      * Наружный диаметр трубы, (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $outer_diameter_of_the_pipe;
 
     /**
      * Толщина стенки трубы, (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $pipe_wall_thickness;
 
@@ -152,98 +154,98 @@ class Card
     /**
      * O.D. Замка ниппель  (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $odlock_nipple;
 
     /**
      * D.F.  Фаска ниппель (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $dfchamfer_nipple;
 
     /**
      * LPC   Длина резьбы ниппель (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $lpc_thread_length_nipple;
 
     /**
      * Диаметр носика ниппеля
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $nipple_nose_diameter;
 
     /**
      * O.D. Замка муфта  (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $odlock_coupling;
 
     /**
      * D.F.  Фаска муфта (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $dfchamfer_coupling;
 
     /**
      * LBC Длина резьбы муфта (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $lbc_thread_length_coupler;
 
     /**
      * QC Диаметр расточки муфта(мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $qc_bore_diameter_coupling;
 
     /**
      * I.D. Замка ниппель  (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $idlock_nipple;
 
     /**
      * Длина трубы (м)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pipe_length;
 
     /**
      * Вес трубы (кг)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $weight_of_pipe;
 
     /**
      * Угол заплечика (градус)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $shoulder_angle;
 
     /**
      * Длина под ключ ниппель, (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $turnkey_length_nipple;
 
     /**
      * Длина под ключ муфта, (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $turnkey_length_coupling;
 
@@ -299,28 +301,28 @@ class Card
     /**
      * Глубина наминов в зоне работы клиньев max (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $depth_of_naminov;
 
     /**
      * Изгиб ниппельного конца max (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $nipple_end_bend_max;
 
     /**
      * Изгиб муфтового конца max (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $coupling_end_bend_max;
 
     /**
      * Общий изгиб тела трубы max (мм)
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $the_total_bend_of_the_pipe_body_max;
 
@@ -390,14 +392,14 @@ class Card
     /**
      * Хардбендинг ниппель (диаметр) мм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $hardbanding_nipplemm_diameter;
 
     /**
      * Хардбендинг ниппель (высота наплавки) мм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $hardbanding_nipple_height;
 
@@ -446,42 +448,42 @@ class Card
     /**
      * Хардбендинг муфта (диаметр) мм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $hardbanding_coupler_diameter;
 
     /**
      * Хардбендинг муфта (высота наплавки) мм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $hardbanding_coupling_height_mm;
 
     /**
      * Класс замка муфта
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $lock_class_coupling;
 
     /**
      * Миним. ширина упорного уступа ниппеля при эксцентрич износе мм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $min_the_width_thrust_shoulder;
 
     /**
      * Миним. ширина упорного уступа муфты при эксцентрич износе мм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $min_width_stop_shoulder;
 
     /**
      * Миним. Длина переходного участка высадки miu,  мм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $min_length_transition_section;
 
@@ -495,42 +497,42 @@ class Card
     /**
      * Минимальный момент свинчивания замка, кНм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $the_minimum_moment;
 
     /**
      * Максимальный момент свинчивания замка, кНм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $the_maximum_moment;
 
     /**
      * Предельный  момент кручения  замка, кНм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $the_limiting_moment;
 
     /**
      * Предельная растягивающая нагрузка замка, Кн
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $the_ultimate_tensile;
 
     /**
      * Предельный  момент кручения  трубы, кНм
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $the_ultimate_torque_of_the_tube;
 
     /**
      * Предельная растягивающая нагрузка трубы, Кн
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $the_ultimate_tensile_load_of_the_pipe;
 
@@ -568,7 +570,7 @@ class Card
         $this->files = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
@@ -585,7 +587,7 @@ class Card
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getStatus()
     {
         return $this->status;
     }
@@ -609,12 +611,12 @@ class Card
         return $this;
     }
 
-    public function getOperatingHours(): ?int
+    public function getOperatingHours()
     {
         return $this->operating_hours;
     }
 
-    public function setOperatingHours(?int $operating_hours): self
+    public function setOperatingHours($operating_hours): self
     {
         $this->operating_hours = $operating_hours;
 
@@ -633,96 +635,96 @@ class Card
         return $this;
     }
 
-    public function getRfidTagSerialNo(): ?int
+    public function getRfidTagSerialNo()
     {
         return $this->rfid_tag_serial_no;
     }
 
-    public function setRfidTagSerialNo(?int $rfid_tag_serial_no): self
+    public function setRfidTagSerialNo($rfid_tag_serial_no): self
     {
         $this->rfid_tag_serial_no = $rfid_tag_serial_no;
 
         return $this;
     }
 
-    public function getRfidTagNo(): ?int
+    public function getRfidTagNo()
     {
         return $this->rfid_tag_no;
     }
 
-    public function setRfidTagNo(?int $rfid_tag_no): self
+    public function setRfidTagNo($rfid_tag_no): self
     {
         $this->rfid_tag_no = $rfid_tag_no;
 
         return $this;
     }
 
-    public function getPipeSerialNumber(): ?int
+    public function getPipeSerialNumber()
     {
         return $this->pipe_serial_number;
     }
 
-    public function setPipeSerialNumber(?int $pipe_serial_number): self
+    public function setPipeSerialNumber($pipe_serial_number): self
     {
         $this->pipe_serial_number = $pipe_serial_number;
 
         return $this;
     }
 
-    public function getSerialNoOfNipple(): ?int
+    public function getSerialNoOfNipple()
     {
         return $this->serial_no_of_nipple;
     }
 
-    public function setSerialNoOfNipple(?int $serial_no_of_nipple): self
+    public function setSerialNoOfNipple($serial_no_of_nipple): self
     {
         $this->serial_no_of_nipple = $serial_no_of_nipple;
 
         return $this;
     }
 
-    public function getCouplingSerialNumber(): ?int
+    public function getCouplingSerialNumber()
     {
         return $this->coupling_serial_number;
     }
 
-    public function setCouplingSerialNumber(?int $coupling_serial_number): self
+    public function setCouplingSerialNumber($coupling_serial_number): self
     {
         $this->coupling_serial_number = $coupling_serial_number;
 
         return $this;
     }
 
-    public function getSerialNoAfterRepair(): ?int
+    public function getSerialNoAfterRepair()
     {
         return $this->serial_no_after_repair;
     }
 
-    public function setSerialNoAfterRepair(?int $serial_no_after_repair): self
+    public function setSerialNoAfterRepair($serial_no_after_repair): self
     {
         $this->serial_no_after_repair = $serial_no_after_repair;
 
         return $this;
     }
 
-    public function getOuterDiameterOfThePipe(): ?int
+    public function getOuterDiameterOfThePipe()
     {
         return $this->outer_diameter_of_the_pipe;
     }
 
-    public function setOuterDiameterOfThePipe(?int $outer_diameter_of_the_pipe): self
+    public function setOuterDiameterOfThePipe($outer_diameter_of_the_pipe): self
     {
         $this->outer_diameter_of_the_pipe = $outer_diameter_of_the_pipe;
 
         return $this;
     }
 
-    public function getPipeWallThickness(): ?int
+    public function getPipeWallThickness()
     {
         return $this->pipe_wall_thickness;
     }
 
-    public function setPipeWallThickness(?int $pipe_wall_thickness): self
+    public function setPipeWallThickness($pipe_wall_thickness): self
     {
         $this->pipe_wall_thickness = $pipe_wall_thickness;
 
@@ -765,168 +767,168 @@ class Card
         return $this;
     }
 
-    public function getOdlockNipple(): ?int
+    public function getOdlockNipple()
     {
         return $this->odlock_nipple;
     }
 
-    public function setOdlockNipple(?int $odlock_nipple): self
+    public function setOdlockNipple($odlock_nipple): self
     {
         $this->odlock_nipple = $odlock_nipple;
 
         return $this;
     }
 
-    public function getDfchamferNipple(): ?int
+    public function getDfchamferNipple()
     {
         return $this->dfchamfer_nipple;
     }
 
-    public function setDfchamferNipple(?int $dfchamfer_nipple): self
+    public function setDfchamferNipple($dfchamfer_nipple): self
     {
         $this->dfchamfer_nipple = $dfchamfer_nipple;
 
         return $this;
     }
 
-    public function getLpcThreadLengthNipple(): ?int
+    public function getLpcThreadLengthNipple()
     {
         return $this->lpc_thread_length_nipple;
     }
 
-    public function setLpcThreadLengthNipple(?int $lpc_thread_length_nipple): self
+    public function setLpcThreadLengthNipple($lpc_thread_length_nipple): self
     {
         $this->lpc_thread_length_nipple = $lpc_thread_length_nipple;
 
         return $this;
     }
 
-    public function getNippleNoseDiameter(): ?int
+    public function getNippleNoseDiameter()
     {
         return $this->nipple_nose_diameter;
     }
 
-    public function setNippleNoseDiameter(?int $nipple_nose_diameter): self
+    public function setNippleNoseDiameter($nipple_nose_diameter): self
     {
         $this->nipple_nose_diameter = $nipple_nose_diameter;
 
         return $this;
     }
 
-    public function getOdlockCoupling(): ?int
+    public function getOdlockCoupling()
     {
         return $this->odlock_coupling;
     }
 
-    public function setOdlockCoupling(?int $odlock_coupling): self
+    public function setOdlockCoupling($odlock_coupling): self
     {
         $this->odlock_coupling = $odlock_coupling;
 
         return $this;
     }
 
-    public function getDfchamferCoupling(): ?int
+    public function getDfchamferCoupling()
     {
         return $this->dfchamfer_coupling;
     }
 
-    public function setDfchamferCoupling(?int $dfchamfer_coupling): self
+    public function setDfchamferCoupling($dfchamfer_coupling): self
     {
         $this->dfchamfer_coupling = $dfchamfer_coupling;
 
         return $this;
     }
 
-    public function getLbcThreadLengthCoupler(): ?int
+    public function getLbcThreadLengthCoupler()
     {
         return $this->lbc_thread_length_coupler;
     }
 
-    public function setLbcThreadLengthCoupler(?int $lbc_thread_length_coupler): self
+    public function setLbcThreadLengthCoupler($lbc_thread_length_coupler): self
     {
         $this->lbc_thread_length_coupler = $lbc_thread_length_coupler;
 
         return $this;
     }
 
-    public function getQcBoreDiameterCoupling(): ?int
+    public function getQcBoreDiameterCoupling()
     {
         return $this->qc_bore_diameter_coupling;
     }
 
-    public function setQcBoreDiameterCoupling(?int $qc_bore_diameter_coupling): self
+    public function setQcBoreDiameterCoupling($qc_bore_diameter_coupling): self
     {
         $this->qc_bore_diameter_coupling = $qc_bore_diameter_coupling;
 
         return $this;
     }
 
-    public function getIdlockNipple(): ?int
+    public function getIdlockNipple()
     {
         return $this->idlock_nipple;
     }
 
-    public function setIdlockNipple(?int $idlock_nipple): self
+    public function setIdlockNipple($idlock_nipple): self
     {
         $this->idlock_nipple = $idlock_nipple;
 
         return $this;
     }
 
-    public function getPipeLength(): ?int
+    public function getPipeLength()
     {
         return $this->pipe_length;
     }
 
-    public function setPipeLength(?int $pipe_length): self
+    public function setPipeLength($pipe_length): self
     {
         $this->pipe_length = $pipe_length;
 
         return $this;
     }
 
-    public function getWeightOfPipe(): ?int
+    public function getWeightOfPipe()
     {
         return $this->weight_of_pipe;
     }
 
-    public function setWeightOfPipe(?int $weight_of_pipe): self
+    public function setWeightOfPipe($weight_of_pipe): self
     {
         $this->weight_of_pipe = $weight_of_pipe;
 
         return $this;
     }
 
-    public function getShoulderAngle(): ?int
+    public function getShoulderAngle()
     {
         return $this->shoulder_angle;
     }
 
-    public function setShoulderAngle(?int $shoulder_angle): self
+    public function setShoulderAngle($shoulder_angle): self
     {
         $this->shoulder_angle = $shoulder_angle;
 
         return $this;
     }
 
-    public function getTurnkeyLengthNipple(): ?int
+    public function getTurnkeyLengthNipple()
     {
         return $this->turnkey_length_nipple;
     }
 
-    public function setTurnkeyLengthNipple(?int $turnkey_length_nipple): self
+    public function setTurnkeyLengthNipple($turnkey_length_nipple): self
     {
         $this->turnkey_length_nipple = $turnkey_length_nipple;
 
         return $this;
     }
 
-    public function getTurnkeyLengthCoupling(): ?int
+    public function getTurnkeyLengthCoupling()
     {
         return $this->turnkey_length_coupling;
     }
 
-    public function setTurnkeyLengthCoupling(?int $turnkey_length_coupling): self
+    public function setTurnkeyLengthCoupling($turnkey_length_coupling): self
     {
         $this->turnkey_length_coupling = $turnkey_length_coupling;
 
@@ -1017,48 +1019,48 @@ class Card
         return $this;
     }
 
-    public function getDepthOfNaminov(): ?int
+    public function getDepthOfNaminov()
     {
         return $this->depth_of_naminov;
     }
 
-    public function setDepthOfNaminov(?int $depth_of_naminov): self
+    public function setDepthOfNaminov($depth_of_naminov): self
     {
         $this->depth_of_naminov = $depth_of_naminov;
 
         return $this;
     }
 
-    public function getNippleEndBendMax(): ?int
+    public function getNippleEndBendMax()
     {
         return $this->nipple_end_bend_max;
     }
 
-    public function setNippleEndBendMax(?int $nipple_end_bend_max): self
+    public function setNippleEndBendMax($nipple_end_bend_max): self
     {
         $this->nipple_end_bend_max = $nipple_end_bend_max;
 
         return $this;
     }
 
-    public function getCouplingEndBendMax(): ?int
+    public function getCouplingEndBendMax()
     {
         return $this->coupling_end_bend_max;
     }
 
-    public function setCouplingEndBendMax(?int $coupling_end_bend_max): self
+    public function setCouplingEndBendMax($coupling_end_bend_max): self
     {
         $this->coupling_end_bend_max = $coupling_end_bend_max;
 
         return $this;
     }
 
-    public function getTheTotalBendOfThePipeBodyMax(): ?int
+    public function getTheTotalBendOfThePipeBodyMax()
     {
         return $this->the_total_bend_of_the_pipe_body_max;
     }
 
-    public function setTheTotalBendOfThePipeBodyMax(?int $the_total_bend_of_the_pipe_body_max): self
+    public function setTheTotalBendOfThePipeBodyMax($the_total_bend_of_the_pipe_body_max): self
     {
         $this->the_total_bend_of_the_pipe_body_max = $the_total_bend_of_the_pipe_body_max;
 
@@ -1173,24 +1175,24 @@ class Card
         return $this;
     }
 
-    public function getHardbandingNipplemmDiameter(): ?int
+    public function getHardbandingNipplemmDiameter()
     {
         return $this->hardbanding_nipplemm_diameter;
     }
 
-    public function setHardbandingNipplemmDiameter(?int $hardbanding_nipplemm_diameter): self
+    public function setHardbandingNipplemmDiameter($hardbanding_nipplemm_diameter): self
     {
         $this->hardbanding_nipplemm_diameter = $hardbanding_nipplemm_diameter;
 
         return $this;
     }
 
-    public function getHardbandingNippleHeight(): ?int
+    public function getHardbandingNippleHeight()
     {
         return $this->hardbanding_nipple_height;
     }
 
-    public function setHardbandingNippleHeight(?int $hardbanding_nipple_height): self
+    public function setHardbandingNippleHeight($hardbanding_nipple_height): self
     {
         $this->hardbanding_nipple_height = $hardbanding_nipple_height;
 
@@ -1269,72 +1271,72 @@ class Card
         return $this;
     }
 
-    public function getHardbandingCouplerDiameter(): ?int
+    public function getHardbandingCouplerDiameter()
     {
         return $this->hardbanding_coupler_diameter;
     }
 
-    public function setHardbandingCouplerDiameter(?int $hardbanding_coupler_diameter): self
+    public function setHardbandingCouplerDiameter($hardbanding_coupler_diameter): self
     {
         $this->hardbanding_coupler_diameter = $hardbanding_coupler_diameter;
 
         return $this;
     }
 
-    public function getHardbandingCouplingHeightMm(): ?int
+    public function getHardbandingCouplingHeightMm()
     {
         return $this->hardbanding_coupling_height_mm;
     }
 
-    public function setHardbandingCouplingHeightMm(?int $hardbanding_coupling_height_mm): self
+    public function setHardbandingCouplingHeightMm($hardbanding_coupling_height_mm): self
     {
         $this->hardbanding_coupling_height_mm = $hardbanding_coupling_height_mm;
 
         return $this;
     }
 
-    public function getLockClassCoupling(): ?int
+    public function getLockClassCoupling()
     {
         return $this->lock_class_coupling;
     }
 
-    public function setLockClassCoupling(?int $lock_class_coupling): self
+    public function setLockClassCoupling($lock_class_coupling): self
     {
         $this->lock_class_coupling = $lock_class_coupling;
 
         return $this;
     }
 
-    public function getMinTheWidthThrustShoulder(): ?int
+    public function getMinTheWidthThrustShoulder()
     {
         return $this->min_the_width_thrust_shoulder;
     }
 
-    public function setMinTheWidthThrustShoulder(?int $min_the_width_thrust_shoulder): self
+    public function setMinTheWidthThrustShoulder($min_the_width_thrust_shoulder): self
     {
         $this->min_the_width_thrust_shoulder = $min_the_width_thrust_shoulder;
 
         return $this;
     }
 
-    public function getMinWidthStopShoulder(): ?int
+    public function getMinWidthStopShoulder()
     {
         return $this->min_width_stop_shoulder;
     }
 
-    public function setMinWidthStopShoulder(?int $min_width_stop_shoulder): self
+    public function setMinWidthStopShoulder($min_width_stop_shoulder): self
     {
         $this->min_width_stop_shoulder = $min_width_stop_shoulder;
 
         return $this;
     }
 
-    public function getMinLengthTransitionSection(): ?int
+    public function getMinLengthTransitionSection()
     {
         return $this->min_length_transition_section;
     }
 
-    public function setMinLengthTransitionSection(?int $min_length_transition_section): self
+    public function setMinLengthTransitionSection($min_length_transition_section): self
     {
         $this->min_length_transition_section = $min_length_transition_section;
 
@@ -1353,72 +1355,72 @@ class Card
         return $this;
     }
 
-    public function getTheMinimumMoment(): ?int
+    public function getTheMinimumMoment()
     {
         return $this->the_minimum_moment;
     }
 
-    public function setTheMinimumMoment(?int $the_minimum_moment): self
+    public function setTheMinimumMoment($the_minimum_moment): self
     {
         $this->the_minimum_moment = $the_minimum_moment;
 
         return $this;
     }
 
-    public function getTheMaximumMoment(): ?int
+    public function getTheMaximumMoment()
     {
         return $this->the_maximum_moment;
     }
 
-    public function setTheMaximumMoment(?int $the_maximum_moment): self
+    public function setTheMaximumMoment($the_maximum_moment): self
     {
         $this->the_maximum_moment = $the_maximum_moment;
 
         return $this;
     }
 
-    public function getTheLimitingMoment(): ?int
+    public function getTheLimitingMoment()
     {
         return $this->the_limiting_moment;
     }
 
-    public function setTheLimitingMoment(?int $the_limiting_moment): self
+    public function setTheLimitingMoment($the_limiting_moment): self
     {
         $this->the_limiting_moment = $the_limiting_moment;
 
         return $this;
     }
 
-    public function getTheUltimateTensile(): ?int
+    public function getTheUltimateTensile()
     {
         return $this->the_ultimate_tensile;
     }
 
-    public function setTheUltimateTensile(?int $the_ultimate_tensile): self
+    public function setTheUltimateTensile($the_ultimate_tensile): self
     {
         $this->the_ultimate_tensile = $the_ultimate_tensile;
 
         return $this;
     }
 
-    public function getTheUltimateTorqueOfTheTube(): ?int
+    public function getTheUltimateTorqueOfTheTube()
     {
         return $this->the_ultimate_torque_of_the_tube;
     }
 
-    public function setTheUltimateTorqueOfTheTube(?int $the_ultimate_torque_of_the_tube): self
+    public function setTheUltimateTorqueOfTheTube($the_ultimate_torque_of_the_tube): self
     {
         $this->the_ultimate_torque_of_the_tube = $the_ultimate_torque_of_the_tube;
 
         return $this;
     }
 
-    public function getTheUltimateTensileLoadOfThePipe(): ?int
+    public function getTheUltimateTensileLoadOfThePipe()
     {
         return $this->the_ultimate_tensile_load_of_the_pipe;
     }
 
-    public function setTheUltimateTensileLoadOfThePipe(?int $the_ultimate_tensile_load_of_the_pipe): self
+    public function setTheUltimateTensileLoadOfThePipe($the_ultimate_tensile_load_of_the_pipe): self
     {
         $this->the_ultimate_tensile_load_of_the_pipe = $the_ultimate_tensile_load_of_the_pipe;
 

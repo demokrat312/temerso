@@ -19,6 +19,17 @@ sonata_admin:
                 position: top
                 type:     sonata.admin.block.stats
                 settings:
+#                    code: sonata.user.admin.card
+                    code: App\Admin\CardAdmin
+                    icon: fa-newspaper-o
+                    text: Количество карточек
+                    filters:
+                        status: { type: 3, value: 0 }
+            -
+                class:    col-lg-3 col-xs-6
+                position: top
+                type:     sonata.admin.block.stats
+                settings:
                     code: sonata.user.admin.user
                     icon: fa-users
                     text: Список пользователей

@@ -14,12 +14,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 
 abstract class MainAdmin extends AbstractAdmin
 {
-    public function addIdentifier(ListMapper $listMapper, string $name)
-    {
-        $fieldDescriptionOptions = [
-            'identifier' => true,
-            'route' => ['name' => 'show']
-        ];
-        $listMapper->add($name, null, $fieldDescriptionOptions);
-    }
+    const VIEW_LINK = [
+        'identifier' => true,
+        'route' => ['name' => 'show']
+    ];
 }

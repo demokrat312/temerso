@@ -5,4 +5,4 @@ services:
     App\Admin\CardAdmin:
         arguments: [~, App\Entity\Card, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Карточка, group: Карточка, show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, label: Карточка, group: Карточка, show_in_dashboard: true, icon: '<i class="fa fa-newspaper-o"></i>'}
