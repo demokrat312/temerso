@@ -69,6 +69,6 @@ trait CardTrait
     }
 
     public function getStatusTitle() {
-        return StatusHelper::STATUS_TITLE[$this->status];
+        return StatusHelper::STATUS_TITLE[$this->status] ?? 'Статус не задан';
     }
 }
