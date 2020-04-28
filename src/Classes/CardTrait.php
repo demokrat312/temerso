@@ -15,7 +15,7 @@ trait CardTrait
 
     public function __toString()
     {
-        return (string)$this->getId();
+        return (string)$this->getStatusTitle();
     }
 
 
@@ -66,5 +66,9 @@ trait CardTrait
             'Внутреннее покрытие, ' => $this->getRefInnerCoating() . ', ', // TC2000,
             'Хардбендинг (муфта)   ' => $this->getRefHardbandingCoupling(), // TCS Titanium,
         ]);
+    }
+
+    public function getStatusTitle() {
+        return StatusHelper::STATUS_TITLE[$this->status];
     }
 }

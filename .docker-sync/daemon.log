@@ -1,0 +1,118 @@
+          ok  Starting rsync for sync temerso-sync
+          ok  temerso-sync container still running
+          ok  temerso-sync: starting initial sync of /Users/oleggismatulin/Projects/temerso_test/app/app/
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+     success  Rsync server started
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+          ok  Cli mode is auto, selecting .. 
+          ok  .. docker-sync 
+     success  Starting to watch /Users/oleggismatulin/Projects/temerso_test/app/app/ - Press CTRL-C to stop
+     command  fswatch -orIE --event AttributeModified --event Created --event Link --event MovedFrom --event MovedTo --event Renamed --event Removed --event Updated '/Users/oleggismatulin/Projects/temerso_test/app/app/'  | xargs -I -n1 docker-sync sync -n temerso-sync --config='/Users/oleggismatulin/Projects/temerso_test/docker-sync.yml'
+    shutdown  Shutting down...
+          ok  Stopping sync container temerso-sync
+          ok  Starting rsync for sync temerso-sync
+          ok  temerso-sync container still running
+          ok  temerso-sync: starting initial sync of /Users/oleggismatulin/Projects/temerso_test/app/app/
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+     success  Rsync server started
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+          ok  Cli mode is auto, selecting .. 
+          ok  .. docker-sync 
+     success  Starting to watch /Users/oleggismatulin/Projects/temerso_test/app/app/ - Press CTRL-C to stop
+     command  fswatch -orIE --event AttributeModified --event Created --event Link --event MovedFrom --event MovedTo --event Renamed --event Removed --event Updated '/Users/oleggismatulin/Projects/temerso_test/app/app/'  | xargs -I -n1 docker-sync sync -n temerso-sync --config='/Users/oleggismatulin/Projects/temerso_test/docker-sync.yml'
+    shutdown  Shutting down...
+          ok  Stopping sync container temerso-sync
+          ok  Starting rsync for sync temerso-sync
+          ok  temerso-sync container still running
+          ok  temerso-sync: starting initial sync of /Users/oleggismatulin/Projects/temerso_test/app/app/
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+     success  Rsync server started
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+          ok  Cli mode is auto, selecting .. 
+          ok  .. docker-sync 
+     success  Starting to watch /Users/oleggismatulin/Projects/temerso_test/app/app/ - Press CTRL-C to stop
+     command  fswatch -orIE --event AttributeModified --event Created --event Link --event MovedFrom --event MovedTo --event Renamed --event Removed --event Updated '/Users/oleggismatulin/Projects/temerso_test/app/app/'  | xargs -I -n1 docker-sync sync -n temerso-sync --config='/Users/oleggismatulin/Projects/temerso_test/docker-sync.yml'
+    shutdown  Shutting down...
+          ok  Stopping sync container temerso-sync
+          ok  Starting rsync for sync temerso-sync
+          ok  temerso-sync container still running
+          ok  temerso-sync: starting initial sync of /Users/oleggismatulin/Projects/temerso_test/app/app/
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+          ok  waiting for rsync daemon on rsync://127.0.0.1:10872
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+     success  Rsync server started
+     command  rsync -ap '/Users/oleggismatulin/Projects/temerso_test/app/app/' rsync://127.0.0.1:10872/volume
+rsync: change_dir "/Users/oleggismatulin/Projects/temerso_test/app/app" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1249) [sender=3.1.2]
+       error  Error starting sync, exit code 23
+     message  
+          ok  Cli mode is auto, selecting .. 
+          ok  .. docker-sync 
+     success  Starting to watch /Users/oleggismatulin/Projects/temerso_test/app/app/ - Press CTRL-C to stop
+     command  fswatch -orIE --event AttributeModified --event Created --event Link --event MovedFrom --event MovedTo --event Renamed --event Removed --event Updated '/Users/oleggismatulin/Projects/temerso_test/app/app/'  | xargs -I -n1 docker-sync sync -n temerso-sync --config='/Users/oleggismatulin/Projects/temerso_test/docker-sync.yml'

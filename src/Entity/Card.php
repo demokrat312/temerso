@@ -49,6 +49,14 @@ class Card
     /**
      * Статус
      *
+     * Система сама подставляет один из статусов согласно завершенным бизнес-процессам:
+     * • Создана
+     * • На складе
+     * • В ремонте
+     * • В аренде
+     * Статусы карточки в базе Списанного Оборудования (доступ к базе находится в Каталоге):
+     * • Списано
+     *
      * @ORM\Column(type="float")
      */
     private $status;
@@ -564,10 +572,25 @@ class Card
      */
     private $files;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\CardFields", mappedBy="card",cascade={"persist", "remove"})
+     */
+    private $cardFields;
+
+    /**
+     * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
+     *
+     * @ORM\Column(type="boolean", options={"default" : 1})
+     */
+    private $accounting;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->files = new ArrayCollection();
+        $this->cardFields = new ArrayCollection();
+        $this->status = self::STATUS_CREATE;
+        $this->accounting = true; // По умолчанию, есть на складе
     }
 
     public function getId()
@@ -1475,6 +1498,49 @@ class Card
         if ($this->files->contains($file)) {
             $this->files->removeElement($file);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CardFields[]
+     */
+    public function getCardFields(): Collection
+    {
+        return $this->cardFields;
+    }
+
+    public function addCardField(CardFields $cardField): self
+    {
+        if (!$this->cardFields->contains($cardField)) {
+            $this->cardFields[] = $cardField;
+            $cardField->setCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCardField(CardFields $cardField): self
+    {
+        if ($this->cardFields->contains($cardField)) {
+            $this->cardFields->removeElement($cardField);
+            // set the owning side to null (unless already changed)
+            if ($cardField->getCard() === $this) {
+                $cardField->setCard(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAccounting(): ?bool
+    {
+        return $this->accounting;
+    }
+
+    public function setAccounting(bool $accounting): self
+    {
+        $this->accounting = $accounting;
 
         return $this;
     }

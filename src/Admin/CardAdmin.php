@@ -4,13 +4,13 @@ namespace App\Admin;
 
 
 use App\Classes\MainAdmin;
+use App\Classes\CardFieldsHelper;
+use App\Entity\Card;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * Created by PhpStorm.
@@ -20,12 +20,14 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
  */
 class CardAdmin extends MainAdmin
 {
-//    public $supportsPreviewMode = true;
-
     public function configure()
     {
         parent::configure();
         $this->classnameLabel = "Card";
+    }
+
+    public function getContainer(){
+        return $this->getConfigurationPool()->getContainer();
     }
 
     /**
@@ -36,10 +38,11 @@ class CardAdmin extends MainAdmin
         $showMapper
             ->with("left", ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
             ->add('id')
+            ->add('accounting', null, ['label' => 'Учет/Инвентаризация'])
             ->add('images', null, ['label' => 'Изображения'])
             ->add('files', null, ['label' => 'Файлы'])
             ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
-            ->add('status', null, ['label' => 'Статус'])
+            ->add('statusTitle', null, ['label' => 'Статус'])
             ->add('location', null, ['label' => 'Местоположение'])
             ->add('operating_hours', null, ['label' => 'Наработкgа моточасов'])
             ->add('ref_warehouse', ModelType::class, ['label' => '№ Склада'])
@@ -112,7 +115,10 @@ class CardAdmin extends MainAdmin
             ->add('the_ultimate_tensile', null, ['label' => 'Предельная растягивающая нагрузка замка, Кн'])
             ->add('the_ultimate_torque_of_the_tube', null, ['label' => 'Предельный  момент кручения  трубы, кНм'])
             ->add('the_ultimate_tensile_load_of_the_pipe', null, ['label' => 'Предельная растягивающая нагрузка трубы, Кн'])
-            ->end();
+            ->end()->with('fields', ['class' => 'col-md-6', 'label' => 'Дополнительные поля'])
+            ->add('cardFields', null, ['label' => 'test', 'template' => '/viewList/cardFields.html.twig'])
+            ->end()
+        ;
     }
 
     /**
@@ -121,14 +127,13 @@ class CardAdmin extends MainAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-//            ->add('id', 'currency', array_merge(self::VIEW_LINK, [
-//                'currency' => 'getGeneralName'
-//            ]))
-            ->add('generalName');
+            ->add('generalName', null, ['label' => 'Название'])
+            ->add('statusTitle', null, ['label' => 'Статус']);
 //            ->add('id', null, self::VIEW_LINK);
 
         // Name of the action (show, edit, history, delete, etc)
         $listMapper->add('_action', null, [
+            'label' => 'Действия',
             'actions' => [
                 'show' => [],
                 'edit' => [
@@ -158,10 +163,10 @@ class CardAdmin extends MainAdmin
         $formMapper
             ->tab('general', ['label' => 'Главная'])
             ->with("left", ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
+            ->add('accounting', null, ['label' => 'Учет/Инвентаризация'])
             ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
-            ->add('status', null, ['label' => 'Статус'])
             ->add('location', null, ['label' => 'Местоположение'])
-            ->add('operating_hours', null, ['label' => 'Наработкgа моточасов'])
+            ->add('operating_hours', null, ['label' => 'Наработка моточасов'])
             ->add('ref_warehouse', ModelType::class, ['label' => '№ Склада'])
             ->add('rfid_tag_serial_no', null, ['label' => 'Серийный № метки RFID'])
             ->add('rfid_tag_no', null, ['label' => '№ Метки RFID'])
@@ -295,19 +300,13 @@ class CardAdmin extends MainAdmin
 //                    'mode' => 'tree','multiple' => true,
 //                ],
 //            ])
-            ->end();
+            ->end()->end()
+        ;
 
+        $fieldsHelper = new CardFieldsHelper($this->getContainer()->get('doctrine.orm.entity_manager'));
 
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNewInstance()
-    {
-        /** @var \App\Entity\Card $object */
-        $object = parent::getNewInstance();
-
-        return $object;
+        /** @var Card $card */
+        $card = $this->getSubject();
+        $fieldsHelper->addToForm($formMapper, $card);
     }
 }

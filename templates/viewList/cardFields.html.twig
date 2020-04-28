@@ -1,0 +1,28 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+{#    <ul class="sonata-ba-show-one-to-many">#}
+{#        {% set route_name = field_description.options.route.name %}#}
+{#        {% for element in value %}#}
+{#            {% if field_description.hasassociationadmin#}
+{#                and field_description.associationadmin.hasRoute(route_name)#}
+{#                and field_description.associationadmin.hasAccess(route_name, element) %}#}
+{#                <li>#}
+{#                    <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, element, field_description.options.route.parameters) }}">#}
+{#                        {{ element|render_relation_element(field_description) }}#}
+{#                    </a>#}
+{#                </li>#}
+{#            {% else %}#}
+{#                <li>{{ element|render_relation_element(field_description) }}</li>#}
+{#            {% endif %}#}
+{#        {% endfor %}#}
+{#    </ul>#}
+    <table style="width: 100%">
+        {% for element in value %}
+            <tr class="sonata-ba-view-container">
+                <th>{{ element.field.title }}</th>
+                <td>{{ element|render_relation_element(field_description) }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
