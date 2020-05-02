@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\CardTrait;
+use App\Classes\StatusHelper;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefHardbandingNippleState;
 use App\Entity\Reference\RefInnerCoating;
@@ -584,12 +585,17 @@ class Card
      */
     private $accounting;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Arrival", inversedBy="cards")
+     */
+    private $arrival;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->cardFields = new ArrayCollection();
-        $this->status = self::STATUS_CREATE;
+        $this->status = StatusHelper::STATUS_CREATE;
         $this->accounting = true; // По умолчанию, есть на складе
     }
 
@@ -1541,6 +1547,18 @@ class Card
     public function setAccounting(bool $accounting): self
     {
         $this->accounting = $accounting;
+
+        return $this;
+    }
+
+    public function getArrival(): ?Arrival
+    {
+        return $this->arrival;
+    }
+
+    public function setArrival(?Arrival $arrival): self
+    {
+        $this->arrival = $arrival;
 
         return $this;
     }

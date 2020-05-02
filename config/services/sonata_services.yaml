@@ -10,3 +10,7 @@ services:
         arguments: [~, App\Entity\CardFieldsOption, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Дополнительные поля, group: Карточка, show_in_dashboard: true}
+    App\Admin\ArrivalAdmin:
+        arguments: [~, App\Entity\Arrival, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Приход, group: Приход, show_in_dashboard: true}
