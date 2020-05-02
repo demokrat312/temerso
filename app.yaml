@@ -15,6 +15,8 @@ handlers:
     static_dir: public/build
   - url: /bundles
     static_dir: public/bundles
+  - url: /js
+    static_dir: public/js
 
   # Declare any media files in the public directory as static assets as well.
   - url: /(.*\.(ico|txt|gif|png|jpg))$

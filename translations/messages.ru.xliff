@@ -6,6 +6,18 @@
                 <source>Card List</source>
                 <target>Карточка список</target>
             </trans-unit>
+            <trans-unit id="card.create">
+                <source>Card Create</source>
+                <target>Карточка создание</target>
+            </trans-unit>
+            <trans-unit id="arrival.list">
+                <source>Arrival List</source>
+                <target>Приход список</target>
+            </trans-unit>
+            <trans-unit id="arrival.create">
+                <source>Arrival Create</source>
+                <target>Приход создание</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
