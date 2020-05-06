@@ -5,13 +5,14 @@ namespace App\Entity;
 use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefInnerCoating;
-use App\Entity\Reference\RefLockClassNipple;
 use App\Entity\Reference\RefPipeStrengthGroup;
 use App\Entity\Reference\RefThreadCoating;
 use App\Entity\Reference\RefTypeDisembarkation;
 use App\Entity\Reference\RefTypeEquipment;
 use App\Entity\Reference\RefTypeThread;
 use App\Entity\Reference\RefWearClass;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -217,9 +218,9 @@ class Arrival
      * Вторая форма. Общие поля для карточекI.D. Замка ниппель  (мм)
      * I.D. Замка ниппель  (мм)
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefLockClassNipple")
+     * @ORM\Column(type="float", nullable=true)
      */
-    private $refLockClassNipple;
+    private $idlockNipple;
 
     /**
      * Вторая форма. Общие поля для карточекУгол заплечика (градус)
@@ -342,9 +343,12 @@ class Arrival
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime('NOW');
+        $this->createdAt = new DateTime('NOW');
         $this->cards = new ArrayCollection();
         $this->files = new ArrayCollection();
+
+        // Значения по умолчанию
+        $this->location = 'Открытая складская площадка';
     }
 
     public function __toString()
@@ -358,12 +362,12 @@ class Arrival
         return $this->id;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -449,7 +453,6 @@ class Arrival
     {
         if ($file && !$this->files->contains($file)) {
             $this->files[] = $file;
-            $file->setArrival($this);
         }
 
         return $this;
@@ -459,10 +462,6 @@ class Arrival
     {
         if ($this->files->contains($file)) {
             $this->files->removeElement($file);
-            // set the owning side to null (unless already changed)
-            if ($file->getArrival() === $this) {
-                $file->setArrival(null);
-            }
         }
 
         return $this;
@@ -660,14 +659,14 @@ class Arrival
         return $this;
     }
 
-    public function getRefLockClassNipple(): ?RefLockClassNipple
+    public function getIdlockNipple()
     {
-        return $this->refLockClassNipple;
+        return $this->idlockNipple;
     }
 
-    public function setRefLockClassNipple(?RefLockClassNipple $refLockClassNipple): self
+    public function setIdlockNipple($idlockNipple): self
     {
-        $this->refLockClassNipple = $refLockClassNipple;
+        $this->idlockNipple = $idlockNipple;
 
         return $this;
     }

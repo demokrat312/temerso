@@ -14,6 +14,7 @@ use App\Entity\Card;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
@@ -29,6 +30,13 @@ class ArrivalAdmin extends MainAdmin
     {
         $this->setTemplate('edit', 'arrival/edit.html.twig');
     }
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection
+        ->add('excel', $this->getRouterIdParameter().'/excel');
+    }
+
 
     public function getContainer(){
         return $this->getConfigurationPool()->getContainer();
@@ -50,6 +58,9 @@ class ArrivalAdmin extends MainAdmin
             'actions' => [
                 'show' => [],
                 'edit' => [],
+                'excel' => [
+                    'template' => 'arrival/list__action_excel.html.twig',
+                ],
             ]
         ]);
     }
@@ -59,7 +70,7 @@ class ArrivalAdmin extends MainAdmin
         $showMapper
             ->with('general', ['label' => 'Главная', 'class' => 'col-md-12'])
                 ->add('numberUnitsInBatch', null, ['label' => 'Количество единиц товара в партии'])
-                ->add('dateArrival', null, ['label' => 'Дата прихода'])
+                    ->add('dateArrival', null, ['label' => 'Дата прихода'])
                 ->add('numberAndDatePurchase', null, ['label' => '№ договора покупки, дата покупки'])
                 ->add('files', null, array('label' => 'Приложение сканов'))
             ->end()->end()
@@ -80,7 +91,7 @@ class ArrivalAdmin extends MainAdmin
                 ->add('dfchamferCoupling', null, ['label' => 'D.F.  Фаска муфта (мм)'])
                 ->add('lbcThreadLengthCoupler', null, ['label' => 'LBC Длина резьбы муфта (мм)'])
                 ->add('qcBoreDiameterCoupling', null, ['label' => 'QC Диаметр расточки муфта(мм)'])
-                ->add('refLockClassNipple', null, ['label' => 'I.D. Замка ниппель  (мм)'])
+                ->add('idlockNipple', null, ['label' => 'I.D. Замка ниппель  (мм)'])
                 ->add('shoulderAngle', null, ['label' => 'Угол заплечика (градус)'])
                 ->add('turnkeyLengthNipple', null, ['label' => 'Длина под ключ ниппель, (мм)'])
                 ->add('turnkeyLengthCoupling', null, ['label' => 'Длина под ключ муфта, (мм)'])
@@ -148,7 +159,7 @@ class ArrivalAdmin extends MainAdmin
                     ->add('dfchamferCoupling', null, ['label' => 'D.F.  Фаска муфта (мм)'])
                     ->add('lbcThreadLengthCoupler', null, ['label' => 'LBC Длина резьбы муфта (мм)'])
                     ->add('qcBoreDiameterCoupling', null, ['label' => 'QC Диаметр расточки муфта(мм)'])
-                    ->add('refLockClassNipple', null, ['label' => 'I.D. Замка ниппель  (мм)'])
+                    ->add('idlockNipple', null, ['label' => 'I.D. Замка ниппель  (мм)'])
                     ->add('shoulderAngle', null, ['label' => 'Угол заплечика (градус)'])
                     ->add('turnkeyLengthNipple', null, ['label' => 'Длина под ключ ниппель, (мм)'])
                     ->add('turnkeyLengthCoupling', null, ['label' => 'Длина под ключ муфта, (мм)'])
@@ -187,7 +198,7 @@ class ArrivalAdmin extends MainAdmin
         $amount = $object->getAmountCard();
 
         $groupExplode = function(string $text) {
-            return explode(',', $text);
+            return array_map('trim', explode(',', $text));
         };
 
         $groupPipeSerialNumber = $groupExplode($object->getGroupPipeSerialNumber());
@@ -220,7 +231,7 @@ class ArrivalAdmin extends MainAdmin
             $card->setDfchamferCoupling($object->getDfchamferCoupling());
             $card->setLbcThreadLengthCoupler($object->getLbcThreadLengthCoupler());
             $card->setQcBoreDiameterCoupling($object->getQcBoreDiameterCoupling());
-            $card->setRefLockClassNipple($object->getRefLockClassNipple());
+            $card->setIdlockNipple($object->getIdlockNipple());
             $card->setShoulderAngle($object->getShoulderAngle());
             $card->setTurnkeyLengthNipple($object->getTurnkeyLengthNipple());
             $card->setTurnkeyLengthCoupling($object->getTurnkeyLengthCoupling());

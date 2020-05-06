@@ -20,6 +20,17 @@ sonata_admin:
                 type:     sonata.admin.block.stats
                 settings:
 #                    code: sonata.user.admin.card
+                    code: App\Admin\ArrivalAdmin
+                    icon: fa-file-excel-o
+                    text: Приход
+                    filters:
+                        status: { type: 3, value: 0 }
+            -
+                class:    col-lg-3 col-xs-6
+                position: top
+                type:     sonata.admin.block.stats
+                settings:
+#                    code: sonata.user.admin.card
                     code: App\Admin\CardAdmin
                     icon: fa-newspaper-o
                     text: Количество карточек
@@ -33,6 +44,7 @@ sonata_admin:
                     code: sonata.user.admin.user
                     icon: fa-users
                     text: Список пользователей
+                    color: bg-green
                     filters:
                         status: { type: 3, value: 0 }
 
