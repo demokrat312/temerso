@@ -2,6 +2,33 @@ parameters:
 # ... some parameters
 
 services:
+#    <service id="sonata.admin.audit.orm.reader" class="Sonata\DoctrineORMAdminBundle\Model\AuditReader" public="true">
+#    <argument type="service" id="simplethings_entityaudit.reader" on-invalid="ignore"/>
+#    </service>
+
+#    <service id="simplethings_entityaudit.reader" class="SimpleThings\EntityAudit\AuditReader" public="true">
+#    <factory service="simplethings_entityaudit.manager" method="createAuditReader" />
+#    <argument type="service" id="doctrine.orm.default_entity_manager" />
+#    </service>
+
+#    <service id="simplethings_entityaudit.manager" class="SimpleThings\EntityAudit\AuditManager" public="true">
+#    <argument id="simplethings_entityaudit.config" type="service" />
+#    </service>
+
+    simplethings_entityaudit.manager:
+        class: App\Service\Audit\AuditManager
+        public: true
+        arguments: ['@simplethings_entityaudit.config']
+#    simplethings_entityaudit.reader:
+#        factory: ['@simplethings_entityaudit.manager', 'createAuditReader']
+#        arguments: ['@doctrine.orm.default_entity_manager']
+#        class: App\Service\AuditReaderService
+#    sonata.admin.audit.orm.reader:
+#        class: Sonata\DoctrineORMAdminBundle\Model\AuditReader
+##        class: App\Service\AuditReaderService
+#        public: true
+#        arguments: ['@simplethings_entityaudit.reader']
+
     App\Admin\CardAdmin:
         arguments: [~, App\Entity\Card, ~]
         tags:

@@ -14,7 +14,7 @@ class CardFields
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id=7;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\CardFieldsOption")

@@ -46,11 +46,14 @@ class ArrivalAdminController extends CRUDController
         $arrivalСells
             ->setActiveSheet($excelHelper->getActiveSheet())
             ->setDateArrival($arrival->getDateArrival())
-            ->setNumberAndDatePurchase($arrival->getNumberAndDatePurchase())
-            ->addCardRow($arrival->getCards()->count())
-            ->setTotal($arrival->getCards()->count())
-            ->setCars($arrival->getCards())
-        ;
+            ->setNumberAndDatePurchase($arrival->getNumberAndDatePurchase());
+
+        if ($arrival->getCards()->count() > 0) {
+            $arrivalСells
+                ->addCardRow($arrival->getCards()->count())
+                ->setTotal($arrival->getCards()->count())
+                ->setCars($arrival->getCards());
+        }
 
         $excelHelper->print();
     }

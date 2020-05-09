@@ -17,8 +17,12 @@ handlers:
     static_dir: public/bundles
   - url: /js
     static_dir: public/js
+  - url: /css
+    static_dir: public/css
+  - url: /upload
+    static_dir: public/upload
 
   # Declare any media files in the public directory as static assets as well.
-  - url: /(.*\.(ico|txt|gif|png|jpg))$
-    static_files: public/\1
-    upload: public/.*\.(ico|txt|gif|png|jpg)$
+#  - url: /(.*\.(ico|txt|gif|png|jpg))$
+#    static_files: public/\1
+#    upload: public/.*\.(ico|txt|gif|png|jpg)$

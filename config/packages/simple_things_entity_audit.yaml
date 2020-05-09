@@ -1,0 +1,5 @@
+#https://github.com/simplethings/EntityAuditBundle/blob/1.0/README.md
+simple_things_entity_audit:
+    audited_entities:
+        - App\Entity\Card
+        - App\Entity\CardFields
