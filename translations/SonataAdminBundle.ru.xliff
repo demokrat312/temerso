@@ -2,6 +2,10 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file source-language="en" datatype="plaintext" original="SonataAdminBundle.en.xliff">
         <body>
+            <trans-unit id="label_view_revision">
+                <source>label_view_revision</source>
+                <target>Предыдущая версия карточки</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

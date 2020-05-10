@@ -3,15 +3,31 @@
 namespace App\Twig;
 
 use App\Entity\CardFields;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 class AppExtension extends AbstractExtension
 {
+    /**
+     * @var EntityManagerInterface
+     */
+    private $em;
+
+    /**
+     * AppExtension constructor.
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     public function getFilters()
     {
         return [
             new TwigFilter('sonata_compare', [$this, 'sonataCompare']),
+            new TwigFilter('revision_date', [$this, 'revisionDate']),
         ];
     }
 
@@ -35,5 +51,14 @@ class AppExtension extends AbstractExtension
             }
         }
         return $class;
+    }
+
+    public function revisionDate(int $revisionId)
+    {
+        $query = "SELECT r.* FROM revisions r WHERE id = ?";
+        $revisionsData = $this->em->getConnection()->fetchAll($query, [$revisionId]);
+
+        $dateTime = \DateTime::createFromFormat($this->em->getConnection()->getDatabasePlatform()->getDateTimeFormatString(), $revisionsData[0]['timestamp']);
+        return $dateTime->format('d.m.Y H:i');
     }
 }

@@ -1,69 +1,50 @@
 {#{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}#}
-{#{% extends '@SonataAdmin/CRUD/Association/show_one_to_many.html.twig' %}#}
+{% extends '/viewList/base_show_field.html.twig' %}
 {% block field %}
-{#    {{ dump() }}#}
-    </tr>
-    {% for element in value %}
-        <tr class="sonata-ba-view-container history-audit-compare">
-            {% if (value_compare is defined) %}
-                <th class="{{ element|sonata_compare(value_compare, compare_mode is defined) }}">{{ element.field.title }}</th>
-            {% else %}
-                <th>{{ element.field.title }}</th>
-            {% endif %}
-            <td>
-                {% if field_description.hasassociationadmin
-                    and field_description.associationadmin.hasRoute(route_name)
-                    and field_description.associationadmin.hasAccess(route_name, element) %}
-                    <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, element, field_description.options.route.parameters) }}">
-                        {{ element|render_relation_element(field_description) }}
-                    </a>
-                {% else %}
-                    {{ element|render_relation_element(field_description) }}
-                {% endif %}
-            </td>
-        </tr>
-    {% endfor %}
+    {% if compare_mode is not defined  %}
+        <td>{{ block('field_title') }}</td>
+    {% endif %}
+    <td>{{ block('field_value') }}</td>
 {% endblock %}
 
-{#<th{% if(is_diff|default(false)) %} class="diff"{% endif %}>{% block name %}{{ field_description.label|trans({}, field_description.translationDomain ?: admin.translationDomain) }}{% endblock %}</th>#}
-{#<td>#}
-{#    {% block field %}#}
-{#        <ul class="sonata-ba-show-one-to-many>#}
-{#            {% set route_name = field_description.options.route.name %}#}
-{#            {% for element in value %}#}
-{#                {% if field_description.hasassociationadmin#}
-{#        and field_description.associationadmin.hasRoute(route_name)#}
-{#        and field_description.associationadmin.hasAccess(route_name, element) %}#}
-{#                    <li>#}
-{#                        <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, element, field_description.options.route.parameters) }}">#}
-{#        <strong>{{ element.field.title }}</strong>:{{ element|render_relation_element(field_description) }}#}
-{#        </a>#}
-{#        </li>#}
-{#    {% else %}#}
-{#        <li>#}
-{#            <strong>{{ element.field.title }}</strong>:{{ element|render_relation_element(field_description) }}#}
-{#        </li>#}
-{#    {% endif %}#}
-{#    {% endfor %}#}
-{#        </ul>#}
-{#        #}{#    <table style="width: 100%">#}
-{#        #}{#        {% for element in value %}#}
-{#        #}{#            <tr class="sonata-ba-view-container">#}
-{#        #}{#                <th>{{ element.field.title }}</th>#}
-{#        #}{#                <td>{{ element|render_relation_element(field_description) }}</td>#}
-{#        #}{#            </tr>#}
-{#        #}{#        {% endfor %}#}
-{#        #}{#    </table>#}
-{#    {% endblock %}#}
-{#</td>#}
+{% block field_title %}
+    <table width="100%">
+        {% for element in value %}
+            <tr class="sonata-ba-view-container history-audit-compare">
+                {% if (value_compare is defined) %}
+                    <th class="{{ element|sonata_compare(value_compare, compare_mode is defined) }}">{{ element.field.title }}</th>
+                {% else %}
+                    <th>{{ element.field.title }}</th>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block field_value %}Dota_912604!
+    <table width="100%">
+        {% for element in value %}
+            <tr class="sonata-ba-view-container history-audit-compare">
+                <td>
+                    {% if field_description.hasassociationadmin
+                        and field_description.associationadmin.hasRoute(route_name)
+                        and field_description.associationadmin.hasAccess(route_name, element) %}
+                        <a href="{{ field_description.associationadmin.generateObjectUrl(route_name, element, field_description.options.route.parameters) }}">
+                            {{ element|render_relation_element(field_description) }}
+                        </a>
+                    {% else %}
+                        {{ element|render_relation_element(field_description) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
 
 {% block field_compare %}
     {% if(value_compare is defined) %}
-{#        {{ dump() }}#}
-        <td>
-            {% set compare_mode = true %}
-            {% set value = value_compare %}
-            {{ block('field') }}
-        </td>
+        {% set compare_mode = true %}
+        {% set value = value_compare %}
+        {{ block('field') }}
     {% endif %}
 {% endblock %}

@@ -5,7 +5,8 @@ sonata_admin:
         # пример перезаписи
 #        show: '@SonataAdmin/CRUD/show.html.twig'
         show:    /crud/show.html.twig
-        history: /crud/history.html.twig
+#        history: /crud/history.html.twig
+        show_compare: '/crud/show_compare.html.twig'
 
         user_block: '@SonataAdmin/Core/user_block.html.twig'
         add_block: '@SonataAdmin/Core/add_block.html.twig'
@@ -15,10 +16,10 @@ sonata_admin:
         search: '@SonataAdmin/Core/search.html.twig'
         list: '@SonataAdmin/CRUD/list.html.twig'
         filter: '@SonataAdmin/Form/filter_admin_fields.html.twig'
-        show_compare: '@SonataAdmin/CRUD/show_compare.html.twig'
+#        show_compare: '@SonataAdmin/CRUD/show_compare.html.twig'
         edit: '@SonataAdmin/CRUD/edit.html.twig'
         preview: '@SonataAdmin/CRUD/preview.html.twig'
-#        history: '@SonataAdmin/CRUD/history.html.twig'
+        history: '@SonataAdmin/CRUD/history.html.twig'
         acl: '@SonataAdmin/CRUD/acl.html.twig'
         history_revision_timestamp: '@SonataAdmin/CRUD/history_revision_timestamp.html.twig'
         action: '@SonataAdmin/CRUD/action.html.twig'

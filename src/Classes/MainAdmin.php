@@ -18,4 +18,8 @@ abstract class MainAdmin extends AbstractAdmin
         'identifier' => true,
         'route' => ['name' => 'show']
     ];
+
+    const SHOW_HIDE_LINK_MANY_TO_ONE = [
+        'route' => ['name' => 'empty']
+    ];
 }
