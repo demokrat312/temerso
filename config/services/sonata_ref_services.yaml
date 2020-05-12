@@ -5,16 +5,16 @@ services:
     App\Admin\Reference\RefInnerCoatingAdmin:
         arguments: [~, App\Entity\Reference\RefInnerCoating, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Внутреннее покрытие, group: Справочники, show_in_dashboard: true, icon: '<i class="fa fa-list"></i>' }
+            - { name: sonata.admin, manager_type: orm, label: Внутреннее покрытие, group: Справочники, show_in_dashboard: false, icon: '<i class="fa fa-list"></i>' }
     App\Admin\Reference\RefHardbandingNippleAdmin:
         arguments: [~, App\Entity\Reference\RefHardbandingNipple, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Хардбендинг, group: Справочники, show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, label: Хардбендинг, group: Справочники, show_in_dashboard: false }
     App\Admin\Reference\RefTypeThreadAdmin:
         arguments: [~, App\Entity\Reference\RefTypeThread, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: Тип резьбы, group: Справочники, show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, label: Тип резьбы, group: Справочники, show_in_dashboard: false }
     App\Admin\Reference\RefWarehouseAdmin:
         arguments: [~, App\Entity\Reference\RefWarehouse, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: № Склада, group: Справочники, show_in_dashboard: true }
+            - { name: sonata.admin, manager_type: orm, label: № Склада, group: Справочники, show_in_dashboard: false }

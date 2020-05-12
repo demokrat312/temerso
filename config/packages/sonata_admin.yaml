@@ -1,22 +1,25 @@
 # https://symfony.com/doc/master/bundles/SonataAdminBundle/reference/configuration.html
 sonata_admin:
-    title: 'Temerso'
+#    title: 'Temerso'
+    title: false
+    title_logo: upload/logo.png
     templates:
         # пример перезаписи
-#        show: '@SonataAdmin/CRUD/show.html.twig'
+        #        show: '@SonataAdmin/CRUD/show.html.twig'
         show:    /crud/show.html.twig
-#        history: /crud/history.html.twig
+        #        history: /crud/history.html.twig
         show_compare: '/crud/show_compare.html.twig'
+        layout: 'standard_layout.html.twig'
 
-        user_block: '@SonataAdmin/Core/user_block.html.twig'
+#        user_block: '@SonataAdmin/Core/user_block.html.twig'
         add_block: '@SonataAdmin/Core/add_block.html.twig'
-        layout: '@SonataAdmin/standard_layout.html.twig'
+#        layout: '@SonataAdmin/standard_layout.html.twig'
         ajax: '@SonataAdmin/ajax_layout.html.twig'
         dashboard: '@SonataAdmin/Core/dashboard.html.twig'
         search: '@SonataAdmin/Core/search.html.twig'
         list: '@SonataAdmin/CRUD/list.html.twig'
         filter: '@SonataAdmin/Form/filter_admin_fields.html.twig'
-#        show_compare: '@SonataAdmin/CRUD/show_compare.html.twig'
+        #        show_compare: '@SonataAdmin/CRUD/show_compare.html.twig'
         edit: '@SonataAdmin/CRUD/edit.html.twig'
         preview: '@SonataAdmin/CRUD/preview.html.twig'
         history: '@SonataAdmin/CRUD/history.html.twig'
@@ -41,35 +44,51 @@ sonata_admin:
         knp_menu_template: '@SonataAdmin/Menu/sonata_menu.html.twig'
 
     assets:
+        stylesheets:
+#            - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black-light.min.css
+
+            # The default stylesheet list:
+            - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
+            - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
+            - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
+            - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
+            - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
+            - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
+            - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
+            - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
+            - bundles/sonatacore/vendor/select2/select2.css
+            - bundles/sonatacore/vendor/select2-bootstrap-css/select2-bootstrap.min.css
+            - bundles/sonataadmin/vendor/x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css
+            - bundles/sonataadmin/css/styles.css
+            - bundles/sonataadmin/css/layout.css
+            - bundles/sonataadmin/css/tree.css
+            - bundles/sonataadmin/css/colors.css
         extra_stylesheets:
             - general.css
     dashboard:
         blocks:
-#            - { type: sonata.admin.block.admin_list, position: left }
-            -
-                class:    col-lg-3 col-xs-6
+            #            - { type: sonata.admin.block.admin_list, position: left }
+            -   class:    col-lg-3 col-xs-6
                 position: top
                 type:     sonata.admin.block.stats
                 settings:
-#                    code: sonata.user.admin.card
+                    #                    code: sonata.user.admin.card
                     code: App\Admin\ArrivalAdmin
                     icon: fa-file-excel-o
                     text: Приход
                     filters:
                         status: { type: 3, value: 0 }
-            -
-                class:    col-lg-3 col-xs-6
+            -   class:    col-lg-3 col-xs-6
                 position: top
                 type:     sonata.admin.block.stats
                 settings:
-#                    code: sonata.user.admin.card
+                    #                    code: sonata.user.admin.card
                     code: App\Admin\CardAdmin
                     icon: fa-newspaper-o
                     text: Количество карточек
                     filters:
                         status: { type: 3, value: 0 }
-            -
-                class:    col-lg-3 col-xs-6
+            -   class:    col-lg-3 col-xs-6
                 position: top
                 type:     sonata.admin.block.stats
                 settings:
@@ -80,8 +99,7 @@ sonata_admin:
                     filters:
                         status: { type: 3, value: 0 }
 
-            -
-                class:    col-lg-3 col-xs-6
+            -   class:    col-lg-3 col-xs-6
                 position: top
                 type:     sonata.admin.block.stats
                 settings:
@@ -89,10 +107,61 @@ sonata_admin:
                     icon:  fa-group
                     text:  Список ролей
                     color: bg-green
+
+        groups:
+            user:
+                label:                "sonata_user"
+                label_catalogue:      "SonataUserBundle"
+                icon: '<i class="fa fa-users"></i>'
+                items:
+                    - sonata.user.admin.user
+                    - sonata.user.admin.group
+            card:
+                label: "Каталог"
+                icon: '<i class="fa fa-newspaper-o"></i>'
+                items:
+                    - App\Admin\CardAdmin
+                    - label: "База списанного оборудования"
+                      route: admin_empty
+                    - label: "Аналитика"
+                      route: admin_empty
+                    - label: "Настройки"
+                      route: admin_reference_dasboard
+            cardDashboardRef:
+                items:
+                    - App\Admin\Reference\RefInnerCoatingAdmin
+                    - App\Admin\Reference\RefHardbandingNippleAdmin
+                    - App\Admin\Reference\RefTypeThreadAdmin
+                    - App\Admin\Reference\RefWarehouseAdmin
+            cardDashboardFields:
+                items:
+                    - App\Admin\CardFieldsOptionAdmin
+
+            task:
+                label: "Задания"
+                items:
+                    - label: "Создать задание"
+                      route: admin_empty
+                    - label: "Мои задания"
+                      route: admin_empty
+                    - label: "Аналитика"
+                      route: admin_empty
+            document:
+                label: "Документы"
+                items:
+                    - App\Admin\ArrivalAdmin
+                    - label: "Создать документ"
+                      route: admin_empty
+                    - label: "Выгрузка документов"
+                      route: admin_empty
+                    - label: "Аналитика"
+                      route: admin_empty
+
     options:
         legacy_twig_text_extension: false
     security:
         handler: sonata.admin.security.handler.acl
+
 
 sonata_block:
     blocks:

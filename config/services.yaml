@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 imports:
     - { resource: services/sonata_services.yaml }
+    - { resource: services/sonata_admin_services.yaml }
     - { resource: services/sonata_ref_services.yaml }
 
 

@@ -6,6 +6,14 @@
                 <source>label_view_revision</source>
                 <target>Предыдущая версия карточки</target>
             </trans-unit>
+            <trans-unit id="card_dashboard_ref">
+                <source>cardDashboardRef</source>
+                <target>Справочники</target>
+            </trans-unit>
+            <trans-unit id="card_dashboard_fields">
+                <source>cardDashboardFields</source>
+                <target>Дополнительные поля</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

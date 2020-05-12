@@ -1,0 +1,38 @@
+parameters:
+# ... some parameters
+
+services:
+#    Пользователи
+#    sonata.user.admin.user:
+#        class: "%sonata.user.admin.user.class%"
+#        public: true
+#        calls:
+#            - [setTranslationDomain, ['%sonata.user.admin.user.translation_domain%']]
+#        arguments: [~, "%sonata.user.admin.user.entity%", "%sonata.user.admin.user.controller%"]
+#        tags:
+#              - { name: sonata.admin, manager_type: orm, label: users, label_catalogue: "%sonata.user.admin.label_catalogue%", group: "%sonata.user.admin.groupname%", label_translator_strategy: "sonata.admin.label.strategy.underscore",  show_in_dashboard: true, icon: '<i class="fa fa-users"></i>'}
+#
+##    Пользователи
+#    sonata.user.admin.group:
+#        class: "%sonata.user.admin.group.class%"
+#        public: true
+#        calls:
+#            - [setTranslationDomain, ['%sonata.user.admin.group.translation_domain%']]
+#        arguments: [~, "%sonata.user.admin.group.entity%", "%sonata.user.admin.group.controller%"]
+#        tags:
+#              - { name: sonata.admin, manager_type: orm, label: groups, label_catalogue: "%sonata.user.admin.label_catalogue%", group: "%sonata.user.admin.groupname%", label_translator_strategy: "sonata.admin.label.strategy.underscore",  show_in_dashboard: true, icon: '<i class="fa fa-users"></i>'}
+#   Каталог
+    App\Admin\CardAdmin:
+        arguments: [~, App\Entity\Card, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Поиск оборудования, group: Каталог, show_in_dashboard: true, icon: '<i class="fa fa-newspaper-o"></i>'}
+#   Каталог
+    App\Admin\CardFieldsOptionAdmin:
+        arguments: [~, App\Entity\CardFieldsOption, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Дополнительные поля, group: Каталог, show_in_dashboard: true}
+#   Документы
+    App\Admin\ArrivalAdmin:
+        arguments: [~, App\Entity\Arrival, App\Controller\Admin\ArrivalAdminController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Приход, group: Документы, show_in_dashboard: true, icon: '<i class="fa fa-file-excel-o"></i>'}
