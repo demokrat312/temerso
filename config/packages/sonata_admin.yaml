@@ -64,7 +64,7 @@ sonata_admin:
             - bundles/sonataadmin/css/tree.css
             - bundles/sonataadmin/css/colors.css
         extra_stylesheets:
-            - general.css
+            - css/general.css
     dashboard:
         blocks:
             #            - { type: sonata.admin.block.admin_list, position: left }
