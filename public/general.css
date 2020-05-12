@@ -4,6 +4,9 @@
 .login-logo img {
   width: auto!important;
 }
+.temerso-color,.callout.callout-info,.alert-info,.label-info,.modal-info .modal-body {
+    background-color: #902344 !important
+}
 /*#902344*/
 
 

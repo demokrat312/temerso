@@ -76,6 +76,7 @@ sonata_admin:
                     code: App\Admin\ArrivalAdmin
                     icon: fa-file-excel-o
                     text: Приход
+                    color: temerso-color
                     filters:
                         status: { type: 3, value: 0 }
             -   class:    col-lg-3 col-xs-6
@@ -86,6 +87,7 @@ sonata_admin:
                     code: App\Admin\CardAdmin
                     icon: fa-newspaper-o
                     text: Количество карточек
+                    color: temerso-color
                     filters:
                         status: { type: 3, value: 0 }
             -   class:    col-lg-3 col-xs-6
@@ -95,7 +97,7 @@ sonata_admin:
                     code: sonata.user.admin.user
                     icon: fa-users
                     text: Список пользователей
-                    color: bg-green
+                    color: temerso-color
                     filters:
                         status: { type: 3, value: 0 }
 
@@ -106,7 +108,7 @@ sonata_admin:
                     code:  sonata.user.admin.group
                     icon:  fa-group
                     text:  Список ролей
-                    color: bg-green
+                    color: temerso-color
 
         groups:
             user:
