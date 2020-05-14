@@ -45,14 +45,14 @@ sonata_admin:
 
     assets:
         stylesheets:
-#            - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black-light.min.css
+            - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-red.min.css
 
             # The default stylesheet list:
             - bundles/sonatacore/vendor/bootstrap/dist/css/bootstrap.min.css
             - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
             - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
             - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
-            - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
+#            - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
             - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
             - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
             - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
@@ -65,6 +65,7 @@ sonata_admin:
             - bundles/sonataadmin/css/colors.css
         extra_stylesheets:
             - css/general.css
+            - css/theme-config.css
     dashboard:
         blocks:
             #            - { type: sonata.admin.block.admin_list, position: left }

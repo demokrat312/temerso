@@ -1,0 +1,52 @@
+/* header. верхняя панель*/
+.skin-red .main-header .navbar {
+  background-color: #902444;
+}
+.skin-red .main-header li.user-header {
+  background-color: #902444;
+}
+.skin-red .sidebar-menu > li:hover > a,
+.skin-red .sidebar-menu > li.active > a {
+  color: #ec628b ;
+  background: #1e282c;
+  border-left-color: #902444;
+}
+.skin-red .treeview-menu>li.active>a,.skin-red .treeview-menu>li>a:hover {
+    color: #ec628b;
+}
+.skin-red .sidebar-menu>li>a,
+.navbar-top-links li a,
+.navbar-top-links li span {
+   text-transform: uppercase;
+}
+.skin-red .sidebar a {
+    color: #fff;
+}
+.skin-red .main-header .navbar .nav>li>a:hover,.skin-red .main-header .navbar .nav>li>a:active,.skin-red .main-header .navbar .nav>li>a:focus,.skin-red .main-header .navbar .nav .open>a,.skin-red .main-header .navbar .nav .open>a:hover,.skin-red .main-header .navbar .nav .open>a:focus,.skin-red .main-header .navbar .nav>.active>a {
+    background: rgba(0,0,0,0.1);
+    color: #ec628b;
+}
+
+/* logo */
+.skin-red .main-header .logo {
+  background-color: #ffffff;
+  color: #ffffff;
+  border-bottom: 0 solid transparent;
+}
+.skin-red .main-header .logo:hover {
+  background-color: #ffffff;
+}
+
+.skin-red .main-header .navbar .sidebar-toggle {
+  color: #ffffff;
+  border-right: 1px solid #751934;
+}
+.skin-red .main-header .navbar .sidebar-toggle:hover {
+  background-color: #751934;
+  color: #ec628b;
+}
+@media (max-width: 767px) {
+  .skin-red .main-header .navbar .dropdown-menu li a:hover {
+    background: #751934;
+  }
+}
