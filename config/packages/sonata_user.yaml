@@ -5,3 +5,13 @@ sonata_user:
     class:
         user: App\Entity\User
         group: App\Entity\Group
+    admin:                  # Admin Classes
+        user:
+            class:          App\Admin\UserAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle
+
+        group:
+            class:          Sonata\UserBundle\Admin\Entity\GroupAdmin
+            controller:     SonataAdminBundle:CRUD
+            translation:    SonataUserBundle

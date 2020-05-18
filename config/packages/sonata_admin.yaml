@@ -126,10 +126,11 @@ sonata_admin:
                     - App\Admin\CardAdmin
                     - label: "База списанного оборудования"
                       route: admin_empty
+                      roles: [ROLE_ADMIN]
                     - label: "Аналитика"
                       route: admin_empty
-                    - label: "Настройки"
-                      route: admin_reference_dasboard
+                      roles: [ROLE_ADMIN]
+                    - App\Admin\ReferenceDashboardAdmin
             cardDashboardRef:
                 items:
                     - App\Admin\Reference\RefInnerCoatingAdmin
@@ -145,25 +146,45 @@ sonata_admin:
                 items:
                     - label: "Создать задание"
                       route: admin_empty
+                      roles: [ROLE_ADMIN]
                     - label: "Мои задания"
                       route: admin_empty
+                      roles: [ROLE_ADMIN]
                     - label: "Аналитика"
                       route: admin_empty
+                      roles: [ROLE_ADMIN]
             document:
                 label: "Документы"
                 items:
                     - App\Admin\ArrivalAdmin
-                    - label: "Создать документ"
-                      route: admin_empty
                     - label: "Выгрузка документов"
                       route: admin_empty
+                      roles: [ROLE_ADMIN]
                     - label: "Аналитика"
                       route: admin_empty
+                      roles: [ROLE_ADMIN]
 
     options:
         legacy_twig_text_extension: false
     security:
         handler: sonata.admin.security.handler.acl
+
+        role_admin: ROLE_ADMIN
+        role_super_admin: ROLE_SUPER_ADMIN
+
+        # acl security information
+        information:
+            GUEST:    [VIEW, LIST]
+            STAFF:    [EDIT, LIST, CREATE]
+            EDITOR:   [OPERATOR, EXPORT]
+            ADMIN:    [MASTER]
+
+        # permissions not related to an object instance and also to be available when objects do not exist
+        # the DELETE admin permission means the user is allowed to batch delete objects
+        admin_permissions: [CREATE, LIST, DELETE, UNDELETE, EXPORT, OPERATOR, MASTER]
+
+        # permission related to the objects
+        object_permissions: [VIEW, EDIT, DELETE, UNDELETE, OPERATOR, MASTER, OWNER]
 
 
 sonata_block:
