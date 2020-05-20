@@ -40,3 +40,11 @@ services:
         arguments: [~, App\Entity\ReferenceDashboard, App\Controller\Admin\ReferenceDashboardController]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Настройки, group: Каталог, show_in_dashboard: true, icon: '<i class="fa fa-file-excel-o"></i>'}
+    App\Admin\MarkingAdmin:
+        arguments: [~, App\Entity\Marking, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Маркировка, group: Задания, show_in_dashboard: true}
+    App\Admin\TaskDashboardAdmin:
+        arguments: [~, App\Entity\TaskDashboard, App\Controller\Admin\TaskDashboardController]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Создать задание, group: Задания, show_in_dashboard: true}

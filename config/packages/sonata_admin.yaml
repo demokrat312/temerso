@@ -140,13 +140,17 @@ sonata_admin:
             cardDashboardFields:
                 items:
                     - App\Admin\CardFieldsOptionAdmin
+            taskDashboard:
+                items:
+                    - App\Admin\MarkingAdmin
 
             task:
                 label: "Задания"
                 items:
-                    - label: "Создать задание"
-                      route: admin_empty
-                      roles: [ROLE_ADMIN]
+                    - App\Admin\TaskDashboardAdmin
+#                    - label: "Создать задание"
+#                      route: admin_empty
+#                      roles: [ROLE_ADMIN]
                     - label: "Мои задания"
                       route: admin_empty
                       roles: [ROLE_ADMIN]
