@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" datatype="plaintext" original="">
+        <body>
+            <trans-unit id="form.label_position_name">
+                <source>form.label_position_name</source>
+                <target>Должность</target>
+            </trans-unit>
+            <trans-unit id="list.label_fio">
+                <source>list.label_fio</source>
+                <target>ФИО</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
