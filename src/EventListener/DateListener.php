@@ -6,7 +6,7 @@
  * Time: 14:00
  */
 
-namespace App\EventSubscriber;
+namespace App\EventListener;
 
 
 use App\Classes\DateListenerInterface;

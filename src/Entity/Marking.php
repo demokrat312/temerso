@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MarkingRepository")
- * @ORM\EntityListeners({"App\EventSubscriber\DateListener"})
+ * @ORM\EntityListeners({"App\EventListener\DateListener"})
  */
 class Marking implements DateListenerInterface
 {
