@@ -141,6 +141,7 @@ class CardAdmin extends MainAdmin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
+        parent::configureListFields($listMapper);
         $listMapper
             ->add('generalName', null, array_merge(self::VIEW_LINK, ['label' => 'Название']))
             ->add('statusTitle', null, ['label' => 'Статус']);

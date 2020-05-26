@@ -1,0 +1,172 @@
+<script>
+    {% autoescape 'js' %}
+    const adminListModel = (function () {
+        // s5eca959083ae6[cards][]
+        let $modal = null;
+        let $tableList = null;
+        let listUrl = null;
+        let rowTemplate = `<tr>
+                        <input type="hidden" name="{{ form.vars.full_name }}" value="{id}">
+                        <td class="sonata-ba-list-field sonata-ba-list-field-batch">
+                            {orderNumber}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {title}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-select">
+                            <a class="btn btn-primary" href="#">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Убрать
+                            </a>
+                        </td>
+                    </tr>`
+
+        const init = () => {
+            $modal = $('#field_dialog_{{ id }}');
+            $tableList = $('#table_list_{{ id }}');
+            console.log('admin_list_script init');
+            initEvent();
+        };
+        const initEvent = () => {
+            $('#admin_list_modal_{{ id }}').on('click', showModal);
+            $modal.on('click', '.sonata-filters-box button,.sonata-filters-box a', modalActions);
+            $modal.on('click', '.sonata-ba-list-field-select', selectItem);
+            $modal.on('click', '.js-add-selected', selectAllItem);
+            $tableList.on('click', '.sonata-ba-list-field-select', removeItem)
+        };
+        const showModal = (event) => {
+            event.preventDefault();
+            listUrl = $(event.target).attr('href');
+            console.log('showModal', listUrl);
+            loadModalBody(listUrl);
+        };
+
+        const loadModalBody = (url) => {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'html',
+                success: function (html) {
+                    $modal.find('.modal-body').html(html);
+                    $modal.modal('show');
+                    Admin.shared_setup($modal);
+                    batchScript();
+                    removeDuplicate();
+                }
+            });
+        };
+
+        const modalActions = (event) => {
+            event.preventDefault();
+            const $target = $(event.target);
+            console.log('action', $target);
+            let url = null;
+            // Кнопка фильтрации
+            if ($target.find('.fa-filter').length) {
+                url = listUrl + '?' + serializeInputsFromElement($modal.find('.sonata-filters-box'))
+            } else if ($target.attr('href') && $target.attr('href').length > 1) {
+                url = $target.attr('href');
+            } else {
+                return false;
+            }
+
+            loadModalBody(url);
+        };
+
+        const serializeInputsFromElement = (selector) => {
+            return $(selector).prop('elements', $('*', selector).andSelf().get()).serialize();
+        };
+
+        const selectItem = (event) => {
+            event.preventDefault();
+            console.log('selectItem');
+
+            const $row = $(event.target).closest('tr');
+
+            addItem($row);
+        };
+
+        const addItem = ($row) => {
+            const id = $row.find('.sonata-ba-list-field-batch').attr('objectid');
+            const title = $row.find('td:eq(1)').text().trim();
+
+            const newRow = $(rowTemplate
+                .replace('{id}', id)
+                .replace('{orderNumber}', $tableList.find('tr').length)
+                .replace('{title}', title)
+            );
+
+            $tableList.find('tbody').append(newRow);
+            $row.remove();
+        };
+
+        const selectAllItem = (event) => {
+            event.preventDefault();
+            console.log('selectAllItem');
+
+            getTableListLoaded().find('tbody tr').each((index, tr) => {
+                addItem($(tr));
+            });
+
+        };
+
+        const batchScript = () => {
+            // Toggle individual checkboxes when the batch checkbox is changed
+            $modal.find('#list_batch_checkbox').on('ifChanged change', function () {
+                var checkboxes = $(this)
+                    .closest('table')
+                    .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
+                ;
+
+                if (Admin.get_config('USE_ICHECK')) {
+                    checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
+                } else {
+                    checkboxes.prop('checked', this.checked);
+                }
+            });
+
+            // Add a CSS class to rows when they are selected
+            $modal.find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
+                .on('ifChanged change', function () {
+                    $(this)
+                        .closest('tr, div.sonata-ba-list-field-batch')
+                        .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
+                    ;
+                })
+                .trigger('ifChanged')
+            ;
+        };
+
+        const removeDuplicate = () => {
+            console.log('this');
+            const recordList = [];
+            $tableList.find('input').each((index, input) => {
+                recordList.push(input.value);
+            });
+
+            getTableListLoaded().find('tr').each((index, tr) => {
+                const $tr = $(tr);
+                if (recordList.includes($tr.find('td:first').attr('objectid'))) {
+                    $tr.remove();
+                }
+            })
+        };
+
+        const removeItem = (event) => {
+            event.preventDefault();
+
+            $(event.target).closest('tr').remove();
+        };
+
+
+        const getTableListLoaded = () => {
+            return $modal.find('.sonata-ba-list');
+        };
+
+        return {init}
+    })();
+    window.addEventListener("load", function () {
+        adminListModel.init();
+    });
+    {% endautoescape %}
+</script>

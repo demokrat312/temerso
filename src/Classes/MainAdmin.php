@@ -22,4 +22,35 @@ abstract class MainAdmin extends AbstractAdmin
     const SHOW_HIDE_LINK_MANY_TO_ONE = [
         'route' => ['name' => 'empty']
     ];
+
+    protected $showModeButtons = [];
+
+    protected function configureListFields(ListMapper $list)
+    {
+        if(!$list->has('batch')) {
+            $list->add('batch', 'batch', ['code' => '_batch', 'template' => '@SonataAdmin/CRUD/list__batch.html.twig']);
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getShowModeButtons(): array
+    {
+        return $this->showModeButtons;
+    }
+
+    /**
+     * @param string $showModeButtons
+     * @return $this
+     */
+    public function setShowModeButtons(array $showModeButtons)
+    {
+        $this->showModeButtons = $showModeButtons;
+        return $this;
+    }
+
+
+
+
 }

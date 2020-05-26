@@ -41,7 +41,7 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Настройки, group: Каталог, show_in_dashboard: true, icon: '<i class="fa fa-file-excel-o"></i>'}
     App\Admin\MarkingAdmin:
-        arguments: [~, App\Entity\Marking, ~]
+        arguments: [~, App\Entity\Marking, App\Controller\Admin\MarkingAdminController]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Маркировка, group: Задания, show_in_dashboard: true}
     App\Admin\TaskDashboardAdmin:

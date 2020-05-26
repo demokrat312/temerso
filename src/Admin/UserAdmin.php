@@ -9,9 +9,11 @@
 namespace App\Admin;
 
 
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\UserBundle\Form\Type\SecurityRolesType;
 use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -26,7 +28,7 @@ class UserAdmin extends BaseUserAdmin
 
     public function getFormBuilder()
     {
-       $this->formOptions['data_class'] = $this->getClass();
+        $this->formOptions['data_class'] = $this->getClass();
 
         $options = $this->formOptions;
 //        $options['validation_groups'] = (!$this->getSubject() || null === $this->getSubject()->getId()) ? 'Registration' : 'Profile';
@@ -116,5 +118,35 @@ class UserAdmin extends BaseUserAdmin
 //                ->add('impersonating', 'string', ['template' => '@SonataUser/Admin/Field/impersonating.html.twig'])
 //            ;
 //        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filterMapper): void
+    {
+        $filterMapper
+            ->add('username')
+            ->add('email')
+            ->add('groups')
+            ->add('firstname')
+            ->add('all', CallbackFilter::class, [
+                'callback' => function ($queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb = $queryBuilder;
+                    $qb
+                        ->andWhere($qb->expr()->orX(
+                            $qb->expr()->like(sprintf('LOWER(%s.firstname)', $alias), '?1'),
+                            $qb->expr()->like(sprintf('LOWER(%s.lastname)', $alias), '?1'),
+                            $qb->expr()->like(sprintf('LOWER(%s.username)', $alias), '?1')
+                        ))
+                        ->setParameter('1', '%' . strtolower($value['value']) . '%');
+
+                    return true;
+                }
+            ]);
     }
 }

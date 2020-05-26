@@ -8,3 +8,4 @@ twig:
         interval_format: '%%d days'
     form_themes:
         - '@SonataCore/Form/datepicker.html.twig'
+        - form/admin_list_type.html.twig

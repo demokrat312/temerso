@@ -10,6 +10,8 @@ sonata_admin:
         #        history: /crud/history.html.twig
         show_compare: '/crud/show_compare.html.twig'
         layout: 'standard_layout.html.twig'
+        list: 'crud/list.html.twig'
+        edit: 'crud/edit.html.twig'
 
 #        user_block: '@SonataAdmin/Core/user_block.html.twig'
         add_block: '@SonataAdmin/Core/add_block.html.twig'
@@ -17,10 +19,10 @@ sonata_admin:
         ajax: '@SonataAdmin/ajax_layout.html.twig'
         dashboard: '@SonataAdmin/Core/dashboard.html.twig'
         search: '@SonataAdmin/Core/search.html.twig'
-        list: '@SonataAdmin/CRUD/list.html.twig'
+#        list: '@SonataAdmin/CRUD/list.html.twig'
         filter: '@SonataAdmin/Form/filter_admin_fields.html.twig'
         #        show_compare: '@SonataAdmin/CRUD/show_compare.html.twig'
-        edit: '@SonataAdmin/CRUD/edit.html.twig'
+#        edit: '@SonataAdmin/CRUD/edit.html.twig'
         preview: '@SonataAdmin/CRUD/preview.html.twig'
         history: '@SonataAdmin/CRUD/history.html.twig'
         acl: '@SonataAdmin/CRUD/acl.html.twig'

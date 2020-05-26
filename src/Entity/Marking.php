@@ -2,15 +2,40 @@
 
 namespace App\Entity;
 
+use App\Classes\DateListenerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MarkingRepository")
+ * @ORM\EntityListeners({"App\EventSubscriber\DateListener"})
  */
-class Marking
+class Marking implements DateListenerInterface
 {
+    const STATUS_SEND_EXECUTION = 1; // Отправлено на исполнение
+    const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
+    const STATUS_SAVE = 3; // Результаты сохранены локально
+    const STATUS_COMPLETE = 4; // Выполнено полностью
+    const STATUS_CREATED = 5; // Созданно
+
+    const STATUS_TITLE = [
+        self::STATUS_SEND_EXECUTION => 'Отправлено на исполнение',
+        self::STATUS_ACCEPT_EXECUTION => 'Принято на исполнение',
+        self::STATUS_SAVE => 'Результаты сохранены локально',
+        self::STATUS_COMPLETE => 'Выполнено полностью',
+    ];
+
+    const STATUS_ORDER = [
+        self::STATUS_CREATED, // 5 - Созданно
+        self::STATUS_SEND_EXECUTION, // 1 -  Отправлено на исполнение
+        self::STATUS_ACCEPT_EXECUTION, // 2 -  Принято на исполнение
+        self::STATUS_SAVE, // 3 -  Результаты сохранены локально
+        self::STATUS_COMPLETE, // 4 -  Выполнено полностью
+    ];
+
+    const SINGLE_USER = false;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -38,8 +63,15 @@ class Marking
      */
     private $updateAt;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $status;
+
     public function __construct()
     {
+        $this->status = self::STATUS_CREATED;
+
         $this->cards = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
@@ -57,7 +89,7 @@ class Marking
         return $this->cards;
     }
 
-    public function addCard(Card $card): self
+    public function addCard($card): self
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
@@ -66,7 +98,7 @@ class Marking
         return $this;
     }
 
-    public function removeCard(Card $card): self
+    public function removeCard($card): self
     {
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
@@ -78,7 +110,7 @@ class Marking
     /**
      * @return Collection|User[]
      */
-    public function getUsers(): Collection
+    public function getUsers()
     {
         return $this->users;
     }
@@ -123,5 +155,22 @@ class Marking
         $this->updateAt = $updateAt;
 
         return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getStatusTitle()
+    {
+        return self::STATUS_TITLE[$this->status];
     }
 }
