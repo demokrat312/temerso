@@ -131,8 +131,13 @@ class MarkingAdmin extends MainAdmin
                 'multiple' => true,
                 'label' => 'Карточки',
             ])
-            ->add('users', \Sonata\AdminBundle\Form\Type\ModelAutocompleteType::class, [
-                'property' => 'all',
+//            ->add('users', \Sonata\AdminBundle\Form\Type\ModelAutocompleteType::class, [
+//                'property' => 'all',
+//                'multiple' => true,
+//                'label' => 'Исполнители',
+//            ])
+            ->add('users', \Sonata\AdminBundle\Form\Type\ModelType::class, [
+                'property' => 'fio',
                 'multiple' => true,
                 'label' => 'Исполнители',
             ])
