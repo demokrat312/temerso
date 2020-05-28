@@ -159,7 +159,7 @@ sonata_admin:
                       roles: [ROLE_ADMIN]
                     - label: "Задания"
                       route: admin_app_taskdashboard_task_list
-                      roles: [ROLE_APP\ADMIN\MARKINGADMIN_STAFF]
+                      roles: [ROLE_APP\ADMIN\MARKINGADMIN_GUEST]
                     - label: "Аналитика"
                       route: admin_empty
                       roles: [ROLE_ADMIN]

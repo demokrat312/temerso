@@ -60,7 +60,7 @@ class MarkingAdmin extends MainAdmin
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query = parent::configureQuery($query);
-        if ($this->security->isGranted(User::ROLE_INSPECTOR)) {
+        if ($this->security->isGranted([User::ROLE_INSPECTOR, User::ROLE_STOREKEEPER])) {
             $al = $query->getRootAliases()[0];
             /** @var \Doctrine\ORM\Query\Expr $expr */
             $expr = $query->expr();

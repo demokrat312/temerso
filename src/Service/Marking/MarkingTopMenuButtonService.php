@@ -30,13 +30,13 @@ class MarkingTopMenuButtonService
      * @var array |TopMenuAccess[]
      */
     private $accessList = [
-//        ['role' => USER::ROLE_ADMIN, 'status' => Marking::STATUS_CREATED, 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
+//        ['role' => User::ROLE_ADMIN, 'status' => Marking::STATUS_CREATED, 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
 //            TopActionButtonService::BTN_CREATE, TopActionButtonService::BTN_EDIT, TopActionButtonService::BTN_LIST,
 //        ]],
-//        ['role' => USER::ROLE_ADMIN, 'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION], 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
+//        ['role' => User::ROLE_ADMIN, 'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION], 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
 //            TopActionButtonService::BTN_CREATE, TopActionButtonService::BTN_LIST, self::BTN_REMOVE_EXECUTOR,
 //        ]],
-//        ['role' => USER::ROLE_INSPECTOR, 'status' => [Marking::STATUS_SEND_EXECUTION], 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
+//        ['role' => User::ROLE_INSPECTOR, 'status' => [Marking::STATUS_SEND_EXECUTION], 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
 //            TopActionButtonService::BTN_LIST, self::BTN_ACCEPT_EXECUTION,
 //        ]],
     ];
@@ -83,14 +83,14 @@ class MarkingTopMenuButtonService
     {
         $this->accessList = [
             (new TopMenuAccess())
-                ->setRoleList([USER::ROLE_ADMIN])
+                ->setRoleList([User::ROLE_ADMIN])
                 ->setModeList([TopMenuButtonService::MODE_LIST])
                 ->setButtonList([
                     (new TopMenuButton())->setKey(TopMenuButtonService::BTN_CREATE),
                 ])
             ,
             (new TopMenuAccess())
-                ->setRoleList([USER::ROLE_ADMIN])
+                ->setRoleList([User::ROLE_ADMIN])
                 ->setStatusList([Marking::STATUS_CREATED])
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
@@ -99,7 +99,7 @@ class MarkingTopMenuButtonService
                 ])
             ,
             (new TopMenuAccess())
-                ->setRoleList([USER::ROLE_ADMIN])
+                ->setRoleList([User::ROLE_ADMIN])
                 ->setStatusList([Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION])
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
@@ -117,7 +117,7 @@ class MarkingTopMenuButtonService
                 ])
             ,
             (new TopMenuAccess())
-                ->setRoleList([USER::ROLE_INSPECTOR])
+                ->setRoleList([User::ROLE_INSPECTOR, User::ROLE_STOREKEEPER])
                 ->setStatusList([Marking::STATUS_SEND_EXECUTION])
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
@@ -134,7 +134,7 @@ class MarkingTopMenuButtonService
                 ])
             ,
             (new TopMenuAccess())
-                ->setRoleList([USER::ROLE_INSPECTOR])
+                ->setRoleList([User::ROLE_INSPECTOR, User::ROLE_STOREKEEPER])
                 ->setStatusList([Marking::STATUS_ACCEPT_EXECUTION])
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
@@ -151,7 +151,7 @@ class MarkingTopMenuButtonService
                 ])
             ,
             (new TopMenuAccess())
-                ->setRoleList([USER::ROLE_ADMIN])
+                ->setRoleList([User::ROLE_ADMIN])
                 ->setStatusList([Marking::STATUS_SAVE])
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([

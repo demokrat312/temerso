@@ -9,6 +9,8 @@ security:
         ROLE_ADMIN:       [ROLE_USER, ROLE_SONATA_ADMIN]
         ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
         ROLE_INSPECTOR:
+        ROLE_STOREKEEPER:
+        ROLE_STAFF: [ROLE_INSPECTOR, ROLE_STOREKEEPER]
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

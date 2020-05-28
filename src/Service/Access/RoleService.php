@@ -30,6 +30,8 @@ class RoleService
                 return User::ROLE_ADMIN;
             case $this->security->isGranted(User::ROLE_INSPECTOR):
                 return User::ROLE_INSPECTOR;
+            case $this->security->isGranted(User::ROLE_STOREKEEPER):
+                return User::ROLE_STOREKEEPER;
             default:
                 throw new \Exception('Неизвестная роль');
         }
