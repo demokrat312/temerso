@@ -41,7 +41,13 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Настройки, group: Каталог, show_in_dashboard: true, icon: '<i class="fa fa-file-excel-o"></i>'}
     App\Admin\MarkingAdmin:
-        arguments: [~, App\Entity\Marking, App\Controller\Admin\MarkingAdminController]
+        arguments:
+            - ~
+            - App\Entity\Marking
+            - App\Controller\Admin\MarkingAdminController
+            - "@Symfony\\Component\\Security\\Core\\Security"
+            - '@App\Service\Access\RoleService'
+            - '@App\Service\Marking\MarkingTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Маркировка, group: Задания, show_in_dashboard: true}
     App\Admin\TaskDashboardAdmin:

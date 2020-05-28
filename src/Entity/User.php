@@ -38,6 +38,9 @@ use Doctrine\ORM\Mapping\AttributeOverride;
  */
 class User extends BaseUser
 {
+    const ROLE_INSPECTOR = 'ROLE_INSPECTOR';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", options={"unsigned":true})

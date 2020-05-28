@@ -169,7 +169,12 @@ class CardAdmin extends MainAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper->add('id');
+        $datagridMapper
+            ->add('id')
+//            ->add('arrival', \Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter::class, [
+////                ''
+//            ])
+        ;
     }
 
     /**

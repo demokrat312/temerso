@@ -17,13 +17,14 @@ class Marking implements DateListenerInterface
     const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
     const STATUS_SAVE = 3; // Результаты сохранены локально
     const STATUS_COMPLETE = 4; // Выполнено полностью
-    const STATUS_CREATED = 5; // Созданно
+    const STATUS_CREATED = 5; // Созданно (или отредактированно)
 
     const STATUS_TITLE = [
         self::STATUS_SEND_EXECUTION => 'Отправлено на исполнение',
         self::STATUS_ACCEPT_EXECUTION => 'Принято на исполнение',
         self::STATUS_SAVE => 'Результаты сохранены локально',
         self::STATUS_COMPLETE => 'Выполнено полностью',
+        self::STATUS_CREATED => 'Отредактировано',
     ];
 
     const STATUS_ORDER = [
@@ -67,6 +68,11 @@ class Marking implements DateListenerInterface
      * @ORM\Column(type="integer")
      */
     private $status;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $comment;
 
     public function __construct()
     {
@@ -172,5 +178,17 @@ class Marking implements DateListenerInterface
     public function getStatusTitle()
     {
         return self::STATUS_TITLE[$this->status];
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): self
+    {
+        $this->comment = $comment;
+
+        return $this;
     }
 }

@@ -1,0 +1,11 @@
+{# @var item \App\Classes\TopMenuButton\TopMenuButton #}
+<li>
+    <a id="top-menu-{{ item.key }}" class="sonata-action-element" href="{{ item.route }}">
+        <i class="fa {{ item.icon }}" aria-hidden="true"></i>
+        {{ item.title }}
+    </a>
+</li>
+
+{% if(item.scriptPath) %}
+    <script src="{{ asset(item.scriptPath) }}" type="text/javascript"></script>
+{% endif %}

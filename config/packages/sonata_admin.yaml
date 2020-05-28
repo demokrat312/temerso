@@ -68,6 +68,10 @@ sonata_admin:
         extra_stylesheets:
             - css/general.css
             - css/theme-config.css
+            - css/plugin/bootstrap-dialog.min.css
+
+        extra_javascripts:
+            - js/plugin/bootstrap-dialog.min.js
     dashboard:
         blocks:
             #            - { type: sonata.admin.block.admin_list, position: left }
@@ -149,13 +153,13 @@ sonata_admin:
             task:
                 label: "Задания"
                 items:
-                    - App\Admin\TaskDashboardAdmin
-#                    - label: "Создать задание"
-#                      route: admin_empty
-#                      roles: [ROLE_ADMIN]
-                    - label: "Мои задания"
-                      route: admin_empty
+#                    - App\Admin\TaskDashboardAdmin
+                    - label: "Создать задание"
+                      route: admin_app_taskdashboard_task_create
                       roles: [ROLE_ADMIN]
+                    - label: "Задания"
+                      route: admin_app_taskdashboard_task_list
+                      roles: [ROLE_APP\ADMIN\MARKINGADMIN_STAFF]
                     - label: "Аналитика"
                       route: admin_empty
                       roles: [ROLE_ADMIN]
