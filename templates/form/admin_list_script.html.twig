@@ -19,7 +19,7 @@
                                 Убрать
                             </a>
                         </td>
-                    </tr>`
+                    </tr>`;
 
         const init = () => {
             $modal = $('#field_dialog_{{ id }}');
@@ -98,6 +98,10 @@
 
             $tableList.find('tbody').append(newRow);
             $row.remove();
+
+            if ($tableList) {
+
+            }
         };
 
         const selectAllItem = (event) => {
