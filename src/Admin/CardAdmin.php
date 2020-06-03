@@ -55,8 +55,6 @@ class CardAdmin extends MainAdmin
         return $this->getConfigurationPool()->getContainer();
     }
 
-
-
     /**
      * {@inheritdoc}
      */
@@ -192,6 +190,7 @@ class CardAdmin extends MainAdmin
     {
         parent::configureListFields($listMapper);
         $listMapper
+            ->add('pipe_serial_number', null, array_merge(self::VIEW_LINK, ['label' => 'Серийный № трубы']))
             ->add('generalName', null, array_merge(self::VIEW_LINK, ['label' => 'Название']))
             ->add('statusTitle', null, ['label' => 'Статус']);
 //            ->add('id', null, self::VIEW_LINK);
