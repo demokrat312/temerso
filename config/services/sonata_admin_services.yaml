@@ -23,7 +23,7 @@ services:
 #              - { name: sonata.admin, manager_type: orm, label: groups, label_catalogue: "%sonata.user.admin.label_catalogue%", group: "%sonata.user.admin.groupname%", label_translator_strategy: "sonata.admin.label.strategy.underscore",  show_in_dashboard: true, icon: '<i class="fa fa-users"></i>'}
 #   Каталог
     App\Admin\CardAdmin:
-        arguments: [~, App\Entity\Card, ~]
+        arguments: [~, App\Entity\Card, ~, '@App\Service\FieldDescriptionService']
         tags:
             - { name: sonata.admin, manager_type: orm, label: Поиск оборудования, group: Каталог, show_in_dashboard: true, icon: '<i class="fa fa-newspaper-o"></i>'}
 #   Каталог
