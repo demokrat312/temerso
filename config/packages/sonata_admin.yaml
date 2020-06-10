@@ -2,7 +2,7 @@
 sonata_admin:
 #    title: 'Temerso'
     title: false
-    title_logo: upload/logo.png
+    title_logo: img/logo.png
     templates:
         # пример перезаписи
         #        show: '@SonataAdmin/CRUD/show.html.twig'

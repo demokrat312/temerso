@@ -35,7 +35,7 @@ class ArrivalAdminController extends CRUDController
         }
 
         $excelHelper = new ExcelHelper($this->get('phpspreadsheet'));
-        $excelHelper->setSource('upload/arrival_excel.xlsx');
+        $excelHelper->setSource('templates/excelFile/arrival_excel.xlsx');
 
 //        $excelHelper->getActiveSheet()->insertNewRowBefore(5,10);
 //        $excelHelper->getActiveSheet()->duplicateStyle($excelHelper->getActiveSheet()->getStyle('A4'),'A5:A13');

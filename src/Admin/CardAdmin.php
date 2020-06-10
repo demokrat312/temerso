@@ -6,6 +6,10 @@ namespace App\Admin;
 use App\Classes\MainAdmin;
 use App\Classes\CardFieldsHelper;
 use App\Entity\Card;
+use App\Entity\Reference\RefPipeStrengthGroup;
+use App\Entity\Reference\RefTypeThread;
+use App\Entity\Reference\RefWearClass;
+use App\Form\Type\HistoryCallbackFilter;
 use App\Service\FieldDescriptionService;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -14,6 +18,9 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Created by PhpStorm.
@@ -218,13 +225,39 @@ class CardAdmin extends MainAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('outer_diameter_of_the_pipe', null, ['label' => 'Наружный диаметр трубы, (мм)'])
-            ->add('odlock_nipple', null, ['label' => 'O.D. Замка ниппель  (мм)'])
-            ->add('ref_pipe_strength_group', null, ['label' => 'Группа прочности трубы'])
-            ->add('shoulder_angle', null, ['label' => 'Угол заплечика (градус)'])
-            ->add('pipe_length', null, ['label' => 'Длина трубы (м)'])
-            ->add('ref_type_thread', null, ['label' => 'Тип резьбы'])
-            ->add('ref_wear_class', null, ['label' => 'Класс износа'])
+            ->add('outer_diameter_of_the_pipe', HistoryCallbackFilter::class, ['label' => 'Наружный диаметр трубы, (мм)', 'advanced_filter' => true])
+            ->add('odlock_nipple', HistoryCallbackFilter::class, ['label' => 'O.D. Замка ниппель  (мм)'])
+            ->add('ref_pipe_strength_group', HistoryCallbackFilter::class, [
+                'field_type' => EntityType::class,
+                'field_options' => ['class' => RefPipeStrengthGroup::class],
+                'label' => 'Группа прочности трубы',
+            ])
+            ->add('shoulder_angle', HistoryCallbackFilter::class, ['label' => 'Угол заплечика (градус)'])
+            ->add('pipe_length', HistoryCallbackFilter::class, ['label' => 'Длина трубы (м)'])
+            ->add('ref_type_thread', HistoryCallbackFilter::class, [
+                'field_type' => EntityType::class,
+                'field_options' => ['class' => RefTypeThread::class],
+                'label' => 'Тип резьбы'
+            ])
+            ->add('ref_wear_class', HistoryCallbackFilter::class, [
+                'field_type' => EntityType::class,
+                'field_options' => ['class' => RefWearClass::class],
+                'label' => 'Класс износа'
+            ])
+            ->add('rend', CallbackFilter::class, [
+                'label' => 'По комплектам в аренде',
+                'callback' => function ($queryBuilder, $alias, $field, $value) {
+                    return false;
+                },
+                'field_type' => ChoiceType::class,
+            ])
+            ->add('repair', CallbackFilter::class, [
+                'label' => 'По комплектам в ремонте',
+                'callback' => function ($queryBuilder, $alias, $field, $value) {
+                    return false;
+                },
+                'field_type' => ChoiceType::class,
+            ])
 //            ->add('arrival', \Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter::class, [
 ////                ''
 //            ])
