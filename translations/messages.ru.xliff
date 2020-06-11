@@ -18,6 +18,34 @@
                 <source>Arrival Create</source>
                 <target>Приход создание</target>
             </trans-unit>
+            <trans-unit id="Comment">
+                <source>Comment</source>
+                <target>Комментарий</target>
+            </trans-unit>
+            <trans-unit id="task.type">
+                <source>Task Type</source>
+                <target>Тип задания</target>
+            </trans-unit>
+            <trans-unit id="created.by">
+                <source>Created By</source>
+                <target>Кем созданно</target>
+            </trans-unit>
+            <trans-unit id="executor">
+                <source>Executor</source>
+                <target>Исполнитель</target>
+            </trans-unit>
+            <trans-unit id="id">
+                <source>Id</source>
+                <target>#</target>
+            </trans-unit>
+            <trans-unit id="marking.list">
+                <source>Marking List</source>
+                <target>Маркировка, список</target>
+            </trans-unit>
+            <trans-unit id="marking.create">
+                <source>Marking Create</source>
+                <target>Маркировка, создание</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -57,6 +57,12 @@ class MarkingAdmin extends MainAdmin
         $this->markingTopMenuButtonService = $markingTopMenuButtonService;
     }
 
+    /**
+     * Фильтруем по статусу
+     *
+     * @param ProxyQueryInterface $query
+     * @return ProxyQueryInterface
+     */
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query = parent::configureQuery($query);
@@ -109,15 +115,21 @@ class MarkingAdmin extends MainAdmin
 
     protected function configureListFields(ListMapper $list)
     {
-        $list->addIdentifier('id');
+        $list
+            ->addIdentifier('id')
+            ->add('taskType', null, self::VIEW_LINK)
+            ->add('createdBy', null, self::VIEW_LINK)
+            ->add('executor')
+        ;
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
             ->with('general', ['label' => 'Главная', 'class' => 'col-md-12'])
-            ->add('users')
-            ->add('cards')
+                ->add('comment')
+                ->add('users')
+                ->add('cards')
             ->end();
     }
 
@@ -125,22 +137,19 @@ class MarkingAdmin extends MainAdmin
     {
         $editForm
             ->with('general', ['label' => 'Главная', 'class' => 'col-md-12'])
-            ->add('cards', AdminListType::class, [
-                'class' => Card::class,
-                'field_show_name' => 'generalName',
-                'multiple' => true,
-                'label' => 'Карточки',
-            ])
-//            ->add('users', \Sonata\AdminBundle\Form\Type\ModelAutocompleteType::class, [
-//                'property' => 'all',
-//                'multiple' => true,
-//                'label' => 'Исполнители',
-//            ])
-            ->add('users', \Sonata\AdminBundle\Form\Type\ModelType::class, [
-                'property' => 'fio',
-                'multiple' => true,
-                'label' => 'Исполнители',
-            ])
+                ->add('comment')
+                ->add('cards', AdminListType::class, [
+                    'class' => Card::class,
+                    'field_show_name' => 'generalName',
+                    'multiple' => true,
+                    'label' => 'Карточки',
+                ])
+                ->add('users', \Sonata\AdminBundle\Form\Type\ModelType::class, [
+                    'property' => 'fio',
+                    'multiple' => true,
+                    'label' => 'Исполнители',
+                    'btn_add' => false
+                ])
             ->end();
 
 

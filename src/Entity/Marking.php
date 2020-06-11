@@ -2,17 +2,21 @@
 
 namespace App\Entity;
 
-use App\Classes\DateListenerInterface;
+use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
+use App\Classes\Listener\Date\DateListenerInterface;
+use App\Classes\Marking\MarkingTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MarkingRepository")
- * @ORM\EntityListeners({"App\EventListener\DateListener"})
  */
-class Marking implements DateListenerInterface
+class Marking implements DateListenerInterface, CreatedByListenerInterface
 {
+    use MarkingTrait;
+
     const STATUS_SEND_EXECUTION = 1; // Отправлено на исполнение
     const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
     const STATUS_SAVE = 3; // Результаты сохранены локально
@@ -35,8 +39,6 @@ class Marking implements DateListenerInterface
         self::STATUS_COMPLETE, // 4 -  Выполнено полностью
     ];
 
-    const SINGLE_USER = false;
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -50,6 +52,7 @@ class Marking implements DateListenerInterface
     private $cards;
 
     /**
+     * @Assert\Count(min = 1, minMessage = "Выберите исполнителя")
      * @ORM\ManyToMany(targetEntity="App\Entity\User")
      */
     private $users;
@@ -74,12 +77,23 @@ class Marking implements DateListenerInterface
      */
     private $comment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $createdBy;
+
     public function __construct()
     {
         $this->status = self::STATUS_CREATED;
 
         $this->cards = new ArrayCollection();
         $this->users = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string)$this->users->first()->getFio();
     }
 
     public function getId(): ?int
@@ -175,11 +189,6 @@ class Marking implements DateListenerInterface
         return $this;
     }
 
-    public function getStatusTitle()
-    {
-        return self::STATUS_TITLE[$this->status];
-    }
-
     public function getComment(): ?string
     {
         return $this->comment;
@@ -188,6 +197,18 @@ class Marking implements DateListenerInterface
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

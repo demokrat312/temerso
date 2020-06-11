@@ -6,7 +6,7 @@
  * Time: 22:06
  */
 
-namespace App\Classes;
+namespace App\Classes\Listener\Date;
 
 
 interface DateListenerInterface

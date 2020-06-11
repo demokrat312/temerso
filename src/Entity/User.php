@@ -74,6 +74,12 @@ class User extends BaseUser
         $this->roles = array('ROLE_USER');
     }
 
+    public function __toString()
+    {
+        return $this->getFio();
+    }
+
+
     public function getFio() {
         return sprintf('%s %s', $this->lastname, $this->firstname);
     }

@@ -5,6 +5,7 @@
         let $modal = null;
         let $tableList = null;
         let listUrl = null;
+        const emptyRowTemplate = '<tr id="row-empty"><td colspan="3">Нету выбранных записей</td></tr>';
         let rowTemplate = `<tr>
                         <input type="hidden" name="{{ form.vars.full_name }}" value="{id}">
                         <td class="sonata-ba-list-field sonata-ba-list-field-batch">
@@ -24,6 +25,7 @@
         const init = () => {
             $modal = $('#field_dialog_{{ id }}');
             $tableList = $('#table_list_{{ id }}');
+            tableEmptyRowToggle();
             console.log('admin_list_script init');
             initEvent();
         };
@@ -37,7 +39,6 @@
         const showModal = (event) => {
             event.preventDefault();
             listUrl = $(event.target).attr('href');
-            console.log('showModal', listUrl);
             loadModalBody(listUrl);
         };
 
@@ -59,7 +60,6 @@
         const modalActions = (event) => {
             event.preventDefault();
             const $target = $(event.target);
-            console.log('action', $target);
             let url = null;
             // Кнопка фильтрации
             if ($target.find('.fa-filter').length) {
@@ -79,7 +79,6 @@
 
         const selectItem = (event) => {
             event.preventDefault();
-            console.log('selectItem');
 
             const $row = $(event.target).closest('tr');
 
@@ -88,30 +87,30 @@
 
         const addItem = ($row) => {
             const id = $row.find('.sonata-ba-list-field-batch').attr('objectid');
-            const title = $row.find('td:eq(1)').text().trim();
+            const title = $row.find('td:eq(' + $('.js-field-general-name').index() + ')').text().trim();
 
             const newRow = $(rowTemplate
                 .replace('{id}', id)
-                .replace('{orderNumber}', $tableList.find('tr').length)
+                .replace('{orderNumber}', $tableList.find('tbody tr:not(#row-empty)').length + 1)
                 .replace('{title}', title)
             );
 
             $tableList.find('tbody').append(newRow);
             $row.remove();
 
-            if ($tableList) {
-
-            }
+            tableEmptyRowToggle();
+            closeModalOnEmpty();
         };
 
         const selectAllItem = (event) => {
             event.preventDefault();
-            console.log('selectAllItem');
 
             getTableListLoaded().find('tbody tr').each((index, tr) => {
-                addItem($(tr));
+                const $row = $(tr);
+                if ($row.find('input:checkbox:checked').length) {
+                    addItem($(tr));
+                }
             });
-
         };
 
         const batchScript = () => {
@@ -142,7 +141,6 @@
         };
 
         const removeDuplicate = () => {
-            console.log('this');
             const recordList = [];
             $tableList.find('input').each((index, input) => {
                 recordList.push(input.value);
@@ -160,8 +158,29 @@
             event.preventDefault();
 
             $(event.target).closest('tr').remove();
+            tableEmptyRowToggle();
         };
 
+        /**
+         * Добавление и удаление "Нету выбранных записей"
+         */
+        const tableEmptyRowToggle = () => {
+            const rowCount = $tableList.find('tbody').find('tr').length;
+            if(rowCount > 1) {
+                $tableList.find('#row-empty').remove();
+            }else if(rowCount === 0) {
+                $tableList.find('tbody').append(emptyRowTemplate);
+            }
+        };
+
+        /**
+         * Если мадальное пустое, то закрываем его
+         */
+        const closeModalOnEmpty = () => {
+            if($modal.find('.modal-body table tbody').find('tr').length === 0) {
+                $modal.modal('hide');
+            }
+        };
 
         const getTableListLoaded = () => {
             return $modal.find('.sonata-ba-list');
