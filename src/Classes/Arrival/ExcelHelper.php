@@ -67,7 +67,7 @@ class ExcelHelper
     public function print()
     {
         $writer = $this->spreadSheetService->createWriter($this->spreadSheet, 'Xlsx');
-        $fileName = 'test';
+        $fileName = 'excel_' . (new \DateTime())->format('Y-m-d_h:i:s');
         $extension = 'Xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header("Content-Disposition: attachment; filename=\"{$fileName}.{$extension}\"");
