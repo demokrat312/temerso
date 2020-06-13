@@ -9,9 +9,10 @@
 namespace App\Classes\Arrival;
 
 
+use App\Classes\Excel\CellsInterface;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class CardСells implements СellsInterface
+class CardCells implements CellsInterface
 {
     private $currentRow;
 

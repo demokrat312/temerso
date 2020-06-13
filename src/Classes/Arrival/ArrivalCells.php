@@ -9,11 +9,12 @@
 namespace App\Classes\Arrival;
 
 
+use App\Classes\Excel\CellsInterface;
 use App\Entity\Card;
 use Doctrine\Common\Collections\Collection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ArrivalСells implements СellsInterface
+class ArrivalCells implements CellsInterface
 {
     /**
      * @var Worksheet
@@ -78,7 +79,7 @@ class ArrivalСells implements СellsInterface
      */
     public function setCars(Collection $cards)
     {
-        $cardCell = new CardСells();
+        $cardCell = new CardCells();
         $cardCell->setActiveSheet($this->sheet);
         $cardCell->setCurrentRow(4);
 

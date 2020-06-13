@@ -65,8 +65,8 @@ class MarkingTopMenuButtonService
         $this->createButtonList();
 
         foreach ($this->accessList as $accessItem) {
-            $hasRole = in_array($role, $accessItem->getRoleList());
-            $hasStatus = $status === null || in_array($status, $accessItem->getStatusList());
+            $hasRole = empty($accessItem->getRoleList()) || in_array($role, $accessItem->getRoleList());
+            $hasStatus = empty($accessItem->getStatusList()) || $status === null || in_array($status, $accessItem->getStatusList());
             $hasMode = in_array($mode, $accessItem->getModeList());
             if ($hasRole && $hasStatus && $hasMode) {
                 $this->actionButtonService->addButtonList($accessItem->getButtonList());
@@ -175,6 +175,21 @@ class MarkingTopMenuButtonService
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
                             ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SEND_EXECUTION])
+                    ,
+                ])
+            ,
+            (new TopMenuAccess())
+                ->setModeList([TopMenuButtonService::MODE_SHOW])
+                ->setButtonList([
+                    (new TopMenuButton())
+                        ->setKey(MarkingTopMenuButtonService::BTN_SEND_REVIEW)
+                        ->setTitle('Excel')
+                        ->setIcon('fa-file-excel-o')
+                        ->setRoute($this->adminRoute->getActionRouteName(
+                            Marking::class,
+                            MarkingAdminController::ROUTER_EXCEL,
+                        ))
+                        ->setRouteParams(['id' => $this->getObjectId()])
                     ,
                 ])
             ,

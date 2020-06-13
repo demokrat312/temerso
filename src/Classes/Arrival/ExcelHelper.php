@@ -13,6 +13,7 @@ use Onurb\Bundle\ExcelBundle\Factory\ExcelFactory;
 
 class ExcelHelper
 {
+    private const ROOT_PATH = '../'; // По умолчанию папка public (/var/www/temerso/public)
     /**
      * @var ExcelFactory
      */
@@ -44,7 +45,7 @@ class ExcelHelper
     public function setSource(string $pathToFile)
     {
         // Загружаем файл
-        $this->spreadSheet = $this->spreadSheetService->createSpreadsheet($pathToFile);
+        $this->spreadSheet = $this->spreadSheetService->createSpreadsheet(self::ROOT_PATH . $pathToFile);
         // Берем активную вкладку/страницу, т.е. первую
         $this->activeSheet = $this->spreadSheet->getActiveSheet();
 

@@ -92,6 +92,7 @@ class MarkingAdmin extends MainAdmin
         $collection
             ->add(MarkingAdminController::ROUTER_CHANGE_STATUS, $this->getRouterIdParameter() . '/change-status')
             ->add(MarkingAdminController::ROUTER_REMOVE_EXECUTOR, $this->getRouterIdParameter() . '/remove-executor')
+            ->add('excel', $this->getRouterIdParameter().'/excel')
         ;
     }
 

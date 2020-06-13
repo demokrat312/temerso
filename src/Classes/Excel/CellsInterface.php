@@ -6,12 +6,12 @@
  * Time: 12:55
  */
 
-namespace App\Classes\Arrival;
+namespace App\Classes\Excel;
 
 
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-interface СellsInterface
+interface CellsInterface
 {
     public function setActiveSheet(Worksheet $sheet);
 }

@@ -9,17 +9,21 @@
 namespace App\Controller\Admin;
 
 
+use App\Classes\Arrival\ExcelHelper;
+use App\Classes\Arrival\MarkingCells;
 use App\Service\Access\MarkingAccessService;
 use App\Entity\Marking;
 use App\Service\AdminRouteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class MarkingAdminController extends DefaultAdminController
 {
     const ROUTER_CHANGE_STATUS = 'change_status';
     const ROUTER_REMOVE_EXECUTOR = 'remove_executor';
+    const ROUTER_EXCEL = 'excel';
 
     /**
      * @var MarkingAccessService
@@ -46,7 +50,7 @@ class MarkingAdminController extends DefaultAdminController
         $marking
             ->setStatus((int)$request->get('status'));
 
-        if($comment = $request->get('comment')) {
+        if ($comment = $request->get('comment')) {
             $marking->setComment($comment);
         }
 
@@ -58,11 +62,11 @@ class MarkingAdminController extends DefaultAdminController
     }
 
     /**
-     * @see MarkingAdminController::ROUTER_REMOVE_EXECUTOR
-     *
      * @param Marking $marking
      * @param EntityManagerInterface $em
      * @return RedirectResponse
+     * @see MarkingAdminController::ROUTER_REMOVE_EXECUTOR
+     *
      */
     public function removeExecutorAction(Marking $marking, EntityManagerInterface $em)
     {
@@ -110,6 +114,39 @@ class MarkingAdminController extends DefaultAdminController
         $route = $this->adminRoute->getActionRoute(Marking::class, 'show', ['id' => $object->getId()]);
         return new RedirectResponse($route);
 
+    }
+
+    /**
+     * @link https://packagist.org/packages/onurb/excel-bundle
+     */
+    public function excelAction(int $id)
+    {
+        /** @var Marking $marking */
+        $marking = $this->admin->getSubject();
+
+        if (!$marking) {
+            throw new NotFoundHttpException(sprintf('unable to find the object with id: %s', $id));
+        }
+
+        $excelHelper = new ExcelHelper($this->get('phpspreadsheet'));
+        $excelHelper->setSource('templates/excelFile/marking_excel.xlsx');
+
+
+        // Задаем общию информацию
+        $markingСells = new MarkingCells();
+        $markingСells
+            ->setActiveSheet($excelHelper->getActiveSheet())
+            ->setGeneral($marking)
+        ;
+
+        if ($marking->getCards()->count() > 0) {
+            $startRow = 6;
+            $markingСells
+                ->duplicateRow($startRow, $marking->getCards()->count())
+                ->setCars($startRow, $marking->getCards());
+        }
+
+        $excelHelper->print();
     }
 
 

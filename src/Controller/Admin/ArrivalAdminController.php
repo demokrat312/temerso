@@ -11,7 +11,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Classes\Arrival\ArrivalСells;
+use App\Classes\Arrival\ArrivalCells;
 use App\Classes\Arrival\ExcelHelper;
 use App\Entity\Arrival;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -42,7 +42,7 @@ class ArrivalAdminController extends CRUDController
 
 
         // Задаем общию информацию
-        $arrivalСells = new ArrivalСells();
+        $arrivalСells = new ArrivalCells();
         $arrivalСells
             ->setActiveSheet($excelHelper->getActiveSheet())
             ->setDateArrival($arrival->getDateArrival())
