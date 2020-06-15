@@ -22,6 +22,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface
     const STATUS_SAVE = 3; // Результаты сохранены локально
     const STATUS_COMPLETE = 4; // Выполнено полностью
     const STATUS_CREATED = 5; // Созданно (или отредактированно)
+    const STATUS_REVISION = 6; // Отправленно на доработку (такие же функции как у "Принято на исполнение")
 
     const STATUS_TITLE = [
         self::STATUS_SEND_EXECUTION => 'Отправлено на исполнение',
@@ -29,6 +30,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface
         self::STATUS_SAVE => 'Результаты сохранены локально',
         self::STATUS_COMPLETE => 'Выполнено полностью',
         self::STATUS_CREATED => 'Отредактировано',
+        self::STATUS_REVISION => 'Отправленно на доработку',
     ];
 
     const STATUS_ORDER = [
@@ -36,6 +38,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface
         self::STATUS_SEND_EXECUTION, // 1 -  Отправлено на исполнение
         self::STATUS_ACCEPT_EXECUTION, // 2 -  Принято на исполнение
         self::STATUS_SAVE, // 3 -  Результаты сохранены локально
+        self::STATUS_REVISION, // 6 -  Отправленно на доработку
         self::STATUS_COMPLETE, // 4 -  Выполнено полностью
     ];
 

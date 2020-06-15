@@ -2,6 +2,7 @@
 // src/EventListener/ExceptionListener.php
 namespace App\EventListener;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -10,6 +11,7 @@ class ExceptionListener
 {
     public function onKernelException(ExceptionEvent $event)
     {
+        $this->apiException($event);
         return;
         // You get the exception object from the received event
         $exception = $event->getThrowable();
@@ -34,5 +36,32 @@ class ExceptionListener
 
         // sends the modified response object to the event
         $event->setResponse($response);
+    }
+
+    private function apiException(ExceptionEvent $event)
+    {
+        $exception = $event->getThrowable();
+        $request   = $event->getRequest();
+
+        if (in_array('application/json', $request->getAcceptableContentTypes())) {
+            $response = $this->createApiResponse($exception);
+            $event->setResponse($response);
+        }
+    }
+
+    /**
+     * Creates the ApiResponse from any Exception
+     *
+     * @param \Exception $exception
+     *
+     * @return JsonResponse
+     */
+    private function createApiResponse(\Throwable $exception)
+    {
+        $statusCode = $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
+
+        return new JsonResponse([
+            'message' => $exception->getMessage()
+        ], $statusCode);
     }
 }

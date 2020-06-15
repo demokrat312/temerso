@@ -28,4 +28,6 @@ return [
     App\Application\Sonata\MediaBundle\ApplicationSonataMediaBundle::class => ['all' => true],
     Onurb\Bundle\ExcelBundle\OnurbExcelBundle::class => ['all' => true],
     SimpleThings\EntityAudit\SimpleThingsEntityAuditBundle::class => ['all' => true],
+    Nelmio\ApiDocBundle\NelmioApiDocBundle::class => ['all' => true],
+    Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
 ];
