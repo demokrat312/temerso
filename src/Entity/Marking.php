@@ -5,15 +5,18 @@ namespace App\Entity;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\MarkingTrait;
+use App\Classes\Task\TaskItemInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Маркировка
+ *
  * @ORM\Entity(repositoryClass="App\Repository\MarkingRepository")
  */
-class Marking implements DateListenerInterface, CreatedByListenerInterface
+class Marking implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
 {
     use MarkingTrait;
 
@@ -99,7 +102,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface
         return (string)$this->users->first()->getFio();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

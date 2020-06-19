@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Classes\Marking\MarkingAccess;
 use App\Entity\Marking;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,40 @@ class MarkingRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Marking::class);
+    }
+
+    /**
+     *
+     */
+    public function findTask(int $userId)
+    {
+        $qb = $this->createQueryBuilder('m');
+        $expr = $qb->expr();
+
+        $qb->setParameter('userId', $userId);
+
+        // По доступам для постановщика(адимина)
+        $creatorExpr = $expr->andX(
+            $expr->eq('m.createdBy', ':userId'),
+            $expr->in('m.status', ':createdByStatusIds')
+        );
+        $qb
+            ->setParameter('createdByStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_CREATOR))
+        ;
+        // По доступам для исполнителя(кладовщик)
+        $qb->leftJoin('m.users', 'users');
+        $executorExpr = $expr->andX(
+            $expr->eq('users.id', ':userId'),
+            $expr->in('m.status', ':executorStatusIds')
+        );
+        $qb
+            ->setParameter('executorStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_EXECUTOR))
+        ;
+
+        return $qb
+            ->where($expr->orX($creatorExpr, $executorExpr))
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

@@ -9,27 +9,35 @@
 namespace App\Classes\Marking;
 
 
+use App\Classes\Task\TaskItem;
+use App\Entity\Marking;
 use App\Entity\User;
 
+/**
+ * Trait MarkingTrait
+ * @package App\Classes\Marking
+ * @mixin Marking
+ */
 trait MarkingTrait
 {
     /**
      * Тип задачи (поле для списка)
+     * @see \App\Admin\MarkingAdmin::configureListFields
      * @return string
      */
-    public function taskType()
+    public function getTaskType()
     {
-        return 'Маркировка';
+        return TaskItem::TYPE_TITLE[TaskItem::TYPE_MARKING];
     }
 
     /**
      * Исполнитель
+     * @see \App\Admin\MarkingAdmin::configureListFields
      */
-    public function executor()
+    public function getExecutor(): ?User
     {
         /** @var User $user */
-        $user = $this->users->first();
-        return $user ? $user->getFio() : '';
+        return $this->users->first() ?: null;
     }
 
     /**
