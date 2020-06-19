@@ -78,7 +78,7 @@ class TaskController extends AbstractController
                 'executorFio' => $task->getExecutorFio(),
             ];
 
-            if ($request->get('withCards')) {
+            if ($request->get('withCards') == 'true') {
                 $taskArray['cardList'] = $task->getCards();
             }
 
