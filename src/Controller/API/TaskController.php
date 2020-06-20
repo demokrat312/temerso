@@ -39,7 +39,7 @@ class TaskController extends ApiParentController
      *    name="withCards",
      *    in="query",
      *    type="boolean",
-     *    description="Добавить карточки к задаче"
+     *    description="Получить задачи с карточками"
      *),
      *
      * \@SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
