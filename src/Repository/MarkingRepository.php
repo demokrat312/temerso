@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Classes\Marking\MarkingAccess;
 use App\Entity\Marking;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,11 +22,44 @@ class MarkingRepository extends ServiceEntityRepository
     }
 
     /**
-     *
+     * Получаем список задач по пользоветлю
      */
-    public function findTask(int $userId)
+    public function findAllTask(int $userId)
     {
         $qb = $this->createQueryBuilder('m');
+
+        $this->byAccess($userId, $qb);
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Получаем список задач по пользователю
+     */
+    public function findTask(int $taskId, int $userId)
+    {
+        $qb = $this->createQueryBuilder('m');
+
+        // Добавляем выборку карточек сразу при основном запросе
+        $qb->addSelect('cards');
+        $qb->join('m.cards', 'cards');
+
+        $qb
+            ->where('m.id = :taskId')
+            ->setParameter('taskId', $taskId);
+
+        $this->byAccess($userId, $qb);
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    private function byAccess(int $userId, QueryBuilder $qb)
+    {
+        ;
         $expr = $qb->expr();
 
         $qb->setParameter('userId', $userId);
@@ -36,8 +70,7 @@ class MarkingRepository extends ServiceEntityRepository
             $expr->in('m.status', ':createdByStatusIds')
         );
         $qb
-            ->setParameter('createdByStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_CREATOR))
-        ;
+            ->setParameter('createdByStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_CREATOR));
         // По доступам для исполнителя(кладовщик)
         $qb->leftJoin('m.users', 'users');
         $executorExpr = $expr->andX(
@@ -45,13 +78,11 @@ class MarkingRepository extends ServiceEntityRepository
             $expr->in('m.status', ':executorStatusIds')
         );
         $qb
-            ->setParameter('executorStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_EXECUTOR))
-        ;
+            ->setParameter('executorStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_EXECUTOR));
 
-        return $qb
-            ->where($expr->orX($creatorExpr, $executorExpr))
-            ->getQuery()
-            ->getResult();
+        $qb->andWhere($expr->orX($creatorExpr, $executorExpr));
+
+        return $qb;
     }
 
     // /**

@@ -23,6 +23,10 @@ class TaskItem
         self::TYPE_MARKING => 'Маркировка',
     ];
 
+    const TYPE_CLASS = [
+        self::TYPE_MARKING => Marking::class
+    ];
+
     /**
      * @var int
      */
