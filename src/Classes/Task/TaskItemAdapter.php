@@ -9,6 +9,7 @@
 namespace App\Classes\Task;
 
 
+use App\Entity\Inventory;
 use App\Entity\Marking;
 
 class TaskItemAdapter
@@ -33,8 +34,10 @@ class TaskItemAdapter
         switch ($entityClassName) {
             case Marking::class:
                 return TaskItem::TYPE_MARKING;
+            case Inventory::class:
+                return TaskItem::TYPE_INVENTORY;
             default:
-                return 0;
+                throw new \Exception('add case to switch \App\Classes\Task\TaskItemAdapter::getTypeByEntity');
         }
     }
 }
