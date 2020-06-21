@@ -37,7 +37,7 @@ class CardController extends ApiParentController
     /**
      * Получение списка карточек по id задачи и типу задания
      *
-     * @Route("card-list", methods={"GET"}, name="api_card_list_by_task")
+     * @Route("list-by-task", methods={"GET"}, name="api_card_list_by_task")
      *
      * @SWG\Parameter(
      *    name="id",
