@@ -14,9 +14,13 @@ use Doctrine\Common\Collections\Collection;
 
 interface TaskItemInterface
 {
-    public function getId(): int;
+    public function getId(): ?int;
     public function getStatus(): ?int;
     public function getCreatedBy(): User;
     public function getExecutor(): ?User;
     public function getCards(): Collection;
+
+    public function setComment(?string $comment);
+    public function getUsers(): Collection;
+    public function removeUser(User $user);
 }

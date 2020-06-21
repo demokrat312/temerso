@@ -16,7 +16,7 @@ use App\Entity\User;
 /**
  * Trait MarkingTrait
  * @package App\Classes\Marking
- * @mixin Marking
+ *
  */
 trait MarkingTrait
 {
@@ -46,6 +46,11 @@ trait MarkingTrait
      */
     public function getStatusTitle()
     {
-        return self::STATUS_TITLE[$this->status];
+        return Marking::STATUS_TITLE[$this->status];
+    }
+
+    public function __toString()
+    {
+        return (string)$this->createdBy->getFio();
     }
 }

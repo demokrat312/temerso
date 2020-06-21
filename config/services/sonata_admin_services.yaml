@@ -54,3 +54,13 @@ services:
         arguments: [~, App\Entity\TaskDashboard, App\Controller\Admin\TaskDashboardController]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Создать задание, group: Задания, show_in_dashboard: true}
+    App\Admin\InventoryAdmin:
+        arguments:
+            - ~
+            - App\Entity\Inventory
+            - App\Controller\Admin\InventoryAdminController
+            - "@Symfony\\Component\\Security\\Core\\Security"
+            - '@App\Service\Access\RoleService'
+            - '@App\Service\Marking\MarkingTopMenuButtonService'
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Инвентаризация, group: Задания, show_in_dashboard: true}

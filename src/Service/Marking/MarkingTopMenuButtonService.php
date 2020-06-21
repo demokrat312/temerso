@@ -9,9 +9,11 @@
 namespace App\Service\Marking;
 
 
+use App\Classes\Task\TaskItemInterface;
 use App\Classes\TopMenuButton\TopMenuAccess;
 use App\Classes\TopMenuButton\TopMenuButton;
 use App\Controller\Admin\MarkingAdminController;
+use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Entity\User;
 use App\Service\AdminRouteService;
@@ -50,9 +52,13 @@ class MarkingTopMenuButtonService
      */
     private $adminRoute;
     /**
-     * @var Marking|null
+     * @var null|TaskItemInterface|Marking|Inventory
      */
     private $object;
+    /**
+     * @var string
+     */
+    private $entityClass;
 
     public function __construct(TopMenuButtonService $actionButtonService, AdminRouteService $adminRoute)
     {
@@ -109,9 +115,9 @@ class MarkingTopMenuButtonService
                         ->setTitle('Снять исполнителя')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
-                            Marking::class,
+                            $this->entityClass,
                             MarkingAdminController::ROUTER_REMOVE_EXECUTOR,
-                            ))
+                        ))
                         ->setRouteParams(['id' => $this->getObjectId()])
                     ,
                 ])
@@ -126,9 +132,9 @@ class MarkingTopMenuButtonService
                         ->setTitle('Принять на исполнение')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
-                            Marking::class,
+                            $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                            ))
+                        ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_ACCEPT_EXECUTION])
                     ,
                 ])
@@ -143,9 +149,9 @@ class MarkingTopMenuButtonService
                         ->setTitle('Отправить задание на проверку')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
-                            Marking::class,
+                            $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                            ))
+                        ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SAVE])
                     ,
                 ])
@@ -160,9 +166,9 @@ class MarkingTopMenuButtonService
                         ->setTitle('Принять от Исполнителя')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
-                            Marking::class,
+                            $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                            ))
+                        ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_COMPLETE])
                     ,
                     (new TopMenuButton())
@@ -171,9 +177,9 @@ class MarkingTopMenuButtonService
                         ->setTitle('Отклонить/отправить на доработку')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
-                            Marking::class,
+                            $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                            ))
+                        ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SEND_EXECUTION])
                     ,
                 ])
@@ -186,7 +192,7 @@ class MarkingTopMenuButtonService
                         ->setTitle('Excel')
                         ->setIcon('fa-file-excel-o')
                         ->setRoute($this->adminRoute->getActionRouteName(
-                            Marking::class,
+                            $this->entityClass,
                             MarkingAdminController::ROUTER_EXCEL,
                         ))
                         ->setRouteParams(['id' => $this->getObjectId()])
@@ -196,9 +202,16 @@ class MarkingTopMenuButtonService
         ];
     }
 
-    public function setObject(?Marking $object)
+    public function setObject(?TaskItemInterface $object)
     {
         $this->object = $object;
+        return $this;
+    }
+
+    public function setEntityClass(string $class)
+    {
+        $this->entityClass = $class;
+        
         return $this;
     }
 

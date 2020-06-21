@@ -13,7 +13,7 @@ use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class DefaultAdminController extends CRUDController
+abstract class DefaultAdminController extends CRUDController
 {
     protected function redirectTo($object)
     {

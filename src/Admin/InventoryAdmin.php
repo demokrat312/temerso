@@ -5,9 +5,9 @@ namespace App\Admin;
 use App\Classes\Task\TaskAdminParent;
 
 /**
- * Маркировка
+ * Инвентаризация
  */
-class MarkingAdmin extends TaskAdminParent
+class InventoryAdmin extends TaskAdminParent
 {
 
 }

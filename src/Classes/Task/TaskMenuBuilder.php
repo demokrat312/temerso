@@ -9,6 +9,7 @@
 namespace App\Classes\Task;
 
 
+use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Service\AdminRouteService;
 
@@ -38,7 +39,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Инверторизация')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(Inventory::class, 'create'))
                 ->setRouteTitle('link_action_create')
             ,
             (new TaskMenuItem())
@@ -83,7 +84,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Инверторизация')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(Inventory::class, 'list'))
                 ->setRouteTitle('link_list')
             ,
             (new TaskMenuItem())

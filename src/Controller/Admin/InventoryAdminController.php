@@ -10,13 +10,13 @@ namespace App\Controller\Admin;
 
 
 use App\Classes\Task\TaskAdminController;
-use App\Entity\Marking;
+use App\Entity\Inventory;
 
-class MarkingAdminController extends TaskAdminController
+class InventoryAdminController extends TaskAdminController
 {
     function getEntityClass(): string
     {
-        return Marking::class;
+        return Inventory::class;
     }
 
 }
