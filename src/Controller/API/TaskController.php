@@ -10,6 +10,7 @@ namespace App\Controller\API;
 
 
 use App\Classes\ApiParentController;
+use App\Classes\Marking\MarkingAccessHelper;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemAdapter;
@@ -76,69 +77,75 @@ class TaskController extends ApiParentController
     }
 
     /**
-     * Получение списка карточек по id задачи и типу задания
+     * Меняем статус у задачи по id задачи и типу задачи
      *
-     * @Route("card-list", methods={"GET"}, name="api_task_card_list")
+     * @Route("change-status", methods={"POST"}, name="api_task_change_status")
      *
      * @SWG\Parameter(
-     *    name="id",
-     *    in="query",
-     *    type="number",
-     *    description="Ключ задачи"
-     * ),
-     * @SWG\Parameter(
-     *    name="taskTypeId",
-     *    in="query",
-     *    type="number",
-     *    description="Тип задачи"
+     *    name="form",
+     *    in="body",
+     *    description="",
+     *    @Model(type=\App\Form\Type\Api\Task\TaskChangeStatusType::class)
      * ),
      *
-     * \@SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
+     * @SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
      *
      * @SWG\Response(
      *     response="200",
-     *     description="Список заданий для текущего пользователя",
+     *     description="Если статус сменилься возвращаем фразу 'OK!'",
      *     @SWG\Schema(
-     *           @SWG\Property(property="result", type="array",
-     *              @SWG\Items(ref=@Model(type=\App\Form\Type\Api\Card\CardItemType::class))
-     *           )
+     *           @SWG\Property(property="result", type="string")
      *     ),
      * )
      *
      * @Security(name="Bearer")
-     *
-     * @param Request $request
      */
-    public function taskCardsAction(Request $request, EntityManagerInterface $em, TokenStorageInterface $storage)
+    public function changeStatusAction(Request $request, EntityManagerInterface $em, TokenStorageInterface $storage)
     {
-        //<editor-fold desc="Входные параметры и проверка">
+        TaskHelper::ins()
+            ->setEm($em)
+            ->setUser($storage->getToken()->getUser());
+
+        //<editor-fold desc="Параметры">
         $taskId = (int)$request->get('id');
         $taskTypeId = (int)$request->get('taskTypeId');
+        $statusId = (int)$request->get('statusId');
 
-        if (!$taskId || !$taskTypeId) {
-            $this->errorResponse("Отсутсвуют необходимые параметры");
+        if (!($taskId && $taskTypeId && $statusId)) {
+            return $this->errorParamResponse();
         }
         //</editor-fold>
-        //<editor-fold desc="Получаем класс задачи">
+
         $taskClass = TaskItem::TYPE_CLASS[$taskTypeId] ?? false;
-        if (!$taskClass) {
-            return $this->errorResponse('Не известный тип задачи');
+        //<editor-fold desc="Получаем задачу">
+        $taskItem = TaskHelper::ins()->findTask($taskId, $taskClass);
+        if (!$taskItem) {
+            return $this->errorResponse(
+                'У вас нету доступа к этой задаче или задача не существует',
+                self::STATUS_CODE_403);
         }
         //</editor-fold>
 
-        /** @var User $user */
-        $user = $storage->getToken()->getUser();
 
-        //<editor-fold desc="Получаем задачу">
-        $entityItem = $em->getRepository($taskClass)->findTask($taskId, $user->getId());
-        $markingToTaskAdapter = new TaskItemAdapter();
-        $taskItem = $markingToTaskAdapter->getTask($entityItem);
+        //<editor-fold desc="Проверяем права на смену статуса">
+        $allowStatus = MarkingAccessHelper::getAllowStatusChange(
+            $storage->getToken()->getUser()->getRoles(),
+            $taskItem->getStatusId());
 
+        if (!in_array($statusId, $allowStatus)) {
+            return $this->errorResponse(
+                'Нельзя менять на указанный статус, разрешенные статусы: '
+                . $allowStatus ? implode(',', $allowStatus) : 'нету',
+                self::STATUS_CODE_403);
+        }
         //</editor-fold>
 
-        $responseArray = TaskHelper::ins()
-            ->taskToArray($taskItem, true);
-
-        return $this->defaultResponse($responseArray['cardList']);
+        //<editor-fold desc="Обновляем">
+        if (TaskHelper::ins()->updateStatus($taskId, $taskClass, $statusId)) {
+            return $this->defaultResponse(self::OK);
+        } else {
+            return $this->errorResponse('Не удалось изменить статус');
+        }
+        //</editor-fold>
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Classes\Marking\MarkingAccess;
+use App\Classes\Marking\MarkingAccessHelper;
 use App\Entity\Marking;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -70,7 +70,7 @@ class MarkingRepository extends ServiceEntityRepository
             $expr->in('m.status', ':createdByStatusIds')
         );
         $qb
-            ->setParameter('createdByStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_CREATOR));
+            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
         // По доступам для исполнителя(кладовщик)
         $qb->leftJoin('m.users', 'users');
         $executorExpr = $expr->andX(
@@ -78,7 +78,7 @@ class MarkingRepository extends ServiceEntityRepository
             $expr->in('m.status', ':executorStatusIds')
         );
         $qb
-            ->setParameter('executorStatusIds', MarkingAccess::getShowStatusAccess(MarkingAccess::USER_TYPE_EXECUTOR));
+            ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
 
         $qb->andWhere($expr->orX($creatorExpr, $executorExpr));
 

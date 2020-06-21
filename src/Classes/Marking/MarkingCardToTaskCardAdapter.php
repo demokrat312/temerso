@@ -25,7 +25,7 @@ class MarkingCardToTaskCardAdapter
             ->setPipeSerialNumber($card->getPipeSerialNumber())
             ->setSerialNoOfNipple($card->getSerialNoOfNipple())
             ->setCouplingSerialNumber($card->getCouplingSerialNumber())
-            ->setRfidTagSerialNo($card->getRfidTagSerialNo())
+            ->setRfidTagNo($card->getRfidTagNo())
             ->setComment('')
             ;
 

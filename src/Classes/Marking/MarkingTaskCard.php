@@ -18,7 +18,7 @@ class MarkingTaskCard
     private $pipeSerialNumber;
     private $serialNoOfNipple;
     private $couplingSerialNumber;
-    private $rfidTagSerialNo;
+    private $rfidTagNo;
     private $comment;
 
     /**
@@ -114,18 +114,18 @@ class MarkingTaskCard
     /**
      * @return mixed
      */
-    public function getRfidTagSerialNo()
+    public function getRfidTagNo()
     {
-        return $this->rfidTagSerialNo;
+        return $this->rfidTagNo;
     }
 
     /**
-     * @param mixed $rfidTagSerialNo
+     * @param mixed $rfidTagNo
      * @return $this
      */
-    public function setRfidTagSerialNo($rfidTagSerialNo)
+    public function setRfidTagNo($rfidTagNo)
     {
-        $this->rfidTagSerialNo = $rfidTagSerialNo;
+        $this->rfidTagNo = $rfidTagNo;
         return $this;
     }
 

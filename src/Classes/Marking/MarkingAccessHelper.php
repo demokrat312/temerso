@@ -11,11 +11,16 @@ namespace App\Classes\Marking;
 
 use App\Classes\Utils;
 use App\Entity\Marking;
+use App\Entity\User;
 
-class MarkingAccess
+class MarkingAccessHelper
 {
     const USER_TYPE_CREATOR = 'creator'; // Создатель
     const USER_TYPE_EXECUTOR = 'executor'; // Исполнитель
+    const USER_TYPE_BY_ROLE = [
+      User::ROLE_ADMIN => self::USER_TYPE_CREATOR,
+      User::ROLE_STOREKEEPER => self::USER_TYPE_EXECUTOR,
+    ];
 
     private const ACCESS_EDIT = 'access_edit'; // Редактирование
     private const ACCESS_VIEW = 'access_view'; // Просмотр
@@ -46,7 +51,6 @@ class MarkingAccess
             'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION, Marking::STATUS_REVISION],
             'user_type' => [self::USER_TYPE_EXECUTOR],
             'access' => [self::ACCESS_VIEW],
-            'access_change_status' => [Marking::STATUS_CREATED],
         ],
     ];
 
@@ -77,5 +81,41 @@ class MarkingAccess
         }
 
         return $roles;
+    }
+
+    /**
+     * Получаем список разрешенных статусов для смены статуса
+     */
+    public static function getAllowStatusChange(array $roles, int $status): array
+    {
+        $userType = self::getUserTypeByRoles($roles);
+
+        $allowStatus = [];
+        foreach (self::ACCESS as $access) {
+            $hasUserType = in_array($userType, $access['user_type']);
+            $hasStatus = in_array($status, $access['status']);
+            $hasChangeStatus = in_array(self::ACCESS_CHANGE_STATUS, $access['access']);
+            if ($hasUserType && $hasStatus && $hasChangeStatus) {
+                $allowStatus = array_merge($allowStatus, $access['access_change_status']);
+            }
+        }
+
+        return $allowStatus;
+    }
+
+    /**
+     * @param array $roles
+     * @return string|null
+     */
+    private static function getUserTypeByRoles(array $roles)
+    {
+        if (Utils::in_array([User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN], $roles)) {
+            $userType = self::USER_TYPE_CREATOR;
+        } else if (in_array(User::ROLE_STOREKEEPER, $roles)) {
+            $userType = self::USER_TYPE_EXECUTOR;
+        } else {
+            $userType = null;
+        }
+        return $userType;
     }
 }

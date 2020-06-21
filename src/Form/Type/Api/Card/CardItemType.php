@@ -47,10 +47,10 @@ class CardItemType extends AbstractType
                     'description' => 'Серийный № муфты',
                 ],
             ])
-            ->add('rfidTagSerialNo', null, [
+            ->add('rfidTagNo', null, [
                 'documentation' => [
                     'type' => 'number',
-                    'description' => 'Серийный № метки RFID',
+                    'description' => 'Метки RFID',
                 ],
             ])
             ->add('comment', null, [
