@@ -18,13 +18,16 @@ use Doctrine\Common\Collections\Collection;
 class TaskItem
 {
     const TYPE_MARKING = 1;
+    const TYPE_INVENTORY = 2;
 
     const TYPE_TITLE = [
         self::TYPE_MARKING => 'Маркировка',
+        self::TYPE_INVENTORY => 'Инвентаризация',
     ];
 
     const TYPE_CLASS = [
-        self::TYPE_MARKING => Marking::class
+        self::TYPE_MARKING => Marking::class,
+        self::TYPE_INVENTORY => Marking::class,
     ];
 
     /**
