@@ -116,7 +116,7 @@ class CardController extends ApiParentController
      *    @Model(type=\App\Form\Type\Api\Card\CardEditType::class)
      * ),
      *
-     * @SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
+     * \@SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
      *
      * @SWG\Response(
      *     response="200",

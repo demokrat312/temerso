@@ -88,7 +88,7 @@ class TaskController extends ApiParentController
      *    @Model(type=\App\Form\Type\Api\Task\TaskChangeStatusType::class)
      * ),
      *
-     * @SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
+     * \@SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
      *
      * @SWG\Response(
      *     response="200",
@@ -135,7 +135,7 @@ class TaskController extends ApiParentController
         if (!in_array($statusId, $allowStatus)) {
             return $this->errorResponse(
                 'Нельзя менять на указанный статус, разрешенные статусы: '
-                . $allowStatus ? implode(',', $allowStatus) : 'нету',
+                . ($allowStatus ? implode(',', $allowStatus) : 'нету'),
                 self::STATUS_CODE_403);
         }
         //</editor-fold>
