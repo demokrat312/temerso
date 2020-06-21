@@ -90,6 +90,9 @@ class CardController extends ApiParentController
 
         //<editor-fold desc="Получаем задачу">
         $entityItem = $em->getRepository($taskClass)->findTask($taskId, $user->getId());
+        if(!$entityItem) {
+            return $this->errorResponse('Задача не найденна');
+        }
         $markingToTaskAdapter = new TaskItemAdapter();
         $taskItem = $markingToTaskAdapter->getTask($entityItem);
 
