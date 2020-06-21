@@ -14,6 +14,7 @@ use App\Classes\Marking\MarkingAccessHelper;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemAdapter;
+use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,6 +68,13 @@ class TaskController extends ApiParentController
         $markingToTaskAdapter = new TaskItemAdapter();
         foreach ($markingList as $marking) {
             $taskList[] = $markingToTaskAdapter->getTask($marking);
+        }
+        //</editor-fold>
+
+        //<editor-fold desc="Инвентаризация">
+        $inventoryList = $em->getRepository(Inventory::class)->findAllTask($user->getId());
+        foreach ($inventoryList as $inventory) {
+            $taskList[] = $markingToTaskAdapter->getTask($inventory);
         }
         //</editor-fold>
 
