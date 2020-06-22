@@ -10,8 +10,8 @@ namespace App\Classes\Arrival;
 
 
 use App\Classes\Excel\ParentCells;
+use App\Classes\Task\TaskItemInterface;
 use App\Entity\Card;
-use App\Entity\Marking;
 use Doctrine\Common\Collections\Collection;
 
 class MarkingCells extends ParentCells
@@ -21,7 +21,7 @@ class MarkingCells extends ParentCells
      *
      * @param $value
      */
-    public function setGeneral(Marking $marking)
+    public function setGeneral(TaskItemInterface $marking)
     {
         $this->sheet->setCellValue('B1', $marking->getCreatedBy()->getFio()); // Постановщик
         $this->sheet->setCellValue('B2', $marking->getUsers()->first()->getFio()); // Исполнитель
@@ -34,17 +34,17 @@ class MarkingCells extends ParentCells
     /**
      * @param Collection|Card[] $cards
      */
-    public function setCars(int $startRow, Collection $cards)
+    public function setCars(int $startRow, TaskItemInterface $task)
     {
         $rowCount = $startRow;
-        $cards->map(function(Card $card) use (&$rowCount) {
+        $task->getCards()->map(function(Card $card) use ($task, &$rowCount) {
             $this->sheet->setCellValue('A' . $rowCount, $card->getGeneralName()); // Наименованеие
             $this->sheet->setCellValue('B' . $rowCount, $card->getPipeSerialNumber()); // Серийный № трубы
             $this->sheet->setCellValue('C' . $rowCount, $card->getSerialNoOfNipple()); // Серийный № ниппеля
             $this->sheet->setCellValue('D' . $rowCount, $card->getCouplingSerialNumber()); // Серийный № муфты
             $this->sheet->setCellValue('E' . $rowCount, $card->getOuterDiameterOfThePipe()); // Наружный диаметр трубы, (мм)
-            $this->sheet->setCellValue('F' . $rowCount, ''); // № RFID-метки
-            $this->sheet->setCellValue('G' . $rowCount, ''); // Примечание
+            $this->sheet->setCellValue('F' . $rowCount, $card->getRfidTagNo()); // № RFID-метки
+            $this->sheet->setCellValue('G' . $rowCount, $card->getTaskCardOtherFieldsByTask($task)->getComment()); // Примечание
 
             $rowCount++;
         });

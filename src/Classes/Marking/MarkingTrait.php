@@ -44,7 +44,7 @@ trait MarkingTrait
      * @see templates/marking/show.html.twig
      * @return mixed
      */
-    public function getStatusTitle()
+    public function getStatusTitle(): string
     {
         return Marking::STATUS_TITLE[$this->status];
     }

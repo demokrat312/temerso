@@ -590,6 +590,11 @@ class Card
      */
     private $arrival;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TaskCardOtherField", mappedBy="card")
+     */
+    private $taskCardOtherFields;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -597,7 +602,8 @@ class Card
         $this->cardFields = new ArrayCollection();
         $this->status = StatusHelper::STATUS_CREATE;
         $this->accounting = true; // По умолчанию, есть на складе
-    }
+
+        $this->taskCardOtherFields = new ArrayCollection();    }
 
     public function getId()
     {
@@ -1559,6 +1565,37 @@ class Card
     public function setArrival(?Arrival $arrival): self
     {
         $this->arrival = $arrival;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TaskCardOtherField[]
+     */
+    public function getTaskCardOtherFields(): Collection
+    {
+        return $this->taskCardOtherFields;
+    }
+
+    public function addTaskCardOtherField(TaskCardOtherField $taskCardOtherField): self
+    {
+        if (!$this->taskCardOtherFields->contains($taskCardOtherField)) {
+            $this->taskCardOtherFields[] = $taskCardOtherField;
+            $taskCardOtherField->setCard($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTaskCardOtherField(TaskCardOtherField $taskCardOtherField): self
+    {
+        if ($this->taskCardOtherFields->contains($taskCardOtherField)) {
+            $this->taskCardOtherFields->removeElement($taskCardOtherField);
+            // set the owning side to null (unless already changed)
+            if ($taskCardOtherField->getCard() === $this) {
+                $taskCardOtherField->setCard(null);
+            }
+        }
 
         return $this;
     }

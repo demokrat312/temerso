@@ -90,16 +90,16 @@ class CardController extends ApiParentController
 
         //<editor-fold desc="Получаем задачу">
         $entityItem = $em->getRepository($taskClass)->findTask($taskId, $user->getId());
-        if(!$entityItem) {
+        if (!$entityItem) {
             return $this->errorResponse('Задача не найденна');
         }
         $markingToTaskAdapter = new TaskItemAdapter();
-        $taskItem = $markingToTaskAdapter->getTask($entityItem);
+        $taskItem = $markingToTaskAdapter->getTask($entityItem, true);
 
         //</editor-fold>
 
         $responseArray = TaskHelper::ins()
-            ->taskToArray($taskItem, true);
+            ->taskToArray($taskItem);
 
         return $this->defaultResponse($responseArray['cardList']);
     }
@@ -143,11 +143,20 @@ class CardController extends ApiParentController
 
             $card->setRfidTagNo($data['rfidTagNo']);
 
+            $taskEntityClass = TaskItem::TYPE_CLASS[$data['taskTypeId']];
+            $taskCard = $card->getTaskCardOtherFieldsByTask(new $taskEntityClass());
+            $taskCard
+                ->setCard($card)
+                ->setTaskTypeId($data['taskTypeId'])
+                ->setComment($data['comment']);
+
+
             $em->persist($card);
+            $em->persist($taskCard);
             $em->flush();
 
 
-            return $this->defaultResponse((new MarkingCardToTaskCardAdapter())->getCard($card));
+            return $this->defaultResponse((new MarkingCardToTaskCardAdapter())->getCard($card, $taskEntityClass));
         } else {
             return $this->errorParamResponse();
         }

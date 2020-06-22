@@ -9,6 +9,11 @@
 namespace App\Classes;
 
 
+use App\Classes\Task\TaskHelper;
+use App\Classes\Task\TaskItemInterface;
+use App\Entity\TaskCardOtherField;
+use Doctrine\Common\Collections\Criteria;
+
 trait CardTrait
 {
     private $generalName;
@@ -68,7 +73,22 @@ trait CardTrait
         ]);
     }
 
-    public function getStatusTitle() {
+    public function getStatusTitle()
+    {
         return StatusHelper::STATUS_TITLE[$this->status] ?? 'Статус не задан';
+    }
+
+    /**
+     * Получаем дополнительные поля с привязкой к задаче и фильтруем по типу задачи
+     * @param TaskItemInterface $task
+     * @return TaskCardOtherField
+     * @see app/templates/marking/show.html.twig:38
+     */
+    public function getTaskCardOtherFieldsByTask(TaskItemInterface $task): TaskCardOtherField
+    {
+        $taskTypeId = TaskHelper::ins()->getTypeByEntityClass(get_class($task));
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("taskTypeId", $taskTypeId));
+
+        return $this->getTaskCardOtherFields()->matching($criteria)->first() ?: new TaskCardOtherField();
     }
 }

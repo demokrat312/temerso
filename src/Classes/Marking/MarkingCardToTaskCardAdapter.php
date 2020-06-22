@@ -15,7 +15,7 @@ use App\Entity\Card;
  */
 class MarkingCardToTaskCardAdapter
 {
-    public function getCard(Card $card)
+    public function getCard(Card $card, string $entityClass)
     {
         $taskCard = new MarkingTaskCard();
 
@@ -26,7 +26,7 @@ class MarkingCardToTaskCardAdapter
             ->setSerialNoOfNipple($card->getSerialNoOfNipple())
             ->setCouplingSerialNumber($card->getCouplingSerialNumber())
             ->setRfidTagNo($card->getRfidTagNo())
-            ->setComment('')
+            ->setComment($card->getTaskCardOtherFieldsByTask(new $entityClass())->getComment())
             ;
 
         return $taskCard;

@@ -62,24 +62,26 @@ class TaskController extends ApiParentController
         /** @var User $user */
         $user = $storage->getToken()->getUser();
         $taskList = [];
+        $withCards = $request->get('withCards') == 'true';
 
         //<editor-fold desc="Маркировка">
         $markingList = $em->getRepository(Marking::class)->findAllTask($user->getId());
         $markingToTaskAdapter = new TaskItemAdapter();
         foreach ($markingList as $marking) {
-            $taskList[] = $markingToTaskAdapter->getTask($marking);
+            $taskList[] = $markingToTaskAdapter->getTask($marking, $withCards);
         }
         //</editor-fold>
 
         //<editor-fold desc="Инвентаризация">
         $inventoryList = $em->getRepository(Inventory::class)->findAllTask($user->getId());
+
         foreach ($inventoryList as $inventory) {
-            $taskList[] = $markingToTaskAdapter->getTask($inventory);
+            $taskList[] = $markingToTaskAdapter->getTask($inventory, $withCards);
         }
         //</editor-fold>
 
         $responseArray = TaskHelper::ins()
-            ->tasksToArray($taskList, $request->get('withCards') == 'true');
+            ->tasksToArray($taskList);
 
         return $this->defaultResponse($responseArray);
     }

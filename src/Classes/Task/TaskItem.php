@@ -11,6 +11,7 @@ namespace App\Classes\Task;
 
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Entity\Card;
+use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Entity\User;
 use Doctrine\Common\Collections\Collection;
@@ -27,7 +28,7 @@ class TaskItem
 
     const TYPE_CLASS = [
         self::TYPE_MARKING => Marking::class,
-        self::TYPE_INVENTORY => Marking::class,
+        self::TYPE_INVENTORY => Inventory::class,
     ];
 
     /**
@@ -137,7 +138,7 @@ class TaskItem
     {
         $newCards = [];
         foreach ($cards as $card) {
-            $newCards[] = $this->markingCardToTaskCardAdapter->getCard($card);
+            $newCards[] = $this->markingCardToTaskCardAdapter->getCard($card, self::TYPE_CLASS[$this->getTaskTypeId()]);
         }
         $this->cards = $newCards;
 

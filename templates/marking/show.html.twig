@@ -1,4 +1,4 @@
-{# @var \App\Entity\Marking object #}
+{# @var \App\Classes\Task\TaskItemInterface object #}
 {% extends 'crud/show.html.twig' %}
 {% block show_groups %}
     <div class="sonata-ba-show">
@@ -27,6 +27,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {# @var \App\Entity\Card card #}
                                     {% for card in object.cards %}
                                         <tr>
                                             <td>{{ card.generalName }}</td>
@@ -34,7 +35,7 @@
                                             <td>{{ card.serialNoOfNipple }}</td>
                                             <td>{{ card.couplingSerialNumber }}</td>
                                             <td>{{ card.rfidTagNo }}</td>
-                                            <td></td>
+                                            <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

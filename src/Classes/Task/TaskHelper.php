@@ -9,6 +9,9 @@
 namespace App\Classes\Task;
 
 
+use App\Entity\Inventory;
+use App\Entity\Marking;
+
 class TaskHelper
 {
     private static $instance;
@@ -71,11 +74,11 @@ class TaskHelper
     /**
      * @param array|TaskItem[] $taskList
      */
-    public function tasksToArray(array $taskList, bool $witCards = false)
+    public function tasksToArray(array $taskList)
     {
         $responseArray = [];
         foreach ($taskList as $task) {
-            $responseArray[] = $this->taskToArray($task, $witCards);
+            $responseArray[] = $this->taskToArray($task);
         }
 
         return $responseArray;
@@ -84,7 +87,7 @@ class TaskHelper
     /**
      * @param array|TaskItem[] $taskList
      */
-    public function taskToArray(TaskItem $task, bool $witCards = false)
+    public function taskToArray(TaskItem $task)
     {
         $taskArray = [
             'id' => $task->getId(),
@@ -94,11 +97,8 @@ class TaskHelper
             'taskTypeTitle' => $task->getTaskTypeTitle(),
             'createdByFio' => $task->getCreatedByFio(),
             'executorFio' => $task->getExecutorFio(),
+            'cardList' => $task->getCards(),
         ];
-
-        if ($witCards) {
-            $taskArray['cardList'] = $task->getCards();
-        }
 
         return $taskArray;
     }
@@ -138,5 +138,17 @@ class TaskHelper
         $this->em->flush();
 
         return true;
+    }
+
+    public function getTypeByEntityClass(string $entityClassName)
+    {
+        switch ($entityClassName) {
+            case Marking::class:
+                return TaskItem::TYPE_MARKING;
+            case Inventory::class:
+                return TaskItem::TYPE_INVENTORY;
+            default:
+                throw new \Exception('add case to switch \App\Classes\Task\TaskItemAdapter::getTypeByEntity');
+        }
     }
 }

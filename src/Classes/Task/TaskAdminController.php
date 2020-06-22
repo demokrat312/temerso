@@ -154,7 +154,7 @@ abstract class TaskAdminController extends DefaultAdminController
             $startRow = 6;
             $markingСells
                 ->duplicateRow($startRow, $marking->getCards()->count())
-                ->setCars($startRow, $marking->getCards());
+                ->setCars($startRow, $marking);
         }
 
         $excelHelper->print();
