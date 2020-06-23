@@ -9,5 +9,8 @@ use App\Classes\Task\TaskAdminParent;
  */
 class MarkingAdmin extends TaskAdminParent
 {
-
+    public function configure()
+    {
+        $this->setTemplate('show', 'marking/show.html.twig');
+    }
 }

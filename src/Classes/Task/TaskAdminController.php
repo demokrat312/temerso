@@ -95,18 +95,18 @@ abstract class TaskAdminController extends DefaultAdminController
         return new RedirectResponse($url);
     }
 
-    public function showAction($deprecatedId = null)
-    {
-        $request = $this->getRequest();
-        $id = $request->get($this->admin->getIdParameter());
-        $object = $this->admin->getObject($id);
-        $fields = $this->admin->getShow();
-        return $this->renderWithExtraParams('marking/show.html.twig', [
-            'action' => 'show',
-            'object' => $object,
-            'elements' => $fields,
-        ], null);
-    }
+//    public function showAction($deprecatedId = null)
+//    {
+//        $request = $this->getRequest();
+//        $id = $request->get($this->admin->getIdParameter());
+//        $object = $this->admin->getObject($id);
+//        $fields = $this->admin->getShow();
+//        return $this->renderWithExtraParams('marking/show.html.twig', [
+//            'action' => 'show',
+//            'object' => $object,
+//            'elements' => $fields,
+//        ], null);
+//    }
 
     /**
      * @param Request $request

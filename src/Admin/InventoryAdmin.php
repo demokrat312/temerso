@@ -9,5 +9,8 @@ use App\Classes\Task\TaskAdminParent;
  */
 class InventoryAdmin extends TaskAdminParent
 {
-
+    public function configure()
+    {
+        $this->setTemplate('show', 'inventory/show.html.twig');
+    }
 }
