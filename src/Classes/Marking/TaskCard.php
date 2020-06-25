@@ -11,7 +11,7 @@ namespace App\Classes\Marking;
 /**
  * Карточка для задачи
  */
-class MarkingTaskCard
+class TaskCard
 {
     private $id;
     private $fullName;
@@ -20,6 +20,11 @@ class MarkingTaskCard
     private $couplingSerialNumber;
     private $rfidTagNo;
     private $comment;
+    /**
+     * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
+     * @var int
+     */
+    private $accounting;
 
     /**
      * @return mixed
@@ -146,4 +151,23 @@ class MarkingTaskCard
         $this->comment = $comment;
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getAccounting(): int
+    {
+        return $this->accounting;
+    }
+
+    /**
+     * @param int $accounting
+     * @return $this
+     */
+    public function setAccounting(int $accounting)
+    {
+        $this->accounting = $accounting;
+        return $this;
+    }
+
 }

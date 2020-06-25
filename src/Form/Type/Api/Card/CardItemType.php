@@ -59,6 +59,12 @@ class CardItemType extends AbstractType
                     'description' => 'Примечание',
                 ],
             ])
+            ->add('accounting', null, [
+                'documentation' => [
+                    'type' => 'number',
+                    'description' => 'Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.',
+                ],
+            ])
         ;
     }
 }

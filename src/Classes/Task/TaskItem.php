@@ -20,10 +20,12 @@ class TaskItem
 {
     const TYPE_MARKING = 1;
     const TYPE_INVENTORY = 2;
+    const TYPE_INSPECTION = 3;
 
     const TYPE_TITLE = [
         self::TYPE_MARKING => 'Маркировка',
         self::TYPE_INVENTORY => 'Инвентаризация',
+        self::TYPE_INSPECTION => 'Инспекция',
     ];
 
     const TYPE_CLASS = [

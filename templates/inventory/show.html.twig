@@ -11,6 +11,9 @@
                             <h4>Всего единиц оборудования для маркировки: <span class="label label-default">{{ object.cards.count }}</span></h4>
                             <h4>Местонахождение инвентаризируемого комплекта: <span class="label label-default"></span></h4>
                             <h4>Основание формирования комплекта: <span class="label label-default"></span></h4>
+                            {% if object.comment %}
+                                <h4>Комментарий: <span class="label label-default">{{ object.comment }}</span></h4>
+                            {% endif %}
                             <div>
                                 <table class="table table-responsive table-bordered table-sm text-center">
                                     <thead>

@@ -132,32 +132,15 @@ abstract class TaskAdminController extends DefaultAdminController
      */
     public function excelAction(int $id)
     {
-        /** @var Marking $marking */
-        $marking = $this->admin->getSubject();
+        /** @var TaskItemInterface $task */
+        $task = $this->admin->getSubject();
 
-        if (!$marking) {
+        if (!$task) {
             throw new NotFoundHttpException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $excelHelper = new ExcelHelper($this->get('phpspreadsheet'));
-        $excelHelper->setSource('templates/excelFile/marking_excel.xlsx');
-
-
-        // Задаем общию информацию
-        $markingСells = new MarkingCells();
-        $markingСells
-            ->setActiveSheet($excelHelper->getActiveSheet())
-            ->setGeneral($marking)
-        ;
-
-        if ($marking->getCards()->count() > 0) {
-            $startRow = 6;
-            $markingСells
-                ->duplicateRow($startRow, $marking->getCards()->count())
-                ->setCars($startRow, $marking);
-        }
-
-        $excelHelper->print();
+        $excelFactory = new TaskExcelBuilder($this->get('phpspreadsheet'));
+        $excelFactory->build($task);
     }
 
 

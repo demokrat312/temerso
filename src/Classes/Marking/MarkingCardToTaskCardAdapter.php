@@ -17,7 +17,7 @@ class MarkingCardToTaskCardAdapter
 {
     public function getCard(Card $card, string $entityClass)
     {
-        $taskCard = new MarkingTaskCard();
+        $taskCard = new TaskCard();
 
         $taskCard
             ->setId($card->getId())
@@ -27,6 +27,7 @@ class MarkingCardToTaskCardAdapter
             ->setCouplingSerialNumber($card->getCouplingSerialNumber())
             ->setRfidTagNo($card->getRfidTagNo())
             ->setComment($card->getTaskCardOtherFieldsByTask(new $entityClass())->getComment())
+            ->setAccounting($card->getAccounting())
             ;
 
         return $taskCard;
