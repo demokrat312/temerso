@@ -10,8 +10,10 @@ namespace App\Classes\Task;
 
 
 use App\Classes\Arrival\ExcelHelper;
-use App\Classes\Arrival\MarkingCells;
+use App\Classes\Inspection\InspectionCells;
+use App\Classes\Marking\MarkingCells;
 use App\Classes\Inventory\InventoryCells;
+use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
 use Onurb\Bundle\ExcelBundle\Factory\ExcelFactory;
@@ -42,6 +44,9 @@ class TaskExcelBuilder
             case Inventory::class:
                 $this->getInventory($task, $excelHelper);
                 break;
+            case Inspection::class:
+                $this->getInspection($task, $excelHelper);
+                break;
         }
 
         $excelHelper->print();
@@ -52,14 +57,14 @@ class TaskExcelBuilder
         $excelHelper->setSource('templates/excelFile/marking_excel.xlsx');
 
         // Задаем общию информацию
-        $markingСells = new MarkingCells();
-        $markingСells
+        $markingCells = new MarkingCells();
+        $markingCells
             ->setActiveSheet($excelHelper->getActiveSheet())
             ->setGeneral($marking);
 
         if ($marking->getCards()->count() > 0) {
             $startRow = 6;
-            $markingСells
+            $markingCells
                 ->duplicateRow($startRow, $marking->getCards()->count())
                 ->setCars($startRow, $marking);
         }
@@ -72,16 +77,36 @@ class TaskExcelBuilder
         $excelHelper->setSource('templates/excelFile/inventory_excel.xlsx');
 
         // Задаем общию информацию
-        $markingСells = new InventoryCells();
-        $markingСells
+        $markingCells = new InventoryCells();
+        $markingCells
             ->setActiveSheet($excelHelper->getActiveSheet())
             ->setGeneral($inventory);
 
         if ($inventory->getCards()->count() > 0) {
             $startRow = 6;
-            $markingСells
+            $markingCells
                 ->duplicateRow($startRow, $inventory->getCards()->count())
                 ->setCars($startRow, $inventory);
+        }
+
+        return true;
+    }
+
+    private function getInspection(Inspection $inspection, ExcelHelper $excelHelper)
+    {
+        $excelHelper->setSource('templates/excelFile/inspection_excel.xlsx');
+
+        // Задаем общию информацию
+        $inspectionCells = new InspectionCells();
+        $inspectionCells
+            ->setActiveSheet($excelHelper->getActiveSheet())
+            ->setGeneral($inspection);
+
+        if ($inspection->getCards()->count() > 0) {
+            $startRow = 6;
+            $inspectionCells
+                ->duplicateRow($startRow, $inspection->getCards()->count())
+                ->setCars($startRow, $inspection);
         }
 
         return true;

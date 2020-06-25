@@ -10,42 +10,15 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Маркировка
+ * 6) Инспекция/Дефектоскопия
  *
- * @ORM\Entity(repositoryClass="App\Repository\MarkingRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\InspectionRepository")
  */
-class Marking implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
+class Inspection implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
 {
     use TaskEntityTrait;
-
-    const STATUS_SEND_EXECUTION = 1; // Отправлено на исполнение
-    const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
-    const STATUS_SAVE = 3; // Результаты сохранены локально (Отправить задание на проверку)
-    const STATUS_COMPLETE = 4; // Выполнено полностью (Принять от Исполнителя)
-    const STATUS_CREATED = 5; // Созданно (или отредактированно)
-    const STATUS_REVISION = 6; // Отправленно на доработку (такие же функции как у "Принято на исполнение")
-
-    const STATUS_TITLE = [
-        self::STATUS_SEND_EXECUTION => 'Отправлено на исполнение',
-        self::STATUS_ACCEPT_EXECUTION => 'Принято на исполнение',
-        self::STATUS_SAVE => 'Результаты сохранены локально',
-        self::STATUS_COMPLETE => 'Выполнено полностью',
-        self::STATUS_CREATED => 'Отредактировано',
-        self::STATUS_REVISION => 'Отправленно на доработку',
-    ];
-
-    const STATUS_ORDER = [
-        self::STATUS_CREATED, // 5 - Созданно
-        self::STATUS_SEND_EXECUTION, // 1 -  Отправлено на исполнение
-        self::STATUS_ACCEPT_EXECUTION, // 2 -  Принято на исполнение
-        self::STATUS_SAVE, // 3 -  Результаты сохранены локально
-        self::STATUS_REVISION, // 6 -  Отправленно на доработку
-        self::STATUS_COMPLETE, // 4 -  Выполнено полностью
-    ];
-
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -59,7 +32,6 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
     private $cards;
 
     /**
-     * @Assert\Count(min = 1, minMessage = "Выберите исполнителя")
      * @ORM\ManyToMany(targetEntity="App\Entity\User")
      */
     private $users;
@@ -92,7 +64,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
 
     public function __construct()
     {
-        $this->status = self::STATUS_CREATED;
+        $this->status = Marking::STATUS_CREATED;
 
         $this->cards = new ArrayCollection();
         $this->users = new ArrayCollection();
@@ -111,7 +83,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
         return $this->cards;
     }
 
-    public function addCard($card): self
+    public function addCard(Card $card): self
     {
         if (!$this->cards->contains($card)) {
             $this->cards[] = $card;
@@ -120,7 +92,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
         return $this;
     }
 
-    public function removeCard($card): self
+    public function removeCard(Card $card): self
     {
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
@@ -208,7 +180,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
         return $this->createdBy;
     }
 
-    public function setCreatedBy(User $createdBy): self
+    public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
 

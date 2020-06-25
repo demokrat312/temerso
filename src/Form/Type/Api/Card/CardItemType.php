@@ -54,9 +54,17 @@ class CardItemType extends AbstractType
                 ],
             ])
             ->add('comment', null, [
+                'required' => false,
                 'documentation' => [
                     'type' => 'string',
                     'description' => 'Примечание',
+                ],
+            ])
+            ->add('commentProblemWithMark', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Оборудование есть, проблема с меткой(для инспекции)',
                 ],
             ])
             ->add('accounting', null, [

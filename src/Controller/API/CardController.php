@@ -143,16 +143,21 @@ class CardController extends ApiParentController
 
             $card->setRfidTagNo($data['rfidTagNo']);
 
-            $taskEntityClass = TaskItem::TYPE_CLASS[$data['taskTypeId']];
-            $taskCard = $card->getTaskCardOtherFieldsByTask(new $taskEntityClass());
-            $taskCard
-                ->setCard($card)
-                ->setTaskTypeId($data['taskTypeId'])
-                ->setComment($data['comment']);
+            if($data['taskTypeId'] && ($data['comment'] || $data['commentProblemWithMark'])) {
+                $taskEntityClass = TaskItem::TYPE_CLASS[$data['taskTypeId']];
+                $taskCard = $card->getTaskCardOtherFieldsByTask(new $taskEntityClass());
+                $taskCard
+                    ->setCard($card)
+                    ->setTaskTypeId($data['taskTypeId'])
+                    ->setComment($data['comment'])
+                    ->setCommentProblemWithMark($data['commentProblemWithMark'])
+                ;
+
+                $em->persist($taskCard);
+            }
 
 
             $em->persist($card);
-            $em->persist($taskCard);
             $em->flush();
 
 

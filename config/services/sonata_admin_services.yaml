@@ -64,3 +64,13 @@ services:
             - '@App\Service\Marking\MarkingTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Инвентаризация, group: Задания, show_in_dashboard: true}
+    App\Admin\InspectionAdmin:
+        arguments:
+            - ~
+            - App\Entity\Inspection
+            - App\Controller\Admin\InspectionAdminController
+            - "@Symfony\\Component\\Security\\Core\\Security"
+            - '@App\Service\Access\RoleService'
+            - '@App\Service\Marking\MarkingTopMenuButtonService'
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Инспекция, group: Задания, show_in_dashboard: true}

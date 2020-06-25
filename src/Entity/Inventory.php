@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
-use App\Classes\Marking\MarkingTrait;
+use App\Classes\Marking\TaskEntityTrait;
 use App\Classes\Task\TaskItemInterface;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Inventory implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
 {
-    use MarkingTrait;
+    use TaskEntityTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

@@ -18,7 +18,7 @@ use App\Entity\User;
  * @package App\Classes\Marking
  *
  */
-trait MarkingTrait
+trait TaskEntityTrait
 {
     /**
      * Тип задачи (поле для списка)

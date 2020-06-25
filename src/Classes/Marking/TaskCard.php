@@ -20,6 +20,7 @@ class TaskCard
     private $couplingSerialNumber;
     private $rfidTagNo;
     private $comment;
+    private $commentProblemWithMark;
     /**
      * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
      * @var int
@@ -167,6 +168,24 @@ class TaskCard
     public function setAccounting(int $accounting)
     {
         $this->accounting = $accounting;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommentProblemWithMark()
+    {
+        return $this->commentProblemWithMark;
+    }
+
+    /**
+     * @param mixed $commentProblemWithMark
+     * @return $this
+     */
+    public function setCommentProblemWithMark($commentProblemWithMark)
+    {
+        $this->commentProblemWithMark = $commentProblemWithMark;
         return $this;
     }
 

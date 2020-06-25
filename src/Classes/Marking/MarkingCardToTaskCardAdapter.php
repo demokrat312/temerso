@@ -27,6 +27,7 @@ class MarkingCardToTaskCardAdapter
             ->setCouplingSerialNumber($card->getCouplingSerialNumber())
             ->setRfidTagNo($card->getRfidTagNo())
             ->setComment($card->getTaskCardOtherFieldsByTask(new $entityClass())->getComment())
+            ->setCommentProblemWithMark($card->getTaskCardOtherFieldsByTask(new $entityClass())->getCommentProblemWithMark())
             ->setAccounting($card->getAccounting())
             ;
 

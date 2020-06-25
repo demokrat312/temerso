@@ -61,12 +61,19 @@ class TaskItemType extends AbstractType
                     'description' => 'Исполнитель. ФИО',
                 ],
             ])
+            ->add('comment', null, [
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Комментарий/Примечание',
+                ],
+            ])
             ->add('cardList', CollectionType::class, [
                 'entry_type' => CardItemType::class,
                 'documentation' => [
                     'description' => 'Список карточек',
                 ],
-            ]);
+            ])
+            ;
     }
 
 }

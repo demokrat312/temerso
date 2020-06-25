@@ -25,21 +25,31 @@ class CardEditType extends AbstractType
                 ],
             ])
             ->add('taskTypeId', null, [
+                'required' => false,
                 'documentation' => [
                     'type' => 'integer',
                     'description' => 'Тип задачи',
                 ],
             ])
             ->add('rfidTagNo', null, [
+                'required' => false,
                 'documentation' => [
                     'type' => 'number',
                     'description' => 'Метки RFID',
                 ],
             ])
             ->add('comment', null, [
+                'required' => false,
                 'documentation' => [
                     'type' => 'string',
                     'description' => 'Примечание',
+                ],
+            ])
+            ->add('commentProblemWithMark', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Оборудование есть, проблема с меткой(для инспекции)',
                 ],
             ])
         ;

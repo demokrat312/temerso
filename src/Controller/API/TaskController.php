@@ -14,6 +14,7 @@ use App\Classes\Marking\MarkingAccessHelper;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemAdapter;
+use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Entity\User;
@@ -63,22 +64,17 @@ class TaskController extends ApiParentController
         $user = $storage->getToken()->getUser();
         $taskList = [];
         $withCards = $request->get('withCards') == 'true';
+        $taskAdapter = new TaskItemAdapter();
 
-        //<editor-fold desc="Маркировка">
-        $markingList = $em->getRepository(Marking::class)->findAllTask($user->getId());
-        $markingToTaskAdapter = new TaskItemAdapter();
-        foreach ($markingList as $marking) {
-            $taskList[] = $markingToTaskAdapter->getTask($marking, $withCards);
+        foreach ([
+            $em->getRepository(Marking::class)->findAllTask($user->getId()),
+            $em->getRepository(Inventory::class)->findAllTask($user->getId()),
+            $em->getRepository(Inspection::class)->findAllTask($user->getId()),
+                 ] as $entityList) {
+            foreach ($entityList as $entity) {
+                $taskList[] = $taskAdapter->getTask($entity, $withCards);
+            }
         }
-        //</editor-fold>
-
-        //<editor-fold desc="Инвентаризация">
-        $inventoryList = $em->getRepository(Inventory::class)->findAllTask($user->getId());
-
-        foreach ($inventoryList as $inventory) {
-            $taskList[] = $markingToTaskAdapter->getTask($inventory, $withCards);
-        }
-        //</editor-fold>
 
         $responseArray = TaskHelper::ins()
             ->tasksToArray($taskList);

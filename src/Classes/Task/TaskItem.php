@@ -11,11 +11,17 @@ namespace App\Classes\Task;
 
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Entity\Card;
+use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Entity\User;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ *
+ * @see \App\Classes\Task\TaskExcelBuilder::build
+ * @see \App\Classes\Task\TaskHelper::taskToArray
+ */
 class TaskItem
 {
     const TYPE_MARKING = 1;
@@ -31,6 +37,13 @@ class TaskItem
     const TYPE_CLASS = [
         self::TYPE_MARKING => Marking::class,
         self::TYPE_INVENTORY => Inventory::class,
+        self::TYPE_INSPECTION => Inspection::class,
+    ];
+
+    const TYPE_BY_CLASS = [
+        Marking::class => self::TYPE_MARKING,
+        Inventory::class => self::TYPE_INVENTORY,
+        Inspection::class => self::TYPE_INSPECTION,
     ];
 
     /**
@@ -48,7 +61,7 @@ class TaskItem
     /**
      * @var Collection|Card[]
      */
-    private $cards;
+    private $cardList;
 
     /**
      * Entity id
@@ -63,6 +76,10 @@ class TaskItem
      * @var MarkingCardToTaskCardAdapter
      */
     private $markingCardToTaskCardAdapter;
+    /**
+     * @var string|null
+     */
+    private $comment;
 
     public function __construct()
     {
@@ -91,7 +108,7 @@ class TaskItem
     /**
      * @return User
      */
-    public function getCreatedBy(): User
+    private function getCreatedBy(): User
     {
         return $this->createdBy;
     }
@@ -109,7 +126,7 @@ class TaskItem
     /**
      * @return User
      */
-    public function getExecutor(): ?User
+    private function getExecutor(): ?User
     {
         return $this->executor;
     }
@@ -127,22 +144,22 @@ class TaskItem
     /**
      * @return Card[]|Collection
      */
-    public function getCards()
+    public function getCardList()
     {
-        return $this->cards;
+        return $this->cardList;
     }
 
     /**
-     * @param Card[]|Collection $cards
+     * @param Card[]|Collection $cardList
      * @return $this
      */
-    public function setCards($cards)
+    public function setCardList($cardList)
     {
         $newCards = [];
-        foreach ($cards as $card) {
+        foreach ($cardList as $card) {
             $newCards[] = $this->markingCardToTaskCardAdapter->getCard($card, self::TYPE_CLASS[$this->getTaskTypeId()]);
         }
-        $this->cards = $newCards;
+        $this->cardList = $newCards;
 
         return $this;
     }
@@ -201,5 +218,23 @@ class TaskItem
     public function getExecutorFio()
     {
         return (string)$this->executor;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string|null $comment
+     * @return $this
+     */
+    public function setComment(?string $comment)
+    {
+        $this->comment = $comment;
+        return $this;
     }
 }

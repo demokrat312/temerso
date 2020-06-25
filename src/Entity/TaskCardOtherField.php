@@ -34,6 +34,11 @@ class TaskCardOtherField
      */
     private $comment;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $commentProblemWithMark;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +76,18 @@ class TaskCardOtherField
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getCommentProblemWithMark(): ?string
+    {
+        return $this->commentProblemWithMark;
+    }
+
+    public function setCommentProblemWithMark(?string $commentProblemWithMark): self
+    {
+        $this->commentProblemWithMark = $commentProblemWithMark;
 
         return $this;
     }

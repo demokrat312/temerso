@@ -20,11 +20,12 @@ class TaskItemAdapter
             ->setCreatedBy($taskEntity->getCreatedBy())
             ->setStatusId($taskEntity->getStatus())
             ->setExecutor($taskEntity->getExecutor())
+            ->setComment($taskEntity->getComment())
             ->setTaskTypeId($this->getTypeByEntityClass(get_class($taskEntity)))
         ;
 
         if($withCards) {
-            $task->setCards($taskEntity->getCards());
+            $task->setCardList($taskEntity->getCards());
         }
 
         return $task;

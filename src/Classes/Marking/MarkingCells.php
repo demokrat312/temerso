@@ -6,7 +6,7 @@
  * Time: 12:55
  */
 
-namespace App\Classes\Arrival;
+namespace App\Classes\Marking;
 
 
 use App\Classes\Excel\ParentCells;

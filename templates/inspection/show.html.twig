@@ -1,0 +1,57 @@
+{# @var \App\Entity\Inspection object #}
+{% extends 'crud/show.html.twig' %}
+{% block show_groups %}
+    <div class="sonata-ba-show">
+        <div class="sonata-ba-view">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="box box-primary">
+                        <div class="box-body table-responsive no-padding">
+                            <h4>Постановщик: <span class="label label-default">{{ object.createdBy.fio }}</span></h4>
+                            <h4>Исполнитель: <span class="label label-default">{{ object.users.first.fio }}</span></h4>
+                            <h4>Всего единиц оборудования для маркировки: <span class="label label-default">{{ object.cards.count }}</span></h4>
+                            <h4>Статус: <span class="label label-default">{{ object.statusTitle }}</span></h4>
+                            {% if object.comment %}
+                                <h4>Комментарий: <span class="label label-default">{{ object.comment }}</span></h4>
+                            {% endif %}
+                            <div>
+                                <table class="table table-responsive table-bordered table-sm text-center">
+                                    <thead>
+                                    <tr>
+                                        <th>Наименование</th>
+                                        <th>Серийный № трубы</th>
+                                        <th>Серийный № ниппеля</th>
+                                        <th> Серийный № муфты</th>
+                                        <th>№ RFID-метки</th>
+                                        <th>Оборудование
+                                            есть, проблема
+                                            с меткой
+                                        </th>
+                                        <th>Изображения</th>
+                                        <th>Комментарий</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {# @var \App\Entity\Card card #}
+                                    {% for card in object.cards %}
+                                        <tr>
+                                            <td>{{ card.generalName }}</td>
+                                            <td>{{ card.pipeSerialNumber }}</td>
+                                            <td>{{ card.serialNoOfNipple }}</td>
+                                            <td>{{ card.couplingSerialNumber }}</td>
+                                            <td>{{ card.rfidTagNo }}</td>
+                                            <td>{{ card.taskCardOtherFieldsByTask(object).commentProblemWithMark }}</td>{#Оборудование есть, проблема с меткой#}
+                                            <td></td>{#Изображения#}
+                                            <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

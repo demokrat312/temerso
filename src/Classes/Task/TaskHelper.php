@@ -89,16 +89,26 @@ class TaskHelper
      */
     public function taskToArray(TaskItem $task)
     {
-        $taskArray = [
-            'id' => $task->getId(),
-            'statusId' => $task->getStatusId(),
-            'statusTitle' => $task->getStatusTitle(),
-            'taskTypeId' => $task->getTaskTypeId(),
-            'taskTypeTitle' => $task->getTaskTypeTitle(),
-            'createdByFio' => $task->getCreatedByFio(),
-            'executorFio' => $task->getExecutorFio(),
-            'cardList' => $task->getCards(),
-        ];
+//        $taskArray = [
+//            'id' => $task->getId(),
+//            'statusId' => $task->getStatusId(),
+//            'statusTitle' => $task->getStatusTitle(),
+//            'taskTypeId' => $task->getTaskTypeId(),
+//            'taskTypeTitle' => $task->getTaskTypeTitle(),
+//            'createdByFio' => $task->getCreatedByFio(),
+//            'executorFio' => $task->getExecutorFio(),
+//            'cardList' => $task->getCards(),
+//        ];
+
+        $methods = get_class_methods($task);
+        $taskArray = [];
+        foreach ($methods as $method) {
+            if (strpos($method, 'get') !== false) {
+                $fieldName = lcfirst(substr($method, 3));
+                $fieldValue = $task->{$method}();
+                $taskArray[$fieldName] = is_object($fieldValue) ? (string)$fieldValue : $fieldValue;
+            }
+        }
 
         return $taskArray;
     }
@@ -142,13 +152,10 @@ class TaskHelper
 
     public function getTypeByEntityClass(string $entityClassName)
     {
-        switch ($entityClassName) {
-            case Marking::class:
-                return TaskItem::TYPE_MARKING;
-            case Inventory::class:
-                return TaskItem::TYPE_INVENTORY;
-            default:
-                throw new \Exception('add case to switch \App\Classes\Task\TaskItemAdapter::getTypeByEntity');
+        if (isset(TaskItem::TYPE_BY_CLASS[$entityClassName])) {
+            return TaskItem::TYPE_BY_CLASS[$entityClassName];
+        } else {
+            throw new \Exception('add case to switch \App\Classes\Task\TaskItemAdapter::getTypeByEntity');
         }
     }
 }
