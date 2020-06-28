@@ -66,6 +66,7 @@ class ExcelHelper
 
     public function print()
     {
+        \PhpOffice\PhpSpreadsheet\Shared\File::setUseUploadTempDirectory(true);
         $writer = $this->spreadSheetService->createWriter($this->spreadSheet, 'Xlsx');
         $fileName = 'excel_' . (new \DateTime())->format('Y-m-d_h:i:s');
         $extension = 'Xlsx';
