@@ -7,7 +7,7 @@ sonata_media:
             service:    sonata.media.provider.image
             resizer:    sonata.media.resizer.simple # sonata.media.resizer.square
             filesystem: sonata.media.filesystem.local # ftp
-            cdn:        sonata.media.cdn.panther
+#            cdn:        sonata.media.cdn.panther
             generator:  sonata.media.generator.default
             thumbnail:  sonata.media.thumbnail.format
             allowed_extensions: ['jpg', 'png', 'jpeg']
@@ -16,7 +16,7 @@ sonata_media:
             service:    sonata.media.provider.file
             resizer:    false
             filesystem: sonata.media.filesystem.local # ftp
-            cdn:        sonata.media.cdn.panther
+#            cdn:        sonata.media.cdn.panther
             generator:  sonata.media.generator.default
             thumbnail:  sonata.media.thumbnail.format
             allowed_extensions: ['pdf', 'txt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pttx', 'odt', 'odg', 'odp', 'ods', 'odc', 'odf', 'odb', 'csv', 'xml']
@@ -37,7 +37,12 @@ sonata_media:
             providers:
                 - sonata.media.provider.image
                 - sonata.media.provider.file
-
+            formats:
+                small: { width: 100 , quality: 70}
+                big:   { width: 500 , quality: 70}
+        card_inventory:
+            providers:
+                - sonata.media.provider.image
             formats:
                 small: { width: 100 , quality: 70}
                 big:   { width: 500 , quality: 70}
@@ -51,28 +56,28 @@ sonata_media:
                 big:   { width: 500 , quality: 70}
 
     cdn:
-        server:
-            path: /upload/media
-        panther:
-            path: http://temerso.byethost7.com/upload/media
-            site_id:
-            password:
-            username:
+#        server:
+#            path: /upload/media
+#        panther:
+#            path: http://temerso.byethost7.com/upload/media
+#            site_id:
+#            password:
+#            username:
 
     filesystem:
-        ftp:
-            directory: /htdocs/upload/media
-            host:      ftp.byethost7.com
-            username:  b7_25621416
-            password:  Wu5mY$_T#hVLpAM
-            port:      21
-            passive:   true
-            create:    true
-            mode:      2
+#        ftp:
+#            directory: /htdocs/upload/media
+#            host:      ftp.byethost7.com
+#            username:  b7_25621416
+#            password:  Wu5mY$_T#hVLpAM
+#            port:      21
+#            passive:   true
+#            create:    true
+#            mode:      2
         local:
             # Directory for uploads should be writable
-            directory: "%kernel.project_dir%/public/upload/media"
-            create: false
+            directory: "%kernel.project_dir%/public/uploads/media"
+            create: true
 
 
     class:

@@ -8,6 +8,11 @@
 
 namespace App\Classes\Marking;
 
+
+use App\Application\Sonata\MediaBundle\Entity\Media;
+use Doctrine\Common\Collections\Collection;
+use Sonata\MediaBundle\Generator\IdGenerator;
+
 /**
  * Карточка для задачи
  */
@@ -21,6 +26,7 @@ class TaskCard
     private $rfidTagNo;
     private $comment;
     private $commentProblemWithMark;
+    private $images;
     /**
      * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
      * @var int
@@ -186,6 +192,32 @@ class TaskCard
     public function setCommentProblemWithMark($commentProblemWithMark)
     {
         $this->commentProblemWithMark = $commentProblemWithMark;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param mixed $images
+     * @return $this
+     */
+    public function setImages(Collection $images = null)
+    {
+        $arImages = [];
+        if($images) {
+            $generator = new IdGenerator();
+            $images->map(function(Media $media) use ($generator, &$arImages) {
+//                $arImages[] = $media;
+                $arImages[] = Media::PATH . $generator->generatePath($media) . '/' . $media->getProviderReference();
+            });
+        }
+        $this->images = $arImages;
         return $this;
     }
 

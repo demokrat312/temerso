@@ -25,6 +25,7 @@ use App\Entity\Reference\RefWarehouse;
 use App\Entity\Reference\RefWearClass;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -1465,8 +1466,12 @@ class Card
     /**
      * @return Collection|Media[]
      */
-    public function getImages(): Collection
+    public function getImages(string $context = null): Collection
     {
+        if($context) {
+            $criteria = Criteria::create()->where(Criteria::expr()->eq("context", $context));
+            return $this->images->matching($criteria);
+        }
         return $this->images;
     }
 

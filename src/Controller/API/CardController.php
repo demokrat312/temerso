@@ -9,6 +9,7 @@
 namespace App\Controller\API;
 
 
+use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\ApiParentController;
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Classes\Task\TaskHelper;
@@ -17,6 +18,7 @@ use App\Classes\Task\TaskItemAdapter;
 use App\Entity\Card;
 use App\Entity\User;
 use App\Form\Type\Api\Card\CardEditType;
+use App\Form\Type\Api\Card\CardImageType;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
@@ -143,15 +145,14 @@ class CardController extends ApiParentController
 
             $card->setRfidTagNo($data['rfidTagNo']);
 
-            if($data['taskTypeId'] && ($data['comment'] || $data['commentProblemWithMark'])) {
+            if ($data['taskTypeId'] && ($data['comment'] || $data['commentProblemWithMark'])) {
                 $taskEntityClass = TaskItem::TYPE_CLASS[$data['taskTypeId']];
                 $taskCard = $card->getTaskCardOtherFieldsByTask(new $taskEntityClass());
                 $taskCard
                     ->setCard($card)
                     ->setTaskTypeId($data['taskTypeId'])
                     ->setComment($data['comment'])
-                    ->setCommentProblemWithMark($data['commentProblemWithMark'])
-                ;
+                    ->setCommentProblemWithMark($data['commentProblemWithMark']);
 
                 $em->persist($taskCard);
             }
@@ -165,5 +166,81 @@ class CardController extends ApiParentController
         } else {
             return $this->errorParamResponse();
         }
+    }
+
+    /**
+     * Загрузка изображения
+     * allowed_extensions: ['jpg', 'png', 'jpeg']
+     *
+     * @Route("file", methods={"POST"}, name="api_card_file")
+     *
+     * @SWG\Parameter(
+     *      name="image",
+     *      in="formData",
+     *      required=true,
+     *      type="file",
+     *      description="Изображение"
+     * )
+     *
+     * @SWG\Parameter(
+     *      name="id",
+     *      in="formData",
+     *      required=true,
+     *      type="number",
+     *      description="Ключ, карточки"
+     * )
+     *
+     * \@SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="Если изображение сохранилось возвращаем фразу 'OK!'",
+     *     @SWG\Schema(
+     *           @SWG\Property(property="result", type="string")
+     *     ),
+     * )
+     *
+     * @Security(name="Bearer")
+     */
+    public function CardFileAction(Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(CardImageType::class);
+        $form->submit(array_merge($request->request->all(), $request->files->all()));
+
+        if ($form->isValid()) {
+            $formData = $form->getData();
+            $card = $em->getRepository(Card::class)->find($formData['id']);
+            if (!$card) {
+                return $this->errorResponse('Карточка не найдена');
+            }
+
+            $media = $this->getMedia($formData['image']);
+
+            $card->addImage($media);
+
+            $em->persist($media);
+            $em->persist($card);
+
+            $em->flush();
+
+            return $this->defaultResponse(self::OK);
+        } else {
+            return $this->formErrorResponse($form);
+        }
+    }
+
+    private function getMedia($binaryContent) {
+
+        $provider = 'sonata.media.provider.image';
+        $context = 'card_inventory';
+
+        $media = new Media();
+        $media->setBinaryContent($binaryContent);
+        $media->setContext($context);
+        $media->setProviderName($provider);
+
+        $media->setEnabled(true);
+
+        return $media;
     }
 }

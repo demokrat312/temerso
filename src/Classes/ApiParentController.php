@@ -10,6 +10,7 @@ namespace App\Classes;
 
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 
 abstract class ApiParentController extends AbstractController
 {
@@ -24,16 +25,52 @@ abstract class ApiParentController extends AbstractController
         ]);
     }
 
-    protected function errorResponse(string $message, int $code = null)
+    protected function errorResponse(string $message, int $code = null, array $otherError = [])
     {
-        return $this->json([
+        return $this->json(array_merge([
             'message' => $message,
             'result' => null
-        ], $code ?: self::STATUS_CODE_400);
+        ], $otherError), $code ?: self::STATUS_CODE_400);
+    }
+
+    public function formErrorResponse(FormInterface $form)
+    {
+        $errors = [];
+
+        foreach ($form->all() as $child) {
+            $errors = array_merge(
+                $errors,
+                $this->buildErrorArray($child)
+            );
+        }
+
+        foreach ($form->getErrors() as $error) {
+            $errors[$error->getCause()->getPropertyPath()] = $error->getMessage();
+        }
+
+        return $this->errorResponse('Ошибка проверки формы', null, ['formError' => $errors]);
     }
 
     protected function errorParamResponse()
     {
         return $this->errorResponse('Отсутсвуют необходимые параметры');
+    }
+
+    private function buildErrorArray(FormInterface $form)
+    {
+        $errors = [];
+
+        foreach ($form->all() as $child) {
+            $errors = array_merge(
+                $errors,
+                $this->buildErrorArray($child)
+            );
+        }
+
+        foreach ($form->getErrors() as $error) {
+            $errors[$error->getCause()->getPropertyPath()] = $error->getMessage();
+        }
+
+        return $errors;
     }
 }

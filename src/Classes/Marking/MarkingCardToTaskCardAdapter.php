@@ -8,6 +8,7 @@
 
 namespace App\Classes\Marking;
 
+use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Entity\Card;
 
 /**
@@ -29,7 +30,9 @@ class MarkingCardToTaskCardAdapter
             ->setComment($card->getTaskCardOtherFieldsByTask(new $entityClass())->getComment())
             ->setCommentProblemWithMark($card->getTaskCardOtherFieldsByTask(new $entityClass())->getCommentProblemWithMark())
             ->setAccounting($card->getAccounting())
+            ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
             ;
+
 
         return $taskCard;
     }

@@ -14,6 +14,9 @@ use Sonata\MediaBundle\Entity\BaseMedia as BaseMedia;
  */
 class Media extends BaseMedia
 {
+    const CONTEXT_CARD_INVENTORY = 'card_inventory';
+
+    const PATH = '/uploads/media/';
     /**
      * @var int $id
      */

@@ -10,6 +10,7 @@ namespace App\Form\Type\Api\Card;
 
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -52,6 +53,13 @@ class CardEditType extends AbstractType
                     'description' => 'Оборудование есть, проблема с меткой(для инспекции)',
                 ],
             ])
+            ->add('files', FileType::class, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Изображения',
+                ],
+            ])
         ;
     }
 
@@ -63,6 +71,4 @@ class CardEditType extends AbstractType
             'method'             => 'POST',
         ));
     }
-
-
 }
