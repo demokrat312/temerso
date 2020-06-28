@@ -45,7 +45,11 @@ abstract class ApiParentController extends AbstractController
         }
 
         foreach ($form->getErrors() as $error) {
-            $errors[$error->getCause()->getPropertyPath()] = $error->getMessage();
+            if ($error->getCause()) {
+                $errors[$error->getCause()->getPropertyPath()] = $error->getMessage();
+            } else {
+                $errors[] = $error->getMessage();
+            }
         }
 
         return $this->errorResponse('Ошибка проверки формы', null, ['formError' => $errors]);
@@ -68,7 +72,11 @@ abstract class ApiParentController extends AbstractController
         }
 
         foreach ($form->getErrors() as $error) {
-            $errors[$error->getCause()->getPropertyPath()] = $error->getMessage();
+            if ($error->getCause()) {
+                $errors[$error->getCause()->getPropertyPath()] = $error->getMessage();
+            } else {
+                $errors[] = $error->getMessage();
+            }
         }
 
         return $errors;
