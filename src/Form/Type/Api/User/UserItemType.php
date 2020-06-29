@@ -6,7 +6,7 @@
  * Time: 13:14
  */
 
-namespace App\Form\Type\Api\Card;
+namespace App\Form\Type\Api\User;
 
 
 use Symfony\Component\Form\AbstractType;
