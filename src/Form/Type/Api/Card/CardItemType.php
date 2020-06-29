@@ -73,6 +73,19 @@ class CardItemType extends AbstractType
                     'description' => 'Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.',
                 ],
             ])
+            ->add('taskTypeId', null, [
+                'documentation' => [
+                    'type' => 'number',
+                    'description' => 'Тип задачи',
+                ],
+            ])
+            ->add('taskId', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'number',
+                    'description' => 'Ключ задачи. Для каждой задачи свои ключи',
+                ],
+            ])
         ;
     }
 }

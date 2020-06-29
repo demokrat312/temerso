@@ -27,6 +27,8 @@ class TaskCard
     private $comment;
     private $commentProblemWithMark;
     private $images;
+    private $taskId;
+    private $taskTypeId;
     /**
      * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
      * @var int
@@ -218,6 +220,42 @@ class TaskCard
             });
         }
         $this->images = $arImages;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaskId()
+    {
+        return $this->taskId;
+    }
+
+    /**
+     * @param mixed $taskId
+     * @return $this
+     */
+    public function setTaskId($taskId)
+    {
+        $this->taskId = $taskId;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaskTypeId()
+    {
+        return $this->taskTypeId;
+    }
+
+    /**
+     * @param mixed $taskTypeId
+     * @return $this
+     */
+    public function setTaskTypeId($taskTypeId)
+    {
+        $this->taskTypeId = $taskTypeId;
         return $this;
     }
 

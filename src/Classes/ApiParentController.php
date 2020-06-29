@@ -11,12 +11,27 @@ namespace App\Classes;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 abstract class ApiParentController extends AbstractController
 {
     const STATUS_CODE_400 = 400; // Client sent an invalid request
     const STATUS_CODE_403 = 403; // Access denied
     const OK = 'OK!';
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
+     * ApiParentController constructor.
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
 
     protected function defaultResponse($data)
     {
@@ -33,24 +48,14 @@ abstract class ApiParentController extends AbstractController
         ], $otherError), $code ?: self::STATUS_CODE_400);
     }
 
+    protected function serialize($data, $groups)
+    {
+        return $this->serializer->normalize($data,null, ['groups' => $groups]);
+    }
+
     public function formErrorResponse(FormInterface $form)
     {
-        $errors = [];
-
-        foreach ($form->all() as $child) {
-            $errors = array_merge(
-                $errors,
-                $this->buildErrorArray($child)
-            );
-        }
-
-        foreach ($form->getErrors() as $error) {
-            if ($error->getCause()) {
-                $errors[$error->getCause()->getPropertyPath()] = $error->getMessage();
-            } else {
-                $errors[] = $error->getMessage();
-            }
-        }
+        $errors = $this->buildErrorArray($form);
 
         return $this->errorResponse('Ошибка проверки формы', null, ['formError' => $errors]);
     }

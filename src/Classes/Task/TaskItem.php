@@ -157,7 +157,7 @@ class TaskItem
     {
         $newCards = [];
         foreach ($cardList as $card) {
-            $newCards[] = $this->markingCardToTaskCardAdapter->getCard($card, self::TYPE_CLASS[$this->getTaskTypeId()]);
+            $newCards[] = $this->markingCardToTaskCardAdapter->getCard($card, self::TYPE_CLASS[$this->getTaskTypeId()], $this->getId());
         }
         $this->cardList = $newCards;
 
