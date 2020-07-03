@@ -11,22 +11,7 @@
         };
 
         const initEvent = () => {
-            $('.js-next-tab').on('click', nextTabHandler);
             addValidateAmount();
-        };
-
-        const nextTabHandler = () => {
-            const $tab = $('.nav-tabs');
-
-            scrollTo($('body'));
-            $tab.find('li.active').next('li').find('a').trigger('click');
-
-        };
-
-        const scrollTo = ($element) => {
-            $('html, body').animate({
-                scrollTop: $element.offset().top
-            }, 300);
         };
 
         const addValidateAmount = () => {

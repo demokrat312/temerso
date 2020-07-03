@@ -17,7 +17,7 @@ use App\Entity\Card;
  */
 class MarkingCardToTaskCardAdapter
 {
-    public function getCard(Card $card, string $entityClass, int $taskId = null)
+    public function getCard(Card $card, string $entityClass = null, int $taskId = null)
     {
         $taskCard = new TaskCard();
 
@@ -28,13 +28,16 @@ class MarkingCardToTaskCardAdapter
             ->setSerialNoOfNipple($card->getSerialNoOfNipple())
             ->setCouplingSerialNumber($card->getCouplingSerialNumber())
             ->setRfidTagNo($card->getRfidTagNo())
-            ->setComment($card->getTaskCardOtherFieldsByTask(new $entityClass())->getComment())
-            ->setCommentProblemWithMark($card->getTaskCardOtherFieldsByTask(new $entityClass())->getCommentProblemWithMark())
             ->setAccounting($card->getAccounting())
             ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
-            ->setTaskId($taskId)
-            ->setTaskTypeId(TaskItem::TYPE_BY_CLASS[$entityClass])
-            ;
+            ->setTaskId($taskId);
+
+        if ($entityClass) {
+            $taskCard
+                ->setComment($card->getTaskCardOtherFieldsByTask(new $entityClass())->getComment())
+                ->setCommentProblemWithMark($card->getTaskCardOtherFieldsByTask(new $entityClass())->getCommentProblemWithMark())
+                ->setTaskTypeId(TaskItem::TYPE_BY_CLASS[$entityClass]);
+        }
 
 
         return $taskCard;

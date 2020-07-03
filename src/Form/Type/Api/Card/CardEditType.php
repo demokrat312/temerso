@@ -35,7 +35,7 @@ class CardEditType extends AbstractType
             ->add('rfidTagNo', null, [
                 'required' => false,
                 'documentation' => [
-                    'type' => 'number',
+                    'type' => 'string',
                     'description' => 'Метки RFID',
                 ],
             ])
@@ -51,13 +51,6 @@ class CardEditType extends AbstractType
                 'documentation' => [
                     'type' => 'string',
                     'description' => 'Оборудование есть, проблема с меткой(для инспекции)',
-                ],
-            ])
-            ->add('files', FileType::class, [
-                'required' => false,
-                'documentation' => [
-                    'type' => 'string',
-                    'description' => 'Изображения',
                 ],
             ])
         ;

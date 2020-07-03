@@ -94,7 +94,7 @@ class Card
     /**
      * № Метки RFID
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rfid_tag_no;
 

@@ -13,6 +13,7 @@ class ShowModeFooterButtonItem extends ShowModeFooterItemParent
 {
     private $routeAction;
     private $routeQuery;
+    private $buttonType = 'submit'; // button|submit|reset
 
     function getType(): string
     {
@@ -52,6 +53,24 @@ class ShowModeFooterButtonItem extends ShowModeFooterItemParent
     public function setRouteQuery($routeQuery)
     {
         $this->routeQuery = $routeQuery;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtonType(): string
+    {
+        return $this->buttonType;
+    }
+
+    /**
+     * @param string $buttonType
+     * @return $this
+     */
+    public function setButtonType(string $buttonType)
+    {
+        $this->buttonType = $buttonType;
         return $this;
     }
 }

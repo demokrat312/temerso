@@ -23,6 +23,7 @@ abstract class TaskAdminController extends DefaultAdminController
     const ROUTER_CHANGE_STATUS = 'change_status';
     const ROUTER_REMOVE_EXECUTOR = 'remove_executor';
     const ROUTER_EXCEL = 'excel';
+    const ROUTER_SHOW = 'show';
 
     /**
      * @var MarkingAccessService

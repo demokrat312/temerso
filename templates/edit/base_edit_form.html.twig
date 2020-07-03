@@ -42,7 +42,7 @@
             {% for menuItem in admin.showModeButtons %}
                 {% if menuItem.type == constant('\\App\\Classes\\ShowAdmin\\ShowModeFooterItemParent::TYPE_BUTTON') %}
                     {% set buttonItem = menuItem %}
-                    <button type="submit"
+                    <button type="{{ buttonItem.buttonType }}"
                             class="{{ buttonItem.classes }}"
                             value="{{ buttonItem.routeAction }}|{{ buttonItem.routeQuery }}"
                             name="{{ buttonItem.name }}">

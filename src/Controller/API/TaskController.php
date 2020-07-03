@@ -51,8 +51,8 @@ class TaskController extends ApiParentController
      *     response="200",
      *     description="Список заданий для текущего пользователя",
      *     @SWG\Schema(
-     *           @SWG\Property(property="result",
-     *           @Model(type=\App\Form\Type\Api\Task\TaskItemType::class))
+     *           type="array",
+     *           @Model(type=\App\Form\Type\Api\Task\TaskItemType::class)
      *     ),
      * )
      *
@@ -99,9 +99,7 @@ class TaskController extends ApiParentController
      * @SWG\Response(
      *     response="200",
      *     description="Если статус сменилься возвращаем фразу 'OK!'",
-     *     @SWG\Schema(
-     *           @SWG\Property(property="result", type="string")
-     *     ),
+     *     @SWG\Schema( type="string"),
      * )
      *
      * @Security(name="Bearer")

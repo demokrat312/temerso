@@ -9,6 +9,7 @@
 namespace App\Admin;
 
 use App\Classes\MainAdmin;
+use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Entity\Arrival;
 use App\Entity\Card;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -16,7 +17,6 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 
 /**
  * Приход
@@ -133,11 +133,11 @@ class ArrivalAdmin extends MainAdmin
                     'by_reference' => false,
                     'allow_delete' => true,
                 ))
-                ->add('next',  ButtonType::class, [
-                    'label' => 'Дальше',
-                    'mapped' => false,
-                    'attr' => ['class' => 'js-next-tab btn btn-primary'],
-                ])
+//                ->add('next',  ButtonType::class, [
+//                    'label' => 'Дальше',
+//                    'mapped' => false,
+//                    'attr' => ['class' => 'js-next-tab btn btn-primary'],
+//                ])
             ->end()->end();
 
         if ($this->isCurrentRoute('create')) {
@@ -170,11 +170,11 @@ class ArrivalAdmin extends MainAdmin
                     ->add('btCertificateNumber', null, ['label' => 'Номер Сертификата на комплект БТ'])
                     ->add('refWearClass', null, ['label' => 'Класс износа'])
                     ->add('amountCard', null, ['label' => 'Количество карточек'])
-                     ->add('next2',  ButtonType::class, [
-                            'label' => 'Дальше',
-                            'mapped' => false,
-                            'attr' => ['class' => 'js-next-tab btn btn-primary'],
-                        ])
+//                     ->add('next2',  ButtonType::class, [
+//                            'label' => 'Дальше',
+//                            'mapped' => false,
+//                            'attr' => ['class' => 'js-next-tab btn btn-primary'],
+//                        ])
                 ->end()->end()
                 ->tab('cardIndividual', ['label' => 'Индивидуальные значения'])
                     ->add('groupPipeSerialNumber', null, ['label' => 'Серийные номера группы труб'])
@@ -185,6 +185,17 @@ class ArrivalAdmin extends MainAdmin
                 ->end()->end()
             ;
         }
+        $actionButtons = new ShowModeFooterActionBuilder();
+
+        if ($this->isCurrentRoute('create')) {
+            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_PREV));
+            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_NEXT));
+            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CREATE_AND_EDIT));
+        } else {
+            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_UPDATE_AND_EDIT_AGAIN));
+        }
+
+        $this->setShowModeButtons($actionButtons->getButtonList());
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter)

@@ -40,12 +40,7 @@ class UserController extends ApiParentController
      * @SWG\Response(
      *     response="200",
      *     description="Информация о пользователе",
-     *     @SWG\Schema(
-     *           @SWG\Property(
-     *              property="result",
-     *              @Model(type=\App\Form\Type\Api\Card\UserItemType::class)
-     *           )
-     *     ),
+     *     @Model(type=\App\Form\Type\Api\User\UserItemType::class)
      * )
      *
      * @Security(name="Bearer")

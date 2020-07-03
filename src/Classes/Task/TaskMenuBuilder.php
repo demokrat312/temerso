@@ -9,6 +9,7 @@
 namespace App\Classes\Task;
 
 
+use App\Entity\Equipment;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
@@ -50,7 +51,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Комплектация в аренду')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(Equipment::class, 'create'))
                 ->setRouteTitle('link_action_create')
             ,
             (new TaskMenuItem())
@@ -95,7 +96,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Комплектация в аренду')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(Equipment::class, 'list'))
                 ->setRouteTitle('link_list')
             ,
             (new TaskMenuItem())

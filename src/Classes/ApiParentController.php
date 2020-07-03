@@ -35,9 +35,7 @@ abstract class ApiParentController extends AbstractController
 
     protected function defaultResponse($data)
     {
-        return $this->json([
-            'result' => $data
-        ]);
+        return $this->json($data);
     }
 
     protected function errorResponse(string $message, int $code = null, array $otherError = [])

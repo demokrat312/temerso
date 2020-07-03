@@ -20,6 +20,8 @@ class ShowModeFooterActionBuilder
     const BTN_CREATE_AND_CREATE = 'btn_create_and_create';
 
     const BTN_CUSTOM_REDIRECT = 'btn_custom_redirect';
+    const BTN_CUSTOM_PREV = 'btn_custom_prev';
+    const BTN_CUSTOM_NEXT = 'btn_custom_next';
 
     /**
      * @var array |ShowModeFooterItemParent[]
@@ -35,7 +37,6 @@ class ShowModeFooterActionBuilder
     {
         $this->buildDefault();
     }
-
 
     public function buildDefault()
     {
@@ -84,6 +85,20 @@ class ShowModeFooterActionBuilder
                 ->addIcon('fa-users')
                 ->setTitle('link_edit_acl')
                 ->setAdminAction('acl')
+            ,
+            (new ShowModeFooterButtonItem())
+                ->setClasses('btn btn-info js-prev-tab')
+                ->setName(self::BTN_CUSTOM_PREV)
+                ->addIcon('fa-arrow-circle-left')
+                ->setTitle('Назад')
+                ->setButtonType('button')
+            ,
+            (new ShowModeFooterButtonItem())
+                ->setClasses('btn btn-info js-next-tab')
+                ->setName(self::BTN_CUSTOM_NEXT)
+                ->addIcon('fa-arrow-circle-right')
+                ->setTitle('Далее')
+                ->setButtonType('button')
             ,
         ];
     }

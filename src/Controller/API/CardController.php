@@ -60,9 +60,8 @@ class CardController extends ApiParentController
      *     response="200",
      *     description="Список заданий для текущего пользователя",
      *     @SWG\Schema(
-     *           @SWG\Property(property="result", type="array",
-     *              @SWG\Items(ref=@Model(type=\App\Form\Type\Api\Card\CardItemType::class))
-     *           )
+     *           type="array",
+     *           @SWG\Items(ref=@Model(type=\App\Form\Type\Api\Card\CardItemType::class))
      *     ),
      * )
      *
@@ -123,10 +122,7 @@ class CardController extends ApiParentController
      * @SWG\Response(
      *     response="200",
      *     description="Возвращаем сохраненную карточку",
-     *     @SWG\Schema(
-     *           @SWG\Property(property="result",
-     *           @Model(type=\App\Form\Type\Api\Card\CardItemType::class))
-     *     ),
+     *     @Model(type=\App\Form\Type\Api\Card\CardItemType::class)
      * )
      *
      * @Security(name="Bearer")
@@ -145,6 +141,7 @@ class CardController extends ApiParentController
 
             $card->setRfidTagNo($data['rfidTagNo']);
 
+            $taskEntityClass = null;
             if ($data['taskTypeId'] && ($data['comment'] || $data['commentProblemWithMark'])) {
                 $taskEntityClass = TaskItem::TYPE_CLASS[$data['taskTypeId']];
                 $taskCard = $card->getTaskCardOtherFieldsByTask(new $taskEntityClass());
@@ -195,9 +192,7 @@ class CardController extends ApiParentController
      * @SWG\Response(
      *     response="200",
      *     description="Если изображение сохранилось возвращаем фразу 'OK!'",
-     *     @SWG\Schema(
-     *           @SWG\Property(property="result", type="string")
-     *     ),
+     *     @SWG\Schema( type="string"),
      * )
      *
      * @Security(name="Bearer")
