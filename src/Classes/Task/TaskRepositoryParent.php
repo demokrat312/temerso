@@ -51,12 +51,12 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
         $qb->setParameter('userId', $userId);
 
         // По доступам для постановщика(адимина)
-        $creatorExpr = $expr->andX(
+        /*$creatorExpr = $expr->andX(
             $expr->eq('m.createdBy', ':userId'),
             $expr->in('m.status', ':createdByStatusIds')
         );
         $qb
-            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
+            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));*/
         // По доступам для исполнителя(кладовщик)
         $qb->leftJoin('m.users', 'users');
         $executorExpr = $expr->andX(
@@ -66,7 +66,8 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
         $qb
             ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
 
-        $qb->andWhere($expr->orX($creatorExpr, $executorExpr));
+//        $qb->andWhere($expr->orX($creatorExpr, $executorExpr));
+        $qb->andWhere($executorExpr);
 
         return $qb;
     }

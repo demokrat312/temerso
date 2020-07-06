@@ -1,0 +1,73 @@
+<script>
+    {% autoescape 'js' %}
+    window.addEventListener("load", function () {
+        AdminEquipmentKitModel.init();
+    });
+
+    const AdminEquipmentKitModel = (function () {
+        let $template, $kitTitleInput, $addKitArea = null;
+        let kitCounter = 0;
+
+        let rowTemplate = `<tr>
+                        {#<input type="hidden" name="${'{{ form.children.title.vars.full_name }}'.replace('[]', '[{index}]')}" value="{kitTitle}">#}
+                        {#<input type="hidden" name="${'{{ form.children.card.vars.full_name }}'.replace('[]', '[{index}]')}" value="{id}">#}
+                        <td class="sonata-ba-list-field sonata-ba-list-field-batch">
+                            {orderNumber}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                            {title}
+                        </td>
+                        <td class="sonata-ba-list-field sonata-ba-list-field-select">
+                            <a class="btn btn-primary" href="#">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                Убрать
+                            </a>
+                        </td>
+                    </tr>`;
+
+        const init = () => {
+            console.log('AdminEquipmentKitModel init');
+            $template = $('#template');
+            $kitTitleInput = $('#title-kit');
+            $addKitArea = $('#add-kit-area');
+            adminListModel.setRowTemplate(rowTemplate);
+            adminListModel.rowTemplateCreateSub.push(cardRowTemplateParams);
+
+            initEvent();
+        };
+        const initEvent = () => {
+            $('#add-kit').on('click', addKit)
+
+        };
+        const addKit = function(e) {
+            e.preventDefault();
+            console.log('add kit');
+
+            $newTemplate = $($template.html()
+                // Заголовок группы
+                .replace('{kitTitle}', $kitTitleInput.val())
+                // Породяковый номер
+                .replace('{index}', kitCounter)
+            );
+            // Добавляем на страницу
+            $addKitArea.before($newTemplate);
+
+            // Обнуляем заголовок
+            $kitTitleInput.val('');
+            kitCounter += 1;
+
+            adminListModel.setTableList($newTemplate.find('.js-card-list'));
+        };
+
+        const cardRowTemplateParams = (rowTemplate, $tableList) => {
+            const $kitTemplate = $tableList.closest('.js-kit-template');
+            return rowTemplate
+                .replace(/{index}/g, $kitTemplate.data('kit_index'))
+                .replace('{kitTitle}', $kitTemplate.find('.panel-title').html())
+                ;
+        };
+
+        return {init}
+    })();
+    {% endautoescape %}
+</script>

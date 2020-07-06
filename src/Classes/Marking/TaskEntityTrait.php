@@ -51,6 +51,6 @@ trait TaskEntityTrait
 
     public function __toString()
     {
-        return (string)$this->createdBy->getFio();
+        return $this->createdBy ? (string)$this->createdBy->getFio() : 'error';
     }
 }

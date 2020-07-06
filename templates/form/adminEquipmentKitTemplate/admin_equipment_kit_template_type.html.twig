@@ -1,0 +1,62 @@
+{% block _equipment_kit_collection_kits_row %}
+    1
+{% endblock %}
+{% block equipment_kit_collection_row %}
+    55
+{% endblock %}
+
+{% block admin_equipment_kit_template_row %}
+    <div class="row">
+        {#        {{ dump(form.vars) }}#}
+        <div id="template" class="hidden">
+            <div data-kit_index="{index}" class="js-kit-template panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{kitTitle}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="control-label">
+                            {{ label|trans({}, translation_domain) }}
+                        </label>
+                        <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                            <a href="{{ cardAdmin.generateUrl('list') }}"
+                               class="js-add-cards btn btn-success btn-sm sonata-ba-action" title="Добавить новый">
+                                <i class="fa fa-plus-circle"></i>
+                                Добавить
+                            </a>
+                        </div>
+                        <table class="js-card-list table table-bordered table-striped table-hover sonata-ba-list">
+                            <thead>
+                            <tr class="sonata-ba-list-field-header">
+                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
+                                    #
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Название
+                                </th>
+                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="add-kit-area" class="col-lg-12">
+            <div class="input-group">
+                <input id="title-kit" type="text" class="form-control" placeholder="Название комплекта">
+                <span class="input-group-btn"><button id="add-kit" class="btn btn-default"
+                                                      type="button">Добавить</button></span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+    {% include 'form/adminList/admin_list_modal.html.twig' %}
+    {% include 'form/adminList/admin_list_script.html.twig' %}
+    {% include '@app/form/adminEquipmentKitTemplate/admin_equipment_kit_template_script.html.twig' %}
+{% endblock %}

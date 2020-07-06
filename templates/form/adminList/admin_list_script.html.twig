@@ -5,6 +5,7 @@
         let $modal = null;
         let $tableList = null;
         let listUrl = null;
+        let rowTemplateCreateSub = [];
         const emptyRowTemplate = '<tr id="row-empty"><td colspan="3">Нету выбранных записей</td></tr>';
         let rowTemplate = `<tr>
                         <input type="hidden" name="{{ form.vars.full_name }}" value="{id}">
@@ -30,15 +31,18 @@
             initEvent();
         };
         const initEvent = () => {
-            $('#admin_list_modal_{{ id }}').on('click', showModal);
+            $(document).on('click', '.js-add-cards', showModal);
             $modal.on('click', '.sonata-filters-box button,.sonata-filters-box a', modalActions);
             $modal.on('click', '.sonata-ba-list-field-select', selectItem);
             $modal.on('click', '.js-add-selected', selectAllItem);
-            $tableList.on('click', '.sonata-ba-list-field-select', removeItem)
+            $(document).on('click', '.js-card-list .sonata-ba-list-field-select', removeItem)
         };
         const showModal = (event) => {
             event.preventDefault();
-            listUrl = $(event.target).attr('href');
+            const $target = $(event.target);
+            $tableList = $target.closest('.form-group').find('table');
+            console.log('table list = ', $tableList);
+            listUrl = $target.attr('href');
             loadModalBody(listUrl);
         };
 
@@ -89,13 +93,16 @@
             const id = $row.find('.sonata-ba-list-field-batch').attr('objectid');
             const title = $row.find('td:eq(' + $('.js-field-general-name').index() + ')').text().trim();
 
-            const newRow = $(rowTemplate
+            const rowTemplateUpdated = setRowTemplateParam(rowTemplate);
+
+            const $newRow = $(rowTemplateUpdated
                 .replace('{id}', id)
                 .replace('{orderNumber}', $tableList.find('tbody tr:not(#row-empty)').length + 1)
                 .replace('{title}', title)
             );
 
-            $tableList.find('tbody').append(newRow);
+            console.log('addItem');
+            $tableList.find('tbody').append($newRow);
             $row.remove();
 
             tableEmptyRowToggle();
@@ -142,8 +149,10 @@
 
         const removeDuplicate = () => {
             const recordList = [];
-            $tableList.find('input').each((index, input) => {
-                recordList.push(input.value);
+            $('.js-card-list').each((index, table) => {
+                $(table).find('input').each((index, input) => {
+                    recordList.push(input.value);
+                });
             });
 
             getTableListLoaded().find('tr').each((index, tr) => {
@@ -157,7 +166,11 @@
         const removeItem = (event) => {
             event.preventDefault();
 
-            $(event.target).closest('tr').remove();
+            const $target = $(event.target);
+            $tableList = $target.closest('.form-group').find('table');
+            console.log('table list = ', $tableList);
+            $target.closest('tr').remove();
+
             tableEmptyRowToggle();
         };
 
@@ -165,6 +178,8 @@
          * Добавление и удаление "Нету выбранных записей"
          */
         const tableEmptyRowToggle = () => {
+            if(!$tableList.length)return;
+
             const rowCount = $tableList.find('tbody').find('tr').length;
             if(rowCount > 1) {
                 $tableList.find('#row-empty').remove();
@@ -186,7 +201,26 @@
             return $modal.find('.sonata-ba-list');
         };
 
-        return {init}
+        const setTableList = ($newTableList) => {
+            console.log('setTableList');
+            $tableList = $newTableList;
+            console.log('table list = ', $tableList);
+            tableEmptyRowToggle();
+        };
+
+        const setRowTemplate = (newRowTemplate) => {
+            rowTemplate = newRowTemplate;
+        };
+
+        // для перезапись из другого модуля
+        const setRowTemplateParam = (rowTemplate) => {
+            rowTemplateCreateSub.forEach((sub) => {
+                rowTemplate = sub(rowTemplate, $tableList);
+            });
+            return rowTemplate;
+        };
+
+        return {init, setTableList, setRowTemplate, rowTemplateCreateSub}
     })();
     window.addEventListener("load", function () {
         adminListModel.init();

@@ -6,8 +6,9 @@ use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
 use App\Classes\Task\TaskAdminParent;
 use App\Controller\Admin\MarkingAdminController;
-use App\Entity\Card;
-use App\Form\Type\AdminListType;
+use App\Entity\EquipmentKit;
+use App\Form\Type\Equipment\AdminEquipmentKitTemplateType;
+use App\Form\Type\Equipment\EquipmentKitType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -73,19 +74,19 @@ class EquipmentAdmin extends TaskAdminParent
             ->end()
             ->tab('tab_two')
                 ->with('block_two')
-                    ->add('files', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
-                        'entry_type' => AdminListType::class,
-                        'label' => 'Комплекты',
-                        'entry_options' => array(
-                            'class' => Card::class,
-                            'field_show_name' => 'generalName',
-                            'multiple' => true,
+//                    ->add('kits', CollectionType::class, [
+//                        'entry_type' => AdminEquipmentKitTemplateType::class,
+//    //                    'class' => EquipmentKit::class,
+//                        'label' => 'Карточки',
+//                        'allow_add' => true, //This should do the trick.
+//                    ])
+                        ->add('kits', AdminEquipmentKitTemplateType::class, [
                             'label' => 'Карточки',
-                        ),
-                        'allow_add' => true,
-                        'by_reference' => false,
-                        'allow_delete' => true,
-                    ))
+                            'class' => EquipmentKit::class,
+//                            'entry_type' => EquipmentKitType::class,
+//                            'entity_options' => ['class' => EquipmentKit::class],
+//                            'allow_add' => true,
+                        ])
                 ->end()
             ->end()
         ;
