@@ -10,8 +10,10 @@
             $withKitInput = null;
         let kitCounter = 0;
 
+        const specificationInputName = "{{ form.vars.prototype.children.specification.vars.full_name }}";
+        const kitTitleInputName = "{{ form.vars.prototype.children.title.vars.full_name }}";
+
         let rowTemplate = `<tr>
-                        <input type="hidden" name="{{ form.vars.prototype.children.title.vars.full_name }}" value="{kitTitle}">
                         <input type="hidden" name="{{ form.vars.prototype.children.card.vars.full_name }}" value="{id}">
                         <td class="sonata-ba-list-field sonata-ba-list-field-batch">
                             {orderNumber}
@@ -28,7 +30,7 @@
                     </tr>`;
 
         const init = () => {
-            console.log('AdminEquipmentKitModel init');
+            console.log('AdminEquipmentKitModel init', specificationInputName);
             $templateCards = $('#template-cards');
             $templateSpecification = $('#template-specification');
             $kitTitleInput = $('#title-kit');
@@ -42,11 +44,12 @@
         };
         const initEvent = () => {
             $('#add-kit').on('click', addKit);
+            $(document).on('click', '.js-add-specification', addSpecification);
             // Выбрать тип комплекта
             $('[name$="[kitType]"]').on('change', changeKitType).trigger('change');
 
         };
-        const addKit = function(e) {
+        const addKit = function (e) {
             e.preventDefault();
             console.log('add kit');
 
@@ -54,7 +57,7 @@
             console.log(withKitValue);
 
             // С выборкой из каталога
-            if(withKitValue === 'withCatalog') {
+            if (withKitValue === 'withCatalog') {
                 $template = $templateCards;
             } else {
                 $template = $templateSpecification;
@@ -62,10 +65,17 @@
 
             $newTemplate = $($template.html()
                 // Заголовок группы
-                .replace('{kitTitle}', $kitTitleInput.val())
-                // Породяковый номер
-                .replace('{index}', kitCounter)
+                    .replace('{kitTitle}', $kitTitleInput.val())
+                    // Породяковый номер
+                    .replace('{index}', kitCounter)
             );
+
+            const kitTitleIndex = kitTitleInputName.replace('__name__', kitCounter);
+            $newTemplate.prepend($(`
+            <input type="hidden" name="${kitTitleIndex}" value="${$kitTitleInput.val()}">
+            `));
+
+
             // Добавляем на страницу
             $addKitArea.before($newTemplate);
 
@@ -87,26 +97,90 @@
         const changeKitType = (e) => {
             const element = e.target;
             const selected = element.options[element.selectedIndex].value;
-            if(selected === 'multi') {
-                showInputGroup(['kitCount', 'kitItemCountType']);
-                hideInputGroup(['itemCountType']);
+            if (selected === 'multi') {
+                showInputGroup(['kitCount', 'kitCardCount']);
+                hideInputGroup(['cardCount']);
             } else {
-                showInputGroup(['itemCountType']);
-                hideInputGroup(['kitCount', 'kitItemCountType']);
+                showInputGroup(['cardCount']);
+                hideInputGroup(['kitCount', 'kitCardCount']);
             }
             console.log(selected);
         };
 
         const hideInputGroup = (inputsName) => {
             inputsName.map((inputName) => {
-                $('[name$="[' + inputName + ']"]').closest('.form-group').addClass('hidden');
+                const $input = $('[name$="[' + inputName + ']"]');
+                $input.removeAttr('required');
+                $input.closest('.form-group').addClass('hidden');
             });
         };
 
         const showInputGroup = (inputsName) => {
             inputsName.map((inputName) => {
-                $('[name$="[' + inputName + ']"]').closest('.form-group').removeClass('hidden');
+                const $input = $('[name$="[' + inputName + ']"]');
+                $input.attr('required', 'required');
+                $input.closest('.form-group').removeClass('hidden');
             });
+        };
+
+        const addSpecification = (e) => {
+            e.preventDefault();
+            const $button = $(e.target);
+            const $table = $button.closest('.form-group').find('table');
+            const $tableHead = $table.find('thead tr');
+            const $tableBody = $table.find('tbody tr');
+
+            $tableHead.html('');
+            $tableBody.html('');
+
+            CrudEditModel.modalByUrl(
+                $button.attr('href'), {
+
+                    showCallback: ($modal) => {
+                        console.log('show');
+                        $modal.find('.form-actions').remove();
+                    },
+
+                    buttonCallback: (event, $modal) => {
+                        console.log('click');
+
+                        $modal.find('.modal-body').find('[name]').each((index, input) => {
+                            const $input = $(input);
+                            const inputName = $input.attr('name').replace(/.+\[(.+)\]/, '$1');
+                            if(inputName === '_token') return;
+
+                            const label = $input.closest('.form-group').find('label').html().trim();
+                            let title, value = null;
+
+                            if ($input.is('select')) {
+                                title = $input.find(':selected').text();
+                                value = $input.find(':selected').val();
+                            } else {
+                                title = $input.val();
+                                value = title;
+                            }
+
+                            $tableHead.append(
+                                $(`<th class="sonata-ba-list-field-header-text">
+                                    ${label}
+                                </th>`)
+                            );
+
+                            const inputPath = specificationInputName.replace('__name__', kitCounter - 1);
+                            $tableBody.append(
+                                $(`<td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    ${title}
+                                    <input type="hidden" name="${inputPath}[${inputName}]" value="${value}">
+                                </td>`)
+                            );
+                        });
+
+                        $table.removeClass('hidden');
+
+                        $modal.modal('hide');
+                    }
+                }
+            );
         };
 
         return {init}

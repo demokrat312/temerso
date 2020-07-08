@@ -25,7 +25,9 @@ class EquipmentKitType extends AbstractType
             ->add('card', EntityType::class, [
                 'class' => Card::class,
                 'multiple' => true
-            ]);
+            ])
+            ->add('specification', SpecificationType::class)
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

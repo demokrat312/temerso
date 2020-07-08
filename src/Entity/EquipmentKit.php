@@ -21,7 +21,7 @@ class EquipmentKit
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Equipment", inversedBy="kits")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Equipment", inversedBy="kits", cascade={"persist"})
      */
     private $equipment;
 
@@ -36,7 +36,7 @@ class EquipmentKit
     private $title;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\EquipmentKitSpecification", mappedBy="уequipmentKit", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\EquipmentKitSpecification", mappedBy="equipmentKit", cascade={"persist", "remove"})
      */
     private $specification;
 

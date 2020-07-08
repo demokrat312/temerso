@@ -59,9 +59,9 @@ class EquipmentAdmin extends TaskAdminParent
                                 'Множественный комплект' => 'multi',
                             ],
                         ])
-                    ->add('itemCountType', NumberType::class,['label' => 'Укажите количество единиц оборудования', 'mapped' => false])
-                    ->add('kitCount', NumberType::class,['label' => 'Укажите количество комплектов', 'empty_data' => 1, 'mapped' => false])
-                    ->add('kitItemCountType', TextType::class,['label' => 'Укажите количество единиц оборудования в каждом из комплектов(через запятую)', 'mapped' => false])
+                    ->add('cardCount', NumberType::class,['label' => 'Укажите количество единиц оборудования', 'mapped' => false, 'empty_data' => 0])
+                    ->add('kitCount', NumberType::class,['label' => 'Укажите количество комплектов', 'empty_data' => '1', 'mapped' => false])
+                    ->add('kitCardCount', TextType::class,['label' => 'Укажите количество единиц оборудования в каждом из комплектов(через запятую)', 'mapped' => false])
                     ->add('withKit', ChoiceType::class,
                         [
                             'label' => 'Каталог',
@@ -79,7 +79,6 @@ class EquipmentAdmin extends TaskAdminParent
                         ->add('kits', AdminEquipmentKitTemplateType::class, [
                             'label' => 'Карточки',
                             'entry_type' => EquipmentKitType::class,
-                            'entity_options' => ['class' => EquipmentKit::class],
                         ])
                 ->end()
             ->end()

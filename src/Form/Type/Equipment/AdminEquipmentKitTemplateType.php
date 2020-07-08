@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdminEquipmentKitTemplateType extends AbstractType
@@ -128,18 +129,40 @@ class AdminEquipmentKitTemplateType extends AbstractType
         $view->vars['fieldShowName'] = $options['field_show_name'];
         $view->vars['cardAdmin'] = $this->pool->getAdminByClass(Card::class);
         $view->vars['values'] = $form->getData();
+
+
+        $view->vars = array_replace($view->vars, [
+            'allow_add' => $options['allow_add'],
+            'allow_delete' => $options['allow_delete'],
+        ]);
+
+        if ($form->getConfig()->hasAttribute('prototype')) {
+            $prototype = $form->getConfig()->getAttribute('prototype');
+            $view->vars['prototype'] = $prototype->setParent($form)->createView($view);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        $entryOptionsNormalizer = function (Options $options, $value) {
+            $value['block_name'] = 'entry';
+
+            return $value;
+        };
+
         $resolver->setDefaults([
             'field_show_name' => '',
             'compound' => true,
             'multiple' => true,
             'allow_add' => true,
             'entry_type' => null,
-            'entity_options' => [],
+            'by_reference' => false,
         ]);
+
+
+
+        $resolver->setNormalizer('entry_options', $entryOptionsNormalizer);
+        $resolver->setAllowedTypes('delete_empty', ['bool', 'callable']);
     }
 
     public function getParent()

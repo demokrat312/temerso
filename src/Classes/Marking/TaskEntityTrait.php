@@ -27,7 +27,7 @@ trait TaskEntityTrait
      */
     public function getTaskType()
     {
-        return TaskItem::TYPE_TITLE[TaskItem::TYPE_MARKING];
+        return TaskItem::TYPE_TITLE[TaskItem::TYPE_BY_CLASS[self::class]];
     }
 
     /**

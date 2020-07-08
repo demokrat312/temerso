@@ -11,6 +11,7 @@ namespace App\Classes\Task;
 
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Entity\Card;
+use App\Entity\Equipment;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
@@ -27,23 +28,27 @@ class TaskItem
     const TYPE_MARKING = 1;
     const TYPE_INVENTORY = 2;
     const TYPE_INSPECTION = 3;
+    const TYPE_EQUIPMENT = 4;
 
     const TYPE_TITLE = [
         self::TYPE_MARKING => 'Маркировка',
         self::TYPE_INVENTORY => 'Инвентаризация',
         self::TYPE_INSPECTION => 'Инспекция',
+        self::TYPE_EQUIPMENT => 'Комплектация в аренду',
     ];
 
     const TYPE_CLASS = [
         self::TYPE_MARKING => Marking::class,
         self::TYPE_INVENTORY => Inventory::class,
         self::TYPE_INSPECTION => Inspection::class,
+        self::TYPE_EQUIPMENT => Equipment::class,
     ];
 
     const TYPE_BY_CLASS = [
         Marking::class => self::TYPE_MARKING,
         Inventory::class => self::TYPE_INVENTORY,
         Inspection::class => self::TYPE_INSPECTION,
+        Equipment::class => self::TYPE_EQUIPMENT,
     ];
 
     /**
