@@ -74,7 +74,7 @@ services:
             - '@App\Service\Marking\MarkingTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Инспекция, group: Задания, show_in_dashboard: true}
-    App\Admin\EquipmentAdmin:
+    App\Admin\Equipment\EquipmentAdmin:
         arguments:
             - ~
             - App\Entity\Equipment
@@ -84,3 +84,10 @@ services:
             - '@App\Service\Marking\MarkingTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Комплектация, group: Задания, show_in_dashboard: true}
+    App\Admin\Equipment\EquipmentKitSpecificationAdmin:
+        arguments:
+            - ~
+            - App\Entity\EquipmentKitSpecification
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Характеристики для комплекта, group: Комплектация, show_in_dashboard: false}

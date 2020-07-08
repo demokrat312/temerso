@@ -10,9 +10,11 @@ namespace App\Form\Type\Equipment;
 
 
 use App\Entity\Card;
+use App\Entity\EquipmentKit;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EquipmentKitType extends AbstractType
 {
@@ -24,5 +26,12 @@ class EquipmentKitType extends AbstractType
                 'class' => Card::class,
                 'multiple' => true
             ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => EquipmentKit::class,
+        ]);
     }
 }

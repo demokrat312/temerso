@@ -5,12 +5,14 @@
     });
 
     const AdminEquipmentKitModel = (function () {
-        let $template, $kitTitleInput, $addKitArea = null;
+        let $templateCards, $templateSpecification, $kitTitleInput, $addKitArea,
+            // Каталог - добавляем карточки или характеристики
+            $withKitInput = null;
         let kitCounter = 0;
 
         let rowTemplate = `<tr>
-                        {#<input type="hidden" name="${'{{ form.children.title.vars.full_name }}'.replace('[]', '[{index}]')}" value="{kitTitle}">#}
-                        {#<input type="hidden" name="${'{{ form.children.card.vars.full_name }}'.replace('[]', '[{index}]')}" value="{id}">#}
+                        <input type="hidden" name="{{ form.vars.prototype.children.title.vars.full_name }}" value="{kitTitle}">
+                        <input type="hidden" name="{{ form.vars.prototype.children.card.vars.full_name }}" value="{id}">
                         <td class="sonata-ba-list-field sonata-ba-list-field-batch">
                             {orderNumber}
                         </td>
@@ -27,21 +29,36 @@
 
         const init = () => {
             console.log('AdminEquipmentKitModel init');
-            $template = $('#template');
+            $templateCards = $('#template-cards');
+            $templateSpecification = $('#template-specification');
             $kitTitleInput = $('#title-kit');
             $addKitArea = $('#add-kit-area');
+            $withKitInput = $('[name$="[withKit]"]');
+
             adminListModel.setRowTemplate(rowTemplate);
             adminListModel.rowTemplateCreateSub.push(cardRowTemplateParams);
 
             initEvent();
         };
         const initEvent = () => {
-            $('#add-kit').on('click', addKit)
+            $('#add-kit').on('click', addKit);
+            // Выбрать тип комплекта
+            $('[name$="[kitType]"]').on('change', changeKitType).trigger('change');
 
         };
         const addKit = function(e) {
             e.preventDefault();
             console.log('add kit');
+
+            const withKitValue = $withKitInput.val();
+            console.log(withKitValue);
+
+            // С выборкой из каталога
+            if(withKitValue === 'withCatalog') {
+                $template = $templateCards;
+            } else {
+                $template = $templateSpecification;
+            }
 
             $newTemplate = $($template.html()
                 // Заголовок группы
@@ -62,9 +79,34 @@
         const cardRowTemplateParams = (rowTemplate, $tableList) => {
             const $kitTemplate = $tableList.closest('.js-kit-template');
             return rowTemplate
-                .replace(/{index}/g, $kitTemplate.data('kit_index'))
+                .replace(/__name__/g, $kitTemplate.data('kit_index'))
                 .replace('{kitTitle}', $kitTemplate.find('.panel-title').html())
                 ;
+        };
+
+        const changeKitType = (e) => {
+            const element = e.target;
+            const selected = element.options[element.selectedIndex].value;
+            if(selected === 'multi') {
+                showInputGroup(['kitCount', 'kitItemCountType']);
+                hideInputGroup(['itemCountType']);
+            } else {
+                showInputGroup(['itemCountType']);
+                hideInputGroup(['kitCount', 'kitItemCountType']);
+            }
+            console.log(selected);
+        };
+
+        const hideInputGroup = (inputsName) => {
+            inputsName.map((inputName) => {
+                $('[name$="[' + inputName + ']"]').closest('.form-group').addClass('hidden');
+            });
+        };
+
+        const showInputGroup = (inputsName) => {
+            inputsName.map((inputName) => {
+                $('[name$="[' + inputName + ']"]').closest('.form-group').removeClass('hidden');
+            });
         };
 
         return {init}

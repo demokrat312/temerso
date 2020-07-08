@@ -11,6 +11,7 @@ namespace App\Classes\Task;
 
 use App\Entity\Inventory;
 use App\Entity\Marking;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskHelper
 {
@@ -123,6 +124,9 @@ class TaskHelper
     public function findTask(int $taskId, string $taskClass)
     {
         $entityItem = $this->findTaskEntity($taskId, $taskClass);
+        if(!$entityItem) {
+            return null;
+        }
 
         $markingToTaskAdapter = new TaskItemAdapter();
         return $markingToTaskAdapter->getTask($entityItem);

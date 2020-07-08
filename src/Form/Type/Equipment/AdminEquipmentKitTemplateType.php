@@ -10,11 +10,10 @@ namespace App\Form\Type\Equipment;
 
 
 use App\Entity\Card;
-use App\Entity\EquipmentKit;
 use Sonata\AdminBundle\Admin\Pool;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -35,7 +34,7 @@ class AdminEquipmentKitTemplateType extends AbstractType
         $this->pool = $pool;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+   /* public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title')
@@ -44,7 +43,7 @@ class AdminEquipmentKitTemplateType extends AbstractType
                 'multiple' => true
             ]);
 
-//        $builder->resetViewTransformers();
+        $builder->resetViewTransformers();
         $builder
             ->addModelTransformer(new CallbackTransformer(
                 function ($collection) {
@@ -96,8 +95,34 @@ class AdminEquipmentKitTemplateType extends AbstractType
                 }
             ), true)
         ;
-    }
+    }*/
 
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['allow_add'] && $options['prototype']) {
+            $prototypeOptions = array_replace([
+                'required' => $options['required'],
+                'label' => $options['prototype_name'].'label__',
+            ], $options['entry_options']);
+
+            if (null !== $options['prototype_data']) {
+                $prototypeOptions['data'] = $options['prototype_data'];
+            }
+
+            $prototype = $builder->create($options['prototype_name'], $options['entry_type'], $prototypeOptions);
+            $builder->setAttribute('prototype', $prototype->getForm());
+        }
+
+        $resizeListener = new ResizeFormListener(
+            $options['entry_type'],
+            $options['entry_options'],
+            $options['allow_add'],
+            $options['allow_delete'],
+            $options['delete_empty']
+        );
+
+        $builder->addEventSubscriber($resizeListener);
+    }
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['fieldShowName'] = $options['field_show_name'];
@@ -112,12 +137,14 @@ class AdminEquipmentKitTemplateType extends AbstractType
             'compound' => true,
             'multiple' => true,
             'allow_add' => true,
+            'entry_type' => null,
+            'entity_options' => [],
         ]);
     }
 
     public function getParent()
     {
-//        return CollectionType::class;
-        return \Symfony\Bridge\Doctrine\Form\Type\EntityType::class;
+        return CollectionType::class;
+//        return \Symfony\Bridge\Doctrine\Form\Type\EntityType::class;
     }
 }

@@ -35,6 +35,11 @@ class EquipmentKit
      */
     private $title;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\EquipmentKitSpecification", mappedBy="уequipmentKit", cascade={"persist", "remove"})
+     */
+    private $specification;
+
     public function __construct()
     {
         $this->card = new ArrayCollection();
@@ -91,6 +96,24 @@ class EquipmentKit
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getSpecification(): ?EquipmentKitSpecification
+    {
+        return $this->specification;
+    }
+
+    public function setSpecification(?EquipmentKitSpecification $specification): self
+    {
+        $this->specification = $specification;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newEquipmentKit = null === $specification ? null : $this;
+        if ($specification->getEquipmentKit() !== $newEquipmentKit) {
+            $specification->setEquipmentKit($newEquipmentKit);
+        }
 
         return $this;
     }

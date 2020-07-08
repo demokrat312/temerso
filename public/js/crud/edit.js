@@ -1,8 +1,8 @@
 (function ($) {
     $(document).ready(function () {
-        GeneralModel.init();
+        CrudEditModel.init();
     });
-    const GeneralModel = (function () {
+    const CrudEditModel = (function () {
         const init = () => {
             console.log('edit init');
             initEvent();

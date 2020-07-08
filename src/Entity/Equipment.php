@@ -89,7 +89,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     private $createdBy;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentKit", mappedBy="equipment")
+     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentKit", mappedBy="equipment",cascade={"persist"})
      */
     private $kits;
 

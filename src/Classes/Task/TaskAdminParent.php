@@ -3,6 +3,7 @@
 namespace App\Classes\Task;
 
 use App\Classes\MainAdmin;
+use App\Classes\Marking\MarkingAccessHelper;
 use App\Service\Marking\MarkingTopMenuButtonService;
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
@@ -61,24 +62,44 @@ abstract class TaskAdminParent extends MainAdmin
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query = parent::configureQuery($query);
-        if ($this->security->isGranted([User::ROLE_INSPECTOR, User::ROLE_STOREKEEPER])) {
+//        if ($this->security->isGranted([User::ROLE_INSPECTOR, User::ROLE_STOREKEEPER])) {
             $al = $query->getRootAliases()[0];
             /** @var \Doctrine\ORM\Query\Expr $expr */
             $expr = $query->expr();
             /** @var \Doctrine\ORM\QueryBuilder $em */
             $em = $query->getQueryBuilder();
 
-            $em
-                ->leftJoin($al . '.users', 'user')
-                ->andWhere($expr->andX(
-                    $expr->eq(sprintf('%s.%s', 'user', 'id'), ':userId'),
-                    $expr->in(sprintf('%s.%s', $al, 'status'), ':statusIds')
-                ));
+//            $em
+//                ->leftJoin($al . '.users', 'user')
+//                ->andWhere($expr->andX(
+//                    $expr->eq(sprintf('%s.%s', 'user', 'id'), ':userId'),
+//                    $expr->in(sprintf('%s.%s', $al, 'status'), ':statusIds')
+//                ));
+//
+//            $query
+//                ->setParameter('userId', $this->security->getUser()->getId())
+//                ->setParameter('statusIds', [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION]);
 
-            $query
-                ->setParameter('userId', $this->security->getUser()->getId())
-                ->setParameter('statusIds', [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION]);
-        }
+            $em->setParameter('userId', $this->security->getToken()->getUser()->getId());
+
+            // По доступам для постановщика(адимина)
+            $creatorExpr = $expr->andX(
+                $expr->eq(sprintf('%s.%s', $al, 'createdBy'), ':userId'),
+                $expr->in(sprintf('%s.%s', $al, 'status'), ':createdByStatusIds')
+            );
+            $em
+                ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
+            // По доступам для исполнителя(кладовщик)
+            $em->leftJoin(sprintf('%s.%s', $al, 'users'), 'users');
+            $executorExpr = $expr->andX(
+                $expr->eq('users.id', ':userId'),
+                $expr->in(sprintf('%s.%s', $al, 'status'), ':executorStatusIds')
+            );
+            $em
+                ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
+
+            $em->andWhere($expr->orX($creatorExpr, $executorExpr));
+//        }
         return $query;
     }
 

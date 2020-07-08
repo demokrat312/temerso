@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin;
+namespace App\Admin\Equipment;
 
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
@@ -12,6 +12,7 @@ use App\Form\Type\Equipment\EquipmentKitType;
 use Sonata\AdminBundle\Form\FormMapper;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Комлектация в аренду
@@ -27,7 +28,7 @@ class EquipmentAdmin extends TaskAdminParent
     {
         $editForm
             ->tab('tab_one', ['label' => 'Главная', 'class' => 'col-md-12'])
-                ->with('block_one')
+                ->with('')
                     ->add('mainReason', null, ['label' => 'Основание формирования комплекта'])
                     ->add('users', \Sonata\AdminBundle\Form\Type\ModelType::class, [
                         'property' => 'fio',
@@ -58,8 +59,9 @@ class EquipmentAdmin extends TaskAdminParent
                                 'Множественный комплект' => 'multi',
                             ],
                         ])
-                    ->add('kitCount', NumberType::class, ['label' => 'Укажите количество комплектов', 'empty_data' => 1, 'mapped' => false])
-                    ->add('kitItemCountType', NumberType::class, ['label' => 'Укажите количество единиц оборудования в каждом из комплектов(через запятую)', 'mapped' => false])
+                    ->add('itemCountType', NumberType::class,['label' => 'Укажите количество единиц оборудования', 'mapped' => false])
+                    ->add('kitCount', NumberType::class,['label' => 'Укажите количество комплектов', 'empty_data' => 1, 'mapped' => false])
+                    ->add('kitItemCountType', TextType::class,['label' => 'Укажите количество единиц оборудования в каждом из комплектов(через запятую)', 'mapped' => false])
                     ->add('withKit', ChoiceType::class,
                         [
                             'label' => 'Каталог',
@@ -72,20 +74,12 @@ class EquipmentAdmin extends TaskAdminParent
 
                 ->end()
             ->end()
-            ->tab('tab_two')
-                ->with('block_two')
-//                    ->add('kits', CollectionType::class, [
-//                        'entry_type' => AdminEquipmentKitTemplateType::class,
-//    //                    'class' => EquipmentKit::class,
-//                        'label' => 'Карточки',
-//                        'allow_add' => true, //This should do the trick.
-//                    ])
+            ->tab('tab_two', ['label' => 'Комплект'])
+                ->with('')
                         ->add('kits', AdminEquipmentKitTemplateType::class, [
                             'label' => 'Карточки',
-                            'class' => EquipmentKit::class,
-//                            'entry_type' => EquipmentKitType::class,
-//                            'entity_options' => ['class' => EquipmentKit::class],
-//                            'allow_add' => true,
+                            'entry_type' => EquipmentKitType::class,
+                            'entity_options' => ['class' => EquipmentKit::class],
                         ])
                 ->end()
             ->end()

@@ -1,14 +1,7 @@
-{% block _equipment_kit_collection_kits_row %}
-    1
-{% endblock %}
-{% block equipment_kit_collection_row %}
-    55
-{% endblock %}
-
 {% block admin_equipment_kit_template_row %}
     <div class="row">
-        {#        {{ dump(form.vars) }}#}
-        <div id="template" class="hidden">
+{#                {{ dump() }}#}
+        <div id="template-cards" class="hidden">
             <div data-kit_index="{index}" class="js-kit-template panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{kitTitle}</h3>
@@ -20,6 +13,7 @@
                         </label>
                         <div class="sonata-ba-field sonata-ba-field-standard-natural">
                             <a href="{{ cardAdmin.generateUrl('list') }}"
+{#                            <a href="{{ path('admin_app_equipmentkitspecification_create') }}"#}
                                class="js-add-cards btn btn-success btn-sm sonata-ba-action" title="Добавить новый">
                                 <i class="fa fa-plus-circle"></i>
                                 Добавить
@@ -47,9 +41,89 @@
                 </div>
             </div>
         </div>
+        <div id="template-specification" class="hidden">
+            <div data-kit_index="{index}" class="js-kit-template panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{kitTitle}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="control-label">
+                            Характеристики
+                        </label>
+                        <div class="sonata-ba-field sonata-ba-field-standard-natural">
+                            <a href="{{ path('admin_app_equipmentkitspecification_create') }}"
+                               class="js-add-cards btn btn-success btn-sm sonata-ba-action" title="Добавить новый">
+                                <i class="fa fa-plus-circle"></i>
+                                Добавить
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                            <thead>
+                            <tr class="sonata-ba-list-field-header">
+                                <th class="sonata-ba-list-field-header-text">
+                                    Тип оборудования
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Тип высадки
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Наружный диаметр трубы, (мм)
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Толщина стенки трубы, (мм)
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Тип резьбы
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    O.D. Замка ниппель  (мм)
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    I.D. Замка ниппель  (мм)
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Длина трубы
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Угол заплетчика
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Длина под ключ ниппель, (мм)
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Длина под ключ муфта, (мм)
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Покрытие резьбы
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Внутреннее покрытие
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Хардбендинг (муфта)
+                                </th>
+                                <th class="sonata-ba-list-field-header-text">
+                                    Комментарий
+                                </th>
+                                <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+
+                        </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="add-kit-area" class="col-lg-12">
             <div class="input-group">
-                <input id="title-kit" type="text" class="form-control" placeholder="Название комплекта">
+                <input id="title-kit" type="text" class="form-control" placeholder=" комплекта">
                 <span class="input-group-btn"><button id="add-kit" class="btn btn-default"
                                                       type="button">Добавить</button></span>
             </div><!-- /input-group -->
