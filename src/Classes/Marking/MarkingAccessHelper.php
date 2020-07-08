@@ -52,6 +52,20 @@ class MarkingAccessHelper
             'user_type' => [self::USER_TYPE_EXECUTOR],
             'access' => [self::ACCESS_VIEW],
         ],
+        // Исполнитель. Принять на исполнение
+        [
+            'status' => [Marking::STATUS_SEND_EXECUTION],
+            'user_type' => [self::USER_TYPE_EXECUTOR],
+            'access' => [self::ACCESS_CHANGE_STATUS],
+            'access_change_status' => [Marking::STATUS_ACCEPT_EXECUTION],
+        ],
+        // Исполнитель. Отправить на проверку
+        [
+            'status' => [Marking::STATUS_ACCEPT_EXECUTION],
+            'user_type' => [self::USER_TYPE_EXECUTOR],
+            'access' => [self::ACCESS_CHANGE_STATUS],
+            'access_change_status' => [Marking::STATUS_SAVE],
+        ],
     ];
 
 
@@ -86,9 +100,8 @@ class MarkingAccessHelper
     /**
      * Получаем список разрешенных статусов для смены статуса
      */
-    public static function getAllowStatusChange(array $roles, int $status): array
+    public static function getAllowStatusChange(string $userType, int $status): array
     {
-        $userType = self::getUserTypeByRoles($roles);
 
         $allowStatus = [];
         foreach (self::ACCESS as $access) {

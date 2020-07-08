@@ -133,7 +133,8 @@ class TaskController extends ApiParentController
 
         //<editor-fold desc="Проверяем права на смену статуса">
         $allowStatus = MarkingAccessHelper::getAllowStatusChange(
-            $storage->getToken()->getUser()->getRoles(),
+//            $storage->getToken()->getUser()->getRoles(),
+            MarkingAccessHelper::USER_TYPE_EXECUTOR,
             $taskItem->getStatusId());
 
         if (!in_array($statusId, $allowStatus)) {
