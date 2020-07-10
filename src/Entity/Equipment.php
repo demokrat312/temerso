@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
+use App\Classes\Equipment\EquipmentTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
@@ -19,7 +20,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Equipment implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
 {
-    use TaskEntityTrait;
+    use TaskEntityTrait, EquipmentTrait;
+
+    const KIT_TYPE_SINGLE = 'single'; // Единичный комплект
+    const KIT_TYPE_MULTI = 'multi'; // Множественный комплект
+
+    const CATALOG_WITH = 'withCatalog'; // С выборкой из каталога
+    const CATALOG_WITHOUT = 'withoutCatalog'; // Без выборки из каталога
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -92,6 +100,52 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      * @ORM\OneToMany(targetEntity="App\Entity\EquipmentKit", mappedBy="equipment",cascade={"persist"})
      */
     private $kits;
+
+    /**
+     * Выбрать тип комплекта
+     *
+     * 'choices'  => [
+     * 'Единичный комплект' => 'single',
+     * 'Множественный комплект' => 'multi',
+     * ],
+     *
+     *
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $kitType;
+
+    /**
+     * Укажите количество единиц оборудования
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $cardCount;
+
+    /**
+     * Укажите количество комплектов
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $kitCount;
+
+    /**
+     * Укажите количество единиц оборудования в каждом из комплектов(через запятую)
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $kitCardCount;
+
+    /**
+     * Каталог
+     * 'choices'  => [
+     * 'С выборкой из каталога' => 'withCatalog',
+     * 'Без выборки из каталога' => 'withoutCatalog',
+     * ],
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $withKit;
 
     public function __construct()
     {
@@ -297,6 +351,66 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
                 $kit->setEquipment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getKitType(): ?string
+    {
+        return $this->kitType;
+    }
+
+    public function setKitType(?string $kitType): self
+    {
+        $this->kitType = $kitType;
+
+        return $this;
+    }
+
+    public function getCardCount(): ?int
+    {
+        return $this->cardCount;
+    }
+
+    public function setCardCount(?int $cardCount): self
+    {
+        $this->cardCount = $cardCount;
+
+        return $this;
+    }
+
+    public function getKitCount(): ?int
+    {
+        return $this->kitCount;
+    }
+
+    public function setKitCount(?int $kitCount): self
+    {
+        $this->kitCount = $kitCount;
+
+        return $this;
+    }
+
+    public function getKitCardCount(): ?string
+    {
+        return $this->kitCardCount;
+    }
+
+    public function setKitCardCount(?string $kitCardCount): self
+    {
+        $this->kitCardCount = $kitCardCount;
+
+        return $this;
+    }
+
+    public function getWithKit(): ?string
+    {
+        return $this->withKit;
+    }
+
+    public function setWithKit(?string $withKit): self
+    {
+        $this->withKit = $withKit;
 
         return $this;
     }

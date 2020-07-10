@@ -30,11 +30,15 @@ class TaskCardOtherField
     private $card;
 
     /**
+     * Примечание
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
 
     /**
+     * Оборудование есть, проблема с меткой
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $commentProblemWithMark;

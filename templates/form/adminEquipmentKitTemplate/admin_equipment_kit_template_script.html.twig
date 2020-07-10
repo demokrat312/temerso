@@ -7,7 +7,10 @@
     const AdminEquipmentKitModel = (function () {
         let $templateCards, $templateSpecification, $kitTitleInput, $addKitArea,
             // Каталог - добавляем карточки или характеристики
-            $withKitInput = null;
+            $withKitInput = null,
+            // Тип комплекта
+            $kitType = null
+        ;
         let kitCounter = 0;
 
         const specificationInputName = "{{ form.vars.prototype.children.specification.vars.full_name }}";
@@ -36,6 +39,7 @@
             $kitTitleInput = $('#title-kit');
             $addKitArea = $('#add-kit-area');
             $withKitInput = $('[name$="[withKit]"]');
+            $kitType = $('[name$="[kitType]"]');
 
             adminListModel.setRowTemplate(rowTemplate);
             adminListModel.rowTemplateCreateSub.push(cardRowTemplateParams);
@@ -46,7 +50,8 @@
             $('#add-kit').on('click', addKit);
             $(document).on('click', '.js-add-specification', addSpecification);
             // Выбрать тип комплекта
-            $('[name$="[kitType]"]').on('change', changeKitType).trigger('change');
+            $kitType.on('change', changeKitType).trigger('change');
+            $withKitInput.on('change', changeCatalog);
 
         };
         const addKit = function (e) {
@@ -94,17 +99,26 @@
                 ;
         };
 
+        // Выбрать тип комплекта
         const changeKitType = (e) => {
             const element = e.target;
             const selected = element.options[element.selectedIndex].value;
+
+            hideInputGroup(['cardCount', 'kitCount', 'kitCardCount']);
+
+            // Если будет выбирать из каталога то эти значения не нужны
+            if ($withKitInput.val() === 'withCatalog') return;
+
             if (selected === 'multi') {
                 showInputGroup(['kitCount', 'kitCardCount']);
-                hideInputGroup(['cardCount']);
             } else {
                 showInputGroup(['cardCount']);
-                hideInputGroup(['kitCount', 'kitCardCount']);
             }
-            console.log(selected);
+        };
+
+        // Каталог
+        const changeCatalog = (e) => {
+            $kitType.trigger('change');
         };
 
         const hideInputGroup = (inputsName) => {

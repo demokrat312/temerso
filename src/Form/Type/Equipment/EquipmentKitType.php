@@ -24,9 +24,10 @@ class EquipmentKitType extends AbstractType
             ->add('title')
             ->add('card', EntityType::class, [
                 'class' => Card::class,
-                'multiple' => true
+                'multiple' => true,
+                'required' => false
             ])
-            ->add('specification', SpecificationType::class)
+            ->add('specification', SpecificationType::class, ['required' => false])
         ;
     }
 
