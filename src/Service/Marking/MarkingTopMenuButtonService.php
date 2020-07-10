@@ -82,6 +82,9 @@ class MarkingTopMenuButtonService
         if ($mode !== TopMenuButtonService::MODE_LIST) {
             $this->actionButtonService->addButton((new TopMenuButton())->setKey(TopMenuButtonService::BTN_LIST));
         }
+        if ($mode === TopMenuButtonService::MODE_EDIT) {
+            $this->actionButtonService->addButton((new TopMenuButton())->setKey(TopMenuButtonService::BTN_SHOW));
+        }
         return $this->actionButtonService->getList();
     }
 
