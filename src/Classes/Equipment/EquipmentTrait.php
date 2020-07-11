@@ -21,18 +21,42 @@ trait EquipmentTrait
 {
     public function getTotalCard()
     {
-        $cardCount = 0;
         // Если из каталога, то считаем количество карточек из каждого комплекта
         if ($this->getWithKit() === Equipment::CATALOG_WITH) {
-            $this->kits->map(function (EquipmentKit $equipmentKit) use (&$cardCount) {
-                $cardCount += $equipmentKit->getCard()->count();
-            });
+            $cardCount = $this->getTotalCardWithCatalog();
         } else {
-            if($this->getKitType() === Equipment::KIT_TYPE_SINGLE) {
-                $cardCount = $this->getCardCount();
-            } else {
-                $cardCount = array_sum(explode(',', $this->getKitCardCount()));
-            }
+            $cardCount = $this->getTotalCardWithoutCatalog();
+        }
+
+        return $cardCount;
+    }
+
+    /**
+     * Считаем общее количество карточек из комплектов
+     *
+     * @return int
+     */
+    public function getTotalCardWithCatalog()
+    {
+        $cardCount = 0;
+        $this->kits->map(function (EquipmentKit $equipmentKit) use (&$cardCount) {
+            $cardCount += $equipmentKit->getCard()->count();
+        });
+
+        return $cardCount;
+    }
+
+    /**
+     * Выводим число введенное пользователем
+     *
+     * @return float|int|null
+     */
+    public function getTotalCardWithoutCatalog()
+    {
+        if ($this->getKitType() === Equipment::KIT_TYPE_SINGLE) {
+            $cardCount = $this->getCardCount();
+        } else {
+            $cardCount = array_sum(explode(',', $this->getKitCardCount()));
         }
 
         return $cardCount;

@@ -10,9 +10,12 @@ namespace App\Classes\Task;
 
 
 use App\Classes\Arrival\ExcelHelper;
+use App\Classes\Equipment\EquipmentCells;
 use App\Classes\Inspection\InspectionCells;
 use App\Classes\Marking\MarkingCells;
 use App\Classes\Inventory\InventoryCells;
+use App\Entity\Equipment;
+use App\Entity\EquipmentKit;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
@@ -46,6 +49,9 @@ class TaskExcelBuilder
                 break;
             case Inspection::class:
                 $this->getInspection($task, $excelHelper);
+                break;
+            case Equipment::class:
+                $this->getEquipment($task, $excelHelper);
                 break;
         }
 
@@ -109,6 +115,45 @@ class TaskExcelBuilder
                 ->setCars($startRow, $inspection);
         }
 
+        return true;
+    }
+
+    private function getEquipment(Equipment $equipment, ExcelHelper $excelHelper)
+    {
+        $excelHelper->setSource('templates/excelFile/equipment_excel.xlsx');
+
+        // Задаем общию информацию
+        $inspectionCells = new EquipmentCells();
+        $inspectionCells
+            ->setActiveSheet($excelHelper->getActiveSheet())
+            ->setGeneral($equipment);
+
+        $startRow = 5;
+        $rowCounter = $startRow;
+        $equipment->getKits()->map(function(EquipmentKit $equipmentKit) use ($startRow, &$rowCounter, $equipment, $inspectionCells) {
+            // Комплект
+            if($startRow === $rowCounter) {
+                $inspectionCells->setKitTitle($rowCounter, $equipmentKit->getTitle());
+                $rowCounter+=2;
+            } else {
+//                $inspectionCells
+//                    ->duplicateRow($rowCounter, 1, 'A'. $startRow);
+                $inspectionCells->duplicateStyle($startRow, $rowCounter);
+                $inspectionCells->setKitTitle($rowCounter, $equipmentKit->getTitle());
+
+                $rowCounter++;
+            }
+
+            // Карточки
+            $inspectionCells
+                ->duplicateStyle(7 , $rowCounter)
+                ->duplicateRow($rowCounter, $equipmentKit->getCard()->count())
+                ->setCars($rowCounter, $equipment, $equipmentKit);
+            $rowCounter += $equipmentKit->getCard()->count();
+//            echo $startRow;
+//            echo PHP_EOL;
+        });
+//exit;
         return true;
     }
 }

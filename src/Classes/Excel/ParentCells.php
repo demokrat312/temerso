@@ -18,6 +18,8 @@ class ParentCells implements CellsInterface
      */
     protected $sheet;
 
+    protected $defaultColumnRange = 'I' ;
+
     public function setActiveSheet(Worksheet $sheet)
     {
         $this->sheet = $sheet;
@@ -30,16 +32,41 @@ class ParentCells implements CellsInterface
      */
     public function duplicateRow(int $startRow, int $rowCount)
     {
-        $rowNew = $rowCount - 1;
-        $startRowCell = 'A' . $startRow;
-        $endRowCell = 'A' . ($startRow + 1) . ':A' . $rowNew;
+        $newRowInsert = $rowCount - 1;
+        $nextRow = $startRow + 1;
 
-        // Вставляем строку
-        $this->sheet->insertNewRowBefore($startRow + 1, $rowNew);
+        // Вставляем строку, после указанной
+        $this->sheet->insertNewRowBefore($nextRow, $newRowInsert);
         // Копируем стили
-        $this->sheet->duplicateStyle($this->sheet->getStyle($startRowCell), $endRowCell);
+        //$this->sheet->duplicateStyle($this->sheet->getStyle($startRowCell), $endRowCell);
+
+        $this->duplicateStyle($startRow, $startRow, $newRowInsert );
+
+//        echo 'from: ' . $startRowCell . '; to: '. $endRowCell;exit;
 
         return $this;
+    }
+
+//    public function duplicateStyle(string $rangeFrom, string $rangeTo)
+    public function duplicateStyle(int $rowFrom, int $rowTo, int $count = 0)
+    {
+//        $this->sheet->duplicateStyle($this->sheet->getStyle($rangeFrom), $rangeTo);
+
+        foreach ($this->columnRange() as $columnName) {
+            if($columnName === $this->defaultColumnRange)break;
+            $columnStyle = $this->sheet->getStyle($columnName . $rowFrom);
+
+            for ($currentRow = $rowTo; $currentRow <= ($rowTo + $count); $currentRow++) {
+                $this->sheet->duplicateStyle($columnStyle, $columnName . $currentRow );
+            }
+        }
+
+        return $this;
+    }
+
+    protected function columnRange()
+    {
+        return ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',];
     }
 
 }
