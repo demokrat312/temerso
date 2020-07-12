@@ -40,7 +40,7 @@ abstract class TaskAdminController extends DefaultAdminController
         $this->adminRoute = $adminRoute;
     }
 
-    abstract function getEntityClass(): string ;
+    abstract function getEntityClass(): string;
 
 
     /**
@@ -50,9 +50,16 @@ abstract class TaskAdminController extends DefaultAdminController
     public function changeStatusAction(int $id, EntityManagerInterface $em, Request $request)
     {
         $task = $em->getRepository($this->getEntityClass())->find($id);
-        if(!$task) {
+        if (!$task) {
             throw new NotFoundHttpException('Задача не найдена');
         }
+
+        $url = $this->admin->generateObjectUrl('show', $task);
+        if ((int)$request->get('status') === Marking::STATUS_SEND_EXECUTION && $task->getUsers()->count() === 0) {
+            $this->getRequest()->getSession()->getFlashBag()->add("error", 'Укажите исполнителя');
+            return new RedirectResponse($url);
+        }
+
         $task
             ->setStatus((int)$request->get('status'));
 
@@ -63,7 +70,6 @@ abstract class TaskAdminController extends DefaultAdminController
         $em->persist($task);
         $em->flush();
 
-        $url = $this->admin->generateObjectUrl('show', $task);
         return new RedirectResponse($url);
     }
 
@@ -77,7 +83,7 @@ abstract class TaskAdminController extends DefaultAdminController
     public function removeExecutorAction(int $id, EntityManagerInterface $em)
     {
         $task = $em->getRepository($this->getEntityClass())->find($id);
-        if(!$task) {
+        if (!$task) {
             throw new NotFoundHttpException('Задача не найдена');
         }
         $task
