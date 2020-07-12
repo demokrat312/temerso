@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskHelper
 {
-    private static $instance;
+    use InstanceTrait;
 
     /**
      * @var ?EntityManagerInterface
@@ -25,15 +25,6 @@ class TaskHelper
      * @var ?User
      */
     private $user;
-
-    static public function ins()
-    {
-        if (!self::$instance) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
 
     /**
      * @return mixed

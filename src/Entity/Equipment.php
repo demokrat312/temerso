@@ -12,6 +12,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Комплектация в аренду
@@ -29,9 +30,15 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     const CATALOG_WITHOUT = 'withoutCatalog'; // Без выборки из каталога
 
     /**
+     * Ключ
+     *
+     * @var int
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 
@@ -39,6 +46,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      * Основание формирования комплекта
      *
      * @ORM\Column(type="string", length=500)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $mainReason;
 
@@ -53,15 +61,9 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      * Название компании-арендатора: Текстовый ввод пользователя
      *
      * @ORM\Column(type="string", length=255)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $tenantName;
-
-    /**
-     * Карточки
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Card")
-     */
-    private $cards;
 
     /**
      * Исполнитель
@@ -71,7 +73,10 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     private $users;
 
     /**
+     * Дата создания задачи
+     *
      * @ORM\Column(type="datetime")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $createAt;
 
@@ -86,7 +91,10 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     private $status;
 
     /**
+     * Комментацрий
+     *
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $comment;
 
@@ -152,7 +160,6 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
         $this->status = Marking::STATUS_CREATED;
 
         $this->files = new ArrayCollection();
-        $this->cards = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->kits = new ArrayCollection();
     }
@@ -217,25 +224,12 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      */
     public function getCards(): Collection
     {
-        return $this->cards;
-    }
+        $cards = new ArrayCollection();
+        $this->kits->map(function (EquipmentKit $equipmentKit) use (&$cards) {
+            $cards = new ArrayCollection(array_merge($cards->toArray(), $equipmentKit->getCard()->toArray()));
+        });
 
-    public function addCard(Card $card): self
-    {
-        if (!$this->cards->contains($card)) {
-            $this->cards[] = $card;
-        }
-
-        return $this;
-    }
-
-    public function removeCard(Card $card): self
-    {
-        if ($this->cards->contains($card)) {
-            $this->cards->removeElement($card);
-        }
-
-        return $this;
+        return $cards;
     }
 
     /**

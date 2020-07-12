@@ -27,6 +27,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
@@ -35,9 +36,12 @@ class Card
 {
     use CardTrait;
     /**
+     * Ключ
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 
@@ -95,29 +99,33 @@ class Card
      * № Метки RFID
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
-    private $rfid_tag_no;
+    private $rfidTagNo;
 
     /**
      * Серийный № трубы
      *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
-    private $pipe_serial_number;
+    private $pipeSerialNumber;
 
     /**
      * Серийный № ниппеля
      *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
-    private $serial_no_of_nipple;
+    private $serialNoOfNipple;
 
     /**
      * Серийный № муфты
      *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
-    private $coupling_serial_number;
+    private $couplingSerialNumber;
 
     /**
      * Серийный № после ремонта
@@ -685,48 +693,48 @@ class Card
 
     public function getRfidTagNo()
     {
-        return $this->rfid_tag_no;
+        return $this->rfidTagNo;
     }
 
-    public function setRfidTagNo($rfid_tag_no): self
+    public function setRfidTagNo($rfidTagNo): self
     {
-        $this->rfid_tag_no = $rfid_tag_no;
+        $this->rfidTagNo = $rfidTagNo;
 
         return $this;
     }
 
     public function getPipeSerialNumber()
     {
-        return $this->pipe_serial_number;
+        return $this->pipeSerialNumber;
     }
 
-    public function setPipeSerialNumber($pipe_serial_number): self
+    public function setPipeSerialNumber($pipeSerialNumber): self
     {
-        $this->pipe_serial_number = $pipe_serial_number;
+        $this->pipeSerialNumber = $pipeSerialNumber;
 
         return $this;
     }
 
     public function getSerialNoOfNipple()
     {
-        return $this->serial_no_of_nipple;
+        return $this->serialNoOfNipple;
     }
 
-    public function setSerialNoOfNipple($serial_no_of_nipple): self
+    public function setSerialNoOfNipple($serialNoOfNipple): self
     {
-        $this->serial_no_of_nipple = $serial_no_of_nipple;
+        $this->serialNoOfNipple = $serialNoOfNipple;
 
         return $this;
     }
 
     public function getCouplingSerialNumber()
     {
-        return $this->coupling_serial_number;
+        return $this->couplingSerialNumber;
     }
 
-    public function setCouplingSerialNumber($coupling_serial_number): self
+    public function setCouplingSerialNumber($couplingSerialNumber): self
     {
-        $this->coupling_serial_number = $coupling_serial_number;
+        $this->couplingSerialNumber = $couplingSerialNumber;
 
         return $this;
     }

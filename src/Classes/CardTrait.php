@@ -13,10 +13,46 @@ use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItemInterface;
 use App\Entity\TaskCardOtherField;
 use Doctrine\Common\Collections\Criteria;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Swagger\Annotations as SWG;
 
 trait CardTrait
 {
+    /**
+     * Полное название карточки
+     *
+     * @var string
+     * @api Поле нужно только для документации
+     * @see CardTrait::getGeneralName()
+     * @SWG\Property(property="fullName")
+     */
     private $generalName;
+
+    /**
+     * Ссылки на изображения
+     *
+     * @var string[]
+     * @api Поле нужно только для документации
+     * @see CardTrait::getImagesLink()
+     */
+    private $imagesLink;
+
+    /**
+     * Комментарий/Примечание
+     *
+     * @var string
+     * @api Поле нужно только для документации
+     * @see CardTrait::getComment()
+     */
+    private $comment;
+
+    /**
+     * Название класса родительской задачи.
+     * Если карточка вызваеться через задачу
+     *
+     * @var string
+     */
+    private $taskClassName;
 
     public function __toString()
     {
@@ -41,6 +77,8 @@ trait CardTrait
      * размер под ключ муфта-381 мм, ТДЦ, TC2000, TCS Titanium
      *
      * @return string
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @see CardTrait::$generalName
      */
     public function getGeneralName()
     {
@@ -84,11 +122,63 @@ trait CardTrait
      * @return TaskCardOtherField
      * @see app/templates/marking/show.html.twig:38
      */
-    public function getTaskCardOtherFieldsByTask(TaskItemInterface $task): TaskCardOtherField
+    public function getTaskCardOtherFieldsByTask($task): TaskCardOtherField
     {
-        $taskTypeId = TaskHelper::ins()->getTypeByEntityClass(get_class($task));
+        if(is_object($task)) {
+            $taskClass = get_class($task);
+        } else {
+            $taskClass = $task;
+        }
+        $taskTypeId = TaskHelper::ins()->getTypeByEntityClass($taskClass);
         $criteria = Criteria::create()->where(Criteria::expr()->eq("taskTypeId", $taskTypeId));
 
         return $this->getTaskCardOtherFields()->matching($criteria)->first() ?: new TaskCardOtherField();
     }
+
+    /**
+     * @see CardTrait::$imagesLink
+     *
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     *
+     * @return array
+     */
+    public function getImagesLink()
+    {
+        return MediaHelper::ins()->getImageLink($this->getImages());
+    }
+
+    /**
+     * @see CardTrait::$comment
+     *
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        if($this->getTaskClassName()) {
+            return $this->getTaskCardOtherFieldsByTask($this->getTaskClassName())->getComment();
+        }
+
+        return '';
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaskClassName()
+    {
+        return $this->taskClassName;
+    }
+
+    /**
+     * @param mixed $taskClassName
+     * @return $this
+     */
+    public function setTaskClassName($taskClassName)
+    {
+        $this->taskClassName = $taskClassName;
+        return $this;
+    }
+
 }

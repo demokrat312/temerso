@@ -14,6 +14,7 @@ use App\Classes\Marking\MarkingAccessHelper;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemAdapter;
+use App\Entity\Equipment;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
@@ -67,9 +68,10 @@ class TaskController extends ApiParentController
         $taskAdapter = new TaskItemAdapter();
 
         foreach ([
-            $em->getRepository(Marking::class)->findAllTask($user->getId()),
-            $em->getRepository(Inventory::class)->findAllTask($user->getId()),
-            $em->getRepository(Inspection::class)->findAllTask($user->getId()),
+            $em->getRepository(Marking::class)->findAllTask($user->getId(), $withCards),
+            $em->getRepository(Inventory::class)->findAllTask($user->getId(), $withCards),
+            $em->getRepository(Inspection::class)->findAllTask($user->getId(), $withCards),
+            $em->getRepository(Equipment::class)->findAllTask($user->getId(), $withCards),
                  ] as $entityList) {
             foreach ($entityList as $entity) {
                 $taskList[] = $taskAdapter->getTask($entity, $withCards);

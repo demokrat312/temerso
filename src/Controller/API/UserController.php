@@ -60,7 +60,7 @@ class UserController extends ApiParentController
         }
         //</editor-fold>
 
-        $userArray = $this->serialize($user, USER::SERIALIZE_GROUP_API_ITEM);
+        $userArray = $this->toArray($user, USER::SERIALIZE_GROUP_API_ITEM);
         return $this->defaultResponse($userArray);
     }
 

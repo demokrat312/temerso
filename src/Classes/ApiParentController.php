@@ -18,6 +18,8 @@ abstract class ApiParentController extends AbstractController
     const STATUS_CODE_400 = 400; // Client sent an invalid request
     const STATUS_CODE_403 = 403; // Access denied
     const OK = 'OK!';
+
+    const GROUP_API_DEFAULT = 'default_api';
     /**
      * @var SerializerInterface
      */
@@ -46,7 +48,7 @@ abstract class ApiParentController extends AbstractController
         ], $otherError), $code ?: self::STATUS_CODE_400);
     }
 
-    protected function serialize($data, $groups)
+    protected function toArray($data, $groups)
     {
         return $this->serializer->normalize($data,null, ['groups' => $groups]);
     }

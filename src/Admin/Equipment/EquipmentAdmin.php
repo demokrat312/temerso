@@ -7,6 +7,7 @@ use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
 use App\Classes\Task\TaskAdminParent;
 use App\Controller\Admin\MarkingAdminController;
 use App\Entity\Equipment;
+use App\Entity\Marking;
 use App\Form\Type\Equipment\AdminEquipmentKitTemplateType;
 use App\Form\Type\Equipment\EquipmentKitType;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -87,14 +88,8 @@ class EquipmentAdmin extends TaskAdminParent
 
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_PREV));
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_NEXT));
-            $actionButtons->addItem((new ShowModeFooterButtonItem())
-                ->setClasses('btn btn-success')
-                ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
-                ->addIcon('fa-save')
-                ->setRouteAction(MarkingAdminController::ROUTER_SHOW)
-                ->setTitle('Сохранить')
-                ,
-                );
+            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CREATE_AND_EDIT));
+
         } else {
             $editForm
                 ->tab('tab_one', ['label' => 'Главная', 'class' => 'col-md-12'])
@@ -107,9 +102,20 @@ class EquipmentAdmin extends TaskAdminParent
                         ])
                     ->end()
                 ->end();
+
+
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_UPDATE_AND_EDIT_AGAIN));
         }
 
+        $actionButtons->addItem((new ShowModeFooterButtonItem())
+            ->setClasses('btn btn-success')
+            ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
+            ->addIcon('fa-save')
+            ->setRouteAction(MarkingAdminController::ROUTER_CHANGE_STATUS)
+            ->setRouteQuery(http_build_query(['status' => Marking::STATUS_SEND_EXECUTION]))
+            ->setTitle('Отправить на исполнение')
+            ,
+            );
         $this->setShowModeButtons($actionButtons->getButtonList());
     }
 }

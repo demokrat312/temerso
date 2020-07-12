@@ -9,9 +9,8 @@
 namespace App\Classes\Marking;
 
 
-use App\Application\Sonata\MediaBundle\Entity\Media;
+use App\Classes\MediaHelper;
 use Doctrine\Common\Collections\Collection;
-use Sonata\MediaBundle\Generator\IdGenerator;
 
 /**
  * Карточка для задачи
@@ -211,15 +210,7 @@ class TaskCard
      */
     public function setImages(Collection $images = null)
     {
-        $arImages = [];
-        if($images) {
-            $generator = new IdGenerator();
-            $images->map(function(Media $media) use ($generator, &$arImages) {
-//                $arImages[] = $media;
-                $arImages[] = Media::PATH . $generator->generatePath($media) . '/' . $media->getProviderReference();
-            });
-        }
-        $this->images = $arImages;
+        $this->images = MediaHelper::ins()->getImageLink($images);
         return $this;
     }
 

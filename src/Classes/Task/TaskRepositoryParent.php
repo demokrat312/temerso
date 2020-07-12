@@ -11,9 +11,13 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
     /**
      * Получаем список задач по пользоветлю
      */
-    public function findAllTask(int $userId)
+    public function findAllTask(int $userId, $withCard = false)
     {
         $qb = $this->createQueryBuilder('m');
+
+        if($withCard) {
+            $this->taskCardJoin($qb);
+        }
 
         $this->byAccess($userId, $qb);
 
@@ -30,8 +34,7 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('m');
 
         // Добавляем выборку карточек сразу при основном запросе
-        $qb->addSelect('cards');
-        $qb->join('m.cards', 'cards');
+        $this->taskCardJoin($qb);
 
         $qb
             ->where('m.id = :taskId')
@@ -70,5 +73,11 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
         $qb->andWhere($executorExpr);
 
         return $qb;
+    }
+
+    protected function taskCardJoin(QueryBuilder $qb)
+    {
+        $qb->addSelect('cards');
+        $qb->leftJoin('m.cards', 'cards');
     }
 }

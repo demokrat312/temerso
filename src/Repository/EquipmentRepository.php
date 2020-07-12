@@ -2,8 +2,9 @@
 
 namespace App\Repository;
 
+use App\Classes\Task\TaskRepositoryParent;
 use App\Entity\Equipment;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,39 +13,23 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Equipment[]    findAll()
  * @method Equipment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EquipmentRepository extends ServiceEntityRepository
+class EquipmentRepository extends TaskRepositoryParent
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Equipment::class);
     }
 
-    // /**
-    //  * @return Equipment[] Returns an array of Equipment objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    protected function taskCardJoin(QueryBuilder $qb)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+//        $al = $qb->getRootAliases()[0];
+//
+//        $qb->addSelect('cards', 'kits');
+//        $qb
+//            ->leftJoin(sprintf('%s.%s', $al, 'kits'), 'kits')
+//            ->leftJoin('kits.card', 'card')
+//        ;
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Equipment
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }
