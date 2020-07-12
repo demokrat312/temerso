@@ -202,6 +202,23 @@ class MarkingTopMenuButtonService
                     ,
                 ])
             ,
+            (new TopMenuAccess())
+                ->setRoleList([User::ROLE_ADMIN])
+                ->setStatusList([Marking::STATUS_CREATED])
+                ->setModeList([TopMenuButtonService::MODE_SHOW])
+                ->setButtonList([
+                    (new TopMenuButton())
+                        ->setKey(MarkingTopMenuButtonService::BTN_SEND_EXECUTION)
+                        ->setTitle('Отправить на исполнение')
+                        ->setIcon('fa-mail-forward')
+                        ->setRoute($this->adminRoute->getActionRouteName(
+                            $this->entityClass,
+                            MarkingAdminController::ROUTER_CHANGE_STATUS,
+                            ))
+                        ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SEND_EXECUTION])
+                    ,
+                ])
+            ,
         ];
     }
 
