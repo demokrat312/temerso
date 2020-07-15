@@ -3,6 +3,8 @@
 namespace App\Entity\Reference;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Swagger\Annotations as SWG;
 
 /**
  * 3) Тип высадки
@@ -12,13 +14,22 @@ use Doctrine\ORM\Mapping as ORM;
  * IEU  (Комбинированная)
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\TypeDisembarkationRepository")
+ *
+ *  @SWG\Definition(
+ *     definition="RefTypeDisembarkation",
+ *     description="Тип высадки",
+ * )
  */
 class RefTypeDisembarkation extends \App\Classes\Reference\ReferenceParent
 {
     /**
+     * Ключ
+     *
+     * @var
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 

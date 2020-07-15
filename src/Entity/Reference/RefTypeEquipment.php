@@ -3,6 +3,8 @@
 namespace App\Entity\Reference;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Swagger\Annotations as SWG;
 
 /**
  * 1) тип Оборудования
@@ -23,19 +25,34 @@ use Doctrine\ORM\Mapping as ORM;
  * ВБТ-К (Ведущие бурильные трубы квадратного сечения),
  * ВБТ-Ш  (Ведущие бурильные трубы шестигранного сечения),
  * В наименовании оборудования  (см.73 строку этого листа) нужно выводить только аббревиатуру, без расшифровки. В графе тип оборудования непосредственно в карточке -указывать аббревиатуру + расшифровку
+
  * @ORM\Entity(repositoryClass="App\Repository\Reference\TypeEquipmentRepository")
+ * @SWG\Definition(
+ *     definition="RefTypeEquipment",
+ *     description="тип Оборудования",
+ * )
  */
 class RefTypeEquipment extends \App\Classes\Reference\ReferenceParent
 {
     /**
+     * Ключ
+     *
+     * @var int
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 
     /**
+     * Название
+     *
+     * @var string
+     *
      * @ORM\Column(type="string", length=255)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $value;
 

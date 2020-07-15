@@ -3,6 +3,7 @@
 namespace App\Entity\Reference;
 
 use Doctrine\ORM\Mapping as ORM;
+use Swagger\Annotations as SWG;
 
 /**
  * 6)Покрытие резьбы
@@ -12,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  * Меднение
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\ThreadCoatingRepository")
+ *
+ *  @SWG\Definition(
+ *     definition="RefThreadCoating",
+ *     description="Покрытие резьбы",
+ * )
  */
 class RefThreadCoating extends \App\Classes\Reference\ReferenceParent
 {

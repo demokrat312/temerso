@@ -147,9 +147,9 @@ class TaskExcelBuilder
             // Карточки
             $inspectionCells
                 ->duplicateStyle(7 , $rowCounter)
-                ->duplicateRow($rowCounter, $equipmentKit->getCard()->count())
+                ->duplicateRow($rowCounter, $equipmentKit->getCards()->count())
                 ->setCars($rowCounter, $equipment, $equipmentKit);
-            $rowCounter += $equipmentKit->getCard()->count();
+            $rowCounter += $equipmentKit->getCards()->count();
 //            echo $startRow;
 //            echo PHP_EOL;
         });

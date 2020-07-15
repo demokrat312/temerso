@@ -17,6 +17,8 @@ abstract class ApiParentController extends AbstractController
 {
     const STATUS_CODE_400 = 400; // Client sent an invalid request
     const STATUS_CODE_403 = 403; // Access denied
+    const STATUS_CODE_422 = 422; // Unprocessable Entity (Validation errors)
+    const STATUS_CODE_404 = 404; // Not Found
     const OK = 'OK!';
 
     const GROUP_API_DEFAULT = 'default_api';
@@ -57,7 +59,7 @@ abstract class ApiParentController extends AbstractController
     {
         $errors = $this->buildErrorArray($form);
 
-        return $this->errorResponse('Ошибка проверки формы', null, ['formError' => $errors]);
+        return $this->errorResponse('Ошибка проверки формы', self::STATUS_CODE_422, ['formError' => $errors]);
     }
 
     protected function errorParamResponse()

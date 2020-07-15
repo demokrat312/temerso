@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
+use App\Classes\ApiParentController;
 use App\Entity\Card;
+use App\Form\Data\Api\Card\CardAddToEquipmentData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +19,59 @@ class CardRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Card::class);
+    }
+
+    /**
+     * @param CardAddToEquipmentData $data
+     * @return Card|null
+     * @throws \Exception
+     */
+    public function findByCardAddToEquipmentType(CardAddToEquipmentData $data): Card
+    {
+        $cards = [];
+        if (
+            $data->getRfidTagNo() ||
+            $data->getPipeSerialNumber() ||
+            $data->getCouplingSerialNumber() ||
+            $data->getSerialNoOfNipple()
+        ) {
+            $qb = $this->createQueryBuilder('c');
+            $expr = $qb->expr();
+
+            $exprAndX = [];
+            if($data->getRfidTagNo()) {
+                $exprAndX[] = $expr->eq('c.rfidTagNo', $data->getRfidTagNo());
+            }
+            if($data->getPipeSerialNumber()) {
+                $exprAndX[] = $expr->eq('c.pipeSerialNumber', $data->getPipeSerialNumber());
+            }
+            if($data->getCouplingSerialNumber()) {
+                $exprAndX[] = $expr->eq('c.couplingSerialNumber', $data->getCouplingSerialNumber());
+            }
+            if($data->getSerialNoOfNipple()) {
+                $exprAndX[] = $expr->eq('c.serialNoOfNipple', $data->getSerialNoOfNipple());
+            }
+
+            $cards = $qb
+                ->where($expr->andX(
+                    ...$exprAndX
+                ))
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
+        if(count($cards) > 1) {
+            throw new \Exception('Найденно ' . count($cards) . ' карточки. Уточните запрос', ApiParentController::STATUS_CODE_400);
+        }
+
+        $card = current($cards);
+
+        if(empty($card)) {
+            throw new \Exception('Карточка не найдена', ApiParentController::STATUS_CODE_404);
+        }
+
+        return $card;
     }
 
     // /**

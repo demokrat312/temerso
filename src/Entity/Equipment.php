@@ -105,7 +105,12 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     private $createdBy;
 
     /**
+     * Комплекты
+     *
+     * @var EquipmentKit[]
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\EquipmentKit", mappedBy="equipment",cascade={"persist"})
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $kits;
 
@@ -226,7 +231,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     {
         $cards = new ArrayCollection();
         $this->kits->map(function (EquipmentKit $equipmentKit) use (&$cards) {
-            $cards = new ArrayCollection(array_merge($cards->toArray(), $equipmentKit->getCard()->toArray()));
+            $cards = new ArrayCollection(array_merge($cards->toArray(), $equipmentKit->getCards()->toArray()));
         });
 
         return $cards;

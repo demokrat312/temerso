@@ -3,6 +3,7 @@
 namespace App\Entity\Reference;
 
 use Doctrine\ORM\Mapping as ORM;
+use Swagger\Annotations as SWG;
 
 /**
  * 5)Тип резьбы
@@ -43,6 +44,11 @@ use Doctrine\ORM\Mapping as ORM;
  *Также для администратора будет доступен функционал по внесению новых значений списка этой характеристики
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\TypeThreadRepository")
+ *
+ *  @SWG\Definition(
+ *     definition="RefTypeThread",
+ *     description="Тип резьбы",
+ * )
  */
 class RefTypeThread extends \App\Classes\Reference\ReferenceParent
 {

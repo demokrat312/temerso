@@ -4,8 +4,13 @@ namespace App\Controller\API;
 
 
 use App\Classes\ApiParentController;
+use App\Entity\Card;
 use App\Entity\Equipment;
+use App\Entity\EquipmentKit;
 use App\Entity\User;
+use App\Form\Data\Api\Card\CardAddToEquipmentData;
+use App\Form\Type\Api\Card\CardAddToEquipmentType;
+use App\Repository\CardRepository;
 use App\Repository\EquipmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -58,5 +63,78 @@ class EquipmentApiController extends ApiParentController
         }
 
         return $this->defaultResponse($this->toArray($equipment, [ApiParentController::GROUP_API_DEFAULT]));
+    }
+
+
+    /**
+     * Добавление карточки к комплекту.
+     *
+     * Добавление по id комлпекта.
+     * Поиск карточки по следующим полям:серийный номер трубы, серийный номер муфты, серийный номер ниппеля.
+     * По RFID метке ИЛИ серийным номерам
+     *
+     * @Route("add-card", methods={"POST"}, name="api_equipment_add_card")
+     *
+     * @SWG\Parameter(
+     *    name="form",
+     *    in="body",
+     *    description="Данные для поиска карточки",
+     *    @Model(type=\App\Form\Type\Api\Card\CardAddToEquipmentType::class)
+     * ),
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="Возвращаем добавленную карточку",
+     *     @SWG\Schema(
+     *            ref=@Model(type=\App\Entity\Card::class, groups={\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     *      ),
+     * )
+     *
+     * @SWG\Response(
+     *     response="404",
+     *     description="Карточка не найдена",
+     *     @SWG\Schema(
+     *            ref=@Model(type=\App\Classes\Error\ErrorResponse::class)
+     *      ),
+     * )
+     *
+     * @SWG\Response(
+     *     response="422",
+     *     description="Ошибка валидации входящих данных",
+     *     @SWG\Schema(
+     *            ref=@Model(type=\App\Classes\Error\ErrorResponse::class)
+     *      ),
+     * )
+     *
+     * @Security(name="Bearer")
+     */
+    public function addCard(Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(CardAddToEquipmentType::class);
+        $form->submit($request->request->all());
+        if ($form->isValid()) {
+            /** @var CardAddToEquipmentData $data */
+            $data = $form->getData();
+            /** @var CardRepository $rep */
+            $rep = $em->getRepository(Card::class);
+            $card = $rep->findByCardAddToEquipmentType($data);
+
+            /** @var EquipmentKit $equipmentKit */
+            $equipmentKit = $em->getRepository(EquipmentKit::class)->find($data->getId());
+            if (!$equipmentKit) {
+                return $this->errorResponse('Комплект с id=' . $data->getId() . ' не найден');
+            }
+
+            if($equipmentKit->getCards()->contains($card)) {
+                return $this->errorResponse('Карточка уже есть в комплекте');
+            }
+            $equipmentKit->addCard($card);
+            $em->persist($equipmentKit);
+            $em->flush();
+
+            return $this->defaultResponse($this->toArray($card, ApiParentController::GROUP_API_DEFAULT));
+        } else {
+            return $this->formErrorResponse($form);
+        }
     }
 }

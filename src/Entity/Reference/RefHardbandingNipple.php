@@ -3,6 +3,7 @@
 namespace App\Entity\Reference;
 
 use Doctrine\ORM\Mapping as ORM;
+use Swagger\Annotations as SWG;
 
 /**
  * 8)Хардбендинг (ниппель)
@@ -18,6 +19,11 @@ use Doctrine\ORM\Mapping as ORM;
  *Также для администратора будет доступен функционал по внесению новых значений списка этой характеристики
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\HardbandingNippleRepository")
+ *
+ *  @SWG\Definition(
+ *     definition="RefHardbandingNipple",
+ *     description="Хардбендинг (ниппель)",
+ * )
  */
 class RefHardbandingNipple extends \App\Classes\Reference\ReferenceParent
 {

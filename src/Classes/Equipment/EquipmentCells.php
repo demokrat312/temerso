@@ -46,7 +46,7 @@ class EquipmentCells extends ParentCells
     public function setCars(int $startRow, TaskItemInterface $equipment, EquipmentKit $equipmentKit)
     {
         $rowCount = $startRow;
-        $equipmentKit->getCard()->map(function (Card $card) use ($equipment, &$rowCount) {
+        $equipmentKit->getCards()->map(function (Card $card) use ($equipment, &$rowCount) {
             $this->sheet->setCellValue('A' . $rowCount, $card->getGeneralName()); // Наименованеие
             $this->sheet->setCellValue('B' . $rowCount, $card->getPipeSerialNumber()); // Серийный № трубы
             $this->sheet->setCellValue('C' . $rowCount, $card->getSerialNoOfNipple()); // Серийный № ниппеля

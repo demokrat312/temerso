@@ -3,6 +3,7 @@
 namespace App\Entity\Reference;
 
 use Doctrine\ORM\Mapping as ORM;
+use Swagger\Annotations as SWG;
 
 /**
  * 7)Внутреннее покрытие
@@ -13,6 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  *Также для администратора будет доступен функционал по внесению новых значений списка этой характеристики
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\InnerCoatingRepository")
+ *
+ * Покрытие резьбы @SWG\Definition(
+ *     definition="RefInnerCoating",
+ *     description="Внутреннее покрытие",
+ * )
  */
 class RefInnerCoating extends \App\Classes\Reference\ReferenceParent
 {

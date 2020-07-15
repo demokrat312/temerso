@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Групировка карточек для коплекта
@@ -14,9 +15,14 @@ use Doctrine\ORM\Mapping as ORM;
 class EquipmentKit
 {
     /**
+     * Ключ
+     *
+     * @var int
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 
@@ -26,23 +32,36 @@ class EquipmentKit
     private $equipment;
 
     /**
+     * Карточки
+     *
+     * @var Card[]
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Card")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
-    private $card;
+    private $cards;
 
     /**
+     * Название комплекта
+     *
      * @ORM\Column(type="string", length=255)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $title;
 
     /**
+     * Характеристики
+     *
+     * @var EquipmentKitSpecification
+     *
      * @ORM\OneToOne(targetEntity="App\Entity\EquipmentKitSpecification", mappedBy="equipmentKit", cascade={"persist", "remove"})
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $specification;
 
     public function __construct()
     {
-        $this->card = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,15 +84,23 @@ class EquipmentKit
     /**
      * @return Collection|Card[]
      */
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
     public function getCard(): Collection
     {
-        return $this->card;
+        return $this->cards;
     }
 
     public function addCard(Card $card): self
     {
-        if (!$this->card->contains($card)) {
-            $this->card[] = $card;
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
         }
 
         return $this;
@@ -81,8 +108,8 @@ class EquipmentKit
 
     public function removeCard(Card $card): self
     {
-        if ($this->card->contains($card)) {
-            $this->card->removeElement($card);
+        if ($this->cards->contains($card)) {
+            $this->cards->removeElement($card);
         }
 
         return $this;

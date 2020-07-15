@@ -9,6 +9,8 @@ use App\Entity\Reference\RefTypeDisembarkation;
 use App\Entity\Reference\RefTypeEquipment;
 use App\Entity\Reference\RefTypeThread;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Swagger\Annotations as SWG;
 
 /**
  * Комлектация в аренду. Комплект. Характеристики
@@ -18,114 +20,163 @@ use Doctrine\ORM\Mapping as ORM;
 class EquipmentKitSpecification
 {
     /**
+     * Ключ
+     *
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue
+     * @var integer
      * @ORM\Column(type="integer")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 
     /**
      * Тип оборудования
      *
+     * @var RefTypeEquipment
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefTypeEquipment")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $refTypeEquipment;
 
     /**
      * Тип высадки
      *
+     * @var RefTypeDisembarkation
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefTypeDisembarkation")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $refTypeDisembarkation;
 
     /**
      * Наружный диаметр трубы, (мм)
      *
+     * @var float
+     *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $outerDiameterOfThePipe;
 
     /**
      * Толщина стенки трубы, (мм)
      *
+     * @var float
+     *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $pipeWallThickness;
 
     /**
      * Тип резьбы
      *
+     * @var RefTypeThread
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefTypeThread")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $refTypeThread;
 
     /**
      * O.D. Замка ниппель  (мм)
      *
+     * @var float
+     *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $odlockNipple;
 
     /**
      * I.D. Замка ниппель  (мм)
      *
+     * @var float
+     *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $idlockNipple;
 
     /**
      * Длина трубы
      *
+     * @var string
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $pipeLength;
 
     /**
      * Угол заплетчика
      *
+     * @var string
+     *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $shoulderAngle;
 
     /**
      * Длина под ключ ниппель, (мм)
      *
+     * @var float
+     *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $turnkeyLengthNipple;
 
     /**
      * Длина под ключ муфта, (мм)
      *
+     * @var float
+     *
      * @ORM\Column(type="float", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $turnkeyLengthCoupling;
 
     /**
      * Покрытие резьбы
      *
+     * @var RefThreadCoating
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefThreadCoating")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $refThreadCoating;
 
     /**
      * Внутреннее покрытие
      *
+     * @var RefInnerCoating
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefInnerCoating")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $refInnerCoating;
 
     /**
      * Хардбендинг (муфта)
      *
+     * @var RefHardbandingNipple
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefHardbandingNipple")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $refHardbandingCoupling;
 
     /**
      * Комментарий: поле для ввода информации пользователем
      *
+     * @var string
+     *
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $comment;
 
