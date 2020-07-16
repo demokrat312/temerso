@@ -606,6 +606,11 @@ class Card
      */
     private $taskCardOtherFields;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\EquipmentKit", mappedBy="cards", cascade={"persist"})
+     */
+    private $equipmentKit;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();

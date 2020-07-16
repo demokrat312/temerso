@@ -61,4 +61,14 @@ trait EquipmentTrait
 
         return $cardCount;
     }
+
+    public function getChoiceTitle()
+    {
+        return sprintf('%s %s. %s. %s.',
+                $this->getId(),
+                $this->getTenantName(),
+                $this->getUpdateAt()->format('Y-m-d'),
+                $this->getMainReason(),
+            );
+    }
 }

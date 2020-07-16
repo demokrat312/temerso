@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
+use App\Classes\Arrival\ArrivalTrait;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefInnerCoating;
 use App\Entity\Reference\RefPipeStrengthGroup;
@@ -24,6 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Arrival
 {
+    use ArrivalTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

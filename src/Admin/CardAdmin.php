@@ -5,12 +5,15 @@ namespace App\Admin;
 
 use App\Classes\MainAdmin;
 use App\Classes\CardFieldsHelper;
+use App\Entity\Arrival;
 use App\Entity\Card;
+use App\Entity\Equipment;
 use App\Entity\Reference\RefPipeStrengthGroup;
 use App\Entity\Reference\RefTypeThread;
 use App\Entity\Reference\RefWearClass;
 use App\Form\Type\HistoryCallbackFilter;
 use App\Service\FieldDescriptionService;
+use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -18,6 +21,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -55,10 +59,11 @@ class CardAdmin extends MainAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
-        ->add('history');
+            ->add('history');
     }
 
-    public function getContainer(){
+    public function getContainer()
+    {
         return $this->getConfigurationPool()->getContainer();
     }
 
@@ -67,7 +72,7 @@ class CardAdmin extends MainAdmin
      */
     protected function configureShowFields(ShowMapper $showMapper)
     {
-        $getInput = function($fieldName, $label = null) {
+        $getInput = function ($fieldName, $label = null) {
             return $this->fieldDescriptionService
                 ->getNewFieldDescriptionInstance(Card::class, $fieldName, ['label' => $label]);
         };
@@ -247,12 +252,58 @@ class CardAdmin extends MainAdmin
                 'field_options' => ['class' => RefWearClass::class],
                 'label' => 'Класс износа'
             ])
+            ->add('consignment', CallbackFilter::class, [
+                'label' => 'Партия',
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => Arrival::class,
+                    'choice_label' => 'choiceTitle',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('consignment')
+                            ->orderBy('consignment.id', 'DESC');
+                    },
+                ],
+                'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb = $queryBuilder;
+                    $qb
+//                        ->leftJoin('\App\Entity\EquipmentKit', 'kit')
+                        ->leftJoin(sprintf('%s.arrival', $alias), 'arrival')
+                        ->andWhere($qb->expr()->eq('arrival.id', '?1'),)
+                        ->setParameter('1', $value['value']);
+
+                    return true;
+                },
+            ])
             ->add('rend', CallbackFilter::class, [
                 'label' => 'По комплектам в аренде',
-                'callback' => function ($queryBuilder, $alias, $field, $value) {
-                    return false;
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => Equipment::class,
+                    'choice_label' => 'choiceTitle',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('rend')
+                            ->orderBy('rend.id', 'DESC');
+                    },
+                ],
+                'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb = $queryBuilder;
+                    $qb
+//                        ->leftJoin('\App\Entity\EquipmentKit', 'kit')
+                        ->leftJoin(sprintf('%s.equipmentKit', $alias), 'equipmentKit')
+                        ->leftJoin('equipmentKit.equipment', 'equipment')
+                        ->andWhere($qb->expr()->eq('equipment.id', '?1'),)
+                        ->setParameter('1', $value['value']);
+
+                    return true;
                 },
-                'field_type' => ChoiceType::class,
             ])
             ->add('repair', CallbackFilter::class, [
                 'label' => 'По комплектам в ремонте',
@@ -350,7 +401,6 @@ class CardAdmin extends MainAdmin
             ->add('the_ultimate_torque_of_the_tube', null, ['label' => 'Предельный  момент кручения  трубы, кНм'])
             ->add('the_ultimate_tensile_load_of_the_pipe', null, ['label' => 'Предельная растягивающая нагрузка трубы, Кн'])
             ->end()->end()->tab('media', ['label' => 'Медиа'])->with('media', ['label' => 'Медиа'])
-
             // \Symfony\Component\Form\Extension\Core\Type\CollectionType
             // \Sonata\Form\Type\CollectionType
             // \Sonata\CoreBundle\Form\Type\CollectionType
