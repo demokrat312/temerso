@@ -618,8 +618,10 @@ class Card
         $this->cardFields = new ArrayCollection();
         $this->status = StatusHelper::STATUS_CREATE;
         $this->accounting = true; // По умолчанию, есть на складе
+        $this->rfidTagNo = '';
 
-        $this->taskCardOtherFields = new ArrayCollection();    }
+        $this->taskCardOtherFields = new ArrayCollection();
+    }
 
     public function getId()
     {
