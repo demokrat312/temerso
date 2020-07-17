@@ -700,7 +700,7 @@ class Card
         return $this;
     }
 
-    public function getRfidTagNo()
+    public function getRfidTagNo() : string
     {
         return $this->rfidTagNo;
     }
