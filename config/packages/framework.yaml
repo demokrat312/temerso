@@ -23,3 +23,5 @@ framework:
     translator: { fallbacks: ['ru'] }
     templating:
         engines: ['twig']
+    assets:
+        version: 'v2'
