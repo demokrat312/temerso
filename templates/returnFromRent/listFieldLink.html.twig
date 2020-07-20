@@ -1,6 +1,6 @@
 {# @var \App\Entity\ReturnFromRent object #}
 {% if object.inspection %}
-<a href="{{ path('admin_app_inspection_show', {id: object.equipment.id}) }}" class="btn btn-sm btn-default view_link" title="Показать">
+<a href="{{ path('admin_app_inspection_show', {id: object.inspection.id}) }}" class="btn btn-sm btn-default view_link" title="Показать">
     <i class="fa fa-eye" aria-hidden="true"></i>
     Показать
 </a>
