@@ -13,7 +13,7 @@
                                     {% if object.kitType == 'single' %}
                                         единичный комплект
                                     {% else %}
-                                        множественный комплект,{{ object.kitCount }}
+                                        множественный комплект, {{ object.kitCount }}
                                     {% endif %}
                             </span></h4>
                             <h4>Всего единиц оборудования для комплектации в аренду: <span class="label label-default">{{ object.totalCard }}</span></h4>
@@ -23,7 +23,7 @@
                             {% endif %}
                             <div>
                                 {% for kit in object.kits %}
-                                    <table class="table table-responsive table-bordered table-sm text-center table-striped">
+                                    <table class="table table-responsive table-bordered table-sm text-center table-striped table-head-top">
                                     <caption>
                                         {% if kit.specification %}
                                             <div class="col-md-5">
@@ -100,14 +100,14 @@
                                     </caption>
                                     <thead>
                                     <tr>
-                                        <th>Наименование</th>
-                                        <th>Серийный № трубы</th>
-                                        <th>Серийный № ниппеля</th>
-                                        <th> Серийный № муфты</th>
-                                        <th>№ RFID-метки</th>
-                                        <th>Оборудование есть, проблема с меткой</th>
-                                        <th>Учет/ Инвентаризация</th>
-                                        <th>Изображения </th>
+                                        <th class="align-top">Наименование</th>
+                                        <th class="align-top">Серийный № трубы</th>
+                                        <th class="align-top">Серийный № ниппеля</th>
+                                        <th class="align-top"> Серийный № муфты</th>
+                                        <th class="align-top">№ RFID-метки</th>
+                                        <th class="align-top">Оборудование есть, проблема с меткой</th>
+                                        <th class="align-top">Учет/ Инвентаризация</th>
+                                        <th class="align-top">Изображения </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -119,7 +119,7 @@
                                     {# @var \App\Entity\Card card #}
                                     {% for card in kit.card %}
                                         <tr>
-                                            <td>{{ card.generalName }}</td>
+                                            <td class="text-left">{{ card.generalName }}</td>
                                             <td>{{ card.pipeSerialNumber }}</td>
                                             <td>{{ card.serialNoOfNipple }}</td>
                                             <td>{{ card.couplingSerialNumber }}</td>

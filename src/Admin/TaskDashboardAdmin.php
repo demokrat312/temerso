@@ -13,6 +13,7 @@ class TaskDashboardAdmin extends MainAdmin
         $collection
             ->add('task_create', 'task-create')
             ->add('task_list', 'task-list')
+            ->add('task_list_check', 'task-list-check')
             ;
     }
 

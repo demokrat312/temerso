@@ -157,9 +157,12 @@ sonata_admin:
                     - label: "Создать задание"
                       route: admin_app_taskdashboard_task_create
                       roles: [ROLE_ADMIN]
-                    - label: "Задания"
+                    - label: "Все задания"
                       route: admin_app_taskdashboard_task_list
                       roles: [ROLE_APP\ADMIN\MARKINGADMIN_GUEST]
+                    - label: "Ожидающие проверки"
+                      route: admin_app_taskdashboard_task_list_check
+                      roles: [ROLE_ADMIN]
                     - label: "Аналитика"
                       route: admin_empty
                       roles: [ROLE_ADMIN]

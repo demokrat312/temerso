@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * 10)Класс износа
  *
+ * New - новая,
  * Ultra - Ультра,
  * Premium - Премиум,
  * Premium, reduced TSR - Премиум со сниженным коэфициентом на кручение,

@@ -10,7 +10,6 @@ use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
 use App\Controller\Admin\MarkingAdminController;
 use App\Entity\Card;
 use App\Entity\Marking;
-use App\Entity\User;
 use App\Form\Type\AdminListType;
 use App\Service\Access\RoleService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -62,44 +61,42 @@ abstract class TaskAdminParent extends MainAdmin
     protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
         $query = parent::configureQuery($query);
-//        if ($this->security->isGranted([User::ROLE_INSPECTOR, User::ROLE_STOREKEEPER])) {
-            $al = $query->getRootAliases()[0];
-            /** @var \Doctrine\ORM\Query\Expr $expr */
-            $expr = $query->expr();
-            /** @var \Doctrine\ORM\QueryBuilder $em */
-            $em = $query->getQueryBuilder();
+        $al = $query->getRootAliases()[0];
+        /** @var \Doctrine\ORM\Query\Expr $expr */
+        $expr = $query->expr();
+        /** @var \Doctrine\ORM\QueryBuilder $em */
+        $em = $query->getQueryBuilder();
 
-//            $em
-//                ->leftJoin($al . '.users', 'user')
-//                ->andWhere($expr->andX(
-//                    $expr->eq(sprintf('%s.%s', 'user', 'id'), ':userId'),
-//                    $expr->in(sprintf('%s.%s', $al, 'status'), ':statusIds')
-//                ));
-//
-//            $query
-//                ->setParameter('userId', $this->security->getUser()->getId())
-//                ->setParameter('statusIds', [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION]);
+        $statusId = (int)$this->request->get('status');
 
-            $em->setParameter('userId', $this->security->getToken()->getUser()->getId());
 
-            // По доступам для постановщика(адимина)
-            $creatorExpr = $expr->andX(
-                $expr->eq(sprintf('%s.%s', $al, 'createdBy'), ':userId'),
-                $expr->in(sprintf('%s.%s', $al, 'status'), ':createdByStatusIds')
-            );
+        if($statusId) {
             $em
-                ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
-            // По доступам для исполнителя(кладовщик)
-            $em->leftJoin(sprintf('%s.%s', $al, 'users'), 'users');
-            $executorExpr = $expr->andX(
-                $expr->eq('users.id', ':userId'),
-                $expr->in(sprintf('%s.%s', $al, 'status'), ':executorStatusIds')
-            );
-            $em
-                ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
+                ->andWhere($expr->eq(sprintf('%s.%s', $al, 'status'), ':statusId'))
+                ->setParameter('statusId', $statusId)
+            ;
+        }
 
-            $em->andWhere($expr->orX($creatorExpr, $executorExpr));
-//        }
+        $em->setParameter('userId', $this->security->getToken()->getUser()->getId());
+
+        // По доступам для постановщика(адимина)
+        $creatorExpr = $expr->andX(
+            $expr->eq(sprintf('%s.%s', $al, 'createdBy'), ':userId'),
+            $expr->in(sprintf('%s.%s', $al, 'status'), ':createdByStatusIds')
+        );
+        $em
+            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
+
+        // По доступам для исполнителя(кладовщик)
+        $em->leftJoin(sprintf('%s.%s', $al, 'users'), 'users');
+        $executorExpr = $expr->andX(
+            $expr->eq('users.id', ':userId'),
+            $expr->in(sprintf('%s.%s', $al, 'status'), ':executorStatusIds')
+        );
+        $em
+            ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
+
+        $em->andWhere($expr->orX($creatorExpr, $executorExpr));
         return $query;
     }
 
@@ -133,10 +130,10 @@ abstract class TaskAdminParent extends MainAdmin
     protected function configureListFields(ListMapper $list)
     {
         $list
-            ->addIdentifier('id')
             ->add('taskType', null, self::VIEW_LINK)
             ->add('createdBy', null, self::VIEW_LINK)
             ->add('executor')
+            ->add('statusTitle', null,['label' => 'Статус',])
         ;
     }
 
@@ -190,4 +187,6 @@ abstract class TaskAdminParent extends MainAdmin
 
         $this->setShowModeButtons($actionButtons->getButtonList());
     }
+
+
 }

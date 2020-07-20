@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Classes\Dashboard\DashboardTask;
 use App\Classes\Task\TaskMenuBuilder;
+use App\Entity\Marking;
 use App\Service\AdminRouteService;
 use Sonata\AdminBundle\Action\DashboardAction;
 use Sonata\AdminBundle\Controller\CRUDController;
@@ -39,7 +40,24 @@ class TaskDashboardController extends CRUDController
     public function taskListAction(AdminRouteService $adminRoute) {
         $builder = new TaskMenuBuilder($adminRoute);
         return $this->renderWithExtraParams('task/list.html.twig', [
-            'taskList' => $builder->buildList()
+            'taskList' => $builder->buildList(),
+            'title' => 'Задания'
+        ]);
+    }
+
+    /**
+     * Задания ожидающие проверку
+     */
+    public function taskListCheckAction(AdminRouteService $adminRoute) {
+        $builder = new TaskMenuBuilder($adminRoute);
+        $blockList = $builder->buildList() ;
+        foreach ($blockList as $block) {
+            // Добавляем фильтрацию по статусу
+            $block->setRoute($block->getRoute() . '?status=' . Marking::STATUS_SAVE);
+        }
+        return $this->renderWithExtraParams('task/list.html.twig', [
+            'taskList' => $blockList,
+            'title' => 'Задания, ожидающие проверку'
         ]);
     }
 

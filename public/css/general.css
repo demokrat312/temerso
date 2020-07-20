@@ -12,3 +12,16 @@ body {
 }
 /*rgb(144, 36, 68) -> #902444 | темнее #751934 | самый светлый #ec628b (марина #f08080)*/
 /*#902344*/
+
+.table-head-top.table > thead > tr > th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+.table-body-left.table > tbody > tr > td {
+    text-align: left;
+}
+.text-left {
+    text-align: left!important;
+}

@@ -39,6 +39,18 @@ class ReturnFromRentAdmin extends TaskAdminParent
         /** @var \Doctrine\ORM\QueryBuilder $em */
         $em = $query->getQueryBuilder();
 
+        $statusId = (int)$this->request->get('status');
+
+
+        if($statusId) {
+            $em
+                ->addSelect('inspection')
+                ->leftJoin(sprintf('%s.%s', $al, 'inspection'), 'inspection')
+                ->andWhere($expr->eq('inspection.status', ':statusId'))
+                ->setParameter('statusId', $statusId)
+            ;
+        }
+
 
         $em->setParameter('userId', $this->security->getToken()->getUser()->getId());
 
@@ -103,10 +115,10 @@ class ReturnFromRentAdmin extends TaskAdminParent
     protected function configureListFields(ListMapper $list)
     {
         $list
-            ->add('id')
             ->add('taskType')
             ->add('createdBy', null, self::HIDE_LINK_MANY_TO_ONE)
             ->add('equipment', null, ['label' => 'Комплектация в аренду'])
+            ->add('statusTitle', null, ['label' => 'Статус'])
             ->add('_action', 'actions',
                 array(
                     'label' => 'Инспекция',

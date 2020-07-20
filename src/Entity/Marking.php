@@ -31,9 +31,9 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
     const STATUS_TITLE = [
         self::STATUS_SEND_EXECUTION => 'Отправлено на исполнение',
         self::STATUS_ACCEPT_EXECUTION => 'Принято на исполнение',
-        self::STATUS_SAVE => 'Результаты сохранены локально',
+        self::STATUS_SAVE => 'Отправлено на проверку', // Результаты сохранены локально
         self::STATUS_COMPLETE => 'Выполнено полностью',
-        self::STATUS_CREATED => 'Отредактировано',
+        self::STATUS_CREATED => 'Создано', // Отредактированно
         self::STATUS_REVISION => 'Отправленно на доработку',
     ];
 

@@ -15,14 +15,14 @@ class DashboardReference extends DashboardParent
     {
         return [
             (new DBlock())
-                ->setClass('col-lg-3 col-xs-6')
+                ->setClass('col-md-6')
                 ->setPosition('top')
                 ->setType(DBlock::TYPE_ADMIN_LIST)
                 ->setSettings((new DSettingAdminList())
                     ->setGroups(['cardDashboardRef'])
                 )->toArray(),
             (new DBlock())
-                ->setClass('col-lg-3 col-xs-6')
+                ->setClass('col-md-6')
                 ->setPosition('top')
                 ->setType(DBlock::TYPE_ADMIN_LIST)
                 ->setSettings((new DSettingAdminList())
