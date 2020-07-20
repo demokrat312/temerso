@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\CardTrait;
-use App\Classes\StatusHelper;
+use App\Classes\CardStatusHelper;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefHardbandingNippleState;
 use App\Entity\Reference\RefInnerCoating;
@@ -31,6 +31,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
+ *
+ * @see \App\Classes\CardStatusHelper
  */
 class Card
 {
@@ -63,6 +65,7 @@ class Card
      * Статусы карточки в базе Списанного Оборудования (доступ к базе находится в Каталоге):
      * • Списано
      *
+     * @see \App\Classes\CardStatusHelper
      * @ORM\Column(type="float")
      */
     private $status;
@@ -616,7 +619,7 @@ class Card
         $this->images = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->cardFields = new ArrayCollection();
-        $this->status = StatusHelper::STATUS_CREATE;
+        $this->status = CardStatusHelper::STATUS_CREATE;
         $this->accounting = true; // По умолчанию, есть на складе
 
         $this->taskCardOtherFields = new ArrayCollection();

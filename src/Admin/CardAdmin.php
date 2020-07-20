@@ -12,6 +12,7 @@ use App\Entity\Reference\RefPipeStrengthGroup;
 use App\Entity\Reference\RefTypeThread;
 use App\Entity\Reference\RefWearClass;
 use App\Form\Type\HistoryCallbackFilter;
+use App\Repository\EquipmentRepository;
 use App\Service\FieldDescriptionService;
 use Doctrine\ORM\EntityRepository;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -117,7 +118,7 @@ class CardAdmin extends MainAdmin
                     ->add('statusTitle', null, ['label' => 'Статус'])
                     ->add('location', null, ['label' => 'Местоположение'])
                     ->add('operating_hours', null, ['label' => 'Наработка моточасов'])
-                    ->add('ref_warehouse', ModelType::class, array_merge(self::SHOW_HIDE_LINK_MANY_TO_ONE, ['label' => '№ Склада']))
+                    ->add('ref_warehouse', ModelType::class, array_merge(self::HIDE_LINK_MANY_TO_ONE, ['label' => '№ Склада']))
                     ->add('rfid_tag_serial_no', null, ['label' => 'Серийный № метки RFID'])
                     ->add('rfid_tag_no', null, ['label' => '№ Метки RFID'])
                     ->add('pipe_serial_number', null, ['label' => 'Серийный № трубы'])
@@ -128,7 +129,7 @@ class CardAdmin extends MainAdmin
                     ->add('pipe_wall_thickness', null, ['label' => 'Толщина стенки трубы, (мм)'])
                     ->add('ref_type_disembarkation', null, ['label' => 'Тип высадки'])
                     ->add('ref_pipe_strength_group', null, ['label' => 'Группа прочности трубы'])
-                    ->add('ref_type_thread', ModelType::class, array_merge(self::SHOW_HIDE_LINK_MANY_TO_ONE, ['label' => 'Тип резьбы']))
+                    ->add('ref_type_thread', ModelType::class, array_merge(self::HIDE_LINK_MANY_TO_ONE, ['label' => 'Тип резьбы']))
                     ->add('odlock_nipple', null, ['label' => 'O.D. Замка ниппель  (мм)'])
                     ->add('dfchamfer_nipple', null, ['label' => 'D.F.  Фаска ниппель (мм)'])
                     ->add('lpc_thread_length_nipple', null, ['label' => 'LPC   Длина резьбы ниппель (мм)'])
@@ -144,9 +145,9 @@ class CardAdmin extends MainAdmin
                     ->add('turnkey_length_nipple', null, ['label' => 'Длина под ключ ниппель, (мм)'])
                     ->add('turnkey_length_coupling', null, ['label' => 'Длина под ключ муфта, (мм)'])
                     ->add('ref_thread_coating', null, ['label' => 'Покрытие резьбы'])
-                    ->add('ref_inner_coating', ModelType::class, array_merge(self::SHOW_HIDE_LINK_MANY_TO_ONE, ['label' => 'Внутреннее покрытие']))
-                    ->add('ref_hardbanding_nipple', ModelType::class, array_merge(self::SHOW_HIDE_LINK_MANY_TO_ONE, ['label' => 'Хардбендинг (ниппель)']))
-                    ->add('ref_hardbanding_coupling', ModelType::class, array_merge(self::SHOW_HIDE_LINK_MANY_TO_ONE, ['label' => 'Хардбендинг (муфта)']))
+                    ->add('ref_inner_coating', ModelType::class, array_merge(self::HIDE_LINK_MANY_TO_ONE, ['label' => 'Внутреннее покрытие']))
+                    ->add('ref_hardbanding_nipple', ModelType::class, array_merge(self::HIDE_LINK_MANY_TO_ONE, ['label' => 'Хардбендинг (ниппель)']))
+                    ->add('ref_hardbanding_coupling', ModelType::class, array_merge(self::HIDE_LINK_MANY_TO_ONE, ['label' => 'Хардбендинг (муфта)']))
                 // end left
                 ->end()
                 ->with('right', ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
@@ -284,9 +285,8 @@ class CardAdmin extends MainAdmin
                 'field_options' => [
                     'class' => Equipment::class,
                     'choice_label' => 'choiceTitle',
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('rend')
-                            ->orderBy('rend.id', 'DESC');
+                    'query_builder' => function (EquipmentRepository $er) {
+                        return $er->withOutReturnFromRent();
                     },
                 ],
                 'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {

@@ -13,4 +13,6 @@ class InspectionAdmin extends TaskAdminParent
     {
         $this->setTemplate('show', 'inspection/show.html.twig');
     }
+
+
 }

@@ -27,6 +27,7 @@ class MarkingTopMenuButtonService
     const BTN_SEND_REVIEW = 'btn_send_review'; // Отправить задание на проверку
     const BTN_REVIEW_SUCCESS = 'btn_review_success'; // Принять от Исполнителя
     const BTN_REVIEW_ERROR = 'btn_review_error'; // Отклонить/отправить на доработку
+    const BTN_EXCEL = 'btn_excel'; // Печать в excel
 
     /**
      * @var array |TopMenuAccess[]
@@ -191,7 +192,7 @@ class MarkingTopMenuButtonService
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_SEND_REVIEW)
+                        ->setKey(MarkingTopMenuButtonService::BTN_EXCEL)
                         ->setTitle('Excel')
                         ->setIcon('fa-file-excel-o')
                         ->setRoute($this->adminRoute->getActionRouteName(

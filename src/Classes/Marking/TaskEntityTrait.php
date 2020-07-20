@@ -86,7 +86,7 @@ trait TaskEntityTrait
     public function getExecutor(): ?User
     {
         /** @var User $user */
-        return $this->users->first() ?: null;
+        return $this->getUsers()->first() ?: null;
     }
 
 

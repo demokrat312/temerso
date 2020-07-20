@@ -160,6 +160,11 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      */
     private $withKit;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ReturnFromRent", mappedBy="equipment", cascade={"persist", "remove"})
+     */
+    private $returnFromRent;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
@@ -168,6 +173,12 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
         $this->users = new ArrayCollection();
         $this->kits = new ArrayCollection();
     }
+
+    public function __toString()
+    {
+        return $this->getChoiceTitle();
+    }
+
 
     public function getId(): ?int
     {
@@ -410,6 +421,23 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     public function setWithKit(?string $withKit): self
     {
         $this->withKit = $withKit;
+
+        return $this;
+    }
+
+    public function getReturnFromRent(): ?ReturnFromRent
+    {
+        return $this->returnFromRent;
+    }
+
+    public function setReturnFromRent(ReturnFromRent $returnFromRent): self
+    {
+        $this->returnFromRent = $returnFromRent;
+
+        // set the owning side of the relation if necessary
+        if ($returnFromRent->getEquipment() !== $this) {
+            $returnFromRent->setEquipment($this);
+        }
 
         return $this;
     }

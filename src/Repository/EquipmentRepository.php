@@ -31,5 +31,16 @@ class EquipmentRepository extends TaskRepositoryParent
 //        ;
     }
 
+    /**
+     * Не отображаем те которые вернулись из аренды
+     */
+    public function withOutReturnFromRent()
+    {
+        return $this->createQueryBuilder('equipment')
+            ->leftJoin('equipment.returnFromRent', 'rent')
+            ->where('rent.id is null') // Не отображаем те которые уже возвращены
+            ->orderBy('equipment.id', 'DESC');
+    }
+
 
 }

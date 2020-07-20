@@ -62,6 +62,11 @@ class Inspection implements DateListenerInterface, CreatedByListenerInterface, T
      */
     private $createdBy;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ReturnFromRent", mappedBy="inspection", cascade={"persist", "remove"})
+     */
+    private $returnFromRent;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
@@ -183,6 +188,24 @@ class Inspection implements DateListenerInterface, CreatedByListenerInterface, T
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    public function getReturnFromRent(): ?ReturnFromRent
+    {
+        return $this->returnFromRent;
+    }
+
+    public function setReturnFromRent(?ReturnFromRent $returnFromRent): self
+    {
+        $this->returnFromRent = $returnFromRent;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newInspection = null === $returnFromRent ? null : $this;
+        if ($returnFromRent->getInspection() !== $newInspection) {
+            $returnFromRent->setInspection($newInspection);
+        }
 
         return $this;
     }

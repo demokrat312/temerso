@@ -32,7 +32,7 @@ abstract class TaskAdminController extends DefaultAdminController
     /**
      * @var AdminRouteService
      */
-    private $adminRoute;
+    protected $adminRoute;
 
     public function __construct(MarkingAccessService $accessService, AdminRouteService $adminRoute)
     {
@@ -60,6 +60,7 @@ abstract class TaskAdminController extends DefaultAdminController
             return new RedirectResponse($url);
         }
 
+        $this->preChangeStatus($task, (int)$request->get('status'));
         $task
             ->setStatus((int)$request->get('status'));
 
@@ -148,5 +149,15 @@ abstract class TaskAdminController extends DefaultAdminController
         $excelFactory->build($task);
     }
 
+    /**
+     * Метод для перезаписи
+     *
+     * @param TaskItemInterface|object $taskItem
+     * @param $newStatusId
+     */
+    protected function preChangeStatus(TaskItemInterface $taskItem, $newStatusId)
+    {
+        return;
+    }
 
 }

@@ -28,7 +28,7 @@ abstract class TaskAdminParent extends MainAdmin
     /**
      * @var Security
      */
-    private $security;
+    protected $security;
     /**
      * @var RoleService
      */
@@ -129,7 +129,6 @@ abstract class TaskAdminParent extends MainAdmin
                 $action
             );
     }
-
 
     protected function configureListFields(ListMapper $list)
     {

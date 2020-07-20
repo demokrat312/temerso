@@ -11,6 +11,7 @@ namespace App\Service;
 
 use App\Classes\TopMenuButton\TopMenuButton;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\RouterInterface;
 
 class TopMenuButtonService
@@ -61,7 +62,7 @@ class TopMenuButtonService
         $key = $button->getKey();
 
         if ($templateName === null && !isset(self::DEFAULT_BUTTON_LIST_TEMPLATE[$key])) {
-            new \Exception('Укажите шаблон для кнопки ' . $key);
+            throw new BadRequestHttpException('Укажите шаблон для кнопки ' . $key);
         }
         if(in_array($key, array_keys(self::DEFAULT_BUTTON_LIST_TEMPLATE))){
             $templateName = self::DEFAULT_BUTTON_LIST_TEMPLATE[$key];
@@ -72,6 +73,8 @@ class TopMenuButtonService
         if($button->getRoute()) {
             $route = $this->router->generate($button->getRoute(), $button->getRouteParams());
         }
+
+        if(isset($this->list[$key])) throw new BadRequestHttpException('Такой пункт меню уже существует');
 
         $this->list[$key] = [
             'template' => (function (string $templateName) {

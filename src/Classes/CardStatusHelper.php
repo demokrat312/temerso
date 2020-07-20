@@ -9,7 +9,7 @@
 namespace App\Classes;
 
 
-class StatusHelper
+class CardStatusHelper
 {
     const STATUS_CREATE = 1; // Создана
     const STATUS_STORE = 2; // На складе
