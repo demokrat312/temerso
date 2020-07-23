@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="created.by">
                 <source>Created By</source>
-                <target>Кем созданно</target>
+                <target>Кем создано</target>
             </trans-unit>
             <trans-unit id="executor">
                 <source>Executor</source>

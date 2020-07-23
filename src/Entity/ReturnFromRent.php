@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
 {
-    use TaskEntityTrait, ReturnFromRentTrait;
+    use ReturnFromRentTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -50,6 +50,7 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     private $createdBy;
 
     /**
+     * @var Inspection
      * @ORM\OneToOne(targetEntity="App\Entity\Inspection", inversedBy="returnFromRent", cascade={"persist", "remove"})
      */
     private $inspection;

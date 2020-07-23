@@ -12,6 +12,7 @@ sonata_admin:
         layout: 'standard_layout.html.twig'
         list: 'crud/list.html.twig'
         edit: 'crud/edit.html.twig'
+        history: 'crud/history.html.twig'
 
 #        user_block: '@SonataAdmin/Core/user_block.html.twig'
         add_block: '@SonataAdmin/Core/add_block.html.twig'
@@ -24,7 +25,7 @@ sonata_admin:
         #        show_compare: '@SonataAdmin/CRUD/show_compare.html.twig'
 #        edit: '@SonataAdmin/CRUD/edit.html.twig'
         preview: '@SonataAdmin/CRUD/preview.html.twig'
-        history: '@SonataAdmin/CRUD/history.html.twig'
+#        history: '@SonataAdmin/CRUD/history.html.twig'
         acl: '@SonataAdmin/CRUD/acl.html.twig'
         history_revision_timestamp: '@SonataAdmin/CRUD/history_revision_timestamp.html.twig'
         action: '@SonataAdmin/CRUD/action.html.twig'

@@ -8,6 +8,8 @@
 
 namespace App\Classes\ReturnFromRent;
 
+use App\Classes\Marking\TaskEntityTrait;
+use App\Entity\Marking;
 use App\Entity\ReturnFromRent;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,6 +23,8 @@ use Exception;
  */
 trait ReturnFromRentTrait
 {
+    use TaskEntityTrait;
+
     public function getCards(): Collection
     {
         if(!$this->getInspection()) {
@@ -38,6 +42,15 @@ trait ReturnFromRentTrait
     public function removeUser(User $user)
     {
         throw new Exception("Return from rend don't have handler for removeUser");
+    }
+
+    public function getStatusTitle(): string
+    {
+        if($this->inspection) {
+            return $this->inspection->getStatusTitle();
+        }
+
+        return Marking::STATUS_TITLE[$this->status];
     }
 
 
