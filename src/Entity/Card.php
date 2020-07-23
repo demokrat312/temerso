@@ -93,6 +93,8 @@ class Card
 
     /**
      * Серийный № метки RFID
+     * это поле наврено нужно будет удалить
+     * @see Card::$rfidTagNo
      *
      * @ORM\Column(type="float", nullable=true)
      */
@@ -108,8 +110,6 @@ class Card
 
     /**
      * Серийный № трубы
-     * это поле наврено нужно будет удалить
-     * @see Card::$rfidTagNo
      *
      * @ORM\Column(type="float", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})

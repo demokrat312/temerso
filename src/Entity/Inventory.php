@@ -64,12 +64,20 @@ class Inventory implements DateListenerInterface, CreatedByListenerInterface, Ta
      */
     private $createdBy;
 
+    /**
+     * Излишек
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\InventoryOver", mappedBy="inventory", cascade={"persist", "remove"})
+     */
+    private $over;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
 
         $this->cards = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->over = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -185,6 +193,37 @@ class Inventory implements DateListenerInterface, CreatedByListenerInterface, Ta
     public function setCreatedBy(?User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InventoryOver[]
+     */
+    public function getOver(): Collection
+    {
+        return $this->over;
+    }
+
+    public function addOver(InventoryOver $over): self
+    {
+        if (!$this->over->contains($over)) {
+            $this->over[] = $over;
+            $over->setInventory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOver(InventoryOver $over): self
+    {
+        if ($this->over->contains($over)) {
+            $this->over->removeElement($over);
+            // set the owning side to null (unless already changed)
+            if ($over->getInventory() === $this) {
+                $over->setInventory(null);
+            }
+        }
 
         return $this;
     }
