@@ -1,4 +1,4 @@
-{# @var \App\Classes\Task\TaskItemInterface object #}
+{# @var \App\Entity\Inventory object #}
 {% extends 'crud/show.html.twig' %}
 {% block show_groups %}
     <div class="sonata-ba-show">
@@ -44,6 +44,45 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sonata-ba-view">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <div class="box box-primary">
+                        <div class="box-body table-responsive">
+                            <div>
+                                <table class="table table-responsive table-bordered table-sm text-center table-head-top">
+                                    <caption><h1>Излишек</h1></caption>
+                                    <thead>
+                                    <tr>
+                                        <th>Серийный № трубы </th>
+                                        <th>Серийный № ниппеля </th>
+                                        <th>Серийный № муфты </th>
+                                        <th>№ RFID-метки</th>
+                                        <th>Комментарий</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if object.over.count %}
+                                        {# @var \App\Entity\InventoryOver over #}
+                                        {% for over in object.over %}
+                                            <tr>
+                                                <td>{{ over.pipeSerialNumber }}</td>
+                                                <td>{{ over.serialNoOfNipple }}</td>
+                                                <td>{{ over.couplingSerialNumber }}</td>
+                                                <td>{{ over.rfidTagNo }}</td>
+                                                <td>{{ over.comment }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr><td colspan="5">Записей нету</td></tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
                     </div>
                 </div>
             </div>
