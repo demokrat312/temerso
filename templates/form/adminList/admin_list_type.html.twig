@@ -23,9 +23,17 @@
                 <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
                     #
                 </th>
-                <th class="sonata-ba-list-field-header-text">
-                    Название
-                </th>
+                {% if form.vars.fields  %}
+                    {% for field in form.vars.fields %}
+                        <th class="sonata-ba-list-field-header-text">
+                            {{ field.title }}
+                        </th>
+                    {% endfor %}
+                {% else %}
+                    <th class="sonata-ba-list-field-header-text">
+                        Название
+                    </th>
+                {% endif %}
                 <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
             </tr>
             </thead>
@@ -41,9 +49,17 @@
                         <td class="sonata-ba-list-field sonata-ba-list-field-batch">
                             {{ loop.index }}
                         </td>
-                        <td class="sonata-ba-list-field sonata-ba-list-field-text">
-                            {{ attribute(element, form.vars.fieldShowName) }}
-                        </td>
+                        {% if form.vars.fields  %}
+                            {% for field in form.vars.fields %}
+                                <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                    {{ attribute(element, field.name, [id, form.parent.vars.value])|raw }}
+                                </td>
+                            {% endfor %}
+                        {% else %}
+                            <td class="sonata-ba-list-field sonata-ba-list-field-text">
+                                {{ attribute(element, form.vars.fieldShowName) }}
+                            </td>
+                        {% endif %}
                         <td class="sonata-ba-list-field sonata-ba-list-field-select" objectid="1">
                             <a class="btn btn-primary" href="#">
                                 <i class="fa fa-times" aria-hidden="true"></i>

@@ -46,6 +46,14 @@
                 <source>Marking Create</source>
                 <target>Маркировка, создание</target>
             </trans-unit>
+            <trans-unit id="repair.list">
+                <source>Repair List</source>
+                <target>Комплектация в ремонт, список</target>
+            </trans-unit>
+            <trans-unit id="repair.create">
+                <source>Repair Create</source>
+                <target>Комплектация в ремонт, создание</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

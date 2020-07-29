@@ -15,6 +15,7 @@ use App\Entity\Equipment;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
+use App\Entity\Repair;
 use App\Entity\ReturnFromRent;
 use App\Entity\User;
 use Doctrine\Common\Collections\Collection;
@@ -31,6 +32,7 @@ class TaskItem
     const TYPE_INSPECTION = 3;
     const TYPE_EQUIPMENT = 4;
     const TYPE_RETURN_FROM_RENT = 5;
+    const TYPE_REPAIR = 6;
 
     const TYPE_TITLE = [
         self::TYPE_MARKING => 'Маркировка',
@@ -38,6 +40,7 @@ class TaskItem
         self::TYPE_INSPECTION => 'Инспекция',
         self::TYPE_EQUIPMENT => 'Комплектация в аренду',
         self::TYPE_RETURN_FROM_RENT => 'Возврат из аренды',
+        self::TYPE_REPAIR => 'Комплектация в ремонт',
     ];
 
     const TYPE_CLASS = [
@@ -46,6 +49,7 @@ class TaskItem
         self::TYPE_INSPECTION => Inspection::class,
         self::TYPE_EQUIPMENT => Equipment::class,
         self::TYPE_RETURN_FROM_RENT => ReturnFromRent::class,
+        self::TYPE_REPAIR => Repair::class,
     ];
 
     const TYPE_BY_CLASS = [
@@ -54,6 +58,7 @@ class TaskItem
         Inspection::class => self::TYPE_INSPECTION,
         Equipment::class => self::TYPE_EQUIPMENT,
         ReturnFromRent::class => self::TYPE_RETURN_FROM_RENT,
+        Repair::class => self::TYPE_REPAIR,
     ];
 
     /**

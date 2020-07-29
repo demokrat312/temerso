@@ -11,6 +11,7 @@ namespace App\Classes;
 
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItemInterface;
+use App\Entity\Repair;
 use App\Entity\TaskCardOtherField;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -179,6 +180,23 @@ trait CardTrait
     {
         $this->taskClassName = $taskClassName;
         return $this;
+    }
+
+    public function repairCardImgRequiredInput(string $formId, Repair $repair)
+    {
+        static $counter = 0;
+        $formId = preg_replace('/\_.*$/', '', $formId);
+        $isChecked = $this->getRepairCardImgRequiredByRepair($repair)->getRequired();
+        $checked = '';
+        if($isChecked) {
+            $checked = 'checked="checked"';
+        }
+        $result = '
+        <input name="' . $formId . '[cardImgRequired][' . $counter .'][required]" class="form-check-input" type="checkbox" value="1" ' . $checked . '>
+        <input type="hidden" name="' . $formId . '[cardImgRequired][' . $counter .'][card]" value="' . $this->getId() .'">
+        ';
+        $counter++;
+        return $result;
     }
 
 }

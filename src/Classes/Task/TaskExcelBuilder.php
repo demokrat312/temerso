@@ -14,12 +14,15 @@ use App\Classes\Equipment\EquipmentCells;
 use App\Classes\Inspection\InspectionCells;
 use App\Classes\Marking\MarkingCells;
 use App\Classes\Inventory\InventoryCells;
+use App\Classes\Repair\RepairCells;
 use App\Entity\Equipment;
 use App\Entity\EquipmentKit;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
+use App\Entity\Repair;
 use Onurb\Bundle\ExcelBundle\Factory\ExcelFactory;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaskExcelBuilder
 {
@@ -53,6 +56,11 @@ class TaskExcelBuilder
             case Equipment::class:
                 $this->getEquipment($task, $excelHelper);
                 break;
+            case Repair::class:
+                $this->getRepair($task, $excelHelper);
+                break;
+            default:
+                throw new NotFoundHttpException('Обработчик excel для ' . get_class($task) . ' не найден');
         }
 
         $excelHelper->print();
@@ -154,6 +162,26 @@ class TaskExcelBuilder
 //            echo PHP_EOL;
         });
 //exit;
+        return true;
+    }
+
+    private function getRepair(Repair $repair, ExcelHelper $excelHelper)
+    {
+        $excelHelper->setSource('templates/excelFile/repair_excel.xlsx');
+
+        // Задаем общию информацию
+        $markingCells = new RepairCells();
+        $markingCells
+            ->setActiveSheet($excelHelper->getActiveSheet())
+            ->setGeneral($repair);
+
+        if ($repair->getCards()->count() > 0) {
+            $startRow = 6;
+            $markingCells
+                ->duplicateRow($startRow, $repair->getCards()->count())
+                ->setCars($startRow, $repair);
+        }
+
         return true;
     }
 }

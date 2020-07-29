@@ -75,6 +75,7 @@ class AdminListType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['fieldShowName'] = $options['field_show_name'];
+        $view->vars['fields'] = $options['fields'];
         $view->vars['values'] = $form->getData();
     }
 
@@ -82,6 +83,7 @@ class AdminListType extends AbstractType
     {
         $resolver->setDefaults([
             'field_show_name' => '',
+            'fields' => [],
         ]);
     }
 

@@ -18,14 +18,17 @@ class MediaHelper
 {
     use InstanceTrait;
 
-    public function getImageLink(Collection $images)
+    public function getImageLink(Collection $images, $withHost = false)
     {
         $arImages = [];
         if ($images) {
             $generator = new IdGenerator();
-            $images->map(function (Media $media) use ($generator, &$arImages) {
-//                $arImages[] = $media;
-                $arImages[] = Media::PATH . $generator->generatePath($media) . '/' . $media->getProviderReference();
+            $images->map(function (Media $media) use ($withHost, $generator, &$arImages) {
+                if($withHost) {
+                    $arImages[] = Media::PATH . $generator->generatePath($media) . '/' . $media->getProviderReference();
+                } else {
+                    $arImages[] = $_SERVER['HTTP_HOST'] . Media::PATH . $generator->generatePath($media) . '/' . $media->getProviderReference();
+                }
             });
         }
         return $arImages;

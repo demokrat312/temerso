@@ -209,8 +209,16 @@ class CardAdmin extends MainAdmin
             ->add('generalName', null, array_merge(self::VIEW_LINK, [
                 'label' => 'Название',
                 'header_class' => 'js-field-general-name'
-            ]))
-            ->add('statusTitle', null, ['label' => 'Статус']);
+            ]));
+        // Если список запрашивается из Комплектация в ремонт
+        if(strpos($this->getRequest()->headers->get('referer'), '/repair/') !== false) {
+            $listMapper->add('repairCardImgRequired.required', 'admin_checked', [
+                'label' => 'Фотография',
+                'input_name_mask' => '{formId}[cardImgRequired][{id}][required]',
+                'input_parent_mask' => '{formId}[cardImgRequired][{id}][card]',
+            ]);
+        }
+        $listMapper->add('statusTitle', null, ['label' => 'Статус']);
 //            ->add('id', null, self::VIEW_LINK);
 
         // Name of the action (show, edit, history, delete, etc)

@@ -614,11 +614,17 @@ class Card
      */
     private $equipmentKit;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RepairCardImgRequired", cascade={"persist", "remove"}, mappedBy="card")
+     */
+    private $repairCardImgRequired;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->cardFields = new ArrayCollection();
+        $this->repairCardImgRequired = new ArrayCollection();
         $this->status = CardStatusHelper::STATUS_CREATE;
         $this->accounting = true; // По умолчанию, есть на складе
 
@@ -1622,5 +1628,33 @@ class Card
         }
 
         return $this;
+    }
+
+    /**
+     * @param mixed $repairCardImgRequired
+     * @return $this
+     */
+    public function setRepairCardImgRequired($repairCardImgRequired)
+    {
+        $this->repairCardImgRequired = $repairCardImgRequired;
+        return $this;
+    }
+
+
+    /**
+     * @return Collection|RepairCardImgRequired[]
+     */
+    public function getRepairCardImgRequired(): Collection
+    {
+        return $this->repairCardImgRequired;
+    }
+
+    /**
+     * @return null|RepairCardImgRequired
+     */
+    public function getRepairCardImgRequiredByRepair($repair): ?RepairCardImgRequired
+    {
+        $criteria = Criteria::create()->where(Criteria::expr()->eq("repair", $repair));
+        return $this->repairCardImgRequired->matching($criteria)->first();
     }
 }

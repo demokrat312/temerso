@@ -13,6 +13,7 @@ use App\Entity\Equipment;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
+use App\Entity\Repair;
 use App\Entity\ReturnFromRent;
 use App\Service\AdminRouteService;
 
@@ -62,7 +63,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Комплектация в ремонт')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(Repair::class, 'create'))
                 ->setRouteTitle('link_action_create')
             ,
             (new TaskMenuItem())
@@ -107,7 +108,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Комплектация в ремонт')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(Repair::class, 'list'))
                 ->setRouteTitle('link_list')
             ,
             (new TaskMenuItem())

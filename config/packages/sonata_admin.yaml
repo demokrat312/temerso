@@ -160,7 +160,10 @@ sonata_admin:
                       roles: [ROLE_ADMIN]
                     - label: "Все задания"
                       route: admin_app_taskdashboard_task_list
-                      roles: [ROLE_APP\ADMIN\MARKINGADMIN_GUEST]
+                      roles: [ROLE_ADMIN]
+                    - label: "Мои задания"
+                      route: admin_app_taskdashboard_task_list
+                      roles: [ROLE_INSPECTOR, ROLE_STOREKEEPER]
                     - label: "Ожидающие проверки"
                       route: admin_app_taskdashboard_task_list_check
                       roles: [ROLE_ADMIN]

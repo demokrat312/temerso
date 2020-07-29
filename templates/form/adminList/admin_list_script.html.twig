@@ -2,6 +2,7 @@
     {% autoescape 'js' %}
     const adminListModel = (function () {
         // s5eca959083ae6[cards][]
+        let formId = '{{ id }}'.replace(/\_.+$/, '');
         let $modal = null;
         let $tableList = null;
         let listUrl = null;
@@ -15,6 +16,7 @@
                         <td class="sonata-ba-list-field sonata-ba-list-field-text">
                             {title}
                         </td>
+                        {otherField}
                         <td class="sonata-ba-list-field sonata-ba-list-field-select">
                             <a class="btn btn-primary" href="#">
                                 <i class="fa fa-times" aria-hidden="true"></i>
@@ -57,6 +59,7 @@
                     Admin.shared_setup($modal);
                     batchScript();
                     removeDuplicate();
+                    modalLinkHandle($modal.find('.modal-body').find('.sonata-ba-list-field-header'));
                 }
             });
         };
@@ -89,14 +92,41 @@
             addItem($row);
         };
 
+        const addOtherField = ($newRow) => {
+            let otherFieldTr = '';
+            $newRow.find('.js-admin-list-other-field').each((index, htmlElement) => {
+                const $fields = $(htmlElement);
+                const title = $fields.find('.js-admin-list-other-field-info').data('title');
+                if($tableList.find('.sonata-ba-list-field-header').find(':contains(' + title +')').length === 0) {
+                    $tableList.find('.sonata-ba-list-field-header-select').before($('<th class="sonata-ba-list-field-header-text">' + title +'</th>'));
+                }
+                let fieldsHtml = '';
+                $fields.find('[name]').each((index, input) =>  {
+                    const $input = $(input);
+                    if($input.is(':checkbox:checked')) {
+                        $input.iCheck('destroy');
+                        $input.attr('checked', 'checked');
+                    }
+                    fieldsHtml += $input.wrap('<p/>').parent().html();
+                });
+                otherFieldTr += '<td class="sonata-ba-list-field sonata-ba-list-field-text">' + fieldsHtml + '</td>';
+            });
+
+            return otherFieldTr;
+        };
+
         const addItem = ($row) => {
             const id = $row.find('.sonata-ba-list-field-batch').attr('objectid');
             const title = $row.find('td:eq(' + $('.js-field-general-name').index() + ')').text().trim();
 
             const rowTemplateUpdated = setRowTemplateParam(rowTemplate);
 
+            const otherFieldTemplate = addOtherField($row);
+
             const $newRow = $(rowTemplateUpdated
-                .replace('{id}', id)
+                .replace('{otherField}', otherFieldTemplate)
+                .replace(/{id}/g, id)
+                .replace(/{formId}/g, formId)
                 .replace('{orderNumber}', $tableList.find('tbody tr:not(#row-empty)').length + 1)
                 .replace('{title}', title)
             );
@@ -219,6 +249,21 @@
                 rowTemplate = sub(rowTemplate, $tableList);
             });
             return rowTemplate;
+        };
+
+        // Перехватываем все ссылки нажатые в модальном окне
+        const modalLinkHandle = ($modal) => {
+
+            $modal.find('[href]').each(function(index, linkElement) {
+                console.log(linkElement.href);
+                if(linkElement.href.includes('/')) {
+                    $(linkElement).click((event) => {
+                        event.preventDefault();
+                        const link = event.target.getAttribute('href');
+                        loadModalBody(link);
+                    })
+                }
+            });
         };
 
         return {init, setTableList, setRowTemplate, rowTemplateCreateSub}
