@@ -11,6 +11,7 @@ namespace App\Classes\Marking;
 use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\Task\TaskItem;
 use App\Entity\Card;
+use App\Entity\Repair;
 
 /**
  * Карточки из маркировки приводем к карточкам для задачи
@@ -31,6 +32,10 @@ class MarkingCardToTaskCardAdapter
             ->setAccounting($card->getAccounting())
             ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
             ->setTaskId($taskId);
+
+        if($entityClass === Repair::class) {
+            $taskCard->setCardImgRequired($card->getRepairCardImgRequiredByRepair($taskId)->getRequired());
+        }
 
         if ($entityClass) {
             $taskCard

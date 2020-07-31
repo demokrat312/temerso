@@ -81,6 +81,17 @@ class Repair implements  DateListenerInterface, CreatedByListenerInterface, Task
     }
 
     /**
+     * @param mixed $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+
+    /**
      * @return Collection|Card[]
      */
     public function getCards(): Collection

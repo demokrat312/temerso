@@ -12,6 +12,7 @@ namespace App\Classes;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItemInterface;
 use App\Entity\Repair;
+use App\Entity\RepairCardImgRequired;
 use App\Entity\TaskCardOtherField;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -180,6 +181,19 @@ trait CardTrait
     {
         $this->taskClassName = $taskClassName;
         return $this;
+    }
+
+    /**
+     * @return integer|RepairCardImgRequired
+     */
+    public function getRepairCardImgRequiredByRepair($repair): ?RepairCardImgRequired
+    {
+        if(!is_object($repair)) {
+            $repair = (new Repair())->setId($repair);
+        }
+        $criteria = Criteria::expr()->eq("repair", $repair);
+        $criteria = Criteria::create()->where($criteria);
+        return $this->repairCardImgRequired->matching($criteria)->first() ?: null;
     }
 
     public function repairCardImgRequiredInput(string $formId, Repair $repair)

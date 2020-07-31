@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
+use App\Classes\Task\TaskRepositoryParent;
 use App\Entity\Repair;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Repair[]    findAll()
  * @method Repair[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RepairRepository extends ServiceEntityRepository
+class RepairRepository extends TaskRepositoryParent
 {
     public function __construct(ManagerRegistry $registry)
     {

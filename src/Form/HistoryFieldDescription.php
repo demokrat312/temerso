@@ -53,8 +53,10 @@ class HistoryFieldDescription extends FieldDescription
 
         if (empty($mapping['targetEntity'])) {
             return $historyValue;
-        } else {
+        } else if($historyValue) {
             return $this->em->getRepository($mapping['targetEntity'])->find($historyValue);
+        } else {
+            return null;
         }
     }
 

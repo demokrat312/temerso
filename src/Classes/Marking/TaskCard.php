@@ -28,6 +28,7 @@ class TaskCard
     private $images;
     private $taskId;
     private $taskTypeId;
+    private $cardImgRequired;
     /**
      * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
      * @var int
@@ -250,4 +251,21 @@ class TaskCard
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCardImgRequired()
+    {
+        return $this->cardImgRequired;
+    }
+
+    /**
+     * @param mixed $cardImgRequired
+     * @return $this
+     */
+    public function setCardImgRequired($cardImgRequired)
+    {
+        $this->cardImgRequired = $cardImgRequired;
+        return $this;
+    }
 }

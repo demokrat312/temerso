@@ -18,6 +18,7 @@ use App\Entity\Equipment;
 use App\Entity\Inspection;
 use App\Entity\Inventory;
 use App\Entity\Marking;
+use App\Entity\Repair;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
@@ -72,6 +73,7 @@ class TaskController extends ApiParentController
             $em->getRepository(Inventory::class)->findAllTask($user->getId(), $withCards),
             $em->getRepository(Inspection::class)->findAllTask($user->getId(), $withCards),
             $em->getRepository(Equipment::class)->findAllTask($user->getId(), $withCards),
+            $em->getRepository(Repair::class)->findAllTask($user->getId(), $withCards),
                  ] as $entityList) {
             foreach ($entityList as $entity) {
                 $taskList[] = $taskAdapter->getTask($entity, $withCards);

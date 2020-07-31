@@ -1648,13 +1648,4 @@ class Card
     {
         return $this->repairCardImgRequired;
     }
-
-    /**
-     * @return null|RepairCardImgRequired
-     */
-    public function getRepairCardImgRequiredByRepair($repair): ?RepairCardImgRequired
-    {
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("repair", $repair));
-        return $this->repairCardImgRequired->matching($criteria)->first();
-    }
 }

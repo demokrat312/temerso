@@ -21,8 +21,7 @@ trait ArrivalTrait
     public function getChoiceTitle()
     {
         return sprintf(
-          '%s %s %s %s',
-          $this->getId(), // Id партии
+          '%s %s %s',
           $this->getCards()->count(), // 1)Количество единиц товара в партии
           $this->getDateArrival(), // 2)Дата приход
           $this->getNumberAndDatePurchase(), // 3)№ договора покупки, дата покупки

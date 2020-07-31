@@ -86,6 +86,13 @@ class CardItemType extends AbstractType
                     'description' => 'Ключ задачи. Для каждой задачи свои ключи',
                 ],
             ])
+            ->add('cardImgRequired', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'boolean',
+                    'description' => 'Обязательность приложения фото (Для комплектации в ремонт)',
+                ],
+            ])
         ;
     }
 }

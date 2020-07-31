@@ -211,7 +211,7 @@ class CardAdmin extends MainAdmin
                 'header_class' => 'js-field-general-name'
             ]));
         // Если список запрашивается из Комплектация в ремонт
-        if(strpos($this->getRequest()->headers->get('referer'), '/repair/') !== false) {
+        if(isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/repair/') !== false) {
             $listMapper->add('repairCardImgRequired.required', 'admin_checked', [
                 'label' => 'Фотография',
                 'input_name_mask' => '{formId}[cardImgRequired][{id}][required]',
