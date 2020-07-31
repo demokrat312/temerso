@@ -19,6 +19,17 @@ class RepairRepository extends TaskRepositoryParent
         parent::__construct($registry, Repair::class);
     }
 
+    /**
+     * Не отображаем те которые вернулись из ремонта
+     */
+    public function withOutReturnFromRent()
+    {
+        return $this->createQueryBuilder('repair')
+            ->leftJoin('repair.returnFromRepair', 'returnFromRepair')
+            ->where('returnFromRepair.id is null') // Не отображаем те которые уже возвращены
+            ->orderBy('repair.id', 'DESC');
+    }
+
     // /**
     //  * @return Repair[] Returns an array of Repair objects
     //  */

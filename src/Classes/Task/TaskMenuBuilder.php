@@ -15,6 +15,7 @@ use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Entity\Repair;
 use App\Entity\ReturnFromRent;
+use App\Entity\ReturnFromRepair;
 use App\Service\AdminRouteService;
 
 class TaskMenuBuilder
@@ -68,7 +69,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Возврат из ремонта')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(ReturnFromRepair::class, 'create'))
                 ->setRouteTitle('link_action_create')
             ,
         ];
@@ -113,7 +114,7 @@ class TaskMenuBuilder
             ,
             (new TaskMenuItem())
                 ->setTitle('Возврат из ремонта')
-                ->setRoute($this->adminRoute->getRoute('admin_empty'))
+                ->setRoute($this->adminRoute->getActionRoute(ReturnFromRepair::class, 'list'))
                 ->setRouteTitle('link_list')
             ,
         ];

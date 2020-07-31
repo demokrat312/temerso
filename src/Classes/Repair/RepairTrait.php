@@ -8,7 +8,19 @@
 
 namespace App\Classes\Repair;
 
+use App\Entity\Repair;
 
+/**
+ * @mixin Repair
+ */
 trait RepairTrait
 {
+    public function getChoiceTitle()
+    {
+        return sprintf('%s %s. %s.',
+            $this->getId(),
+            $this->getComment(),
+            $this->getUpdateAt()->format('Y-m-d'),
+            );
+    }
 }

@@ -111,3 +111,13 @@ services:
             - '@App\Service\Marking\MarkingTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Комплектация в ремонт, group: Задания, show_in_dashboard: true}
+    App\Admin\ReturnFromRepairAdmin:
+        arguments:
+            - ~
+            - App\Entity\ReturnFromRepair
+            - App\Controller\Admin\ReturnFromRepairAdminController
+            - "@Symfony\\Component\\Security\\Core\\Security"
+            - '@App\Service\Access\RoleService'
+            - '@App\Service\Marking\MarkingTopMenuButtonService'
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Возврат из ремонта, group: Задания, show_in_dashboard: true}

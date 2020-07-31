@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
-use App\Classes\ReturnFromRent\ReturnFromRentTrait;
+use App\Classes\ReturnFromRepair\ReturnFromRepairTrait;
 use App\Classes\Task\TaskItemInterface;
 use Doctrine\ORM\Mapping as ORM;
 // не удалять, какой то баг со вложенным trait
@@ -14,13 +14,13 @@ use /** @noinspection PhpUnusedAliasInspection */
     Swagger\Annotations as SWG;
 
 /**
- * 8. Возврат из аренды
+ * 8 ПРОЦЕСС. ВОЗВРАТ ОБОРУДОВАНИЯ ИЗ РЕМОНТА
  *
- * @ORM\Entity(repositoryClass="App\Repository\ReturnFromRentRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ReturnFromRepairRepository")
  */
-class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
+class ReturnFromRepair implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
 {
-    use ReturnFromRentTrait;
+    use ReturnFromRepairTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -29,9 +29,10 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToOne(targetEntity="App\Entity\Repair", inversedBy="returnFromRepair", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $status;
+    private $repair;
 
     /**
      * @ORM\Column(type="datetime")
@@ -44,45 +45,39 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     private $updateAt;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $status;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $createdBy;
 
     /**
-     * @var Inspection
-     * @ORM\OneToOne(targetEntity="App\Entity\Inspection", inversedBy="returnFromRent", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Inspection", inversedBy="returnFromRepair", cascade={"persist", "remove"})
      */
     private $inspection;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Equipment", inversedBy="returnFromRent", cascade={"persist", "remove"})
-     */
-    private $equipment;
-
-    public function __construct()
-    {
-        $this->status = Marking::STATUS_CREATED;
-    }
-
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getStatus(): ?int
+    public function getRepair(): ?Repair
     {
-        return $this->status;
+        return $this->repair;
     }
 
-    public function setStatus(int $status): self
+    public function setRepair(Repair $repair): self
     {
-        $this->status = $status;
+        $this->repair = $repair;
 
         return $this;
     }
@@ -107,6 +102,18 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     public function setUpdateAt(\DateTimeInterface $updateAt): self
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(int $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
@@ -143,18 +150,6 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     public function setInspection(?Inspection $inspection): self
     {
         $this->inspection = $inspection;
-
-        return $this;
-    }
-
-    public function getEquipment(): ?Equipment
-    {
-        return $this->equipment;
-    }
-
-    public function setEquipment(Equipment $equipment): self
-    {
-        $this->equipment = $equipment;
 
         return $this;
     }

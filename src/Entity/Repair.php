@@ -67,6 +67,11 @@ class Repair implements  DateListenerInterface, CreatedByListenerInterface, Task
      */
     private $cardImgRequired;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ReturnFromRepair", mappedBy="repair", cascade={"persist", "remove"})
+     */
+    private $returnFromRepair;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
@@ -229,6 +234,23 @@ class Repair implements  DateListenerInterface, CreatedByListenerInterface, Task
             if ($cardImgRequired->getRepair() === $this) {
                 $cardImgRequired->setRepair(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getReturnFromRepair(): ?ReturnFromRepair
+    {
+        return $this->returnFromRepair;
+    }
+
+    public function setReturnFromRepair(ReturnFromRepair $returnFromRepair): self
+    {
+        $this->returnFromRepair = $returnFromRepair;
+
+        // set the owning side of the relation if necessary
+        if ($returnFromRepair->getRepair() !== $this) {
+            $returnFromRepair->setRepair($this);
         }
 
         return $this;
