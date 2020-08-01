@@ -6,7 +6,7 @@
  * Time: 00:23
  */
 
-namespace App\Classes;
+namespace App\Classes\Card;
 
 
 class CardStatusHelper

@@ -9,7 +9,7 @@
 namespace App\Controller\Admin;
 
 
-use App\Classes\CardStatusHelper;
+use App\Classes\Card\CardStatusHelper;
 use App\Classes\Task\TaskAdminController;
 use App\Entity\Card;
 use App\Entity\Inspection;

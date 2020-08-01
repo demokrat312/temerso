@@ -4,7 +4,7 @@ namespace App\Admin;
 
 
 use App\Classes\MainAdmin;
-use App\Classes\CardFieldsHelper;
+use App\Classes\Card\CardFieldsHelper;
 use App\Entity\Card;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;

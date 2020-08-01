@@ -255,7 +255,6 @@
         const modalLinkHandle = ($modal) => {
 
             $modal.find('[href]').each(function(index, linkElement) {
-                console.log(linkElement.href);
                 if(linkElement.href.includes('/')) {
                     $(linkElement).click((event) => {
                         event.preventDefault();

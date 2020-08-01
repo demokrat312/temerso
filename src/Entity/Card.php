@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
-use App\Classes\CardTrait;
-use App\Classes\CardStatusHelper;
+use App\Classes\Card\CardTrait;
+use App\Classes\Card\CardStatusHelper;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefHardbandingNippleState;
 use App\Entity\Reference\RefInnerCoating;
@@ -32,7 +32,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
  *
- * @see \App\Classes\CardStatusHelper
+ * @see \App\Classes\Card\CardStatusHelper
  */
 class Card
 {
@@ -65,7 +65,7 @@ class Card
      * Статусы карточки в базе Списанного Оборудования (доступ к базе находится в Каталоге):
      * • Списано
      *
-     * @see \App\Classes\CardStatusHelper
+     * @see \App\Classes\Card\CardStatusHelper
      * @ORM\Column(type="float")
      */
     private $status;
@@ -618,6 +618,11 @@ class Card
      * @ORM\OneToMany(targetEntity="App\Entity\RepairCardImgRequired", cascade={"persist", "remove"}, mappedBy="card")
      */
     private $repairCardImgRequired;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Repair", mappedBy="cards", cascade={"persist"})
+     */
+    private $repair;
 
     public function __construct()
     {

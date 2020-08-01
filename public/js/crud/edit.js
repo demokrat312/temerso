@@ -23,7 +23,7 @@ const CrudEditModel = (function () {
         `;
 
     const init = () => {
-        console.log('edit init');
+        console.info('edit init');
         initEvent();
     };
 
@@ -45,12 +45,58 @@ const CrudEditModel = (function () {
     };
 
     const modalByUrl = (url, options = {}) => {
-        $.ajax({
-            type: 'GET',
-            url: url,
+        const defaultOptions = {
+            method: 'GET',
+            data: null,
             dataType: 'html',
+        };
+        options = {
+            ...defaultOptions,
+            ...options
+        };
+
+        $.ajax({
+            type: options.method,
+            url: url,
+            data: options.data,
+            dataType: options.dataType,
+            processData: false,
+            contentType: false,
             success: function (html) {
-                modal({...options, ...{body: html}});
+                if(typeof html === 'object') {
+                    modal({...options, ...{close: true}});
+                } else {
+                    modal({...options, ...{body: html}});
+                    Admin.shared_setup($modal);
+                }
+            }
+        });
+    };
+
+    // Все ссылки в выбранном элеменете подгружаются в модельное окно
+    const modalLinkHandler = ($element, options) => {
+        $element.find('[href]').each(function(index, linkElement) {
+            const $link = $(linkElement);
+            if($link.attr('href').includes('/')) {
+                $link.click((event) => {
+                    event.preventDefault();
+                    const link = event.target.getAttribute('href');
+                    modalByUrl(link, options);
+                })
+            }
+        });
+        $element.find('form').each(function(index, formElement) {
+            if(formElement.action.includes('/')) {
+                $form = $(formElement);
+                $form.submit(function (event) {
+                    event.preventDefault();
+                    const link = event.target.getAttribute('action');
+                    options = {
+                        ...{method: 'POST', data: (new FormData($form[0])), dataType: 'json'},
+                        ...options
+                    }
+                    modalByUrl(link, options);
+                })
             }
         });
     };
@@ -59,19 +105,27 @@ const CrudEditModel = (function () {
         const modalOptions = {
             ...{
                 title: '',
+                close: false,
                 body: '',
                 button: '<button type="button" class="btn btn-primary">Добавить</button>',
-                showCallback: () => {
+                showCallback: ($modal) => {
                     console.log('showCallback')
                 },
-                buttonCallback: () => {
+                buttonCallback: (e, $modal) => {
                     console.log('buttonCallback')
                 },
             }, ...options
         };
 
         // удаляем старую форму
+        $('#edit_dialog').modal('hide'); // closes all active pop ups.
+        $('#edit_dialog').prev('.modal-backdrop').remove(); // removes the grey overlay.
         $('#edit_dialog').remove();
+        $('body').css('padding-right', '0'); // При открытии добавляет, при закрытие убираеться(но если 2 форма то добавляеться еще раз)
+        $('body').removeClass('fixed');
+        $('body').removeClass('modal-open');
+
+        if(modalOptions.close === true) return;
 
         $modal = $(
             modalTemplate
@@ -96,6 +150,7 @@ const CrudEditModel = (function () {
 
     return {
         init,
-        modalByUrl
+        modalByUrl,
+        modalLinkHandler,
     }
 })();

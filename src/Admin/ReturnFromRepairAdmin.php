@@ -69,7 +69,7 @@ class ReturnFromRepairAdmin extends TaskAdminParent
 
     public function configure()
     {
-        $this->setTemplate('show', 'returnFromRent/show.html.twig');
+        $this->setTemplate('edit', 'returnFromRepair/edit.html.twig');
     }
 
     protected function configureFormFields(FormMapper $editForm)
@@ -83,7 +83,10 @@ class ReturnFromRepairAdmin extends TaskAdminParent
                         ->add('repair', EntityType::class, [
                             'label' => 'Комплектация в ремонт',
                             'class' => Repair::class,
+                            'empty_data' => '',
+                            'placeholder' => 'Выберите',
                             'choice_label' => 'choiceTitle',
+                            'attr' => ['class' => 'js-on-change-repair'],
                             'query_builder' => function (RepairRepository $er) {
                                 return $er->withOutReturnFromRent();
                             },

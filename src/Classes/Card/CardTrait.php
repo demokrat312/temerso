@@ -6,9 +6,11 @@
  * Time: 20:40
  */
 
-namespace App\Classes;
+namespace App\Classes\Card;
 
 
+use App\Classes\Card\CardStatusHelper;
+use App\Classes\MediaHelper;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItemInterface;
 use App\Entity\Repair;

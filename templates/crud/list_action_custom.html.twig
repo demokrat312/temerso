@@ -1,0 +1,9 @@
+{% if  field_description.options.withId %}
+    <a href="{{ path(field_description.options.link, {id: object.id}) }}" class="btn btn-sm btn-default view_link" title="{{ field_description.options.title }}">
+{% else %}
+    <a href="{{ path(field_description.options.link) }}" class="btn btn-sm btn-default view_link" title="{{ field_description.options.title }}">
+{% endif %}
+
+{#    <i class="fa fa-file-excel-o" aria-hidden="true"></i>#}
+    {{ field_description.options.title }}
+</a>

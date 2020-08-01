@@ -6,7 +6,7 @@
  * Time: 13:42
  */
 
-namespace App\Classes;
+namespace App\Classes\Card;
 
 
 use App\Entity\Card;

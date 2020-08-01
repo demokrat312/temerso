@@ -27,7 +27,7 @@ class Repair implements  DateListenerInterface, CreatedByListenerInterface, Task
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Card")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Card", inversedBy="repair")
      */
     private $cards;
 
