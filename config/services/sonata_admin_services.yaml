@@ -23,7 +23,13 @@ services:
 #              - { name: sonata.admin, manager_type: orm, label: groups, label_catalogue: "%sonata.user.admin.label_catalogue%", group: "%sonata.user.admin.groupname%", label_translator_strategy: "sonata.admin.label.strategy.underscore",  show_in_dashboard: true, icon: '<i class="fa fa-users"></i>'}
 #   Каталог
     App\Admin\CardAdmin:
-        arguments: [~, App\Entity\Card, ~, '@App\Service\FieldDescriptionService']
+        arguments:
+            - ~
+            - App\Entity\Card
+            - ~
+            - '@App\Service\FieldDescriptionService'
+            - '@App\Service\TopMenuButtonService'
+            - '@App\Service\AdminRouteService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Поиск оборудования, group: Каталог, show_in_dashboard: true, icon: '<i class="fa fa-newspaper-o"></i>'}
 #   Каталог
@@ -47,7 +53,7 @@ services:
             - App\Controller\Admin\MarkingAdminController
             - "@Symfony\\Component\\Security\\Core\\Security"
             - '@App\Service\Access\RoleService'
-            - '@App\Service\Marking\MarkingTopMenuButtonService'
+            - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Маркировка, group: Задания, show_in_dashboard: true}
     App\Admin\TaskDashboardAdmin:
@@ -61,7 +67,7 @@ services:
             - App\Controller\Admin\InventoryAdminController
             - "@Symfony\\Component\\Security\\Core\\Security"
             - '@App\Service\Access\RoleService'
-            - '@App\Service\Marking\MarkingTopMenuButtonService'
+            - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Инвентаризация, group: Задания, show_in_dashboard: true}
     App\Admin\InspectionAdmin:
@@ -71,7 +77,7 @@ services:
             - App\Controller\Admin\InspectionAdminController
             - "@Symfony\\Component\\Security\\Core\\Security"
             - '@App\Service\Access\RoleService'
-            - '@App\Service\Marking\MarkingTopMenuButtonService'
+            - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Инспекция, group: Задания, show_in_dashboard: true}
     App\Admin\Equipment\EquipmentAdmin:
@@ -81,7 +87,7 @@ services:
             - App\Controller\Admin\EquipmentAdminController
             - "@Symfony\\Component\\Security\\Core\\Security"
             - '@App\Service\Access\RoleService'
-            - '@App\Service\Marking\MarkingTopMenuButtonService'
+            - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Комплектация, group: Задания, show_in_dashboard: true}
     App\Admin\Equipment\EquipmentKitSpecificationAdmin:
@@ -98,7 +104,7 @@ services:
             - App\Controller\Admin\ReturnFromRentAdminController
             - "@Symfony\\Component\\Security\\Core\\Security"
             - '@App\Service\Access\RoleService'
-            - '@App\Service\Marking\MarkingTopMenuButtonService'
+            - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Возврат из аренды, group: Задания, show_in_dashboard: true}
     App\Admin\RepairAdmin:
@@ -108,7 +114,7 @@ services:
             - App\Controller\Admin\RepairAdminController
             - "@Symfony\\Component\\Security\\Core\\Security"
             - '@App\Service\Access\RoleService'
-            - '@App\Service\Marking\MarkingTopMenuButtonService'
+            - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Комплектация в ремонт, group: Задания, show_in_dashboard: true}
     App\Admin\ReturnFromRepairAdmin:
@@ -118,6 +124,6 @@ services:
             - App\Controller\Admin\ReturnFromRepairAdminController
             - "@Symfony\\Component\\Security\\Core\\Security"
             - '@App\Service\Access\RoleService'
-            - '@App\Service\Marking\MarkingTopMenuButtonService'
+            - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Возврат из ремонта, group: Задания, show_in_dashboard: true}

@@ -66,7 +66,7 @@ class Card
      * • Списано
      *
      * @see \App\Classes\Card\CardStatusHelper
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="integer")
      */
     private $status;
 
@@ -623,6 +623,20 @@ class Card
      * @ORM\ManyToMany(targetEntity="App\Entity\Repair", mappedBy="cards", cascade={"persist"})
      */
     private $repair;
+
+    /**
+     * Причина списания
+     *
+     * @ORM\Column(type="string", length=400, nullable=true)
+     */
+    private $disposalReason;
+
+    /**
+     * Причина востановления
+     *
+     * @ORM\Column(type="string", length=400, nullable=true)
+     */
+    private $restoreReason;
 
     public function __construct()
     {
@@ -1652,5 +1666,41 @@ class Card
     public function getRepairCardImgRequired(): Collection
     {
         return $this->repairCardImgRequired;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDisposalReason()
+    {
+        return $this->disposalReason;
+    }
+
+    /**
+     * @param mixed $disposalReason
+     * @return $this
+     */
+    public function setDisposalReason($disposalReason)
+    {
+        $this->disposalReason = $disposalReason;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRestoreReason()
+    {
+        return $this->restoreReason;
+    }
+
+    /**
+     * @param mixed $restoreReason
+     * @return $this
+     */
+    public function setRestoreReason($restoreReason)
+    {
+        $this->restoreReason = $restoreReason;
+        return $this;
     }
 }

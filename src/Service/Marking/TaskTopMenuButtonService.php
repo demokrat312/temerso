@@ -19,7 +19,7 @@ use App\Entity\User;
 use App\Service\AdminRouteService;
 use App\Service\TopMenuButtonService;
 
-class MarkingTopMenuButtonService
+class TaskTopMenuButtonService
 {
     const BTN_SEND_EXECUTION = 'btn_send_execution'; // Отправить на исполнение
     const BTN_REMOVE_EXECUTOR = 'btn_remove_executor'; // Снять исполнителя
@@ -115,7 +115,7 @@ class MarkingTopMenuButtonService
                 ->setButtonList([
                     (new TopMenuButton())->setKey(TopMenuButtonService::BTN_CREATE),
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_REMOVE_EXECUTOR)
+                        ->setKey(TaskTopMenuButtonService::BTN_REMOVE_EXECUTOR)
                         ->setTitle('Снять исполнителя')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
@@ -132,7 +132,7 @@ class MarkingTopMenuButtonService
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_SEND_EXECUTION)
+                        ->setKey(TaskTopMenuButtonService::BTN_SEND_EXECUTION)
                         ->setTitle('Принять на исполнение')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
@@ -149,7 +149,7 @@ class MarkingTopMenuButtonService
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_SEND_REVIEW)
+                        ->setKey(TaskTopMenuButtonService::BTN_SEND_REVIEW)
                         ->setTitle('Отправить задание на проверку')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
@@ -166,7 +166,7 @@ class MarkingTopMenuButtonService
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_REVIEW_SUCCESS)
+                        ->setKey(TaskTopMenuButtonService::BTN_REVIEW_SUCCESS)
                         ->setTitle('Принять от Исполнителя')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
@@ -176,7 +176,7 @@ class MarkingTopMenuButtonService
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_COMPLETE])
                     ,
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_REVIEW_ERROR)
+                        ->setKey(TaskTopMenuButtonService::BTN_REVIEW_ERROR)
                         ->setScriptPath('js/topMenuButton.js')
                         ->setTitle('Отклонить/отправить на доработку')
                         ->setIcon('fa-mail-forward')
@@ -192,7 +192,7 @@ class MarkingTopMenuButtonService
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_EXCEL)
+                        ->setKey(TaskTopMenuButtonService::BTN_EXCEL)
                         ->setTitle('Excel')
                         ->setIcon('fa-file-excel-o')
                         ->setRoute($this->adminRoute->getActionRouteName(
@@ -209,7 +209,7 @@ class MarkingTopMenuButtonService
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
-                        ->setKey(MarkingTopMenuButtonService::BTN_SEND_EXECUTION)
+                        ->setKey(TaskTopMenuButtonService::BTN_SEND_EXECUTION)
                         ->setTitle('Отправить на исполнение')
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(

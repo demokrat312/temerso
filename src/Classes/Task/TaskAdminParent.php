@@ -4,7 +4,7 @@ namespace App\Classes\Task;
 
 use App\Classes\MainAdmin;
 use App\Classes\Marking\MarkingAccessHelper;
-use App\Service\Marking\MarkingTopMenuButtonService;
+use App\Service\Marking\TaskTopMenuButtonService;
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
 use App\Controller\Admin\MarkingAdminController;
@@ -33,9 +33,9 @@ abstract class TaskAdminParent extends MainAdmin
      */
     private $roleService;
     /**
-     * @var MarkingTopMenuButtonService
+     * @var TaskTopMenuButtonService
      */
-    private $markingTopMenuButtonService;
+    private $taskTopMenuButtonService;
 
     public function __construct(
         $code,
@@ -43,13 +43,13 @@ abstract class TaskAdminParent extends MainAdmin
         $baseControllerName,
         Security $security,
         RoleService $roleService,
-        MarkingTopMenuButtonService $markingTopMenuButtonService
+        TaskTopMenuButtonService $markingTopMenuButtonService
     )
     {
         parent::__construct($code, $class, $baseControllerName);
         $this->security = $security;
         $this->roleService = $roleService;
-        $this->markingTopMenuButtonService = $markingTopMenuButtonService;
+        $this->taskTopMenuButtonService = $markingTopMenuButtonService;
     }
 
     /**
@@ -117,7 +117,7 @@ abstract class TaskAdminParent extends MainAdmin
      */
     public function configureActionButtons($action, $object = null)
     {
-        return $this->markingTopMenuButtonService
+        return $this->taskTopMenuButtonService
             ->setObject($object)
             ->setEntityClass($this->getClass())
             ->build(

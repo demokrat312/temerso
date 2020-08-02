@@ -5,11 +5,16 @@ namespace App\Admin;
 
 use App\Classes\Card\CardListFields;
 use App\Classes\Card\CardListHelper;
+use App\Classes\Card\CardStatusHelper;
 use App\Classes\MainAdmin;
 use App\Classes\Card\CardFieldsHelper;
+use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
+use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
+use App\Classes\TopMenuButton\TopMenuButton;
 use App\Entity\Arrival;
 use App\Entity\Card;
 use App\Entity\Equipment;
+use App\Entity\Marking;
 use App\Entity\Reference\RefPipeStrengthGroup;
 use App\Entity\Reference\RefTypeThread;
 use App\Entity\Reference\RefWearClass;
@@ -18,8 +23,12 @@ use App\Entity\ReturnFromRepair;
 use App\Form\Type\HistoryCallbackFilter;
 use App\Repository\EquipmentRepository;
 use App\Repository\RepairRepository;
+use App\Service\AdminRouteService;
 use App\Service\FieldDescriptionService;
+use App\Service\Marking\TaskTopMenuButtonService;
+use App\Service\TopMenuButtonService;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Comparison;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -30,7 +39,10 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Created by PhpStorm.
@@ -40,21 +52,64 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
  */
 class CardAdmin extends MainAdmin
 {
+    const ACTION_RESTORE = 'restore';
+    const ACTION_DISPOSAL = 'disposal';
     /**
      * @var FieldDescriptionService
      */
     private $fieldDescriptionService;
+    /**
+     * @var TopMenuButtonService
+     */
+    private $topMenuButton;
+    /**
+     * @var AdminRouteService
+     */
+    private $adminRoute;
 
-    public function __construct($code, $class, $baseControllerName, FieldDescriptionService $fieldDescriptionService)
+    public function __construct(
+        $code,
+        $class,
+        $baseControllerName,
+        FieldDescriptionService $fieldDescriptionService,
+        TopMenuButtonService $topMenuButton,
+        AdminRouteService $adminRoute
+    )
     {
         parent::__construct($code, $class, $baseControllerName);
         $this->fieldDescriptionService = $fieldDescriptionService;
+        $this->topMenuButton = $topMenuButton;
+        $this->adminRoute = $adminRoute;
     }
 
     public function configure()
     {
         parent::configure();
         $this->classnameLabel = "Card";
+    }
+
+    /**
+     * Фильтруем по статусу
+     *
+     * @param ProxyQueryInterface $query
+     * @return ProxyQueryInterface
+     */
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query = parent::configureQuery($query);
+        $al = $query->getRootAliases()[0];
+        /** @var \Doctrine\ORM\Query\Expr $expr */
+        $expr = $query->expr();
+        /** @var \Doctrine\ORM\QueryBuilder $em */
+        $em = $query->getQueryBuilder();
+
+        $em
+            ->andWhere($expr->neq(sprintf('%s.%s', $al, 'status'), ':statusId'))
+            ->setParameter('statusId', CardStatusHelper::STATUS_BROKEN)
+        ;
+
+
+        return $query;
     }
 
     public function preBatchAction($actionName, ProxyQueryInterface $query, array &$idx, $allElements)
@@ -73,6 +128,54 @@ class CardAdmin extends MainAdmin
         if(CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
             $collection->remove('delete');
         }
+    }
+
+    /**
+     * @param string $action
+     * @param null|Marking $object
+     * @return array
+     * @throws \Exception
+     */
+    public function configureActionButtons($action, $object = null)
+    {
+        if($action !== 'show') return parent::configureActionButtons($action, $object);
+
+        if($object->getStatus() === CardStatusHelper::STATUS_BROKEN) {
+            $this->topMenuButton->addButtonList([
+                (new TopMenuButton())->setKey(TopMenuButtonService::BTN_HISTORY),
+                (new TopMenuButton())->setKey(TopMenuButtonService::BTN_LIST),
+                (new TopMenuButton())
+                    ->setKey(TaskTopMenuButtonService::BTN_REMOVE_EXECUTOR)
+                    ->setTitle('Восстановить карточку')
+                    ->setIcon('fa-mail-forward')
+                    ->setRoute($this->adminRoute->getActionRouteName(
+                        $this->getClass(),
+                        'edit',
+                        ))
+                    ->setRouteParams(['id' => $object->getId(), 'action' => self::ACTION_RESTORE])
+                ,
+            ]);
+
+        } else {
+            $this->topMenuButton->addButtonList([
+                (new TopMenuButton())->setKey(TopMenuButtonService::BTN_CREATE),
+                (new TopMenuButton())->setKey(TopMenuButtonService::BTN_EDIT),
+                (new TopMenuButton())->setKey(TopMenuButtonService::BTN_HISTORY),
+                (new TopMenuButton())->setKey(TopMenuButtonService::BTN_LIST),
+                (new TopMenuButton())
+                    ->setKey(TaskTopMenuButtonService::BTN_REMOVE_EXECUTOR)
+                    ->setTitle('Списать Карточку')
+                    ->setIcon('fa-mail-forward')
+                    ->setRoute($this->adminRoute->getActionRouteName(
+                        $this->getClass(),
+                        'edit',
+                        ))
+                    ->setRouteParams(['id' => $object->getId(), 'action' => self::ACTION_DISPOSAL])
+                ,
+            ]);
+        }
+
+        return $this->topMenuButton->getList();
     }
 
     public function getContainer()
@@ -124,8 +227,13 @@ class CardAdmin extends MainAdmin
                 ->end()
                     ->tab('фактические')
                         ->with("left", ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
-                        ->add('id')
-                        ->add('accounting', null, ['label' => 'Учет/Инвентаризация'])
+                        ->add('id');
+                        if($this->getSubject()->getStatus() === CardStatusHelper::STATUS_BROKEN){
+                            $showMapper->add('disposalReason', null, ['label' => 'Причина списания']);
+                        } else if($this->getSubject()->getRestoreReason()) {
+                            $showMapper->add('restoreReason', null, ['label' => 'Причина востановления']);
+                        }
+                        $showMapper->add('accounting', null, ['label' => 'Учет/Инвентаризация'])
                         ->add('images', null, ['label' => 'Изображения'])
                         ->add('files', null, ['label' => 'Файлы'])
                         ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
@@ -322,6 +430,38 @@ class CardAdmin extends MainAdmin
                     return true;
                 },
             ])
+            ->add('broken', CallbackFilter::class, [
+                'label' => 'Списанное оборудование',
+                'mapped' => false,
+                'field_type' => CheckboxType::class,
+                'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb = $queryBuilder;
+                    $parts = $qb->getDQLPart('where')->getParts();
+                    $qb->resetDQLPart('where');
+                    foreach ($parts as $key => $part) {
+                        if($part instanceof Comparison && $part->getLeftExpr() === $alias . '.status') {
+                            unset($parts[$key]);
+                            /** @var \Doctrine\ORM\Query\Parameter[] $parameters */
+                            $parameters = $qb->getParameters();
+                            foreach ($parameters as $key => $parameter) {
+                                if($parameter->getName() === 'statusId') {
+                                    unset($parameters[$key]);
+                                }
+                            }
+                            $qb->setParameters($parameters);
+                        }
+                    }
+                    $qb
+                        ->andWhere($qb->expr()->eq(sprintf('%s.status', $alias), '?1'),)
+                        ->setParameter('1', CardStatusHelper::STATUS_BROKEN);
+
+                    return true;
+                },
+            ])
 //            ->add('arrival', \Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter::class, [
 ////                ''
 //            ])
@@ -333,6 +473,16 @@ class CardAdmin extends MainAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        if($this->request->getMethod() === 'POST') {
+            $form = $this->request->get($this->getUniqid());
+            $action = $form['action'] ?? null;
+        } else if($this->getSubject()->getStatus() === CardStatusHelper::STATUS_BROKEN) {
+            $action = self::ACTION_RESTORE;
+        } else {
+            $action = $this->request->query->get('action');
+        }
+
+
         if(CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
             $formMapper->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
                 'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
@@ -346,8 +496,89 @@ class CardAdmin extends MainAdmin
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-            ))
-                ;
+            ));
+        }else if($action) {
+            if ($action === self::ACTION_DISPOSAL) {
+                $formMapper
+                    ->with("disposal", ['class' => 'col-md-12',  'label' => 'Списать Карточку'])
+                        ->add('status', HiddenType::class, ['data' => CardStatusHelper::STATUS_BROKEN])
+                        ->add('action', HiddenType::class, ['data' => self::ACTION_DISPOSAL, 'mapped' => false])
+                        ->add('disposalReason', TextareaType::class, ['label' => 'Причина списания'])
+                        ->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
+                            'required' => true,
+                            'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+                            'label' => 'Изображения',
+                            'entry_options' => array(
+                                'provider' => 'sonata.media.provider.image',
+                                'context' => 'card_disposal',
+                                'empty_on_new' => false,
+                                'new_on_update' => false,
+                            ),
+                            'allow_add' => true,
+                            'by_reference' => false,
+                            'allow_delete' => true,
+                            'constraints' => [
+                                new Assert\Count([
+                                    'min' => 1,
+                                    'minMessage' => 'Хотя бы одна фотография',
+                                    // also has max and maxMessage just like the Length constraint
+                                ]),
+                            ],
+                        ))
+                        ->add('files', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
+                            'required' => true,
+                            'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+                            'label' => 'Файлы',
+                            'entry_options' => array(
+                                'provider' => 'sonata.media.provider.file',
+                                'context' => 'card_disposal',
+                                'empty_on_new' => false,
+                                'new_on_update' => false,
+                            ),
+                            'allow_add' => true,
+                            'by_reference' => false,
+                            'allow_delete' => true,
+                            'constraints' => [
+                                new Assert\Count([
+                                    'min' => 1,
+                                    'minMessage' => 'Хотя бы один файл',
+                                    // also has max and maxMessage just like the Length constraint
+                                ]),
+                            ],
+                        ))
+                    ->end();
+
+                $actionButtons = new ShowModeFooterActionBuilder();
+
+                $actionButtons->addItem((new ShowModeFooterButtonItem())
+                    ->setClasses('btn btn-warning')
+                    ->setName(ShowModeFooterActionBuilder::BTN_UPDATE_AND_LIST)
+                    ->addIcon('fa-save')
+                    ->setTitle('Списать Карточку')
+                    ,
+                    );
+
+                $this->setShowModeButtons($actionButtons->getButtonList());
+            } else if ($action === self::ACTION_RESTORE) {
+                $formMapper
+                    ->with("restore", ['class' => 'col-md-12', 'label' => 'Восстановить карточку'])
+                        ->add('status', HiddenType::class, ['data' => CardStatusHelper::STATUS_STORE])
+                        ->add('action', HiddenType::class, ['data' => self::ACTION_RESTORE, 'mapped' => false])
+                        ->add('restoreReason', TextareaType::class, ['label' => 'Причина востановления'])
+                    ->end();
+
+                $actionButtons = new ShowModeFooterActionBuilder();
+
+                $actionButtons->addItem((new ShowModeFooterButtonItem())
+                    ->setClasses('btn btn-success')
+                    ->setName(ShowModeFooterActionBuilder::BTN_UPDATE_AND_LIST)
+                    ->addIcon('fa-save')
+                    ->setTitle('Восстановить карточку')
+                    ,
+                    );
+
+                $this->setShowModeButtons($actionButtons->getButtonList());
+            }
         } else {
             $formMapper
                 ->tab('general', ['label' => 'Главная'])
