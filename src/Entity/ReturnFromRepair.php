@@ -65,6 +65,12 @@ class ReturnFromRepair implements DateListenerInterface, CreatedByListenerInterf
      */
     private $inspection;
 
+    public function __construct()
+    {
+        $this->status = Marking::STATUS_CREATED;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;

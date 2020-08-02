@@ -1,13 +1,13 @@
 <script>
     {% autoescape 'js' %}
     const adminListModel = (function () {
-        // s5eca959083ae6[cards][]
-        let formId = '{{ id }}'.replace(/\_.+$/, '');
-        let $modal = null;
-        let $tableList = null;
-        let listUrl = null;
-        let rowTemplateCreateSub = [];
+        let formId = '{{ id }}'.replace(/\_.+$/, ''); // Уникальный id (s5f265bdcdaf76_cards') убираем _cards
+        let $modal = null; // Модальное окно
+        let $tableForCardList = null; // Элемент в который добавляем карточки
+        let cardListUrl = null; // Ссылка по которой получаем список карточек
+        let rowTemplateCreateSub = []; // Переменная для перезаписи rowTemplate из других компонентов
         const emptyRowTemplate = '<tr id="row-empty"><td colspan="3">Нету выбранных записей</td></tr>';
+        // Строка с карточкой которую вставляем в $tableList
         let rowTemplate = `<tr>
                         <input type="hidden" name="{{ form.vars.full_name }}" value="{id}">
                         <td class="sonata-ba-list-field sonata-ba-list-field-batch">
@@ -27,27 +27,36 @@
 
         const init = () => {
             $modal = $('#field_dialog_{{ id }}');
-            $tableList = $('#table_list_{{ id }}');
+            $tableForCardList = $('#table_list_{{ id }}');
             tableEmptyRowToggle();
             console.log('admin_list_script init');
             initEvent();
         };
         const initEvent = () => {
             $(document).on('click', '.js-add-cards', showModal);
-            $modal.on('click', '.sonata-filters-box button,.sonata-filters-box a', modalActions);
-            $modal.on('click', '.sonata-ba-list-field-select', selectItem);
+            $modal.on('click', '.sonata-filters-box button,.sonata-filters-box a', cardListFilterLinkHandler);
+            $modal.on('click', '.sonata-ba-list-field-select', selectCardRow);
             $modal.on('click', '.js-add-selected', selectAllItem);
-            $(document).on('click', '.js-card-list .sonata-ba-list-field-select', removeItem)
-        };
-        const showModal = (event) => {
-            event.preventDefault();
-            const $target = $(event.target);
-            $tableList = $target.closest('.form-group').find('table');
-            console.log('table list = ', $tableList);
-            listUrl = $target.attr('href');
-            loadModalBody(listUrl);
+            $(document).on('click', '.js-card-list .sonata-ba-list-field-select', removeCard)
         };
 
+
+        /**
+         *  Открываем модальное окно и загружаем туда список карточек
+         */
+        const showModal = (event) => {
+            event.preventDefault();
+            const $button = $(event.target);
+            // Находим таблицу в которую будем добавлять новые карточки
+            $tableForCardList = $button.closest('.form-group').find('table');
+            // Получаем ссылку для получения списка карточек
+            cardListUrl = $button.attr('href');
+            loadModalBody(cardListUrl);
+        };
+
+        /**
+         *  Загружаем контент и добавляем его в модальное окно
+         */
         const loadModalBody = (url) => {
             $.ajax({
                 type: 'GET',
@@ -64,15 +73,18 @@
             });
         };
 
-        const modalActions = (event) => {
+        /**
+         * Перехватываем ссылки из фильтра карточек
+         */
+        const cardListFilterLinkHandler = (event) => {
             event.preventDefault();
-            const $target = $(event.target);
+            const $buttonFilter = $(event.target);
             let url = null;
-            // Кнопка фильтрации
-            if ($target.find('.fa-filter').length) {
-                url = listUrl + '?' + serializeInputsFromElement($modal.find('.sonata-filters-box'))
-            } else if ($target.attr('href') && $target.attr('href').length > 1) {
-                url = $target.attr('href');
+            // Проверяем, что нажатая кнопка это кнопка фильтрации
+            if ($buttonFilter.find('.fa-filter').length) {
+                url = cardListUrl + '?' + serializeInputsFromElement($modal.find('.sonata-filters-box'))
+            } else if ($buttonFilter.attr('href') && $buttonFilter.attr('href').length > 1) {
+                url = $buttonFilter.attr('href');
             } else {
                 return false;
             }
@@ -80,77 +92,106 @@
             loadModalBody(url);
         };
 
+        /**
+         * Получаем поля из выбранного элмента и кодируем
+         */
         const serializeInputsFromElement = (selector) => {
             return $(selector).prop('elements', $('*', selector).andSelf().get()).serialize();
         };
 
-        const selectItem = (event) => {
+        /**
+         * Выбираем запись из модального окна и добавляем в таблицу
+         */
+        const selectCardRow = (event) => {
             event.preventDefault();
 
             const $row = $(event.target).closest('tr');
 
-            addItem($row);
+            addCard($row);
         };
 
+        /**
+         * Копируем дополнительные поля из модального окна и добавляем в таблицу
+         */
         const addOtherField = ($newRow) => {
-            let otherFieldTr = '';
+            let otherFieldTdList = ''; // html полей
+
+            // В модальном окне находим поля которые нужно перенести в таблице по ключю js-admin-list-other-field
             $newRow.find('.js-admin-list-other-field').each((index, htmlElement) => {
-                const $fields = $(htmlElement);
-                const title = $fields.find('.js-admin-list-other-field-info').data('title');
-                if($tableList.find('.sonata-ba-list-field-header').find(':contains(' + title +')').length === 0) {
-                    $tableList.find('.sonata-ba-list-field-header-select').before($('<th class="sonata-ba-list-field-header-text">' + title +'</th>'));
+                const $field = $(htmlElement);
+                const title = $field.find('.js-admin-list-other-field-info').data('title');
+
+                // В таблцу добавляем заголовок поля(<th>), если его нету
+                if($tableForCardList.find('.sonata-ba-list-field-header').find(':contains(' + title +')').length === 0) {
+                    $tableForCardList.find('.sonata-ba-list-field-header-select').before($('<th class="sonata-ba-list-field-header-text">' + title +'</th>'));
                 }
-                let fieldsHtml = '';
-                $fields.find('[name]').each((index, input) =>  {
+
+                // Вытаскиваем все поля из элемента, убираем плагины если они есть
+                let fieldHtml = '';
+                $field.find('[name]').each((index, input) =>  {
                     const $input = $(input);
-                    if($input.is(':checkbox:checked')) {
+                    if($input.is(':checkbox')) {
                         $input.iCheck('destroy');
-                        $input.attr('checked', 'checked');
+                        if($input.is(':checked')) $input.attr('checked', 'checked');
                     }
-                    fieldsHtml += $input.wrap('<p/>').parent().html();
+                    fieldHtml += $input.wrap('<p/>').parent().html();
                 });
-                otherFieldTr += '<td class="sonata-ba-list-field sonata-ba-list-field-text">' + fieldsHtml + '</td>';
+
+                otherFieldTdList += '<td class="sonata-ba-list-field sonata-ba-list-field-text">' + fieldHtml + '</td>';
             });
 
-            return otherFieldTr;
+            return otherFieldTdList;
         };
 
-        const addItem = ($row) => {
-            const id = $row.find('.sonata-ba-list-field-batch').attr('objectid');
+        /**
+         * Добавляем выбранную строку из модального окна в таблицу
+         */
+        const addCard = ($row) => {
+            const cardId = $row.find('[objectid]:first').attr('objectid');
             const title = $row.find('td:eq(' + $('.js-field-general-name').index() + ')').text().trim();
 
+            // Перезаписываем шаблон из другого компонента
             const rowTemplateUpdated = setRowTemplateParam(rowTemplate);
 
+            // Добавляем дополнительные поля
             const otherFieldTemplate = addOtherField($row);
 
+            // Заменяем переменные
             const $newRow = $(rowTemplateUpdated
                 .replace('{otherField}', otherFieldTemplate)
-                .replace(/{id}/g, id)
+                .replace(/{id}/g, cardId)
                 .replace(/{formId}/g, formId)
-                .replace('{orderNumber}', $tableList.find('tbody tr:not(#row-empty)').length + 1)
+                .replace('{orderNumber}', $tableForCardList.find('tbody tr:not(#row-empty)').length + 1)
                 .replace('{title}', title)
             );
 
-            console.log('addItem');
-            $tableList.find('tbody').append($newRow);
-            $row.remove();
+            $tableForCardList.find('tbody').append($newRow); // Добавляем в таблицу
+            $row.remove(); // Удаляем из модального окна
 
-            tableEmptyRowToggle();
+            tableEmptyRowToggle(); // Проверяем таблицу на наличие записей
             closeModalOnEmpty();
         };
 
+        /**
+         * Выбираем все карточки из модального окна
+         */
         const selectAllItem = (event) => {
             event.preventDefault();
 
+            // Находим в модальном окне таблицу с карточками
             getTableListLoaded().find('tbody tr').each((index, tr) => {
-                const $row = $(tr);
-                if ($row.find('input:checkbox:checked').length) {
-                    addItem($(tr));
+                const $cardRow = $(tr);
+                if ($cardRow.find('input:checkbox:checked').length) {
+                    addCard($(tr));
                 }
             });
             $modal.modal('hide');
         };
 
+        /**
+         * checkbox для выбора карточек
+         * Добавляем плагин iCheck
+         */
         const batchScript = () => {
             // Toggle individual checkboxes when the batch checkbox is changed
             $modal.find('#list_batch_checkbox').on('ifChanged change', function () {
@@ -178,6 +219,10 @@
             ;
         };
 
+        /**
+         * Удаляем из модального окна карточки которые уже есть в таблице
+         * Проверяем по cardId(objectid)
+         */
         const removeDuplicate = () => {
             const recordList = [];
             $('.js-card-list').each((index, table) => {
@@ -194,13 +239,15 @@
             })
         };
 
-        const removeItem = (event) => {
+        /**
+         * Удаляем карточку из таблицы
+         */
+        const removeCard = (event) => {
             event.preventDefault();
 
-            const $target = $(event.target);
-            $tableList = $target.closest('.form-group').find('table');
-            console.log('table list = ', $tableList);
-            $target.closest('tr').remove();
+            const $buttonRemove = $(event.target);
+            $tableForCardList = $buttonRemove.closest('.form-group').find('table');
+            $buttonRemove.closest('tr').remove();
 
             tableEmptyRowToggle();
         };
@@ -209,13 +256,13 @@
          * Добавление и удаление "Нету выбранных записей"
          */
         const tableEmptyRowToggle = () => {
-            if(!$tableList.length)return;
+            if(!$tableForCardList.length)return;
 
-            const rowCount = $tableList.find('tbody').find('tr').length;
+            const rowCount = $tableForCardList.find('tbody').find('tr').length;
             if(rowCount > 1) {
-                $tableList.find('#row-empty').remove();
+                $tableForCardList.find('#row-empty').remove();
             }else if(rowCount === 0) {
-                $tableList.find('tbody').append(emptyRowTemplate);
+                $tableForCardList.find('tbody').append(emptyRowTemplate);
             }
         };
 
@@ -228,17 +275,27 @@
             }
         };
 
+        /**
+         * Находим таблицу с карточками в модальном окне
+         * @returns {*}
+         */
         const getTableListLoaded = () => {
             return $modal.find('.sonata-ba-list');
         };
 
+        /**
+         * Перезаписываем таблицу для карточек(нужно для перезаписи из других компонентов)
+         * @param $newTableList
+         */
         const setTableList = ($newTableList) => {
-            console.log('setTableList');
-            $tableList = $newTableList;
-            console.log('table list = ', $tableList);
+            $tableForCardList = $newTableList;
             tableEmptyRowToggle();
         };
 
+        /**
+         * Задаем новый шаблона для сторки с карточкой(нужно для перезаписи из других компонентов)
+         * @param newRowTemplate
+         */
         const setRowTemplate = (newRowTemplate) => {
             rowTemplate = newRowTemplate;
         };
@@ -246,12 +303,12 @@
         // для перезапись из другого модуля
         const setRowTemplateParam = (rowTemplate) => {
             rowTemplateCreateSub.forEach((sub) => {
-                rowTemplate = sub(rowTemplate, $tableList);
+                rowTemplate = sub(rowTemplate, $tableForCardList);
             });
             return rowTemplate;
         };
 
-        // Перехватываем все ссылки нажатые в модальном окне
+        // Перехватываем все ссылки нажатые в модальном окне(или переданом элементе)
         const modalLinkHandle = ($modal) => {
 
             $modal.find('[href]').each(function(index, linkElement) {

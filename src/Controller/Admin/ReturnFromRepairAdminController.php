@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ReturnFromRepairAdminController extends TaskAdminController
 {
-    const ROUTE_RETURN_FROM_RENT = 'return-from-rent'; // Вернуть из аренды и изменить статусы
+    const ROUTE_RETURN_FROM_RENT = 'return-from-repair'; // Вернуть из аренды и изменить статусы
     const ROUTE_CREATE_INSPECTION = 'create-inspection'; // Создать задание на испекцию
 
     function getEntityClass(): string

@@ -54,6 +54,18 @@
                 <source>Repair Create</source>
                 <target>Комплектация в ремонт, создание</target>
             </trans-unit>
+            <trans-unit id="create.at">
+                <source>Create At</source>
+                <target>Когда создана</target>
+            </trans-unit>
+            <trans-unit id="return_form_repair.list">
+                <source>Return From Repair List</source>
+                <target>Возврат из ремонта, список</target>
+            </trans-unit>
+            <trans-unit id="return_form_repair.create">
+                <source>Return From Repair Create</source>
+                <target>Возврат из ремонта, создание</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

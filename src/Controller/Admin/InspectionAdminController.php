@@ -42,9 +42,6 @@ class InspectionAdminController extends TaskAdminController
                 $card->setStatus(CardStatusHelper::STATUS_STORE);
                 $em->persist($card);
             });
-            $em->flush();
         }
     }
-
-
 }

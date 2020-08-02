@@ -49,17 +49,22 @@ abstract class TaskAdminController extends DefaultAdminController
      */
     public function changeStatusAction(int $id, EntityManagerInterface $em, Request $request)
     {
+        // Получаем задачу
         $task = $em->getRepository($this->getEntityClass())->find($id);
         if (!$task) {
             throw new NotFoundHttpException('Задача не найдена');
         }
 
+        // После сохранения, переадресация в просмотр
         $url = $this->admin->generateObjectUrl('show', $task);
+
+        // Проверяем на исполнителя
         if ((int)$request->get('status') === Marking::STATUS_SEND_EXECUTION && $task->getUsers()->count() === 0) {
             $this->getRequest()->getSession()->getFlashBag()->add("error", 'Укажите исполнителя');
             return new RedirectResponse($url);
         }
 
+        // Меняем статус и комментарий
         $this->preChangeStatus($task, (int)$request->get('status'));
         $task
             ->setStatus((int)$request->get('status'));

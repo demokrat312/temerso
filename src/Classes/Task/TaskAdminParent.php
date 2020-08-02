@@ -133,6 +133,7 @@ abstract class TaskAdminParent extends MainAdmin
             ->add('taskType', null, self::VIEW_LINK)
             ->add('createdBy', null, self::VIEW_LINK)
             ->add('executor')
+            ->add('createAt')
             ->add('statusTitle', null,['label' => 'Статус',])
         ;
     }
