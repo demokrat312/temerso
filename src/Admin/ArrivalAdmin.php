@@ -209,7 +209,7 @@ class ArrivalAdmin extends MainAdmin
         $amount = $object->getAmountCard();
 
         $groupExplode = function(string $text) {
-            return array_map('trim', explode(',', $text));
+            return array_map('trim', explode(';', $text));
         };
 
         $groupPipeSerialNumber = $groupExplode($object->getGroupPipeSerialNumber());

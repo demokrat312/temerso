@@ -21,12 +21,11 @@
         };
 
         const validateAmount = (event) => {
-            console.log('change validateAmount');
             const errorMessageTemplate = `Необходимо ввести {require}, вы ввели {enter}`;
             const requireAmount = $('[name$="[amountCard]"]').val();
             const $field = $(event.target);
 
-            const enterAmount = $field.val().split(',').length;
+            const enterAmount = $field.val().split(';').length;
 
             if (+requireAmount !== +enterAmount) {
                 const errorMessage = errorMessageTemplate
