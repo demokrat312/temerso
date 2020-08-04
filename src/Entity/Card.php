@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\Card\CardTrait;
 use App\Classes\Card\CardStatusHelper;
+use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
+use App\Classes\Listener\Date\DateListenerInterface;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefHardbandingNippleState;
 use App\Entity\Reference\RefInnerCoating;
@@ -23,6 +25,7 @@ use App\Entity\Reference\RefTypeThread;
 use App\Entity\Reference\RefVisualControl;
 use App\Entity\Reference\RefWarehouse;
 use App\Entity\Reference\RefWearClass;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
@@ -34,7 +37,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @see \App\Classes\Card\CardStatusHelper
  */
-class Card
+class Card implements DateListenerInterface, CreatedByListenerInterface
 {
     use CardTrait;
     /**
@@ -625,6 +628,11 @@ class Card
     private $repair;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Kit", mappedBy="cards")
+     */
+    private $kit;
+
+    /**
      * Причина списания
      *
      * @ORM\Column(type="string", length=400, nullable=true)
@@ -637,6 +645,21 @@ class Card
      * @ORM\Column(type="string", length=400, nullable=true)
      */
     private $restoreReason;
+
+    /**
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $createAt;
+
+    /**
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $updateAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    private $createdBy;
 
     public function __construct()
     {
@@ -1701,6 +1724,42 @@ class Card
     public function setRestoreReason($restoreReason)
     {
         $this->restoreReason = $restoreReason;
+        return $this;
+    }
+
+    public function getCreateAt(): ?DateTimeInterface
+    {
+        return $this->createAt;
+    }
+
+    public function setCreateAt(DateTimeInterface $createAt): self
+    {
+        $this->createAt = $createAt;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?DateTimeInterface
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(DateTimeInterface $updateAt): self
+    {
+        $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
+
         return $this;
     }
 }

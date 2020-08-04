@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Classes\ApiParentController;
 use App\Entity\Card;
 use App\Form\Data\Api\Card\CardAddToEquipmentData;
+use App\Form\Data\Api\Kit\KitData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,28 @@ class CardRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Card::class);
+    }
+
+    /**
+     * @param KitData $data
+     * @return Card[]
+     */
+    public function findByKit(KitData $data)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $expr = $qb->expr();
+
+        $rfidTagNoList = [];
+        foreach ($data->getCards() as $card) {
+            $rfidTagNoList[] = $card->getRfidTagNo();
+        }
+
+        $qb
+            ->where($expr->in('c.rfidTagNo', ':rfidTagNo'))
+            ->setParameter(':rfidTagNo', $rfidTagNoList)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -39,16 +62,16 @@ class CardRepository extends ServiceEntityRepository
             $expr = $qb->expr();
 
             $exprAndX = [];
-            if($data->getRfidTagNo()) {
+            if ($data->getRfidTagNo()) {
                 $exprAndX[] = $expr->eq('c.rfidTagNo', $data->getRfidTagNo());
             }
-            if($data->getPipeSerialNumber()) {
+            if ($data->getPipeSerialNumber()) {
                 $exprAndX[] = $expr->eq('c.pipeSerialNumber', $data->getPipeSerialNumber());
             }
-            if($data->getCouplingSerialNumber()) {
+            if ($data->getCouplingSerialNumber()) {
                 $exprAndX[] = $expr->eq('c.couplingSerialNumber', $data->getCouplingSerialNumber());
             }
-            if($data->getSerialNoOfNipple()) {
+            if ($data->getSerialNoOfNipple()) {
                 $exprAndX[] = $expr->eq('c.serialNoOfNipple', $data->getSerialNoOfNipple());
             }
 
@@ -57,17 +80,16 @@ class CardRepository extends ServiceEntityRepository
                     ...$exprAndX
                 ))
                 ->getQuery()
-                ->getResult()
-            ;
+                ->getResult();
         }
 
-        if(count($cards) > 1) {
+        if (count($cards) > 1) {
             throw new \Exception('Найденно ' . count($cards) . ' карточки. Уточните запрос', ApiParentController::STATUS_CODE_400);
         }
 
         $card = current($cards);
 
-        if(empty($card)) {
+        if (empty($card)) {
             throw new \Exception('Карточка не найдена', ApiParentController::STATUS_CODE_404);
         }
 

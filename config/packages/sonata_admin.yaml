@@ -132,8 +132,9 @@ sonata_admin:
                 items:
                     - App\Admin\CardAdmin
                     - label: "База списанного оборудования"
-                      route: admin_empty
+                      route: admin_app_card_disposal
                       roles: [ROLE_ADMIN]
+                    - App\Admin\KitAdmin
                     - label: "Аналитика"
                       route: admin_empty
                       roles: [ROLE_ADMIN]

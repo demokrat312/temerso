@@ -25,3 +25,5 @@ framework:
         engines: ['twig']
     assets:
         version: 'v2'
+    csrf_protection:
+        enabled:   false

@@ -11,9 +11,11 @@ use App\Classes\Card\CardFieldsHelper;
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
 use App\Classes\TopMenuButton\TopMenuButton;
+use App\Controller\Admin\CardAdminController;
 use App\Entity\Arrival;
 use App\Entity\Card;
 use App\Entity\Equipment;
+use App\Entity\Kit;
 use App\Entity\Marking;
 use App\Entity\Reference\RefPipeStrengthGroup;
 use App\Entity\Reference\RefTypeThread;
@@ -123,7 +125,9 @@ class CardAdmin extends MainAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
-            ->add('history');
+            ->add('history')
+            ->add(CardAdminController::ROUTER_DISPOSAL, CardAdminController::ROUTER_DISPOSAL)
+        ;
 
         if(CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
             $collection->remove('delete');
@@ -458,6 +462,28 @@ class CardAdmin extends MainAdmin
                     $qb
                         ->andWhere($qb->expr()->eq(sprintf('%s.status', $alias), '?1'),)
                         ->setParameter('1', CardStatusHelper::STATUS_BROKEN);
+
+                    return true;
+                },
+            ])
+            ->add('kit', CallbackFilter::class, [
+                'label' => 'Комплект для постановщика',
+                'mapped' => false,
+                'field_type' => EntityType::class,
+                'field_options' => [
+                    'class' => Kit::class,
+//                    'choice_label' => 'choiceTitle',
+                ],
+                'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
+                    if (!$value['value']) {
+                        return false;
+                    }
+
+                    $qb = $queryBuilder;
+                    $qb
+                        ->leftJoin(sprintf('%s.kit', $alias), 'kit')
+                        ->andWhere($qb->expr()->eq('kit.id', '?1'),)
+                        ->setParameter('1', $value['value']);
 
                     return true;
                 },

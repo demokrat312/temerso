@@ -46,7 +46,6 @@ abstract class ApiParentController extends AbstractController
     {
         return $this->json(array_merge([
             'message' => $message,
-            'result' => null
         ], $otherError), $code ?: self::STATUS_CODE_400);
     }
 

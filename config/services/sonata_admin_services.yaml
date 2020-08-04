@@ -26,7 +26,7 @@ services:
         arguments:
             - ~
             - App\Entity\Card
-            - ~
+            - App\Controller\Admin\CardAdminController
             - '@App\Service\FieldDescriptionService'
             - '@App\Service\TopMenuButtonService'
             - '@App\Service\AdminRouteService'
@@ -127,3 +127,10 @@ services:
             - '@App\Service\Marking\TaskTopMenuButtonService'
         tags:
             - { name: sonata.admin, manager_type: orm, label: Возврат из ремонта, group: Задания, show_in_dashboard: true}
+    App\Admin\KitAdmin:
+        arguments:
+            - ~
+            - App\Entity\Kit
+            - App\Controller\Admin\ReturnFromRepairAdminController
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Комплект для постановщика, group: Каталог, show_in_dashboard: true}
