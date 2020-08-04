@@ -6,7 +6,7 @@
  * Time: 20:07
  */
 
-namespace App\Form\Type;
+namespace App\Form\Type\Kit;
 
 
 use App\Entity\CardFields;

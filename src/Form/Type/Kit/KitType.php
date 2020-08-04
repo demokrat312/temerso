@@ -6,11 +6,12 @@
  * Time: 20:07
  */
 
-namespace App\Form\Type;
+namespace App\Form\Type\Kit;
 
 
 use App\Entity\CardFields;
 use App\Form\Data\Api\Kit\KitData;
+use App\Form\Type\Kit\KitCardsType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;

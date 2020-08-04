@@ -12,7 +12,7 @@ namespace App\Controller\API;
 use App\Classes\ApiParentController;
 use App\Entity\Card;
 use App\Entity\Kit;
-use App\Form\Type\KitType;
+use App\Form\Type\Kit\KitType;
 use App\Repository\CardRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
