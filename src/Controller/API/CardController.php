@@ -169,7 +169,7 @@ class CardController extends ApiParentController
      * Загрузка изображения
      * allowed_extensions: ['jpg', 'png', 'jpeg']
      *
-     * @Route("file", methods={"POST"}, name="api_card_file")
+     * @Route("file/{id}", methods={"POST"}, name="api_card_file")
      *
      * @SWG\Parameter(
      *      name="image",
@@ -179,16 +179,6 @@ class CardController extends ApiParentController
      *      description="Изображение"
      * )
      *
-     * @SWG\Parameter(
-     *      name="id",
-     *      in="formData",
-     *      required=true,
-     *      type="number",
-     *      description="Ключ, карточки"
-     * )
-     *
-     * \@SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
-     *
      * @SWG\Response(
      *     response="200",
      *     description="Если изображение сохранилось возвращаем фразу 'OK!'",
@@ -197,17 +187,17 @@ class CardController extends ApiParentController
      *
      * @Security(name="Bearer")
      */
-    public function CardFileAction(Request $request, EntityManagerInterface $em)
+    public function CardFileAction(Request $request, EntityManagerInterface $em, Card $card)
     {
         $form = $this->createForm(CardImageType::class);
         $form->submit(array_merge($request->request->all(), $request->files->all()));
 
         if ($form->isValid()) {
             $formData = $form->getData();
-            $card = $em->getRepository(Card::class)->find($formData['id']);
-            if (!$card) {
-                return $this->errorResponse('Карточка не найдена');
-            }
+//            $card = $em->getRepository(Card::class)->find($formData['id']);
+//            if (!$card) {
+//                return $this->errorResponse('Карточка не найдена');
+//            }
 
             $media = $this->getMedia($formData['image']);
 
