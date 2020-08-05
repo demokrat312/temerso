@@ -9,7 +9,7 @@ monolog:
         default:
             type: buffer
             handler: streamed
-            channels: [!app]
+            channels: ["!app"]
             level: error
             bubble: false
         streamed:
