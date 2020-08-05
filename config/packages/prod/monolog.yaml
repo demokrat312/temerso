@@ -1,0 +1,18 @@
+monolog:
+    handlers:
+        main:
+            type: buffer
+            handler: streamed
+            channels: [app]
+            level: debug
+            bubble: false
+        default:
+            type: buffer
+            handler: streamed
+            channels: [!app]
+            level: error
+            bubble: false
+        streamed:
+            type:   stream
+            path:   "%kernel.logs_dir%/%kernel.environment%.log"
+            include_stacktraces: true
