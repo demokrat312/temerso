@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Classes\ApiParentController;
 use App\Entity\Card;
 use App\Form\Data\Api\Card\CardAddToEquipmentData;
+use App\Form\Data\Api\Card\CardIdentificationData;
 use App\Form\Data\Api\Kit\KitData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -94,6 +95,47 @@ class CardRepository extends ServiceEntityRepository
         }
 
         return $card;
+    }
+
+    /**
+     * @param CardAddToEquipmentData $data
+     * @return Card[]
+     */
+    public function findByCardIdentificationData(CardIdentificationData $data): array
+    {
+        if (
+            $data->getRfidTagNo() ||
+            $data->getPipeSerialNumber() ||
+            $data->getCouplingSerialNumber() ||
+            $data->getSerialNoOfNipple()
+        ) {
+            $qb = $this->createQueryBuilder('c');
+            $expr = $qb->expr();
+
+            $exprAndX = [];
+            if ($data->getRfidTagNo()) {
+                $exprAndX[] = $expr->eq('c.rfidTagNo', ':rfidTagNo');
+                $qb->setParameter('rfidTagNo', $data->getRfidTagNo());
+            }
+            if ($data->getPipeSerialNumber()) {
+                $exprAndX[] = $expr->eq('c.pipeSerialNumber', $data->getPipeSerialNumber());
+            }
+            if ($data->getCouplingSerialNumber()) {
+                $exprAndX[] = $expr->eq('c.couplingSerialNumber', $data->getCouplingSerialNumber());
+            }
+            if ($data->getSerialNoOfNipple()) {
+                $exprAndX[] = $expr->eq('c.serialNoOfNipple', $data->getSerialNoOfNipple());
+            }
+
+            return $qb
+                ->where($expr->orX(
+                    ...$exprAndX
+                ))
+                ->getQuery()
+                ->getResult();
+        }
+
+        return [];
     }
 
     // /**

@@ -11,6 +11,7 @@ namespace App\Controller\API;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\ApiParentController;
+use App\Classes\Card\CardIdentificationResponse;
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItem;
@@ -19,6 +20,8 @@ use App\Entity\Card;
 use App\Entity\User;
 use App\Form\Type\Api\Card\CardEditType;
 use App\Form\Type\Api\Card\CardImageType;
+use App\Form\Type\Card\CardIdentificationType;
+use App\Repository\CardRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Swagger\Annotations as SWG;
@@ -32,7 +35,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
  *
  * @Route("/api/card/")
  *
- * @SWG\Tag(name="card")
+ * @SWG\Tag(name="card - карточка")
  */
 class CardController extends ApiParentController
 {
@@ -214,7 +217,8 @@ class CardController extends ApiParentController
         }
     }
 
-    private function getMedia($binaryContent) {
+    private function getMedia($binaryContent)
+    {
 
         $provider = 'sonata.media.provider.image';
         $context = 'card_inventory';
@@ -227,5 +231,74 @@ class CardController extends ApiParentController
         $media->setEnabled(true);
 
         return $media;
+    }
+
+    /**
+     * Идентификация/поиск карточки(кароточек)
+     *
+     * Если найдена 1 карточка, то в поле card будет карточка, в поле multiple=false
+     * Если найдено несколько карточек, то в поле cardList массив карточек в поле multiple=true
+     *
+     * @Route("identification", methods={"POST"}, name="api_card_list_identification")
+     *
+     * @SWG\Parameter(
+     *    name="form",
+     *    in="body",
+     *    description="Данные для идентификации",
+     *    @Model(type=\App\Form\Type\Card\CardIdentificationType::class)
+     * ),
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="Возвращаем найденую карточку или карточки",
+     *     @SWG\Schema(
+     *           type="array",
+     *           @SWG\Items(ref=@Model(type=\App\Classes\Card\CardIdentificationResponse::class, groups={\App\Classes\ApiParentController::GROUP_API_DEFAULT}))
+     *     ),
+     * )
+     *
+     * @SWG\Response(
+     *     response="404",
+     *     description="Не найдено ни одной карточки",
+     *     @SWG\Schema(
+     *            ref=@Model(type=\App\Classes\Error\ErrorResponse::class, groups={\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     *      ),
+     * )
+     *
+     * @Security(name="Bearer")
+     *
+     * @param Request $request
+     */
+    public function identificationAction(Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(CardIdentificationType::class);
+        $form->submit($request->request->all());
+        if ($form->isValid()) {
+            /** @var CardRepository $rep */
+            $rep = $em->getRepository(Card::class);
+            $cards = $rep->findByCardIdentificationData($form->getData());
+
+            if(count($cards) === 1) {
+                $cardsResponse = [];
+                $cardResponse = $cards[0];
+                $multiple = false;
+            } else if (count($cards) > 1) {
+                $cardsResponse = $cards;
+                $cardResponse = null;
+                $multiple = true;
+            } else {
+                return $this->errorResponse('Не найдено ни одной карточки', self::STATUS_CODE_404);
+            }
+
+            $response = new CardIdentificationResponse();
+            $response
+                ->setCard($cardResponse)
+                ->setCardList($cardsResponse)
+                ->setMultiple($multiple);
+
+            return $this->defaultResponse($this->toArray($response, self::GROUP_API_DEFAULT));
+        } else {
+            return $this->formErrorResponse($form);
+        }
     }
 }

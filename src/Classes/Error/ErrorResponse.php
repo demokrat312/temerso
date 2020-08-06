@@ -18,10 +18,4 @@ class ErrorResponse
      * @var int
      */
     public $message;
-
-    /**
-     * @SWG\Property(description="null", type="string")
-     * @var mixed
-     */
-    public $result;
 }
