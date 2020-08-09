@@ -34,7 +34,10 @@ class ArrivalAdmin extends MainAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
-        ->add('excel', $this->getRouterIdParameter().'/excel');
+            ->add('excel', $this->getRouterIdParameter().'/excel')
+            ->remove('export')
+            ->remove('acl')
+        ;
     }
 
 

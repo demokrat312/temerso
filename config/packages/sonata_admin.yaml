@@ -135,9 +135,9 @@ sonata_admin:
                       route: admin_app_card_disposal
                       roles: [ROLE_ADMIN]
                     - App\Admin\KitAdmin
-                    - label: "Аналитика"
-                      route: admin_empty
-                      roles: [ROLE_ADMIN]
+#                    - label: "Аналитика"
+#                      route: admin_empty
+#                      roles: [ROLE_ADMIN]
                     - App\Admin\ReferenceDashboardAdmin
             cardDashboardRef:
                 items:
@@ -168,19 +168,19 @@ sonata_admin:
                     - label: "Ожидающие проверки"
                       route: admin_app_taskdashboard_task_list_check
                       roles: [ROLE_ADMIN]
-                    - label: "Аналитика"
-                      route: admin_empty
-                      roles: [ROLE_ADMIN]
+#                    - label: "Аналитика"
+#                      route: admin_empty
+#                      roles: [ROLE_ADMIN]
             document:
                 label: "Документы"
                 items:
                     - App\Admin\ArrivalAdmin
-                    - label: "Выгрузка документов"
-                      route: admin_empty
-                      roles: [ROLE_ADMIN]
-                    - label: "Аналитика"
-                      route: admin_empty
-                      roles: [ROLE_ADMIN]
+#                    - label: "Выгрузка документов"
+#                      route: admin_empty
+#                      roles: [ROLE_ADMIN]
+#                    - label: "Аналитика"
+#                      route: admin_empty
+#                      roles: [ROLE_ADMIN]
 
     options:
         legacy_twig_text_extension: false

@@ -1,0 +1,14 @@
+{% set isDisposal = object.status == 6 %}
+{% if isDisposal %}
+        {% set action = 'restore' %}
+        {% set title = 'Восстановить карточку' %}
+        {% set icon = 'fa-plus-circle' %}
+{% else %}
+        {% set action = 'disposal' %}
+        {% set title = 'Списать Карточку' %}
+        {% set icon = 'fa-ban' %}
+{% endif %}
+<a href="{{ admin.generateUrl('edit', {id: object.id, action: action}) }}" class="btn btn-sm btn-default view_link" title="{{ title }}">
+    <i class="fa {{ icon }}" aria-hidden="true"></i>
+    {{ title }}
+</a>

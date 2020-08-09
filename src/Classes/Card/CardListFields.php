@@ -11,6 +11,7 @@ namespace App\Classes\Card;
 
 use App\Classes\MainAdmin;
 use App\Classes\Task\InstanceTrait;
+use App\Controller\Admin\CardAdminController;
 use App\Entity\Repair;
 use App\Entity\ReturnFromRepair;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -22,6 +23,22 @@ class CardListFields
 
     private function getDefault(ListMapper $listMapper)
     {
+        $actionsOptions = [
+            'label' => 'Действия',
+            'actions' => [
+                'show' => [],
+                'history' => [],
+                'edit' => [
+                    // You may add custom link parameters used to generate the action url
+                    'link_parameters' => [
+                        'full' => true,
+                    ]
+                ],
+                'delete' => [],
+                CardAdminController::ROUTER_DISPOSAL => ['template' => 'card/list_action_disposal.html.twig']
+            ]
+        ];
+
         $listMapper
             ->add('pipeSerialNumber', null, array_merge(MainAdmin::VIEW_LINK, ['label' => 'Серийный № трубы', 'sortable' => true,]))
             ->add('generalName', null, array_merge(MainAdmin::VIEW_LINK, [
@@ -30,20 +47,7 @@ class CardListFields
             ]))
             ->add('statusTitle', null, ['label' => 'Статус'])
             // Name of the action (show, edit, history, delete, etc)
-            ->add('_action', null, [
-                'label' => 'Действия',
-                'actions' => [
-                    'show' => [],
-                    'history' => [],
-                    'edit' => [
-                        // You may add custom link parameters used to generate the action url
-                        'link_parameters' => [
-                            'full' => true,
-                        ]
-                    ],
-                    'delete' => [],
-                ]
-            ]);
+            ->add('_action', null, $actionsOptions);
     }
 
     public function getFields(ListMapper $listMapper)
@@ -85,11 +89,13 @@ class CardListFields
             array(
                 'label' => 'Загрузка изображений',
                 'actions' => array(
-                    'usage' => array('template' =>'crud/list_action_custom.html.twig')
+                    'usage' => array(
+                        'template' =>'crud/list_action_custom.html.twig',
+                        'link' => 'admin_app_card_edit',
+                        'title' => 'Загрузить изображение',
+                        'withId' => true,
+                    )
                 ),
-                'link' => 'admin_app_card_edit',
-                'title' => 'Загрузить изображение',
-                'withId' => true,
             )
         );
     }

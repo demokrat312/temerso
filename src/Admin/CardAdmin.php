@@ -597,7 +597,8 @@ class CardAdmin extends MainAdmin
 
                 $actionButtons->addItem((new ShowModeFooterButtonItem())
                     ->setClasses('btn btn-success')
-                    ->setName(ShowModeFooterActionBuilder::BTN_UPDATE_AND_LIST)
+                    ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
+                    ->setRouteAction(CardAdminController::ROUTER_DISPOSAL)
                     ->addIcon('fa-save')
                     ->setTitle('Восстановить карточку')
                     ,

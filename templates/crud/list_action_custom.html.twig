@@ -1,9 +1,10 @@
-{% if  field_description.options.withId %}
-    <a href="{{ path(field_description.options.link, {id: object.id}) }}" class="btn btn-sm btn-default view_link" title="{{ field_description.options.title }}">
+{% if  actions.withId is defined and actions.withId %}
+    <a href="{{ path(actions.link, {id: object.id}) }}" class="btn btn-sm btn-default view_link" title="{{ actions.title }}">
 {% else %}
-    <a href="{{ path(field_description.options.link) }}" class="btn btn-sm btn-default view_link" title="{{ field_description.options.title }}">
+    <a href="{{ path(actions.link) }}" class="btn btn-sm btn-default view_link" title="{{ actions.title }}">
 {% endif %}
-
-{#    <i class="fa fa-file-excel-o" aria-hidden="true"></i>#}
-    {{ field_description.options.title }}
+{% if actions.icon is defined %}
+    <i class="fa {{ actions.icon }}" aria-hidden="true"></i>
+{% endif %}
+    {{ actions.title }}
 </a>
