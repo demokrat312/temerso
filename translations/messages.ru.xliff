@@ -66,6 +66,38 @@
                 <source>Return From Repair Create</source>
                 <target>Возврат из ремонта, создание</target>
             </trans-unit>
+            <trans-unit id="inventory.list">
+                <source>Inventory List</source>
+                <target>Инвентаризация, список</target>
+            </trans-unit>
+            <trans-unit id="inventory.create">
+                <source>Inventory Create</source>
+                <target>Инвентаризация, создание</target>
+            </trans-unit>
+            <trans-unit id="inspection.list">
+                <source>Inspection List</source>
+                <target>Инспекция, список</target>
+            </trans-unit>
+            <trans-unit id="inspection.create">
+                <source>Inspection Create</source>
+                <target>Инспекция, создание</target>
+            </trans-unit>
+            <trans-unit id="equipment.list">
+                <source>Equipment List</source>
+                <target>Комплектация в аренду, список</target>
+            </trans-unit>
+            <trans-unit id="equipment.create">
+                <source>Equipment Create</source>
+                <target>Комплектация в аренду, создание</target>
+            </trans-unit>
+            <trans-unit id="return_from_rent.list">
+                <source>Return From Rent List</source>
+                <target>Возврат из аренды, список</target>
+            </trans-unit>
+            <trans-unit id="return_from_rent.create">
+                <source>Return From Rent Create</source>
+                <target>Возврат из аренды, создание</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
