@@ -31,6 +31,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Classes\Card\CardIdentificationResponse;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CardRepository")
@@ -107,7 +108,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      * № Метки RFID
      *
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $rfidTagNo;
 
@@ -115,7 +116,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      * Серийный № трубы
      *
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $pipeSerialNumber;
 
@@ -123,7 +124,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      * Серийный № ниппеля
      *
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $serialNoOfNipple;
 
@@ -131,7 +132,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      * Серийный № муфты
      *
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $couplingSerialNumber;
 

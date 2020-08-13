@@ -14,24 +14,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class CardIdentificationResponse
 {
+    const GROUP_API_DEFAULT = 'identification';
     /**
      * Список карточек. Пустой если найдена только одна карточка
      *
      * @var Card[]
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $cardList;
     /**
      * Карточка. Поле пустое если найдено несколько карточек
      * @var Card
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $card;
     /**
      * Если несколько карточек то true
      *
      * @var boolean
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $multiple;
 

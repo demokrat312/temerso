@@ -9,7 +9,6 @@
 namespace App\Classes\Card;
 
 
-use App\Classes\Card\CardStatusHelper;
 use App\Classes\MediaHelper;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItemInterface;
@@ -19,6 +18,7 @@ use App\Entity\TaskCardOtherField;
 use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Swagger\Annotations as SWG;
+use App\Classes\Card\CardIdentificationResponse;
 
 trait CardTrait
 {
@@ -29,6 +29,7 @@ trait CardTrait
      * @api Поле нужно только для документации
      * @see CardTrait::getGeneralName()
      * @SWG\Property(property="fullName")
+     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $generalName;
 

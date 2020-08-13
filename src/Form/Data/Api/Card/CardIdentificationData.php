@@ -12,15 +12,15 @@ namespace App\Form\Data\Api\Card;
 class CardIdentificationData
 {
     /**
-     * @var float|null
+     * @var int|null
      */
     private $pipeSerialNumber;
     /**
-     * @var float|null
+     * @var int|null
      */
     private $couplingSerialNumber;
     /**
-     * @var float|null
+     * @var int|null
      */
     private $serialNoOfNipple;
     /**
@@ -29,54 +29,54 @@ class CardIdentificationData
     private $rfidTagNo;
 
     /**
-     * @return float|null
+     * @return int|null
      */
-    public function getPipeSerialNumber(): ?float
+    public function getPipeSerialNumber(): ?int
     {
         return $this->pipeSerialNumber;
     }
 
     /**
-     * @param float|null $pipeSerialNumber
+     * @param int|null $pipeSerialNumber
      * @return $this
      */
-    public function setPipeSerialNumber(?float $pipeSerialNumber)
+    public function setPipeSerialNumber(?int $pipeSerialNumber)
     {
         $this->pipeSerialNumber = $pipeSerialNumber;
         return $this;
     }
 
     /**
-     * @return float|null
+     * @return int|null
      */
-    public function getCouplingSerialNumber(): ?float
+    public function getCouplingSerialNumber(): ?int
     {
         return $this->couplingSerialNumber;
     }
 
     /**
-     * @param float|null $couplingSerialNumber
+     * @param int|null $couplingSerialNumber
      * @return $this
      */
-    public function setCouplingSerialNumber(?float $couplingSerialNumber)
+    public function setCouplingSerialNumber(?int $couplingSerialNumber)
     {
         $this->couplingSerialNumber = $couplingSerialNumber;
         return $this;
     }
 
     /**
-     * @return float|null
+     * @return int|null
      */
-    public function getSerialNoOfNipple(): ?float
+    public function getSerialNoOfNipple(): ?int
     {
         return $this->serialNoOfNipple;
     }
 
     /**
-     * @param float|null $serialNoOfNipple
+     * @param int|null $serialNoOfNipple
      * @return $this
      */
-    public function setSerialNoOfNipple(?float $serialNoOfNipple)
+    public function setSerialNoOfNipple(?int $serialNoOfNipple)
     {
         $this->serialNoOfNipple = $serialNoOfNipple;
         return $this;

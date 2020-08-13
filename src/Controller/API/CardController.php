@@ -319,7 +319,7 @@ class CardController extends ApiParentController
      *     description="Возвращаем найденую карточку или карточки",
      *     @SWG\Schema(
      *           type="array",
-     *           @SWG\Items(ref=@Model(type=\App\Classes\Card\CardIdentificationResponse::class, groups={\App\Classes\ApiParentController::GROUP_API_DEFAULT}))
+     *           @SWG\Items(ref=@Model(type=\App\Classes\Card\CardIdentificationResponse::class, groups={CardIdentificationResponse::GROUP_API_DEFAULT}))
      *     ),
      * )
      *
@@ -362,7 +362,7 @@ class CardController extends ApiParentController
                 ->setCardList($cardsResponse)
                 ->setMultiple($multiple);
 
-            return $this->defaultResponse($this->toArray($response, self::GROUP_API_DEFAULT));
+            return $this->defaultResponse($this->toArray($response, CardIdentificationResponse::GROUP_API_DEFAULT));
         } else {
             return $this->formErrorResponse($form);
         }
