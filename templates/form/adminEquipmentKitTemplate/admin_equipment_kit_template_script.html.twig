@@ -33,7 +33,7 @@
                     </tr>`;
 
         const init = () => {
-            console.log('AdminEquipmentKitModel init', specificationInputName);
+            console.info('AdminEquipmentKitModel init');
             $templateCards = $('#template-cards');
             $templateSpecification = $('#template-specification');
             $kitTitleInput = $('#title-kit');
@@ -56,10 +56,8 @@
         };
         const addKit = function (e) {
             e.preventDefault();
-            console.log('add kit');
 
             const withKitValue = $withKitInput.val();
-            console.log(withKitValue);
 
             // С выборкой из каталога
             if (withKitValue === 'withCatalog') {
@@ -107,7 +105,7 @@
             hideInputGroup(['cardCount', 'kitCount', 'kitCardCount']);
 
             // Если будет выбирать из каталога то эти значения не нужны
-            if ($withKitInput.val() === 'withCatalog') return;
+            // if ($withKitInput.val() === 'withCatalog') return;
 
             if (selected === 'multi') {
                 showInputGroup(['kitCount', 'kitCardCount']);
@@ -151,12 +149,10 @@
                 $button.attr('href'), {
 
                     showCallback: ($modal) => {
-                        console.log('show');
                         $modal.find('.form-actions').remove();
                     },
 
                     buttonCallback: (event, $modal) => {
-                        console.log('click');
 
                         $modal.find('.modal-body').find('[name]').each((index, input) => {
                             const $input = $(input);
