@@ -64,7 +64,8 @@ class CardRepository extends ServiceEntityRepository
 
             $exprAndX = [];
             if ($data->getRfidTagNo()) {
-                $exprAndX[] = $expr->eq('c.rfidTagNo', $data->getRfidTagNo());
+                $exprAndX[] = $expr->eq('c.rfidTagNo', ':rFidTagNo');
+                $qb->setParameter('rFidTagNo', $data->getRfidTagNo());
             }
             if ($data->getPipeSerialNumber()) {
                 $exprAndX[] = $expr->eq('c.pipeSerialNumber', $data->getPipeSerialNumber());
