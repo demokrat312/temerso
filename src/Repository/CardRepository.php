@@ -129,7 +129,7 @@ class CardRepository extends ServiceEntityRepository
             }
 
             return $qb
-                ->where($expr->orX(
+                ->where($expr->andX(
                     ...$exprAndX
                 ))
                 ->getQuery()

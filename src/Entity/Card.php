@@ -47,7 +47,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $id;
 

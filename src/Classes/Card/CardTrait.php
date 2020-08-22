@@ -16,6 +16,7 @@ use App\Entity\Repair;
 use App\Entity\RepairCardImgRequired;
 use App\Entity\TaskCardOtherField;
 use Doctrine\Common\Collections\Criteria;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Swagger\Annotations as SWG;
 use App\Classes\Card\CardIdentificationResponse;
@@ -28,10 +29,18 @@ trait CardTrait
      * @var string
      * @api Поле нужно только для документации
      * @see CardTrait::getGeneralName()
-     * @SWG\Property(property="fullName")
-     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $generalName;
+
+    /**
+     * Полное название карточки
+     *
+     * @var string
+     * @api Поле нужно только для документации. Дублирует поле generalName
+     * @see CardTrait::getFullName()
+     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
+     */
+    private $fullName;
 
     /**
      * Ссылки на изображения
@@ -114,6 +123,15 @@ trait CardTrait
             'Внутреннее покрытие, ' => $this->getRefInnerCoating() . ', ', // TC2000,
             'Хардбендинг (муфта)   ' => $this->getRefHardbandingCoupling(), // TCS Titanium,
         ]);
+    }
+
+    /**
+     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
+     * @see CardTrait::$fullName
+     * @return string
+     */
+    public function getFullName() {
+        return $this->getGeneralName();
     }
 
     public function getStatusTitle()
