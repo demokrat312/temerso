@@ -21,7 +21,7 @@ class TaskItemAdapter
             ->setStatusId($taskEntity->getStatus())
             ->setExecutor($taskEntity->getExecutor())
             ->setComment($taskEntity->getComment())
-            ->setTaskTypeId($this->getTypeByEntityClass(get_class($taskEntity)))
+            ->setTaskTypeId($this->getTypeByEntityClass($this->getClass($taskEntity)))
         ;
 
         if($withCards) {
@@ -34,5 +34,9 @@ class TaskItemAdapter
     private function getTypeByEntityClass(string $entityClassName)
     {
         return TaskHelper::ins()->getTypeByEntityClass($entityClassName);
+    }
+
+    private function getClass($object) {
+        return str_replace('Proxies\\__CG__\\', '', get_class($object));
     }
 }
