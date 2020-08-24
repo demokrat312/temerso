@@ -145,8 +145,10 @@ class CardController extends ApiParentController
                 return $this->errorResponse('Карточка не найдена');
             }
 
-            $card->setRfidTagNo($data['rfidTagNo']);
-            if(!empty($data['accounting'])) {
+            if(isset($data['rfidTagNo'])) {
+                $card->setRfidTagNo($data['rfidTagNo']);
+            }
+            if(isset($data['accounting'])) {
                 $card->setAccounting($data['accounting']);
             }
 

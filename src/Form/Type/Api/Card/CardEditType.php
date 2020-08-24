@@ -42,7 +42,7 @@ class CardEditType extends AbstractType
             ->add('accounting', null, [
                 'required' => false,
                 'documentation' => [
-                    'type' => 'bool',
+                    'type' => 'integer',
                     'description' => 'Учет/Инвентаризация',
                 ],
             ])
