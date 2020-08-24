@@ -30,6 +30,7 @@ use App\Service\FieldDescriptionService;
 use App\Service\Marking\TaskTopMenuButtonService;
 use App\Service\TopMenuButtonService;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -45,6 +46,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Created by PhpStorm.
@@ -525,6 +528,16 @@ class CardAdmin extends MainAdmin
             ));
         }else if($action) {
             if ($action === self::ACTION_DISPOSAL) {
+                $fileOrImageEmptyCounter = 0;
+                $fileOrImageConstraints = function(PersistentCollection $object, ExecutionContextInterface $context) use (&$fileOrImageEmptyCounter, $form) {
+                    if($object->count() === 0) {
+                        $fileOrImageEmptyCounter++;
+                        if($fileOrImageEmptyCounter >= 2) {
+                            $context->addViolation('Нужно добавить хотя бы одно изображение или файл');
+                        }
+                    }
+
+                };
                 $formMapper
                     ->with("disposal", ['class' => 'col-md-12',  'label' => 'Списать Карточку'])
                         ->add('status', HiddenType::class, ['data' => CardStatusHelper::STATUS_BROKEN])
@@ -544,11 +557,11 @@ class CardAdmin extends MainAdmin
                             'by_reference' => false,
                             'allow_delete' => true,
                             'constraints' => [
-                                new Assert\Count([
-                                    'min' => 1,
-                                    'minMessage' => 'Хотя бы одна фотография',
-                                    // also has max and maxMessage just like the Length constraint
-                                ]),
+//                                new Assert\Count([
+//                                    'min' => 1,
+//                                    'minMessage' => 'Хотя бы одна фотография',
+//                                ]),
+                                new CallBack($fileOrImageConstraints)
                             ],
                         ))
                         ->add('files', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
@@ -565,11 +578,12 @@ class CardAdmin extends MainAdmin
                             'by_reference' => false,
                             'allow_delete' => true,
                             'constraints' => [
-                                new Assert\Count([
-                                    'min' => 1,
-                                    'minMessage' => 'Хотя бы один файл',
-                                    // also has max and maxMessage just like the Length constraint
-                                ]),
+//                                new Assert\Count([
+//                                    'min' => 1,
+//                                    'minMessage' => 'Хотя бы один файл',
+//                                    // also has max and maxMessage just like the Length constraint
+//                                ]),
+                                new CallBack($fileOrImageConstraints)
                             ],
                         ))
                     ->end();
