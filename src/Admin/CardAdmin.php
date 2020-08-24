@@ -529,7 +529,7 @@ class CardAdmin extends MainAdmin
         }else if($action) {
             if ($action === self::ACTION_DISPOSAL) {
                 $fileOrImageEmptyCounter = 0;
-                $fileOrImageConstraints = function(PersistentCollection $object, ExecutionContextInterface $context) use (&$fileOrImageEmptyCounter, $form) {
+                $fileOrImageConstraints = function(PersistentCollection $object, ExecutionContextInterface $context) use (&$fileOrImageEmptyCounter) {
                     if($object->count() === 0) {
                         $fileOrImageEmptyCounter++;
                         if($fileOrImageEmptyCounter >= 2) {
