@@ -18,6 +18,14 @@
                 <source>taskDashboard</source>
                 <target>Шаблоны</target>
             </trans-unit>
+            <trans-unit id="title_show">
+                <source>title_show</source>
+                <target>Просмотр "%name%"</target>
+            </trans-unit>
+            <trans-unit id="title_edit">
+                <source>title_edit</source>
+                <target>Редактирование "%name%"</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -70,7 +70,7 @@ trait CardTrait
 
     public function __toString()
     {
-        return (string)$this->getStatusTitle();
+        return sprintf('Карточка: %s, статус:  %s', $this->getId(), $this->getStatusTitle());
     }
 
 

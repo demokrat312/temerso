@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Classes\ApiParentController;
+
 
 /**
  * Групировка карточек для коплекта
@@ -22,7 +24,7 @@ class EquipmentKit
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 
@@ -37,7 +39,7 @@ class EquipmentKit
      * @var Card[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Card")
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $cards;
 
@@ -45,7 +47,7 @@ class EquipmentKit
      * Название комплекта
      *
      * @ORM\Column(type="string", length=255)
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $title;
 
@@ -55,7 +57,7 @@ class EquipmentKit
      * @var EquipmentKitSpecification
      *
      * @ORM\OneToOne(targetEntity="App\Entity\EquipmentKitSpecification", mappedBy="equipmentKit", cascade={"persist", "remove"})
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $specification;
 

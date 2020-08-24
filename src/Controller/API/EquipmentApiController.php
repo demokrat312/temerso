@@ -47,7 +47,7 @@ class EquipmentApiController extends ApiParentController
      * @SWG\Response(
      *     response="200",
      *     description="Возвращаем запись",
-     *     @Model(type=Equipment::class, groups={\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     *     @Model(type=Equipment::class, groups={ApiParentController::GROUP_API_DEFAULT})
      * )
      *
      * @Security(name="Bearer")
@@ -65,7 +65,7 @@ class EquipmentApiController extends ApiParentController
             return $this->errorResponse('Запись не найденна или у вас нету доступа');
         }
 
-        return $this->defaultResponse($this->toArray($equipment, [ApiParentController::GROUP_API_DEFAULT]));
+        return $this->defaultResponse($this->toArray($equipment, ApiParentController::GROUP_API_DEFAULT));
     }
 
 
