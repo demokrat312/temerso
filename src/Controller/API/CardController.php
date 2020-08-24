@@ -139,12 +139,16 @@ class CardController extends ApiParentController
 
         if ($form->isValid()) {
             $data = $form->getData();
+            /** @var Card $card */
             $card = $em->getRepository(Card::class)->find($data['id']);
             if (!$card) {
                 return $this->errorResponse('Карточка не найдена');
             }
 
             $card->setRfidTagNo($data['rfidTagNo']);
+            if(!empty($data['accounting'])) {
+                $card->setAccounting($data['accounting']);
+            }
 
             $taskEntityClass = null;
             if ($data['taskTypeId'] && ($data['comment'] || $data['commentProblemWithMark'])) {

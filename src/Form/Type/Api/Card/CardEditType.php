@@ -39,6 +39,13 @@ class CardEditType extends AbstractType
                     'description' => 'Метки RFID',
                 ],
             ])
+            ->add('accounting', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'bool',
+                    'description' => 'Учет/Инвентаризация',
+                ],
+            ])
             ->add('comment', null, [
                 'required' => false,
                 'documentation' => [
