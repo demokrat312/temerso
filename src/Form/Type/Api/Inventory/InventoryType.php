@@ -14,6 +14,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class InventoryType extends AbstractType
 {
@@ -35,16 +36,21 @@ class InventoryType extends AbstractType
                     'description' => 'Излишек, список',
                 ],
                 'allow_add' => true,
-            ])
-        ;
+                'constraints' => [
+                    new Assert\Count([
+                        'min' => 1,
+                        'minMessage' => 'Хотя бы одна запись',
+                    ])
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'csrf_protection'    => false,
+            'csrf_protection' => false,
 //            'allow_extra_fields' => true,
-            'method'             => 'POST',
+            'method' => 'POST',
             'compound' => true,
             'data_class' => InventoryData::class
         ));
