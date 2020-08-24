@@ -600,6 +600,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
      *
      * @ORM\Column(type="boolean", options={"default" : 1})
+     * @Groups({CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $accounting;
 
