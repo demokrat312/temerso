@@ -123,7 +123,7 @@ trait TaskEntityTrait
      */
     public function getCreatedByFio(): string
     {
-        return $this->__toString();
+        return $this->createdBy ? (string)$this->createdBy->getFio() : 'error';
     }
 
     /**
