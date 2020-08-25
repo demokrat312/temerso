@@ -232,7 +232,7 @@ class CardAdmin extends MainAdmin
                         ->add($getInput('weight_of_pipe', 'Вес трубы'))
                     ->end()
                 ->end()
-                    ->tab('фактические')
+                    ->tab('Фактические')
                         ->with("left", ['class' => 'col-md-6', 'description' => 'Описание', 'label' => 'Характеристики'])
                         ->add('id');
                         if($this->getSubject()->getStatus() === CardStatusHelper::STATUS_BROKEN){
