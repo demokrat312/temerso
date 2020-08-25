@@ -53,7 +53,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     /**
      * Приложения: Загрузить файлы (возможность подгрузки файлов)
      *
-     * @ORM\ManyToMany(targetEntity="App\Application\Sonata\MediaBundle\Entity\Media")
+     * @ORM\ManyToMany(targetEntity="App\Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"})
      */
     private $files;
 
