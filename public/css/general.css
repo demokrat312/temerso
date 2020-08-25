@@ -1,15 +1,19 @@
 .logo img {
     max-width: 200px;
 }
+
 .login-logo img {
-  width: auto!important;
+    width: auto !important;
 }
-.temerso-color,.callout.callout-info,.alert-info,.label-info,.modal-info .modal-body {
+
+.temerso-color, .callout.callout-info, .alert-info, .label-info, .modal-info .modal-body {
     background-color: #ec628b !important
 }
+
 body {
-  font-family: "Open Sans", sans-serif !important;
+    font-family: "Open Sans", sans-serif !important;
 }
+
 /*rgb(144, 36, 68) -> #902444 | темнее #751934 | самый светлый #ec628b (марина #f08080)*/
 /*#902344*/
 
@@ -19,20 +23,32 @@ body {
     vertical-align: top;
     border-top: 1px solid #ddd;
 }
+
 .table-body-left.table > tbody > tr > td {
     text-align: left;
 }
+
 .text-left {
-    text-align: left!important;
+    text-align: left !important;
 }
 
 /* Выравнивание по верхнему левому краю */
 td.sonata-ba-list-field.sonata-ba-list-field-currency,
 td.sonata-ba-list-field.sonata-ba-list-field-percent,
 td.sonata-ba-list-field.sonata-ba-list-field-integer {
-     text-align: left;
+    text-align: left;
 }
-.table>thead>tr>th {
-     vertical-align: top;
+
+.table > thead > tr > th {
+    vertical-align: top;
     /*border-bottom: 2px solid #ddd;*/
+}
+
+
+/* Что бы не закрывало кнопку фильтра в модальном окне(список карточек) */
+.modal .navbar-nav.navbar-right {
+    margin-right: 40px;
+}
+.modal .sonata-filters-box .form-group {
+    text-align: right;
 }

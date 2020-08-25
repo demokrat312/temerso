@@ -52,7 +52,7 @@ class ArrivalAdmin extends MainAdmin
             ->add('numberUnitsInBatch', null, array_merge(self::VIEW_LINK, ['label' => 'Количество единиц товара в партии']))
             ->add('dateArrival', null, ['label' => 'Дата прихода'])
             ->add('numberAndDatePurchase', null, ['label' => '№ договора покупки, дата покупки'])
-            ->add('statusTitle', null, ['label' => 'Статус']);
+        ;
 //            ->add('id', null, self::VIEW_LINK);
 
         // Name of the action (show, edit, history, delete, etc)

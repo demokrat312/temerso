@@ -17,6 +17,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Приход
@@ -85,6 +86,7 @@ class Arrival
      *          @ORM\JoinColumn(name="media_id", referencedColumnName="id")
      *     }
      * )
+     * @Assert\Count(min = 1, minMessage = "Укажите файл")
      */
     private $files;
 
