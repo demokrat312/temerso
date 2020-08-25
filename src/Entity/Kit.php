@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Classes\Kit\KitTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use DateTimeInterface;
@@ -17,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Kit implements DateListenerInterface, CreatedByListenerInterface
 {
+    use KitTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

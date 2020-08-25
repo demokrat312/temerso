@@ -475,7 +475,7 @@ class CardAdmin extends MainAdmin
                 'field_type' => EntityType::class,
                 'field_options' => [
                     'class' => Kit::class,
-//                    'choice_label' => 'choiceTitle',
+                    'choice_label' => 'choiceTitle',
                 ],
                 'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {
                     if (!$value['value']) {
