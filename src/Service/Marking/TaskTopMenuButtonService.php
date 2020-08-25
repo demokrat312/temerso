@@ -29,6 +29,10 @@ class TaskTopMenuButtonService
     const BTN_REVIEW_ERROR = 'btn_review_error'; // Отклонить/отправить на доработку
     const BTN_EXCEL = 'btn_excel'; // Печать в excel
 
+    const BTN_TITLE = [
+        self::BTN_REVIEW_SUCCESS => 'Принять от исполнителя и синхронизировать'
+    ];
+
     /**
      * @var array |TopMenuAccess[]
      */
@@ -167,7 +171,7 @@ class TaskTopMenuButtonService
                 ->setButtonList([
                     (new TopMenuButton())
                         ->setKey(TaskTopMenuButtonService::BTN_REVIEW_SUCCESS)
-                        ->setTitle('Принять от Исполнителя')
+                        ->setTitle(self::BTN_TITLE[self::BTN_REVIEW_SUCCESS])
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
