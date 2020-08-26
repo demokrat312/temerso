@@ -6,7 +6,7 @@
         let $tableForCardList = null; // Элемент в который добавляем карточки
         let cardListUrl = null; // Ссылка по которой получаем список карточек
         let rowTemplateCreateSub = []; // Переменная для перезаписи rowTemplate из других компонентов
-        const emptyRowTemplate = '<tr id="row-empty"><td colspan="3">Нету выбранных записей</td></tr>';
+        const emptyRowTemplate = '<tr id="row-empty"><td colspan="3">нет выбранных записей</td></tr>';
         // Строка с карточкой которую вставляем в $tableList
         let rowTemplate = `<tr>
                         <input type="hidden" name="{{ form.vars.full_name }}" value="{id}">
@@ -121,7 +121,7 @@
                 const $field = $(htmlElement);
                 const title = $field.find('.js-admin-list-other-field-info').data('title');
 
-                // В таблцу добавляем заголовок поля(<th>), если его нету
+                // В таблцу добавляем заголовок поля(<th>), если его нет
                 if($tableForCardList.find('.sonata-ba-list-field-header').find(':contains(' + title +')').length === 0) {
                     $tableForCardList.find('.sonata-ba-list-field-header-select').before($('<th class="sonata-ba-list-field-header-text">' + title +'</th>'));
                 }
@@ -253,7 +253,7 @@
         };
 
         /**
-         * Добавление и удаление "Нету выбранных записей"
+         * Добавление и удаление "нет выбранных записей"
          */
         const tableEmptyRowToggle = () => {
             if(!$tableForCardList.length)return;

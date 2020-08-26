@@ -70,7 +70,7 @@ class EquipmentCells extends ParentCells
     private function getCardSpecified()
     {
         $specified = $this->equipment->getTotalCardWithoutCatalog();
-        // Если нету указанного количество, берем уже добавленные карточки
+        // Если нет указанного количество, берем уже добавленные карточки
         if (!$specified) {
             $specified = $this->equipment->getTotalCardWithCatalog();
         }

@@ -69,7 +69,7 @@ class CardFieldsHelper
         $formMapper->tab('fieldsFromOption', ['label' => 'Дополнительные поля']);
 
 
-        // Добавляем поля которых нету в сущности
+        // Добавляем поля которых нет в сущности
         foreach ($fieldsFromOption as $fieldOption) {
             $hasField = false;
             foreach ($cardFieldsFromCard as $cardField) {

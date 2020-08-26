@@ -106,7 +106,7 @@ class TaskHelper
     }
 
     /**
-     * Получаем TaskItem или null если нету права или такой записи не существует
+     * Получаем TaskItem или null если нет права или такой записи не существует
      *
      * @param int $taskId
      * @param string $taskClass

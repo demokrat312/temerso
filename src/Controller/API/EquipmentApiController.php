@@ -62,7 +62,7 @@ class EquipmentApiController extends ApiParentController
 
         $equipment = $rep->findTask($id, $user->getId());
         if (!$equipment) {
-            return $this->errorResponse('Запись не найденна или у вас нету доступа');
+            return $this->errorResponse('Запись не найденна или у вас нет доступа');
         }
 
         return $this->defaultResponse($this->toArray($equipment, ApiParentController::GROUP_API_DEFAULT));

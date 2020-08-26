@@ -129,7 +129,7 @@ class TaskController extends ApiParentController
         $taskItem = TaskHelper::ins()->findTask($taskId, $taskClass);
         if (!$taskItem) {
             return $this->errorResponse(
-                'У вас нету доступа к этой задаче или задача не существует',
+                'У вас нет доступа к этой задаче или задача не существует',
                 self::STATUS_CODE_403);
         }
         //</editor-fold>
@@ -144,7 +144,7 @@ class TaskController extends ApiParentController
         if (!in_array($statusId, $allowStatus)) {
             return $this->errorResponse(
                 'Нельзя менять на указанный статус, разрешенные статусы: '
-                . ($allowStatus ? implode(',', $allowStatus) : 'нету'),
+                . ($allowStatus ? implode(',', $allowStatus) : 'нет'),
                 self::STATUS_CODE_403);
         }
         //</editor-fold>
