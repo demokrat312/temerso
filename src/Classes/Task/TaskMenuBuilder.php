@@ -43,7 +43,7 @@ class TaskMenuBuilder
                 ->setRouteTitle('link_action_create')
             ,
             (new TaskMenuItem())
-                ->setTitle('Инверторизация')
+                ->setTitle('Инвентаризация')
                 ->setRoute($this->adminRoute->getActionRoute(Inventory::class, 'create'))
                 ->setRouteTitle('link_action_create')
             ,
@@ -88,7 +88,7 @@ class TaskMenuBuilder
                 ->setRouteTitle('link_list')
             ,
             (new TaskMenuItem())
-                ->setTitle('Инверторизация')
+                ->setTitle('Инвентаризация')
                 ->setRoute($this->adminRoute->getActionRoute(Inventory::class, 'list'))
                 ->setRouteTitle('link_list')
             ,
