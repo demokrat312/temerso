@@ -17,6 +17,6 @@ trait KitTrait
 {
     public function getChoiceTitle()
     {
-        return $this->getComment() .  ' ' . $this->getCreatedBy()->getUsername() . $this->getCreateAt()->format('d.m.Y');
+        return $this->getComment() .  ' ' . $this->getCreatedBy()->getUsername() . ' ' . $this->getCreateAt()->format('d.m.Y');
     }
 }
