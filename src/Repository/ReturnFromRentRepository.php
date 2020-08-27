@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Card;
 use App\Entity\ReturnFromRent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,25 @@ class ReturnFromRentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ReturnFromRent::class);
+    }
+
+    public function getCards(int $id)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb
+            ->select('card')
+            ->from(Card::class, 'card')
+
+            ->join('card.equipmentKit', 'equipmentKit')
+            ->join('equipmentKit.equipment', 'equipment')
+            ->join('equipment.returnFromRent', 'returnFromRent')
+
+            ->where('returnFromRent.id = :id')
+            ->setParameter('id', $id)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     // /**

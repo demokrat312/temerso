@@ -663,12 +663,19 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      */
     private $createdBy;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\OperatingTimeCounter", mappedBy="cards")
+     */
+    private $operatingTimeCounter;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
         $this->files = new ArrayCollection();
         $this->cardFields = new ArrayCollection();
         $this->repairCardImgRequired = new ArrayCollection();
+        $this->operatingTimeCounter = new ArrayCollection();
+
         $this->status = CardStatusHelper::STATUS_CREATE;
         $this->accounting = true; // По умолчанию, есть на складе
 
@@ -1763,5 +1770,13 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
         $this->createdBy = $createdBy;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|OperatingTimeCounter[]
+     */
+    public function getOperatingTimeCounter(): Collection
+    {
+        return $this->operatingTimeCounter;
     }
 }

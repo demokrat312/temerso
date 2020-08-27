@@ -43,6 +43,7 @@ use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -318,9 +319,13 @@ class CardAdmin extends MainAdmin
                         ->add('the_ultimate_tensile', null, ['label' => 'Предельная растягивающая нагрузка замка, Кн'])
                         ->add('the_ultimate_torque_of_the_tube', null, ['label' => 'Предельный  момент кручения  трубы, кНм'])
                         ->add('the_ultimate_tensile_load_of_the_pipe', null, ['label' => 'Предельная растягивающая нагрузка трубы, Кн'])
-                    ->end()->with('fields', ['class' => 'col-md-6', 'label' => 'Дополнительные поля'])
-                        ->add('cardFields', null, ['label' => 'empty', 'template' => '/viewList/cardFields.html.twig'])
                     ->end()
+                        ->with('fields', ['class' => 'col-md-12', 'label' => 'Дополнительные поля'])
+                            ->add('cardFields', null, ['label' => 'empty', 'template' => '/viewList/cardFields.html.twig'])
+                        ->end()
+                        ->with('operationTimeCounter', ['class' => 'col-md-12', 'label' => 'Счетчик по наработке'])
+                            ->add('operationTimeCounter', CollectionType::class, ['label' => 'empty', 'template' => '/viewList/operationTimeCounter.html.twig'])
+                        ->end()
                 ->end()
             ;
     }

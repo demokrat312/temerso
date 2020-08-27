@@ -190,6 +190,4 @@ abstract class TaskAdminParent extends MainAdmin
 
         $this->setShowModeButtons($actionButtons->getButtonList());
     }
-
-
 }

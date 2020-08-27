@@ -167,7 +167,7 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     }
 
     /**
-     * @return mixed
+     * @return OperatingTimeCounter
      */
     public function getOperatingTimeCounter()
     {

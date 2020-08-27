@@ -8,8 +8,11 @@ use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
 use App\Classes\Task\TaskAdminParent;
 use App\Controller\Admin\ReturnFromRentAdminController;
 use App\Entity\Equipment;
+use App\Entity\ReturnFromRent;
 use App\Form\Type\ReturnFromRent\OperatingTimeCounterType;
 use App\Repository\EquipmentRepository;
+use App\Repository\ReturnFromRentRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -134,4 +137,27 @@ class ReturnFromRentAdmin extends TaskAdminParent
             )
         ;
     }
+
+    /**
+     * @param ReturnFromRent $object
+     */
+    public function postPersist($object)
+    {
+        /** @var EntityManagerInterface $em */
+        /** @var ReturnFromRentRepository $rep */
+
+        $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+        $rep = $em->getRepository(ReturnFromRent::class);
+
+        $cards = $rep->getCards($object->getId());
+
+        foreach ($cards as $card) {
+            $object->getOperatingTimeCounter()->addCard($card);
+        }
+        $em->persist($object);
+        $em->flush();
+
+    }
+
+
 }

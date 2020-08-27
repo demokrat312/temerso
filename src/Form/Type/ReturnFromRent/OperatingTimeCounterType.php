@@ -25,7 +25,7 @@ class OperatingTimeCounterType extends AbstractType
                 'label' => 'Дата прихода из аренды',
                 'widget' => 'single_text'
             ])
-            ->add('workStartDate', null, ['label' => 'Дата прихода из аренды',])
+            ->add('workStartDate', null, ['label' => 'Дата начала работ',])
             ->add('wellNumber', null, ['label' => '№ скважины',])
             ->add('spoAmount', null, ['label' => 'Кол-во СПО',])
             ->add('penetrationFrom', null, ['label' => 'Проходка, интервал от',])
