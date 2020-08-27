@@ -64,6 +64,13 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
      */
     private $equipment;
 
+    /**
+     * Счетчик по наработке
+     *
+     * @ORM\OneToOne(targetEntity=OperatingTimeCounter::class, cascade={"persist", "remove"})
+     */
+    private $operatingTimeCounter;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
@@ -156,6 +163,24 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     {
         $this->equipment = $equipment;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOperatingTimeCounter()
+    {
+        return $this->operatingTimeCounter;
+    }
+
+    /**
+     * @param mixed $operatingTimeCounter
+     * @return $this
+     */
+    public function setOperatingTimeCounter($operatingTimeCounter)
+    {
+        $this->operatingTimeCounter = $operatingTimeCounter;
         return $this;
     }
 }

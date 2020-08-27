@@ -8,10 +8,12 @@ use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
 use App\Classes\Task\TaskAdminParent;
 use App\Controller\Admin\ReturnFromRentAdminController;
 use App\Entity\Equipment;
+use App\Form\Type\ReturnFromRent\OperatingTimeCounterType;
 use App\Repository\EquipmentRepository;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -79,7 +81,7 @@ class ReturnFromRentAdmin extends TaskAdminParent
         if ($this->isCurrentRoute('create')) {
             $editForm
                 ->tab('tab_one', ['label' => 'Главная', 'class' => 'col-md-12'])
-                    ->with('')
+                    ->with('Комплект')
                         ->add('equipment', EntityType::class, [
                             'label' => 'Комплектация в аренду',
                             'class' => Equipment::class,
@@ -87,6 +89,11 @@ class ReturnFromRentAdmin extends TaskAdminParent
                             'query_builder' => function (EquipmentRepository $er) {
                                 return $er->withOutReturnFromRent();
                             },
+                        ])
+                    ->end()
+                    ->with('Счетчик по наработке')
+                        ->add('operatingTimeCounter', OperatingTimeCounterType::class, [
+                            'label' => false,
                         ])
                     ->end()
                 ->end();
