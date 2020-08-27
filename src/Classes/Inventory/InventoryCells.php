@@ -12,6 +12,8 @@ namespace App\Classes\Inventory;
 use App\Classes\Excel\ParentCells;
 use App\Classes\Task\TaskItemInterface;
 use App\Entity\Card;
+use App\Entity\Inventory;
+use App\Entity\InventoryOver;
 use Doctrine\Common\Collections\Collection;
 
 class InventoryCells extends ParentCells
@@ -45,6 +47,25 @@ class InventoryCells extends ParentCells
             $this->sheet->setCellValue('E' . $rowCount, $card->getRfidTagNo()); // № RFID-метки
             $this->sheet->setCellValue('F' . $rowCount, $card->getAccounting() ? 'есть' : 'нет'); // Учет/Инвентаризация
             $this->sheet->setCellValue('G' . $rowCount, $card->getTaskCardOtherFieldsByTask($task)->getCommentProblemWithMark()); //  Оборудование есть,проблема с меткой
+
+            $rowCount++;
+        });
+    }
+
+    /**
+     * Излишек
+     *
+     * @param Collection|Card[] $cards
+     */
+    public function setOver(int $startRow, Inventory $task)
+    {
+        $rowCount = $startRow;
+        $task->getOver()->map(function(InventoryOver $over) use ($task, &$rowCount) {
+            $this->sheet->setCellValue('B' . $rowCount, $over->getPipeSerialNumber()); // Серийный № трубы
+            $this->sheet->setCellValue('C' . $rowCount, $over->getSerialNoOfNipple()); // Серийный № ниппеля
+            $this->sheet->setCellValue('D' . $rowCount, $over->getCouplingSerialNumber()); // Серийный № муфты
+            $this->sheet->setCellValue('E' . $rowCount, $over->getRfidTagNo()); // № RFID-метки
+            $this->sheet->setCellValue('F' . $rowCount, $over->getComment()); // Комментарий
 
             $rowCount++;
         });

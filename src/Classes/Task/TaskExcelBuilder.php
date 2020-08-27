@@ -96,6 +96,13 @@ class TaskExcelBuilder
             ->setActiveSheet($excelHelper->getActiveSheet())
             ->setGeneral($inventory);
 
+        if ($inventory->getOver()->count() > 0) {
+            $startRow = 11;
+            $markingCells
+                ->duplicateRow($startRow, $inventory->getOver()->count())
+                ->setOver($startRow, $inventory);
+        }
+
         if ($inventory->getCards()->count() > 0) {
             $startRow = 6;
             $markingCells
