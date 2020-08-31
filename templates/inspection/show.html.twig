@@ -9,7 +9,8 @@
                         <div class="box-body table-responsive">
                             <h4>Постановщик: <span class="label label-default">{{ object.createdBy.fio }}</span></h4>
                             <h4>Исполнитель: <span class="label label-default">{{ object.executor }}</span></h4>
-                            <h4>Всего единиц оборудования для инспекция: <span class="label label-default">{{ object.cards.count }}</span></h4>
+                            <h4>Всего единиц оборудования для инспекция: <span
+                                        class="label label-default">{{ object.cards.count }}</span></h4>
                             <h4>Статус: <span class="label label-default">{{ object.statusTitle }}</span></h4>
                             {% if object.comment %}
                                 <h4>Комментарий: <span class="label label-default">{{ object.comment }}</span></h4>
@@ -27,23 +28,152 @@
                                             есть, проблема
                                             с меткой
                                         </th>
-                                        <th>Изображения</th>
+                                        <th>Класс износа</th>
+                                        <th>Наружный диаметр трубы, (мм)</th>
+                                        <th>Толщина стенки трубы, (мм)</th>
+                                        <th>Тип резьбы</th>
+                                        <th>O.D. Замка ниппель  (мм)</th>
+                                        <th>O.D. Замка муфта  (мм)</th>
+                                        <th>Длина под ключ ниппель, (мм)</th>
+                                        <th>Длина под ключ муфта, (мм)</th>
+                                        <th>Визуальный контроль состояния внутреннего покрытия</th>
+                                        <th>Глубина наминов в зоне работы клиньев max (мм)</th>
+                                        <th>Изгиб ниппельного конца max (мм)</th>
+                                        <th>Изгиб муфтового конца max (мм)</th>
+                                        <th>Общий изгиб тела трубы max (мм)</th>
+                                        <th>МПК зоны клинев и зоны высадки</th>
+                                        <th>УЗК зоны клиньев и зоны высадки</th>
+                                        <th>EMI тела трубы (багги)</th>
+                                        <th>Класс тела трубы</th>
+                                        <th>Контроль шага резьбы ниппеля плоским шаблоном</th>
+                                        <th>Состояние резьбы ниппеля</th>
+                                        <th>Состояние упорных торцев ниппеля</th>
+                                        <th>МПК резьбы ниппеля</th>
+                                        <th>Хардбендиг ниппель (состояние)</th>
+                                        <th>Хардбендиг ниппель (диаметр) мм</th>
+                                        <th>Хардбендиг ниппель (высота наплавки) мм</th>
+                                        <th>Класс замка ниппель</th>
+                                        <th>Состояние резьбы муфты</th>
+                                        <th>Состояние упорных торцев муфты</th>
+                                        <th>МПК резьбы муфты</th>
+                                        <th>УЗК резьбы муфты</th>
+                                        <th>Хардбендиг муфта (состояние)</th>
+                                        <th>Хардбендиг муфта (диаметр) мм</th>
+                                        <th>Хардбендиг муфта (высота наплавки) мм</th>
+                                        <th>Класс замка муфта</th>
+                                        <th>фото</th>
                                         <th>Комментарий</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {# @var \App\Entity\Card card #}
+                                    {# @var \App\Entity\CardTemporary cardTemporary #}
                                     {% for card in object.cards %}
-                                        <tr>
-                                            <td class="text-left">{{ card.generalName }}</td>
-                                            <td>{{ card.pipeSerialNumber }}</td>
-                                            <td>{{ card.serialNoOfNipple }}</td>
-                                            <td>{{ card.couplingSerialNumber }}</td>
-                                            <td>{{ card.rfidTagNo }}</td>
-                                            <td>{{ card.taskCardOtherFieldsByTask(object).commentProblemWithMark }}</td>{#Оборудование есть, проблема с меткой#}
-                                            <td></td>{#Изображения#}
-                                            <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
-                                        </tr>
+                                        {% set cardTemporary = object.cardTemporary(card) %}
+                                        {% if cardTemporary %}
+                                            <tr>
+                                                <td class="text-left">
+                                                    <a class="js-entity-edit" href="{{ path('card_temporary_edit', {id: cardTemporary.id}) }}">
+                                                        {{ cardTemporary.generalName }}</a>
+                                                </td>
+                                                <td>{{ cardTemporary.pipeSerialNumber }}</td>
+                                                <td>{{ cardTemporary.serialNoOfNipple }}</td>
+                                                <td>{{ cardTemporary.couplingSerialNumber }}</td>
+                                                <td>{{ cardTemporary.rfidTagNo }}</td>
+                                                <td>{{ cardTemporary.commentProblemWithMark }}</td>{#Оборудование есть, проблема с меткой#}
+                                                <td>{{ cardTemporary.refWearClass }}</td>
+                                                <td>{{ cardTemporary.outerDiameterOfThePipe }}</td>
+                                                <td>{{ cardTemporary.pipeWallThickness }}</td>
+                                                <td>{{ cardTemporary.refTypeThread }}</td>
+                                                <td>{{ cardTemporary.odlockNipple }}</td>
+                                                <td>{{ cardTemporary.odlockCoupling }}</td>
+                                                <td>{{ cardTemporary.turnkeyLengthNipple }}</td>
+                                                <td>{{ cardTemporary.turnkeyLengthCoupling }}</td>
+                                                <td>{{ cardTemporary.refVisualControl }}</td>
+                                                <td>{{ cardTemporary.depthOfNaminov }}</td>
+                                                <td>{{ cardTemporary.nippleEndBendMax }}</td>
+                                                <td>{{ cardTemporary.couplingEndBendMax }}</td>
+                                                <td>{{ cardTemporary.theTotalBendOfThePipeBodyMax }}</td>
+                                                <td>{{ cardTemporary.refIpcWedgeZoneAndLandingZone }}</td>
+                                                <td>{{ cardTemporary.refUltrasonicTesting }}</td>
+                                                <td>{{ cardTemporary.refEmiBodyPipes }}</td>
+                                                <td>{{ cardTemporary.refPipeBodyClass }}</td>
+                                                <td>{{ cardTemporary.refNippleThread }}</td>
+                                                <td>{{ cardTemporary.refNippleThreadCondition }}</td>
+                                                <td>{{ cardTemporary.refStatePersistent }}</td>
+                                                <td>{{ cardTemporary.refIpcThreadNipple }}</td>
+                                                <td>{{ cardTemporary.refHardbendingNippleState }}</td>
+                                                <td>{{ cardTemporary.hardbandingNipplemmDiameter }}</td>
+                                                <td>{{ cardTemporary.hardbandingNippleHeight }}</td>
+                                                <td>{{ cardTemporary.refLockClassNipple }}</td>
+                                                <td>{{ cardTemporary.refCouplingThreadCondition }}</td>
+                                                <td>{{ cardTemporary.refStatusCouplingEndFaces }}</td>
+                                                <td>{{ cardTemporary.refIpcThreadCoupling }}</td>
+                                                <td>{{ cardTemporary.refUzkThreadCoupling }}</td>
+                                                <td>{{ cardTemporary.refHardbendigCouplingState }}</td>
+                                                <td>{{ cardTemporary.hardbandingCouplerDiameter }}</td>
+                                                <td>{{ cardTemporary.hardbandingCouplingHeightMm }}</td>
+                                                <td>{{ cardTemporary.lockClassCoupling }}</td>
+                                                <td>
+                                                    {% for image in cardTemporary.images %}
+                                                        <ul>
+                                                            <li><a target="_blank" href="{% path image, 'reference' %}">{{ image.name }}</a> </li>
+                                                        </ul>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{{ cardTemporary.comment }}</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-left">{{ card.generalName }}</td>
+                                                <td>{{ card.pipeSerialNumber }}</td>
+                                                <td>{{ card.serialNoOfNipple }}</td>
+                                                <td>{{ card.couplingSerialNumber }}</td>
+                                                <td>{{ card.rfidTagNo }}</td>
+                                                <td>{{ card.taskCardOtherFieldsByTask(object).commentProblemWithMark }}</td>{#Оборудование есть, проблема с меткой#}
+                                                <td>{{ card.refWearClass }}</td>
+                                                <td>{{ card.outerDiameterOfThePipe }}</td>
+                                                <td>{{ card.pipeWallThickness }}</td>
+                                                <td>{{ card.refTypeThread }}</td>
+                                                <td>{{ card.odlockNipple }}</td>
+                                                <td>{{ card.odlockCoupling }}</td>
+                                                <td>{{ card.turnkeyLengthNipple }}</td>
+                                                <td>{{ card.turnkeyLengthCoupling }}</td>
+                                                <td>{{ card.refVisualControl }}</td>
+                                                <td>{{ card.depthOfNaminov }}</td>
+                                                <td>{{ card.nippleEndBendMax }}</td>
+                                                <td>{{ card.couplingEndBendMax }}</td>
+                                                <td>{{ card.theTotalBendOfThePipeBodyMax }}</td>
+                                                <td>{{ card.refIpcWedgeZoneAndLandingZone }}</td>
+                                                <td>{{ card.refUltrasonicTesting }}</td>
+                                                <td>{{ card.refEmiBodyPipes }}</td>
+                                                <td>{{ card.refPipeBodyClass }}</td>
+                                                <td>{{ card.refNippleThread }}</td>
+                                                <td>{{ card.refNippleThreadCondition }}</td>
+                                                <td>{{ card.refStatePersistent }}</td>
+                                                <td>{{ card.refIpcThreadNipple }}</td>
+                                                <td>{{ card.refHardbendingNippleState }}</td>
+                                                <td>{{ card.hardbandingNipplemmDiameter }}</td>
+                                                <td>{{ card.hardbandingNippleHeight }}</td>
+                                                <td>{{ card.refLockClassNipple }}</td>
+                                                <td>{{ card.refCouplingThreadCondition }}</td>
+                                                <td>{{ card.refStatusCouplingEndFaces }}</td>
+                                                <td>{{ card.refIpcThreadCoupling }}</td>
+                                                <td>{{ card.refUzkThreadCoupling }}</td>
+                                                <td>{{ card.refHardbendigCouplingState }}</td>
+                                                <td>{{ card.hardbandingCouplerDiameter }}</td>
+                                                <td>{{ card.hardbandingCouplingHeightMm }}</td>
+                                                <td>{{ card.lockClassCoupling }}</td>
+                                                <td>
+                                                    {% for image in card.images %}
+                                                        <ul>
+                                                            <li><a target="_blank" href="{% path image, 'reference' %}">{{ image.name }}</a> </li>
+                                                        </ul>
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
+                                            </tr>
+                                        {% endif %}
                                     {% endfor %}
                                     </tbody>
                                 </table>

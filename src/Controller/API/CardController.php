@@ -11,6 +11,7 @@ namespace App\Controller\API;
 
 use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\ApiParentController;
+use App\Classes\Card\CardEditHelper;
 use App\Classes\Card\CardIdentificationResponse;
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Classes\Task\TaskHelper;
@@ -18,6 +19,7 @@ use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemAdapter;
 use App\Entity\Card;
 use App\Entity\User;
+use App\Form\Data\Api\Card\CardEditData;
 use App\Form\Data\Api\Card\CardListEditData;
 use App\Form\Type\Api\Card\CardEditType;
 use App\Form\Type\Api\Card\CardImageType;
@@ -131,46 +133,26 @@ class CardController extends ApiParentController
      * )
      *
      * @Security(name="Bearer")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function editAction(Request $request, EntityManagerInterface $em, TokenStorageInterface $storage)
+    public function editAction(Request $request, EntityManagerInterface $em)
     {
         $form = $this->createForm(CardEditType::class);
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
-            $data = $form->getData();
-            /** @var Card $card */
-            $card = $em->getRepository(Card::class)->find($data['id']);
-            if (!$card) {
-                return $this->errorResponse('Карточка не найдена');
-            }
 
-            if(isset($data['rfidTagNo'])) {
-                $card->setRfidTagNo($data['rfidTagNo']);
-            }
-            if(isset($data['accounting'])) {
-                $card->setAccounting($data['accounting']);
-            }
+            $toArray = function($object, $group) {
+                return $this->toArray($object, $group);
+            };
+            $cardEditHelper = new CardEditHelper($em, $toArray);
 
-            $taskEntityClass = null;
-            if ($data['taskTypeId'] && ($data['comment'] || $data['commentProblemWithMark'])) {
-                $taskEntityClass = TaskItem::TYPE_CLASS[$data['taskTypeId']];
-                $taskCard = $card->getTaskCardOtherFieldsByTask(new $taskEntityClass());
-                $taskCard
-                    ->setCard($card)
-                    ->setTaskTypeId($data['taskTypeId'])
-                    ->setComment($data['comment'])
-                    ->setCommentProblemWithMark($data['commentProblemWithMark']);
-
-                $em->persist($taskCard);
-            }
+            $response = $cardEditHelper->edit($form->getData());
 
 
-            $em->persist($card);
-            $em->flush();
-
-
-            return $this->defaultResponse((new MarkingCardToTaskCardAdapter())->getCard($card, $taskEntityClass));
+            return $this->defaultResponse($response);
         } else {
             return $this->errorParamResponse();
         }

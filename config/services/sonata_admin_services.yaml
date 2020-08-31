@@ -134,3 +134,10 @@ services:
             - App\Controller\Admin\ReturnFromRepairAdminController
         tags:
             - { name: sonata.admin, manager_type: orm, label: Комплект для постановщика, group: Каталог, show_in_dashboard: true}
+    App\Admin\CardTemporaryAdmin:
+        arguments:
+            - ~
+            - App\Entity\CardTemporary
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Временная карточка, group: Каталог, show_in_dashboard: true}

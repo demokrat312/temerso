@@ -41,4 +41,21 @@ class Utils
             return self::in_array($needle, $haystack);
         }
     }
+
+    /**
+     * Копируем значения 2 объекта в 1
+     */
+    public static function copyObject($objTo, $objFrom)
+    {
+        $objToMethods = array_filter(get_class_methods($objTo), function ($methodName) {
+            return strpos($methodName, 'set') === 0;
+        });
+        foreach ($objToMethods as $setMethodTo) {
+            $getMethodFrom = 'get' . substr($setMethodTo, 3);
+            if (method_exists($objFrom, $getMethodFrom)) {
+                $objTo->{$setMethodTo}($objFrom->{$getMethodFrom}());
+            }
+        }
+
+    }
 }

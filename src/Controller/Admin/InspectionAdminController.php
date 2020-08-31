@@ -12,6 +12,7 @@ namespace App\Controller\Admin;
 use App\Classes\Card\CardStatusHelper;
 use App\Classes\Task\TaskAdminController;
 use App\Classes\Task\TaskItemInterface;
+use App\Classes\Utils;
 use App\Entity\Card;
 use App\Entity\Inspection;
 use App\Entity\Marking;
@@ -37,11 +38,25 @@ class InspectionAdminController extends TaskAdminController
     {
         $isComplete = $newStatusId === Marking::STATUS_COMPLETE; // Задача завершена
         if ($isComplete) {
+            // Меняем статус у карточек
             $em = $this->getDoctrine()->getManager();
             $taskItem->getCards()->map(function (Card $card) use ($em) {
                 $card->setStatus(CardStatusHelper::STATUS_STORE);
                 $em->persist($card);
             });
+
+            // Копируем временные карточки в основные
+            foreach ($taskItem->getCardsTemporary() as $cardTemporary) {
+                foreach ($taskItem->getCards() as $card) {
+                    if($cardTemporary->getCard()->getId() === $card->getId()) {
+                        Utils::copyObject($card, $cardTemporary);
+                        foreach ($cardTemporary->getImages() as $image) {
+                            $card->addImage($image);
+                        }
+                        $em->persist($card);
+                    }
+                }
+            }
         }
     }
 }

@@ -20,6 +20,7 @@ use App\Entity\ReturnFromRent;
 use App\Entity\ReturnFromRepair;
 use App\Entity\User;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  *
@@ -65,6 +66,28 @@ class TaskItem
         Repair::class => self::TYPE_REPAIR,
         ReturnFromRepair::class => self::TYPE_RETURN_FROM_REPAIR,
     ];
+
+    static public function getTaskClass(int $taskTypeId, bool $withException = false)
+    {
+        if (isset(self::TYPE_CLASS[$taskTypeId])) {
+            return self::TYPE_CLASS[$taskTypeId];
+        } else if ($withException) {
+            throw new NotFoundHttpException('Тип задачи "' . $taskTypeId . '" не задан');
+        } else {
+            return null;
+        }
+    }
+
+    static public function getTaskType(string $className, bool $withException = false)
+    {
+        if (isset(self::TYPE_BY_CLASS[$className])) {
+            return self::TYPE_BY_CLASS[$className];
+        } else if ($withException) {
+            throw new NotFoundHttpException('Класс задачи "' . $className . '" не задан');
+        } else {
+            return null;
+        }
+    }
 
     /**
      * @var int

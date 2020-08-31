@@ -30,6 +30,7 @@ const CrudEditModel = (function () {
     const initEvent = () => {
         $('.js-prev-tab').on('click', () => prevOrNextTabHandler('prev'));
         $('.js-next-tab').on('click', () => prevOrNextTabHandler('next'));
+        $('.js-entity-edit').on('click', entityEdit);
     };
 
     const prevOrNextTabHandler = (prevOrNext) => {
@@ -63,7 +64,7 @@ const CrudEditModel = (function () {
             processData: false,
             contentType: false,
             success: function (html) {
-                if(typeof html === 'object') {
+                if (typeof html === 'object') {
                     modal({...options, ...{close: true}});
                 } else {
                     modal({...options, ...{body: html}});
@@ -75,9 +76,9 @@ const CrudEditModel = (function () {
 
     // Все ссылки в выбранном элеменете подгружаются в модельное окно
     const modalLinkHandler = ($element, options) => {
-        $element.find('[href]').each(function(index, linkElement) {
+        $element.find('[href]').each(function (index, linkElement) {
             const $link = $(linkElement);
-            if($link.attr('href').includes('/')) {
+            if ($link.attr('href').includes('/')) {
                 $link.click((event) => {
                     event.preventDefault();
                     const link = event.target.getAttribute('href');
@@ -85,8 +86,8 @@ const CrudEditModel = (function () {
                 })
             }
         });
-        $element.find('form').each(function(index, formElement) {
-            if(formElement.action.includes('/')) {
+        $element.find('form').each(function (index, formElement) {
+            if (formElement.action.includes('/')) {
                 $form = $(formElement);
                 $form.submit(function (event) {
                     event.preventDefault();
@@ -106,6 +107,7 @@ const CrudEditModel = (function () {
             ...{
                 title: '',
                 close: false,
+                refreshPageOnClose: false,
                 body: '',
                 button: '<button type="button" class="btn btn-primary">Добавить</button>',
                 showCallback: ($modal) => {
@@ -119,13 +121,23 @@ const CrudEditModel = (function () {
 
         // удаляем старую форму
         $('#edit_dialog').modal('hide'); // closes all active pop ups.
-        $('#edit_dialog').prev('.modal-backdrop').remove(); // removes the grey overlay.
+        $('.modal-backdrop').remove(); // removes the grey overlay.
         $('#edit_dialog').remove();
         $('body').css('padding-right', '0'); // При открытии добавляет, при закрытие убираеться(но если 2 форма то добавляеться еще раз)
         $('body').removeClass('fixed');
         $('body').removeClass('modal-open');
 
-        if(modalOptions.close === true) return;
+        if (modalOptions.close === true) {
+            console.log('close');
+            if (modalOptions.refreshPageOnClose) {
+                $.get(location.href, (html) => {
+                    $(modalOptions.refreshPageOnClose).html(html);
+                    initEvent();
+                });
+            }
+            return
+        }
+        ;
 
         $modal = $(
             modalTemplate
@@ -146,6 +158,17 @@ const CrudEditModel = (function () {
         $('html, body').animate({
             scrollTop: $element.offset().top
         }, 300);
+    };
+
+    const entityEdit = (e) => {
+        e.preventDefault();
+        modalByUrl(e.target.href, {
+            button: '<button data-dismiss="modal" type="button" class="btn btn-primary">Закрыть</button>',
+            showCallback: ($modal) => {
+                modalLinkHandler($modal, {refreshPageOnClose: '.content'});
+            }
+        });
+
     };
 
     return {

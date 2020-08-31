@@ -46,6 +46,13 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
         self::STATUS_COMPLETE, // 4 -  Выполнено полностью
     ];
 
+    // Отображаем временные карточки только на этих статусах
+    const STATUS_CARD_TEMPORARY = [
+        self::STATUS_SEND_EXECUTION,
+        self::STATUS_ACCEPT_EXECUTION,
+        self::STATUS_SAVE
+    ];
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

@@ -12,17 +12,30 @@ namespace App\Classes\Card;
 use App\Classes\MediaHelper;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItemInterface;
+use App\Entity\CardTemporary;
 use App\Entity\Repair;
 use App\Entity\RepairCardImgRequired;
 use App\Entity\TaskCardOtherField;
 use Doctrine\Common\Collections\Criteria;
-use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Swagger\Annotations as SWG;
 use App\Classes\Card\CardIdentificationResponse;
+use App\Classes\ApiParentController;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
-trait CardTrait
+/**
+ * @mixin CardTemporary
+ */
+trait CardTemporaryTrait
 {
+    /**
+     * Ключ, карточки
+     *
+     * @var int
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
+     * @SerializedName("id")
+     */
+    private $cardId;
     /**
      * Полное название карточки
      *
@@ -43,34 +56,16 @@ trait CardTrait
     private $fullName;
 
     /**
-     * Ссылки на изображения
-     *
-     * @var string[]
-     * @api Поле нужно только для документации
-     * @see CardTrait::getImagesLink()
+     * @return int
      */
-    private $imagesLink;
-
-    /**
-     * Комментарий/Примечание
-     *
-     * @var string
-     * @api Поле нужно только для документации
-     * @see CardTrait::getComment()
-     */
-    private $comment;
-
-    /**
-     * Название класса родительской задачи.
-     * Если карточка вызваеться через задачу
-     *
-     * @var string
-     */
-    private $taskClassName;
+    public function getCardId(): int
+    {
+        return $this->card->getId();
+    }
 
     public function __toString()
     {
-            return sprintf('Карточка: %s, статус:  %s', $this->getId(), $this->getStatusTitle());
+        return sprintf('Карточка: %s', $this->getId());
     }
 
 
@@ -133,105 +128,4 @@ trait CardTrait
     public function getFullName() {
         return $this->getGeneralName();
     }
-
-    public function getStatusTitle()
-    {
-        return CardStatusHelper::STATUS_TITLE[$this->status] ?? 'Статус не задан';
-    }
-
-    /**
-     * Получаем дополнительные поля с привязкой к задаче и фильтруем по типу задачи
-     * @param TaskItemInterface $task
-     * @return TaskCardOtherField
-     * @see app/templates/marking/show.html.twig:38
-     */
-    public function getTaskCardOtherFieldsByTask($task): TaskCardOtherField
-    {
-        if(is_object($task)) {
-            $taskClass = get_class($task);
-        } else {
-            $taskClass = $task;
-        }
-        $taskTypeId = TaskHelper::ins()->getTypeByEntityClass($taskClass);
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("taskTypeId", $taskTypeId));
-
-        return $this->getTaskCardOtherFields()->matching($criteria)->first() ?: new TaskCardOtherField();
-    }
-
-    /**
-     * @see CardTrait::$imagesLink
-     *
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
-     *
-     * @return array
-     */
-    public function getImagesLink()
-    {
-        return MediaHelper::ins()->getImageLink($this->getImages());
-    }
-
-    /**
-     * @see CardTrait::$comment
-     *
-     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
-     *
-     * @return string
-     */
-    public function getComment()
-    {
-        if($this->getTaskClassName()) {
-            return $this->getTaskCardOtherFieldsByTask($this->getTaskClassName())->getComment();
-        }
-
-        return '';
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTaskClassName()
-    {
-        return $this->taskClassName;
-    }
-
-    /**
-     * @param mixed $taskClassName
-     * @return $this
-     */
-    public function setTaskClassName($taskClassName)
-    {
-        $this->taskClassName = $taskClassName;
-        return $this;
-    }
-
-    /**
-     * @return integer|RepairCardImgRequired
-     */
-    public function getRepairCardImgRequiredByRepair($repair): ?RepairCardImgRequired
-    {
-        if(!is_object($repair)) {
-            $repair = (new Repair())->setId($repair);
-        }
-        $criteria = Criteria::expr()->eq("repair", $repair);
-        $criteria = Criteria::create()->where($criteria);
-        return $this->repairCardImgRequired->matching($criteria)->first() ?: null;
-    }
-
-    public function repairCardImgRequiredInput(string $formId, Repair $repair)
-    {
-        static $counter = 0;
-        $formId = preg_replace('/\_.*$/', '', $formId);
-        $isChecked = $this->getRepairCardImgRequiredByRepair($repair)->getRequired();
-        $checked = '';
-        if($isChecked) {
-            $checked = 'checked="checked"';
-        }
-        $result = '
-        <input name="' . $formId . '[cardImgRequired][' . $counter .'][required]" class="form-check-input" type="checkbox" value="1" ' . $checked . '>
-        <input type="hidden" name="' . $formId . '[cardImgRequired][' . $counter .'][card]" value="' . $this->getId() .'">
-        ';
-        $counter++;
-        return $result;
-    }
-
 }

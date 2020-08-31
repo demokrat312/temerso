@@ -12,6 +12,7 @@ use App\Entity\Card;
 use App\Entity\Marking;
 use App\Form\Type\AdminListType;
 use App\Service\Access\RoleService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -50,6 +51,14 @@ abstract class TaskAdminParent extends MainAdmin
         $this->security = $security;
         $this->roleService = $roleService;
         $this->taskTopMenuButtonService = $markingTopMenuButtonService;
+    }
+
+    /**
+     * @return EntityManagerInterface|null
+     */
+    public function getEntityManager()
+    {
+        return $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
     }
 
     /**
@@ -109,6 +118,7 @@ abstract class TaskAdminParent extends MainAdmin
             ->remove('export')
             ->remove('acl')
         ;
+
     }
 
     /**

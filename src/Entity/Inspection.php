@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Classes\Inspection\InspectionTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Inspection implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
 {
-    use TaskEntityTrait;
+    use TaskEntityTrait, InspectionTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -72,12 +73,20 @@ class Inspection implements DateListenerInterface, CreatedByListenerInterface, T
      */
     private $returnFromRepair;
 
+    /**
+     * Карточки
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\CardTemporary")
+     */
+    private $cardsTemporary;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
 
         $this->cards = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->cardsTemporary = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -106,6 +115,32 @@ class Inspection implements DateListenerInterface, CreatedByListenerInterface, T
     {
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CardTemporary[]
+     */
+    public function getCardsTemporary(): Collection
+    {
+        return $this->cardsTemporary;
+    }
+
+    public function addCardTemporary(CardTemporary $cardTemporary): self
+    {
+        if (!$this->cardsTemporary->contains($cardTemporary)) {
+            $this->cardsTemporary[] = $cardTemporary;
+        }
+
+        return $this;
+    }
+
+    public function removeCardTemporary(CardTemporary $cardTemporary): self
+    {
+        if ($this->cardsTemporary->contains($cardTemporary)) {
+            $this->cardsTemporary->removeElement($cardTemporary);
         }
 
         return $this;

@@ -9,6 +9,7 @@
 namespace App\Form\Type\Api\Card;
 
 
+use App\Form\Data\Api\Card\CardEditData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,6 +24,13 @@ class CardEditType extends AbstractType
                 'documentation' => [
                     'type' => 'integer',
                     'description' => 'Ключ карточки',
+                ],
+            ])
+            ->add('taskId', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'integer',
+                    'description' => 'Ключ, задачи',
                 ],
             ])
             ->add('taskTypeId', null, [
@@ -59,16 +67,16 @@ class CardEditType extends AbstractType
                     'type' => 'string',
                     'description' => 'Оборудование есть, проблема с меткой(для инспекции)',
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'csrf_protection'    => false,
+            'data_class' => CardEditData::class,
+            'csrf_protection' => false,
             'allow_extra_fields' => true,
-            'method'             => 'POST',
+            'method' => 'POST',
         ));
     }
 }
