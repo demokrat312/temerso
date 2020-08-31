@@ -15,6 +15,7 @@ use App\Controller\Admin\CardAdminController;
 use App\Entity\Arrival;
 use App\Entity\Card;
 use App\Entity\Equipment;
+use App\Entity\Inspection;
 use App\Entity\Kit;
 use App\Entity\Marking;
 use App\Entity\Reference\RefPipeStrengthGroup;
@@ -59,7 +60,7 @@ class CardTemporaryAdmin extends MainAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        if(CardListHelper::ins()->isAjax()) {
+        if(CardListHelper::ins()->isAjax() || CardListHelper::ins()->requestFrom(Inspection::class)) {
             $collection
                 ->remove('delete')
             ;
