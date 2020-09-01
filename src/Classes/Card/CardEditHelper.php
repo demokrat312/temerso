@@ -65,6 +65,8 @@ class CardEditHelper
             }
             if ($cardEditData->getCommentProblemWithMark()) {
                 $cardTemporary->setComment($cardEditData->getCommentProblemWithMark());
+                // если есть поле "оборудование естЬ, проблема с меткой", то учет true
+                $cardTemporary->setAccounting(true);
             }
 
             $task->addCardTemporary($cardTemporary);
