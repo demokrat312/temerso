@@ -69,7 +69,7 @@ class CardTemporary
      * Ключ карточки
      *
      * @var Card
-     * @ORM\OneToOne(targetEntity="App\Entity\Card", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Card", cascade={"persist"})
      */
     private $card;
 
