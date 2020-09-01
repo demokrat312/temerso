@@ -24,7 +24,7 @@
 
 {% block field_value %}
     <table width="100%">
-        {% if object.operatingTimeCounter.count %}
+        {% if object is defined and object.operatingTimeCounter.count %}
             <tr>
                 <th>Дата прихода из аренды</th>
                 <th>Дата начала работ</th>
