@@ -4,6 +4,7 @@ namespace App\Controller\API;
 
 
 use App\Classes\ApiParentController;
+use App\Classes\Equipment\EquipmentConfirmationResponse;
 use App\Classes\Equipment\EquipmentErrorResponse;
 use App\Entity\Card;
 use App\Entity\Equipment;
@@ -11,14 +12,17 @@ use App\Entity\EquipmentKit;
 use App\Entity\User;
 use App\Form\Data\Api\Card\CardAddToEquipmentData;
 use App\Form\Data\Api\Card\CardListAddToEquipmentData;
+use App\Form\Data\Api\Equipment\ConfirmationData;
 use App\Form\Type\Api\Card\CardAddToEquipmentType;
 use App\Form\Type\Api\Card\CardListAddToEquipmentType;
+use App\Form\Type\Equipment\ConfirmationType;
 use App\Repository\CardRepository;
 use App\Repository\EquipmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Swagger\Annotations as SWG;
@@ -221,8 +225,8 @@ class EquipmentApiController extends ApiParentController
                     } catch (\Exception $exception) {
                         $filterFieldSearch = function (CardAddToEquipmentData $cardList) {
                             foreach (get_class_methods($cardList) as $method) {
-                                if(strpos($method, 'get') === 0 && !empty($cardList->{$method}())) {
-                                    $fieldName = lcfirst(substr($method,3));
+                                if (strpos($method, 'get') === 0 && !empty($cardList->{$method}())) {
+                                    $fieldName = lcfirst(substr($method, 3));
                                     return $fieldName . '=' . $cardList->{$method}() . ' : ';
                                 }
                             }
@@ -235,8 +239,7 @@ class EquipmentApiController extends ApiParentController
                 if (count($error)) {
                     $errorResponse
                         ->setMessage('Возникла ошибка при добавлении карточки к комплекту')
-                        ->setCardListError($error)
-                    ;
+                        ->setCardListError($error);
                 }
             } else {
                 $errorResponse->setMessage('Комплект с id=' . $cardListData->getId() . ' не найден');
@@ -258,5 +261,80 @@ class EquipmentApiController extends ApiParentController
         } else {
             return $this->formErrorResponse($form);
         }
+    }
+
+    /**
+     * Подтверждение наличия карточек
+     *
+     *
+     *
+     *
+     * @Route("confirmation", methods={"POST"}, name="api_equipment_confirmation")
+     *
+     * @SWG\Parameter(
+     *    name="form",
+     *    in="body",
+     *    description="Данные для подтверждения",
+     *    @Model(type=\App\Form\Data\Api\Equipment\ConfirmationData::class)
+     * ),
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="Возвращаем добавленную карточку",
+     *     @SWG\Schema(
+     *            ref=@Model(type=\App\Classes\Equipment\EquipmentConfirmationResponse::class, groups={\App\Classes\ApiParentController::GROUP_API_DEFAULT})
+     *      ),
+     * )
+     *
+     * @SWG\Response(
+     *     response="404",
+     *     description="Задача не найдена",
+     *     @SWG\Schema(
+     *            type="string"
+     *      ),
+     * )
+     *
+     * @SWG\Response(
+     *     response="422",
+     *     description="Ошибка валидации входящих данных",
+     *     @SWG\Schema(
+     *            ref=@Model(type=\App\Classes\Error\ErrorResponse::class)
+     *      ),
+     * )
+     *
+     * @Security(name="Bearer")
+     */
+    public function confirmationAction(Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(ConfirmationType::class);
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
+            /** @var $confirmationData ConfirmationData */
+            /** @var $rep EquipmentRepository */
+            $confirmationData = $form->getData();
+
+            $rep = $em->getRepository(Equipment::class);
+            $equipment = $rep->find($confirmationData->getTaskId());
+
+            $confirmed = [];
+            $notConfirmed = [];
+            foreach ($equipment->getCards() as $card) {
+                foreach ($confirmationData->getCards() as $cardData) {
+                    if ($card->getRfidTagNo() === $cardData->getRfidTagNo()) {
+                        $confirmed[] = $card;
+                        continue 2;
+                    }
+                }
+                $notConfirmed[] = $card;
+            }
+
+            $response = new EquipmentConfirmationResponse($confirmationData->getTaskId(), $confirmed, $notConfirmed);
+
+            return $this->defaultResponse($this->toArray($response));
+        } else {
+            return $this->formErrorResponse($form);
+        }
+
     }
 }

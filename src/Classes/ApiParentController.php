@@ -50,7 +50,7 @@ abstract class ApiParentController extends AbstractController
         ], $otherError), $code ?: self::STATUS_CODE_400);
     }
 
-    protected function toArray($data, $groups = [])
+    protected function toArray($data, $groups = self::GROUP_API_DEFAULT)
     {
         return $this->serializer->normalize($data,null, ['groups' => $groups]);
     }
