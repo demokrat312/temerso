@@ -19,13 +19,15 @@ use App\Entity\Repair;
 use App\Entity\ReturnFromRent;
 use App\Entity\ReturnFromRepair;
 use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Classes\ApiParentController;
 
 /**
  *
  * @see \App\Classes\Task\TaskExcelBuilder::build
- * @see \App\Classes\Task\TaskHelper::taskToArray
  */
 class TaskItem
 {
@@ -91,6 +93,7 @@ class TaskItem
 
     /**
      * @var int
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $statusId;
     /**
@@ -102,6 +105,8 @@ class TaskItem
      */
     private $executor;
     /**
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     *
      * @var Collection|Card[]
      */
     private $cardList;
@@ -109,9 +114,13 @@ class TaskItem
     /**
      * Entity id
      * @var int
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $id;
     /**
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     *
      * @var int
      */
     private $taskTypeId;
@@ -120,12 +129,15 @@ class TaskItem
      */
     private $markingCardToTaskCardAdapter;
     /**
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     *
      * @var string|null
      */
     private $comment;
 
     public function __construct()
     {
+        $this->cardList = new ArrayCollection();
         $this->markingCardToTaskCardAdapter = new MarkingCardToTaskCardAdapter();
     }
 
@@ -243,21 +255,41 @@ class TaskItem
         return $this;
     }
 
+    /**
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     *
+     * @return mixed
+     */
     public function getStatusTitle()
     {
         return Marking::STATUS_TITLE[$this->statusId];
     }
 
+    /**
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     *
+     * @return mixed
+     */
     public function getTaskTypeTitle()
     {
         return self::TYPE_TITLE[$this->taskTypeId];
     }
 
+    /**
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     *
+     * @return string
+     */
     public function getCreatedByFio()
     {
         return (string)$this->createdBy;
     }
 
+    /**
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     *
+     * @return string
+     */
     public function getExecutorFio()
     {
         return (string)$this->executor;

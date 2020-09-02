@@ -9,9 +9,11 @@
 namespace App\Classes\Task;
 
 
+use App\Classes\ApiParentController;
 use App\Entity\Inventory;
 use App\Entity\Marking;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Serializer\Serializer;
 
 class TaskHelper
 {
@@ -60,49 +62,6 @@ class TaskHelper
     {
         $this->user = $user;
         return $this;
-    }
-
-
-    /**
-     * @param array|TaskItem[] $taskList
-     */
-    public function tasksToArray(array $taskList)
-    {
-        $responseArray = [];
-        foreach ($taskList as $task) {
-            $responseArray[] = $this->taskToArray($task);
-        }
-
-        return $responseArray;
-    }
-
-    /**
-     * @param array|TaskItem[] $taskList
-     */
-    public function taskToArray(TaskItem $task)
-    {
-//        $taskArray = [
-//            'id' => $task->getId(),
-//            'statusId' => $task->getStatusId(),
-//            'statusTitle' => $task->getStatusTitle(),
-//            'taskTypeId' => $task->getTaskTypeId(),
-//            'taskTypeTitle' => $task->getTaskTypeTitle(),
-//            'createdByFio' => $task->getCreatedByFio(),
-//            'executorFio' => $task->getExecutorFio(),
-//            'cardList' => $task->getCards(),
-//        ];
-
-        $methods = get_class_methods($task);
-        $taskArray = [];
-        foreach ($methods as $method) {
-            if (strpos($method, 'get') !== false) {
-                $fieldName = lcfirst(substr($method, 3));
-                $fieldValue = $task->{$method}();
-                $taskArray[$fieldName] = is_object($fieldValue) ? (string)$fieldValue : $fieldValue;
-            }
-        }
-
-        return $taskArray;
     }
 
     /**

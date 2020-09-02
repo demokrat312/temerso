@@ -27,6 +27,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/api/task/")
@@ -76,14 +77,11 @@ class TaskController extends ApiParentController
             $em->getRepository(Repair::class)->findAllTask($user->getId(), $withCards),
                  ] as $entityList) {
             foreach ($entityList as $entity) {
-                $taskList[] = $taskAdapter->getTask($entity, $withCards);
+                $taskList[] = $this->toArray($taskAdapter->getTask($entity, $withCards), self::GROUP_API_DEFAULT);
             }
         }
 
-        $responseArray = TaskHelper::ins()
-            ->tasksToArray($taskList);
-
-        return $this->defaultResponse($responseArray);
+        return $this->defaultResponse($taskList);
     }
 
     /**

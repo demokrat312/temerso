@@ -30,6 +30,7 @@ class MarkingCardToTaskCardAdapter
             ->setCouplingSerialNumber($card->getCouplingSerialNumber())
             ->setRfidTagNo($card->getRfidTagNo())
             ->setAccounting($card->getAccounting())
+//            ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
             ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
             ->setTaskId($taskId);
 

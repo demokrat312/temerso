@@ -11,27 +11,91 @@ namespace App\Classes\Marking;
 
 use App\Classes\MediaHelper;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Classes\ApiParentController;
 
 /**
  * Карточка для задачи
  */
 class TaskCard
 {
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $id;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $fullName;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $pipeSerialNumber;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $serialNoOfNipple;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $couplingSerialNumber;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $rfidTagNo;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $comment;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $commentProblemWithMark;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $images;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $taskId;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $taskTypeId;
+    /**
+     * @var
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
+     */
     private $cardImgRequired;
     /**
      * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
      * @var int
+     *
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $accounting;
 

@@ -11,6 +11,7 @@ namespace App\Classes;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 abstract class ApiParentController extends AbstractController
@@ -23,13 +24,13 @@ abstract class ApiParentController extends AbstractController
 
     const GROUP_API_DEFAULT = 'default_api';
     /**
-     * @var SerializerInterface
+     * @var SerializerInterface|Serializer
      */
     private $serializer;
 
     /**
      * ApiParentController constructor.
-     * @param SerializerInterface $serializer
+     * @param SerializerInterface|Serializer $serializer
      */
     public function __construct(SerializerInterface $serializer)
     {
@@ -49,7 +50,7 @@ abstract class ApiParentController extends AbstractController
         ], $otherError), $code ?: self::STATUS_CODE_400);
     }
 
-    protected function toArray($data, $groups)
+    protected function toArray($data, $groups = [])
     {
         return $this->serializer->normalize($data,null, ['groups' => $groups]);
     }

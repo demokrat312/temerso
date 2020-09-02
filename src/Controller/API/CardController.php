@@ -103,11 +103,9 @@ class CardController extends ApiParentController
         }
         $markingToTaskAdapter = new TaskItemAdapter();
         $taskItem = $markingToTaskAdapter->getTask($entityItem, true);
-
         //</editor-fold>
 
-        $responseArray = TaskHelper::ins()
-            ->taskToArray($taskItem);
+        $responseArray = $this->toArray($taskItem, self::GROUP_API_DEFAULT);
 
         return $this->defaultResponse($responseArray['cardList']);
     }
