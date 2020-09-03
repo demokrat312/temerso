@@ -40,7 +40,7 @@
                                             <td>{{ card.couplingSerialNumber }}</td>
                                             <td>{{ card.rfidTagNo }}</td>
                                             <td>{{ card.taskCardOtherFieldsByTask(object).commentProblemWithMark }}</td>
-                                            <td>{{ card.accounting or card.taskCardOtherFieldsByTask(object).commentProblemWithMark ? 1 : 0 }}</td>
+                                            <td>{{ card.accounting ? 1 : 0 }}</td>
                                             <td>{{ card.repairCardImgRequiredByRepair(object).required ? "Фото обезательно" : '' }}</td>
                                             <td>
                                                 {% for image in card.images %}

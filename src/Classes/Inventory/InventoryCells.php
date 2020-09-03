@@ -46,7 +46,7 @@ class InventoryCells extends ParentCells
             $this->sheet->setCellValue('C' . $rowCount, $card->getSerialNoOfNipple()); // Серийный № ниппеля
             $this->sheet->setCellValue('D' . $rowCount, $card->getCouplingSerialNumber()); // Серийный № муфты
             $this->sheet->setCellValue('E' . $rowCount, $card->getRfidTagNo()); // № RFID-метки
-            $this->sheet->setCellValue('F' . $rowCount, ($card->getAccounting() || $card->getTaskCardOtherFieldsByTask($task)->getCommentProblemWithMark()) ? 'есть' : 'нет'); // Учет/Инвентаризация
+            $this->sheet->setCellValue('F' . $rowCount, $card->getAccounting() ? 'есть' : 'нет'); // Учет/Инвентаризация
             $this->sheet->setCellValue('G' . $rowCount, $card->getTaskCardOtherFieldsByTask($task)->getCommentProblemWithMark()); //  Оборудование есть,проблема с меткой
 
             $rowCount++;

@@ -23,6 +23,7 @@ class EquipmentAdmin extends TaskAdminParent
     public function configure()
     {
         $this->setTemplate('show', 'equipment/show.html.twig');
+        $this->setTemplate('edit', 'equipment/edit.html.twig');
     }
 
     protected function configureFormFields(FormMapper $editForm)
@@ -71,7 +72,7 @@ class EquipmentAdmin extends TaskAdminParent
                                     'Без выборки из каталога' => Equipment::CATALOG_WITHOUT,
                                 ],
                             ])
-                        ->add('cardCount', NumberType::class, ['label' => 'Укажите количество единиц оборудования', 'empty_data' => '0'])
+                        ->add('cardCount', NumberType::class, ['label' => 'Укажите количество единиц оборудования', 'empty_data' => '1'])
                         ->add('kitCount', NumberType::class, ['label' => 'Укажите количество комплектов', 'empty_data' => '1'])
                         ->add('kitCardCount', TextType::class, ['label' => 'Укажите количество единиц оборудования в каждом из комплектов(через запятую)'])
                     ->end()

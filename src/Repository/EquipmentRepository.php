@@ -6,7 +6,6 @@ use App\Classes\Task\TaskRepositoryParent;
 use App\Entity\Equipment;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use http\Exception;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**

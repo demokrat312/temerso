@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Classes\ApiParentController;
+
 /**
  * Комплектация в аренду
  *
@@ -165,6 +166,15 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      */
     private $returnFromRent;
 
+    /**
+     * Не подтвержденные карточки
+     *
+     * @var EquipmentCardsNotConfirmed[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentCardsNotConfirmed", mappedBy="equipment",cascade={"persist", "remove"})
+     */
+    private $cardsNotConfirmed;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
@@ -172,6 +182,10 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
         $this->files = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->kits = new ArrayCollection();
+        $this->cardsNotConfirmed = new ArrayCollection();
+
+        $this->cardCount = 1;
+        $this->kitCount = 1;
     }
 
     public function __toString()
@@ -437,6 +451,37 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
         // set the owning side of the relation if necessary
         if ($returnFromRent->getEquipment() !== $this) {
             $returnFromRent->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EquipmentCardsNotConfirmed[]
+     */
+    public function getCardsNotConfirmed(): Collection
+    {
+        return $this->cardsNotConfirmed;
+    }
+
+    public function addCardsNotConfirmed(EquipmentCardsNotConfirmed $cardsNotConfirmed): self
+    {
+        if (!$this->cardsNotConfirmed->contains($cardsNotConfirmed)) {
+            $this->cardsNotConfirmed[] = $cardsNotConfirmed;
+            $cardsNotConfirmed->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCardsNotConfirmed(EquipmentCardsNotConfirmed $cardsNotConfirmed): self
+    {
+        if ($this->cardsNotConfirmed->contains($cardsNotConfirmed)) {
+            $this->cardsNotConfirmed->removeElement($cardsNotConfirmed);
+            // set the owning side to null (unless already changed)
+            if ($cardsNotConfirmed->getEquipment() === $this) {
+                $cardsNotConfirmed->setEquipment(null);
+            }
         }
 
         return $this;

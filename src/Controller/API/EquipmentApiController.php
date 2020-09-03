@@ -58,7 +58,7 @@ class EquipmentApiController extends ApiParentController
      */
     public function item(Request $request, EntityManagerInterface $em, TokenStorageInterface $storage)
     {
-        $id = $request->get('id');
+        $id = (int)$request->get('id');
         /** @var User $user */
         $user = $storage->getToken()->getUser();
         /** @var EquipmentRepository $rep */
