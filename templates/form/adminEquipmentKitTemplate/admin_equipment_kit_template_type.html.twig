@@ -2,7 +2,7 @@
     <div class="row">
 {#                {{ dump() }}#}
         <div id="template-cards" class="hidden">
-            <div data-kit_index="{index}" class="js-kit-template panel panel-default">
+            <div data-kit_index="{index}" class="js-kit-template js-kit-cards panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{kitTitle}</h3>
                 </div>
@@ -42,7 +42,7 @@
             </div>
         </div>
         <div id="template-specification" class="hidden">
-            <div data-kit_index="{index}" class="js-kit-template panel panel-default">
+            <div data-kit_index="{index}" class="js-kit-template js-kit-specification panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">{kitTitle}</h3>
                 </div>
@@ -74,6 +74,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div id="kits-area">
+
         </div>
         <div id="add-kit-area" class="col-lg-12">
             <div class="input-group">

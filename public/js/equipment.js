@@ -1,14 +1,10 @@
 (function ($) {
     $(document).ready(function () {
-        // EquipmentModel.init();
+        EquipmentModel.init();
     });
 
     const EquipmentModel = (function () {
-        let $formEdit, $formEditParent, $formErrorAlert,
-            // Каталог - добавляем карточки или характеристики
-            $withKitInput = null,
-            // Тип комплекта
-            $kitTypeInput = null
+        let $formEdit, $formEditParent, $formErrorAlert
         ;
         const errorTemplate = `
             <div id="form-alert-danger" class="alert alert-danger" role="alert">
@@ -20,8 +16,6 @@
             console.info('EquipmentModel init');
             $formEditParent = $('.sonata-ba-form');
             $formEdit = $formEditParent.find('form:first');
-            $kitTypeInput = $('[name$="[kitType]"]'); // Выбрать тип комплекта
-            $withKitInput = $('[name$="[withKit]"]'); // Каталог
 
             initEvent();
         };
@@ -32,23 +26,73 @@
 
         const onFormEditSubmit = function (e) {
             e.preventDefault();
-            console.log('submit');
+            let hasError = false;
+
+            /** @type {{
+             * kitType: "single"|"multi",
+             * withKit: "withCatalog"|"withoutCatalog",
+             * cardCount: number,
+             * kitCount: number,
+             * kitCardCount: string,
+             * }}
+             * */
+            const formData = getFormData($formEdit);
+
 
             // С выборкой из каталога
-            if ($withKitInput.val() === 'withCatalog') {
-                if ($kitTypeInput.val() === 'single') {
-                    console.log('выбираем карточки. Количество комплектов ' + 1 + ' количество карточек ' + getInput('cardCount').val())
-                } else {
-                    console.log('выбираем карточки. Количество комплектов ' + getInput('kitCount').val() + ' количество карточек ' + getInput('kitCardCount').val())
+            if (formData.withKit === 'withCatalog') {
+                /** @type {{title: string: cardsAmount: Number[]}[]} */
+                    // Количество комплектов и карточек в комплекте
+                const amountOfKitCards = AdminEquipmentKitModel.getAmountOfKitCards();
+                // Единичный комплект
+                if (formData.kitType === 'single') {
+                    if (amountOfKitCards.length !== 1) {
+                        showError('Ошибка: Нужно создать 1 комплект, создано ' + amountOfKitCards.length);
+                        hasError = true;
+                    } else if (+formData.cardCount !== amountOfKitCards[0].cardsAmount) {
+                        showError('Ошибка: В поле "Укажите количество единиц оборудования" указано ' + formData.cardCount
+                            + '. Выбрано из справочника ' + amountOfKitCards[0].cardsAmount);
+                        hasError = true;
+                    }
+                    // Множественный
+                } else if (formData.kitType === 'multi') {
+                    const kitCardCountArray = formData.kitCardCount.split(',');
+                    if (amountOfKitCards.length !== +formData.kitCount || amountOfKitCards.length !== kitCardCountArray.length) {
+                        showError('Ошибка: Выбранное количество комплектов не совпадает с добавленными комплектами ');
+                        hasError = true;
+                    } else {
+                        for (let i = 0; i < amountOfKitCards.length; i++) {
+                            if (+kitCardCountArray[i] !== amountOfKitCards[i].cardsAmount) {
+                                showError(`Ошибка: В комплекте ${amountOfKitCards[i].title} выбрано 
+                             ${amountOfKitCards[i].cardsAmount} нужно выбрать ${kitCardCountArray[i]}
+                             `);
+                                hasError = true;
+                            }
+                        }
+                    }
                 }
+                // без выборки из каталога
             } else {
-                console.log('Указываем технические характеристики');
+                if (AdminEquipmentKitModel.getAmountOfKitSpecification().length === 0) {
+                    showError('Ошибка: Укажите технические характеристики');
+                    hasError = true;
+                }
             }
 
-            showError($formEditParent, 'ошибка');
+            if (hasError) {
+                setTimeout(() => {
+                    $formEdit.find('button').each((index, button) => {
+                        $(button).removeAttr('disabled')
+                    })
+                }, 1000);
+            } else {
+                hideError();
+                $formEdit.unbind('submit');
+                $formEdit.submit();
+            }
         };
 
-        const showError = ($element, message) => {
+        const showError = (message, $element = $formEditParent,) => {
             hideError();
             $formErrorAlert = $(errorTemplate.replace('{message}', message));
             $element.prepend($formErrorAlert);

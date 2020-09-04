@@ -5,11 +5,11 @@
     });
 
     const AdminEquipmentKitModel = (function () {
-        let $templateCards, $templateSpecification, $kitTitleInput, $addKitArea,
+        let $templateCards, $templateSpecification, $kitTitleInput, $addKitArea, $kitsArea,
             // Каталог - добавляем карточки или характеристики
             $withKitInput = null,
             // Тип комплекта
-            $kitType = null
+            $kitTypeInput = null
         ;
         let kitCounter = 0;
 
@@ -38,8 +38,9 @@
             $templateSpecification = $('#template-specification');
             $kitTitleInput = $('#title-kit');
             $addKitArea = $('#add-kit-area');
-            $withKitInput = $('[name$="[withKit]"]');
-            $kitType = $('[name$="[kitType]"]');
+            $withKitInput = $('[name$="[withKit]"]'); // Каталог
+            $kitTypeInput = $('[name$="[kitType]"]'); // Выбрать тип комплекта
+            $kitsArea = $('#kits-area'); // Место для комплектов
 
             adminListModel.setRowTemplate(rowTemplate);
             adminListModel.rowTemplateCreateSub.push(cardRowTemplateParams);
@@ -50,7 +51,7 @@
             $('#add-kit').on('click', addKit);
             $(document).on('click', '.js-add-specification', addSpecification);
             // Выбрать тип комплекта
-            $kitType.on('change', changeKitType).trigger('change');
+            $kitTypeInput.on('change', changeKitType).trigger('change');
             $withKitInput.on('change', changeCatalog);
 
         };
@@ -80,7 +81,8 @@
 
 
             // Добавляем на страницу
-            $addKitArea.before($newTemplate);
+            // $addKitArea.before($newTemplate);
+            $kitsArea.prepend($newTemplate);
 
             // Обнуляем заголовок
             $kitTitleInput.val('');
@@ -112,11 +114,14 @@
             } else {
                 showInputGroup(['cardCount']);
             }
+
+            // Удаляем созданные ранее комплекты
+            $kitsArea.html('');
         };
 
         // Каталог
         const changeCatalog = (e) => {
-            $kitType.trigger('change');
+            $kitTypeInput.trigger('change');
         };
 
         const hideInputGroup = (inputsName) => {
@@ -157,7 +162,7 @@
                         $modal.find('.modal-body').find('[name]').each((index, input) => {
                             const $input = $(input);
                             const inputName = $input.attr('name').replace(/.+\[(.+)\]/, '$1');
-                            if(inputName === '_token') return;
+                            if (inputName === '_token') return;
 
                             const label = $input.closest('.form-group').find('label').html().trim();
                             let title, value = null;
@@ -193,7 +198,33 @@
             );
         };
 
-        return {init}
+        /**
+         * для "С выборкой из каталога"
+         * Количество комплектов и карточек в комплекте
+         *
+         * @returns {Array}
+         */
+        const getAmountOfKitCards = () => {
+            const kitsAmount = [];
+            $kitsArea.find('.js-kit-cards').each((index, htmlElement) => {
+                const $kit = $(htmlElement);
+                const kitCardsAmount = $kit.find('.js-card-list tbody tr:not(#row-empty)').length;
+                kitsAmount.push({title: $kit.find('.panel-title').text(), cardsAmount: kitCardsAmount});
+            });
+
+            return kitsAmount;
+        };
+
+        /**
+         * Количество комплектов с техническими характеристиками
+         *
+         * @returns {number}
+         */
+        const getAmountOfKitSpecification = () => {
+            return $kitsArea.find('.js-kit-specification').length
+        };
+
+        return {init, getAmountOfKitCards, getAmountOfKitSpecification}
     })();
     {% endautoescape %}
 </script>
