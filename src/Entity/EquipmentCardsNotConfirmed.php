@@ -61,7 +61,7 @@ class EquipmentCardsNotConfirmed
     }
 
     /**
-     * @return mixed
+     * @return Card
      */
     public function getCard()
     {

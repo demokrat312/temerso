@@ -8,6 +8,7 @@ use App\Classes\Equipment\EquipmentConfirmationResponse;
 use App\Classes\Equipment\EquipmentErrorResponse;
 use App\Entity\Card;
 use App\Entity\Equipment;
+use App\Entity\EquipmentCardsNotConfirmed;
 use App\Entity\EquipmentKit;
 use App\Entity\User;
 use App\Form\Data\Api\Card\CardAddToEquipmentData;
@@ -317,19 +318,57 @@ class EquipmentApiController extends ApiParentController
             $rep = $em->getRepository(Equipment::class);
             $equipment = $rep->find($confirmationData->getTaskId());
 
-            $confirmed = [];
-            $notConfirmed = [];
+            //<editor-fold desc="Находим не подтвержденные и не подтвержденные карточки">
+            $confirmedList = [];
+            /** @var Card[] $notConfirmedList */
+            $notConfirmedList = [];
             foreach ($equipment->getCards() as $card) {
                 foreach ($confirmationData->getCards() as $cardData) {
                     if ($card->getRfidTagNo() === $cardData->getRfidTagNo()) {
-                        $confirmed[] = $card;
+                        $confirmedList[] = $card;
                         continue 2;
                     }
                 }
-                $notConfirmed[] = $card;
+                $notConfirmedList[] = $card;
             }
+            //</editor-fold>
 
-            $response = new EquipmentConfirmationResponse($confirmationData->getTaskId(), $confirmed, $notConfirmed);
+            //<editor-fold desc="Добавляем не подтвержденные">
+            foreach ($notConfirmedList as $notConfirmed) {
+                foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
+                    if ($notConfirmed->getId() === $cardNotConfirmed->getCard()->getId()) {
+                        continue 2;
+                    }
+                }
+
+                $equipmentCardsNotConfirmed = new EquipmentCardsNotConfirmed();
+                $equipment->addCardsNotConfirmed($equipmentCardsNotConfirmed
+                    ->setEquipment($equipment)
+                    ->setCard($notConfirmed)
+                );
+                $em->persist($equipmentCardsNotConfirmed);
+            }
+            //</editor-fold>
+
+            //<editor-fold desc="Удаляем подтвержденные">
+            foreach ($confirmedList as $confirmed) {
+                $find = null;
+                foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
+                    if ($confirmed->getId() === $cardNotConfirmed->getCard()->getId()) {
+                        $find = $cardNotConfirmed;
+                        break;
+                    }
+                }
+
+                if ($find) {
+                    $em->remove($find);
+                }
+            }
+            //</editor-fold>
+
+            $em->flush();
+
+            $response = new EquipmentConfirmationResponse($confirmationData->getTaskId(), $confirmedList, $notConfirmedList);
 
             return $this->defaultResponse($this->toArray($response));
         } else {
