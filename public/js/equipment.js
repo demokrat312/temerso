@@ -25,6 +25,9 @@
         };
 
         const onFormEditSubmit = function (e) {
+            if(typeof AdminEquipmentKitModel === 'undefined' ) {
+                return true;
+            }
             e.preventDefault();
             let hasError = false;
 

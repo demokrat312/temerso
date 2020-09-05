@@ -69,6 +69,7 @@ class TaskController extends ApiParentController
         $withCards = $request->get('withCards') == 'true';
         $taskAdapter = new TaskItemAdapter();
 
+
         foreach ([
             $em->getRepository(Marking::class)->findAllTask($user->getId(), $withCards),
             $em->getRepository(Inventory::class)->findAllTask($user->getId(), $withCards),
