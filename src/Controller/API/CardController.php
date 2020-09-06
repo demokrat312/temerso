@@ -28,6 +28,7 @@ use App\Form\Type\Card\CardIdentificationType;
 use App\Repository\CardRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
+use Sonata\MediaBundle\Model\MediaInterface;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -276,9 +277,11 @@ class CardController extends ApiParentController
         $context = 'card_inventory';
 
         $media = new Media();
+        $media->setName('test');
         $media->setBinaryContent($binaryContent);
         $media->setContext($context);
         $media->setProviderName($provider);
+        $media->setProviderStatus(MediaInterface::STATUS_OK);
 
         $media->setEnabled(true);
 
