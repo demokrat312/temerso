@@ -16,7 +16,8 @@
                                         множественный комплект, {{ object.kitCount }}
                                     {% endif %}
                             </span></h4>
-                            <h4>Всего единиц оборудования для комплектации в аренду: <span class="label label-default">{{ object.totalCard }}</span></h4>
+                            <h4>Всего единиц оборудования для комплектации в аренду: <span
+                                        class="label label-default">{{ object.totalCard }}</span></h4>
                             <h4>Статус: <span class="label label-default">{{ object.statusTitle }}</span></h4>
                             {% if object.comment %}
                                 <h4>Комментарий: <span class="label label-default">{{ object.comment }}</span></h4>
@@ -24,119 +25,142 @@
                             <div>
                                 {% for kit in object.kits %}
                                     <table class="table table-responsive table-bordered table-sm text-center table-striped table-head-top">
-                                    <caption>
-                                        {% if kit.specification %}
-                                            <div class="col-md-5">
+                                        <caption>
+                                            {% if kit.specification %}
+                                                <div class="col-md-5">
+                                                    <h1>{{ kit.title }}</h1>
+                                                    <table class="table table-bordered">
+                                                        <caption>Характеристики:</caption>
+                                                        <tbody>
+                                                        <tr>
+                                                            <th>Тип оборудования</th>
+                                                            <td>{{ kit.specification.refTypeEquipment }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Тип высадки</th>
+                                                            <td>{{ kit.specification.refTypeDisembarkation }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Наружный диаметр трубы, (мм)</th>
+                                                            <td>{{ kit.specification.outerDiameterOfThePipe }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Толщина стенки трубы, (мм)</th>
+                                                            <td>{{ kit.specification.pipeWallThickness }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Тип резьбы</th>
+                                                            <td>{{ kit.specification.refTypeThread }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>O.D. Замка ниппель (мм)</th>
+                                                            <td>{{ kit.specification.odlockNipple }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>I.D. Замка ниппель (мм)</th>
+                                                            <td>{{ kit.specification.idlockNipple }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Длина трубы</th>
+                                                            <td>{{ kit.specification.pipeLength }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Угол заплетчика</th>
+                                                            <td>{{ kit.specification.shoulderAngle }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Длина под ключ ниппель, (мм)</th>
+                                                            <td>{{ kit.specification.turnkeyLengthNipple }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Длина под ключ муфта, (мм)</th>
+                                                            <td>{{ kit.specification.turnkeyLengthCoupling }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Покрытие резьбы</th>
+                                                            <td>{{ kit.specification.refThreadCoating }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Внутреннее покрытие</th>
+                                                            <td>{{ kit.specification.refInnerCoating }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Хардбендинг (муфта)</th>
+                                                            <td>{{ kit.specification.refHardbandingCoupling }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Комментарий</th>
+                                                            <td>{{ kit.specification.comment }}</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            {% else %}
                                                 <h1>{{ kit.title }}</h1>
-                                                <table class="table table-bordered">
-                                                    <caption>Характеристики:</caption>
-                                                <tbody>
-                                                <tr>
-                                                    <th>Тип оборудования</th>
-                                                    <td>{{ kit.specification.refTypeEquipment }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Тип высадки</th>
-                                                    <td>{{ kit.specification.refTypeDisembarkation }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Наружный диаметр трубы, (мм)</th>
-                                                    <td>{{ kit.specification.outerDiameterOfThePipe }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Толщина стенки трубы, (мм)</th>
-                                                    <td>{{ kit.specification.pipeWallThickness }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Тип резьбы</th>
-                                                    <td>{{ kit.specification.refTypeThread }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>O.D. Замка ниппель (мм)</th>
-                                                    <td>{{ kit.specification.odlockNipple }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>I.D. Замка ниппель (мм)</th>
-                                                    <td>{{ kit.specification.idlockNipple }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Длина трубы</th>
-                                                    <td>{{ kit.specification.pipeLength }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Угол заплетчика</th>
-                                                    <td>{{ kit.specification.shoulderAngle }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Длина под ключ ниппель, (мм)</th>
-                                                    <td>{{ kit.specification.turnkeyLengthNipple }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Длина под ключ муфта, (мм)</th>
-                                                    <td>{{ kit.specification.turnkeyLengthCoupling }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Покрытие резьбы</th>
-                                                    <td>{{ kit.specification.refThreadCoating }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Внутреннее покрытие</th>
-                                                    <td>{{ kit.specification.refInnerCoating }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Хардбендинг (муфта)</th>
-                                                    <td>{{ kit.specification.refHardbandingCoupling }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Комментарий</th>
-                                                    <td>{{ kit.specification.comment }}</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                            </div>
-                                        {% else %}
-                                            <h1>{{ kit.title }}</h1>
-                                        {% endif %}
-                                    </caption>
-                                    <thead>
-                                    <tr>
-                                        <th class="align-top">Наименование</th>
-                                        <th class="align-top">Серийный № трубы</th>
-                                        <th class="align-top">Серийный № ниппеля</th>
-                                        <th class="align-top"> Серийный № муфты</th>
-                                        <th class="align-top">№ RFID-метки</th>
-                                        <th class="align-top">Оборудование есть, проблема с меткой</th>
-                                        <th class="align-top">Учет/ Инвентаризация</th>
-                                        <th class="align-top">Изображения </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% if kit.card.count == 0 %}
-                                        <tr class="bg-warning">
-                                            <td colspan="8">Записей нет</td>
-                                        </tr>
-                                    {% endif %}
-                                    {# @var \App\Entity\Card card #}
-                                    {% for card in kit.card %}
+                                            {% endif %}
+                                        </caption>
+                                        <thead>
                                         <tr>
-                                            <td class="text-left">{{ card.generalName }}</td>
-                                            <td>{{ card.pipeSerialNumber }}</td>
-                                            <td>{{ card.serialNoOfNipple }}</td>
-                                            <td>{{ card.couplingSerialNumber }}</td>
-                                            <td>{{ card.rfidTagNo }}</td>
-                                            <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
-                                            <td>{{ card.accounting ? 1 : 0 }}</td>
-                                            <td>
-                                                {% for image in card.images %}
-                                                    <ul>
-                                                        <li><a target="_blank" href="{% path image, 'reference' %}">{{ image.name }}</a> </li>
-                                                    </ul>
-                                                {% endfor %}
-                                            </td>
+                                            <th class="align-top">Наименование</th>
+                                            <th class="align-top">Серийный № трубы</th>
+                                            <th class="align-top">Серийный № ниппеля</th>
+                                            <th class="align-top"> Серийный № муфты</th>
+                                            <th class="align-top">№ RFID-метки</th>
+                                            <th class="align-top">Оборудование есть, проблема с меткой</th>
+                                            <th class="align-top">Учет/ Инвентаризация</th>
+                                            <th class="align-top">Изображения</th>
                                         </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        {# @var \App\Entity\Card card #}
+                                        <tr class="bg-info">
+                                            <td colspan="8">Подтвержденные карточки</td>
+                                        </tr>
+                                        {% for card in object.cardsFilterConfirmed(kit) %}
+                                            <tr>
+                                                <td class="text-left">{{ card.generalName }}</td>
+                                                <td>{{ card.pipeSerialNumber }}</td>
+                                                <td>{{ card.serialNoOfNipple }}</td>
+                                                <td>{{ card.couplingSerialNumber }}</td>
+                                                <td>{{ card.rfidTagNo }}</td>
+                                                <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
+                                                <td>{{ card.accounting ? 1 : 0 }}</td>
+                                                <td>
+                                                    {% for image in card.images %}
+                                                        <ul>
+                                                            <li><a target="_blank"
+                                                                   href="{% path image, 'reference' %}">{{ image.name }}</a>
+                                                            </li>
+                                                        </ul>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <tr class="bg-warning">
+                                            <td colspan="8">Не подтвержденные карточки</td>
+                                        </tr>
+                                        {% for card in object.cardsFilterNotConfirmed(kit) %}
+                                            <tr>
+                                                <td class="text-left">{{ card.generalName }}</td>
+                                                <td>{{ card.pipeSerialNumber }}</td>
+                                                <td>{{ card.serialNoOfNipple }}</td>
+                                                <td>{{ card.couplingSerialNumber }}</td>
+                                                <td>{{ card.rfidTagNo }}</td>
+                                                <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
+                                                <td>{{ card.accounting ? 1 : 0 }}</td>
+                                                <td>
+                                                    {% for image in card.images %}
+                                                        <ul>
+                                                            <li><a target="_blank"
+                                                                   href="{% path image, 'reference' %}">{{ image.name }}</a>
+                                                            </li>
+                                                        </ul>
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 {% endfor %}
                             </div>
                         </div>

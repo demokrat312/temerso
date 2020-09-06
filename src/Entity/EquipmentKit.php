@@ -61,9 +61,19 @@ class EquipmentKit
      */
     private $specification;
 
+    /**
+     * Излишек/Не найденные карточки
+     *
+     * @var EquipmentOver[]
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\EquipmentOver")
+     */
+    private $over;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
+        $this->over = new ArrayCollection();
     }
 
     public function getId(): ?int

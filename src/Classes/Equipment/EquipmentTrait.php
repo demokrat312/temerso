@@ -9,8 +9,10 @@
 namespace App\Classes\Equipment;
 
 
+use App\Entity\Card;
 use App\Entity\Equipment;
 use App\Entity\EquipmentKit;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Trait EquipmentTrait
@@ -65,10 +67,52 @@ trait EquipmentTrait
     public function getChoiceTitle()
     {
         return sprintf('%s %s. %s. %s.',
-                $this->getId(),
-                $this->getTenantName(),
-                $this->getUpdateAt()->format('Y-m-d'),
-                $this->getMainReason(),
+            $this->getId(),
+            $this->getTenantName(),
+            $this->getUpdateAt()->format('Y-m-d'),
+            $this->getMainReason(),
             );
+    }
+
+    /**
+     * Получаем список подтвержденных карточек
+     *
+     * @return Card[]|ArrayCollection
+     */
+    public function getCardsFilterConfirmed(EquipmentKit $kit)
+    {
+        $cards = new ArrayCollection();
+        foreach ($kit->getCards() as $card) {
+            foreach ($this->getCardsNotConfirmed() as $notConfirmed) {
+                if ($card->getId() === $notConfirmed->getCard()->getId()) {
+                    continue 2;
+
+                }
+            }
+            $cards->add($card);
+        }
+
+        return $cards;
+    }
+
+    /**
+     * Получаем список не подтвержденных карточек
+     *
+     * @return Card[]|ArrayCollection
+     */
+    public function getCardsFilterNotConfirmed(EquipmentKit $kit)
+    {
+        $cards = new ArrayCollection();
+        foreach ($kit->getCards() as $card) {
+            foreach ($this->getCardsNotConfirmed() as $notConfirmed) {
+                if ($card->getId() === $notConfirmed->getCard()->getId()) {
+                    $cards->add($card);
+                    continue 2;
+
+                }
+            }
+        }
+
+        return $cards;
     }
 }

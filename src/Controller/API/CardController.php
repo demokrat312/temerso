@@ -274,14 +274,18 @@ class CardController extends ApiParentController
     {
 
         $provider = 'sonata.media.provider.image';
-        $context = 'card_inventory';
+        $context = 'card';
+
 
         $media = new Media();
-        $media->setName('test');
+        $media->setName(isset($_FILES['image'])? $_FILES['image']['name'] : random_int(11111, 99999));
         $media->setBinaryContent($binaryContent);
         $media->setContext($context);
         $media->setProviderName($provider);
         $media->setProviderStatus(MediaInterface::STATUS_OK);
+
+        $uniqId = sha1($media->getName().uniqid().random_int(11111, 99999)) . '.' . $media->getBinaryContent()->guessExtension();
+        $media->setProviderReference($uniqId);
 
         $media->setEnabled(true);
 

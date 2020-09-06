@@ -191,7 +191,6 @@ class EquipmentApiController extends ApiParentController
      */
     public function addCardListAction(Request $request, EntityManagerInterface $em)
     {
-
         // Создаем форму и записываем туда данные
         $form = $this->createForm(CardListAddToEquipmentType::class);
         $form->submit($request->request->all());
