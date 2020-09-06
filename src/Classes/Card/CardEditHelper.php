@@ -101,9 +101,8 @@ class CardEditHelper
     /**
      * @param CardEditData $cardEditData
      * @param Card|null $card
-     * @return CardEditData
      */
-    private function cardUpdate(CardEditData $cardEditData, ?Card $card): CardEditData
+    private function cardUpdate(CardEditData $cardEditData, ?Card $card)
     {
         if ($cardEditData->getRfidTagNo()) {
             $card->setRfidTagNo($cardEditData->getRfidTagNo());
