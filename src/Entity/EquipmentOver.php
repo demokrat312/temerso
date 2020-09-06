@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Classes\Equipment\EquipmentOverTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Swagger\Annotations as SWG;
 
@@ -18,6 +19,8 @@ use Swagger\Annotations as SWG;
  */
 class EquipmentOver
 {
+    use EquipmentOverTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -54,12 +57,7 @@ class EquipmentOver
     private $rfidTagNo;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Equipment")
-     */
-    private $equipment;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\EquipmentKit")
+     * @ORM\ManyToOne(targetEntity="App\Entity\EquipmentKit", inversedBy="over")
      */
     private $equipmentKit;
 
@@ -119,18 +117,6 @@ class EquipmentOver
     public function setRfidTagNo(?string $rfidTagNo): self
     {
         $this->rfidTagNo = $rfidTagNo;
-
-        return $this;
-    }
-
-    public function getEquipment(): ?Equipment
-    {
-        return $this->equipment;
-    }
-
-    public function setEquipment(?Equipment $equipment): self
-    {
-        $this->equipment = $equipment;
 
         return $this;
     }

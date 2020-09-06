@@ -31,6 +31,7 @@ use Nelmio\ApiDocBundle\Annotation\Security;
 use Sonata\MediaBundle\Model\MediaInterface;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -272,7 +273,9 @@ class CardController extends ApiParentController
 
     private function getMedia($binaryContent)
     {
-
+        if(empty($binaryContent)) {
+            throw new NotFoundHttpException('Изображение не найдено');
+        }
         $provider = 'sonata.media.provider.image';
         $context = 'card';
 

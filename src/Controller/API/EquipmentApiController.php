@@ -10,6 +10,7 @@ use App\Entity\Card;
 use App\Entity\Equipment;
 use App\Entity\EquipmentCardsNotConfirmed;
 use App\Entity\EquipmentKit;
+use App\Entity\EquipmentOver;
 use App\Entity\User;
 use App\Form\Data\Api\Card\CardAddToEquipmentData;
 use App\Form\Data\Api\Card\CardListAddToEquipmentData;
@@ -165,10 +166,10 @@ class EquipmentApiController extends ApiParentController
      *
      * @SWG\Response(
      *     response="200",
-     *     description="Возвращаем добавленную карточку",
+     *     description="OK!",
      *     @SWG\Schema(
-     *            ref=@Model(type=\App\Entity\Card::class, groups={\App\Classes\ApiParentController::GROUP_API_DEFAULT})
-     *      ),
+     *           type="string"
+     *     )
      * )
      *
      * @SWG\Response(
@@ -223,19 +224,33 @@ class EquipmentApiController extends ApiParentController
 
                         $equipmentKit->addCard($card);
                     } catch (\Exception $exception) {
-                        $filterFieldSearch = function (CardAddToEquipmentData $cardList) {
-                            foreach (get_class_methods($cardList) as $method) {
-                                if (strpos($method, 'get') === 0 && !empty($cardList->{$method}())) {
-                                    $fieldName = lcfirst(substr($method, 3));
-                                    return $fieldName . '=' . $cardList->{$method}() . ' : ';
+                        if ($exception->getCode() === ApiParentController::STATUS_CODE_404) {
+                            $over = new EquipmentOver();
+                            $over
+                                ->setPipeSerialNumber($cardList->getPipeSerialNumber())
+                                ->setSerialNoOfNipple($cardList->getSerialNoOfNipple())
+                                ->setCouplingSerialNumber($cardList->getCouplingSerialNumber())
+                                ->setRfidTagNo($cardList->getRfidTagNo())
+                                ->setEquipmentKit($equipmentKit)
+                                ;
+                            $em->persist($over);
+                        } else {
+                            $filterFieldSearch = function (CardAddToEquipmentData $cardList) {
+                                foreach (get_class_methods($cardList) as $method) {
+                                    if (strpos($method, 'get') === 0 && !empty($cardList->{$method}())) {
+                                        $fieldName = lcfirst(substr($method, 3));
+                                        return $fieldName . '=' . $cardList->{$method}() . ' : ';
+                                    }
                                 }
-                            }
-                        };
-                        $filterFieldSearchText = $filterFieldSearch($cardList);
+                            };
+                            $filterFieldSearchText = $filterFieldSearch($cardList);
 
-                        $error[] = $filterFieldSearchText . $exception->getMessage();
+                            $error[] = $filterFieldSearchText . $exception->getMessage();
+
+                        }
                     }
                 }
+                $em->flush();
                 if (count($error)) {
                     $errorResponse
                         ->setMessage('Возникла ошибка при добавлении карточки к комплекту')
@@ -257,7 +272,7 @@ class EquipmentApiController extends ApiParentController
             $em->persist($equipmentKit);
             $em->flush();
 
-            return $this->defaultResponse($this->toArray($card, ApiParentController::GROUP_API_DEFAULT));
+            return $this->defaultResponse(self::OK);
         } else {
             return $this->formErrorResponse($form);
         }

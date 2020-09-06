@@ -113,6 +113,11 @@ trait EquipmentTrait
             }
         }
 
+
+        foreach ($kit->getOver() as $over) {
+            $cards->add($over);
+        }
+
         return $cards;
     }
 }

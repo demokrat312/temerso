@@ -66,7 +66,7 @@ class EquipmentKit
      *
      * @var EquipmentOver[]
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\EquipmentOver")
+     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentOver", mappedBy="equipmentKit")
      */
     private $over;
 
@@ -122,6 +122,32 @@ class EquipmentKit
     {
         if ($this->cards->contains($card)) {
             $this->cards->removeElement($card);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|EquipmentOver[]
+     */
+    public function getOver(): Collection
+    {
+        return $this->over;
+    }
+
+    public function addOver(EquipmentOver $over): self
+    {
+        if (!$this->cards->contains($over)) {
+            $this->cards[] = $over;
+        }
+
+        return $this;
+    }
+
+    public function removeOver(EquipmentOver $over): self
+    {
+        if ($this->cards->contains($over)) {
+            $this->cards->removeElement($over);
         }
 
         return $this;
