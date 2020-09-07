@@ -25,9 +25,11 @@
         };
 
         const onFormEditSubmit = function (e) {
-            if(typeof AdminEquipmentKitModel === 'undefined' ) {
+            if (typeof AdminEquipmentKitModel === 'undefined') {
                 return true;
             }
+            // Кнопка на которую нажали
+            const $buttonClick = $(document.activeElement);
             e.preventDefault();
             let hasError = false;
 
@@ -76,7 +78,9 @@
                 }
                 // без выборки из каталога
             } else {
-                if (AdminEquipmentKitModel.getAmountOfKitSpecification().length === 0) {
+                /** @type {{title: string: cardsAmount: Number[]}[]} */
+                const amountOfKitSpecification = AdminEquipmentKitModel.getAmountOfKitSpecification();
+                if (amountOfKitSpecification.length === 0 || amountOfKitSpecification[0].cardsAmount === 0) {
                     showError('Ошибка: Укажите технические характеристики');
                     hasError = true;
                 }
@@ -91,7 +95,14 @@
             } else {
                 hideError();
                 $formEdit.unbind('submit');
-                $formEdit.submit();
+                if ($buttonClick.length) {
+                    setTimeout(() => {
+                        $buttonClick.removeAttr('disabled');
+                        $buttonClick.trigger('click');
+                    }, 1000);
+                } else {
+                    $formEdit.submit();
+                }
             }
         };
 

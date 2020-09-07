@@ -145,7 +145,7 @@
             const $button = $(e.target);
             const $table = $button.closest('.form-group').find('table');
             const $tableHead = $table.find('thead tr');
-            const $tableBody = $table.find('tbody tr');
+            const $tableBody = $table.find('tbody');
 
             $tableHead.html('');
             $tableBody.html('');
@@ -159,6 +159,7 @@
 
                     buttonCallback: (event, $modal) => {
 
+                        const $tableBodyTr = $('<tr>');
                         $modal.find('.modal-body').find('[name]').each((index, input) => {
                             const $input = $(input);
                             const inputName = $input.attr('name').replace(/.+\[(.+)\]/, '$1');
@@ -182,13 +183,14 @@
                             );
 
                             const inputPath = specificationInputName.replace('__name__', kitCounter - 1);
-                            $tableBody.append(
+                            $tableBodyTr.append(
                                 $(`<td class="sonata-ba-list-field sonata-ba-list-field-text">
                                     ${title}
                                     <input type="hidden" name="${inputPath}[${inputName}]" value="${value}">
                                 </td>`)
                             );
                         });
+                        $tableBody.append($tableBodyTr);
 
                         $table.removeClass('hidden');
 
@@ -198,15 +200,9 @@
             );
         };
 
-        /**
-         * для "С выборкой из каталога"
-         * Количество комплектов и карточек в комплекте
-         *
-         * @returns {Array}
-         */
-        const getAmountOfKitCards = () => {
+        const getAmountOfKit = (elementSelector) => {
             const kitsAmount = [];
-            $kitsArea.find('.js-kit-cards').each((index, htmlElement) => {
+            $kitsArea.find(elementSelector).each((index, htmlElement) => {
                 const $kit = $(htmlElement);
                 const kitCardsAmount = $kit.find('.js-card-list tbody tr:not(#row-empty)').length;
                 kitsAmount.push({title: $kit.find('.panel-title').text(), cardsAmount: kitCardsAmount});
@@ -216,12 +212,38 @@
         };
 
         /**
+         * для "С выборкой из каталога"
+         * Количество комплектов и карточек в комплекте
+         *
+         * @returns {Array}
+         */
+        const getAmountOfKitCards = () => {
+            // const kitsAmount = [];
+            // $kitsArea.find('.js-kit-cards').each((index, htmlElement) => {
+            //     const $kit = $(htmlElement);
+            //     const kitCardsAmount = $kit.find('.js-card-list tbody tr:not(#row-empty)').length;
+            //     kitsAmount.push({title: $kit.find('.panel-title').text(), cardsAmount: kitCardsAmount});
+            // });
+            //
+            // return kitsAmount;
+
+            return getAmountOfKit('.js-kit-cards');
+        };
+
+        /**
          * Количество комплектов с техническими характеристиками
          *
          * @returns {number}
          */
         const getAmountOfKitSpecification = () => {
-            return $kitsArea.find('.js-kit-specification').length
+            return getAmountOfKit('.js-kit-specification');
+            // const kitsAmount = [];
+            // return $kitsArea.find('.js-kit-specification').length
+            // $kitsArea.find('.js-kit-specification').each((index, htmlElement) => {
+            //     const $kit = $(htmlElement);
+            //     const kitCardsAmount = $kit.find('.js-card-list tbody tr:not(#row-empty)').length;
+            //     kitsAmount.push({title: $kit.find('.panel-title').text(), cardsAmount: kitCardsAmount});
+            // });
         };
 
         return {init, getAmountOfKitCards, getAmountOfKitSpecification}
