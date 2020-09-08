@@ -21,10 +21,6 @@ trait EquipmentOverTrait
         return '';
     }
 
-    public function getAccounting() {
-        return 0;
-    }
-
     public function getImages() {
         return [];
     }

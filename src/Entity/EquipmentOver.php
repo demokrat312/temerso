@@ -68,6 +68,18 @@ class EquipmentOver
      */
     private $comment;
 
+    /**
+     * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
+     *
+     * @ORM\Column(type="boolean", options={"default" : 0})
+     */
+    private $accounting;
+
+    public function __construct()
+    {
+        $this->accounting = 0;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -142,6 +154,24 @@ class EquipmentOver
     {
         $this->comment = $comment;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAccounting()
+    {
+        return $this->accounting;
+    }
+
+    /**
+     * @param mixed $accounting
+     * @return $this
+     */
+    public function setAccounting($accounting)
+    {
+        $this->accounting = $accounting;
         return $this;
     }
 }

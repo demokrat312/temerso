@@ -31,6 +31,10 @@ class CardAddToEquipmentData
      * @var string|null
      */
     private $rfidTagNo;
+    /**
+     * @var int|null
+     */
+    private $accounting;
 
     /**
      * @return int
@@ -119,6 +123,24 @@ class CardAddToEquipmentData
     public function setRfidTagNo(?string $rfidTagNo)
     {
         $this->rfidTagNo = $rfidTagNo;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAccounting(): ?int
+    {
+        return $this->accounting;
+    }
+
+    /**
+     * @param int|null $accounting
+     * @return $this
+     */
+    public function setAccounting(?int $accounting)
+    {
+        $this->accounting = $accounting;
         return $this;
     }
 }
