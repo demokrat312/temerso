@@ -64,3 +64,10 @@ services:
 
                 # you can also restrict listeners to a specific Doctrine connection
                 connection: 'default'
+
+#    <service id="security.acl.permission_granting_strategy" class="Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy">
+#    <call method="setAuditLogger">
+#    <argument type="service" id="security.acl.audit_logger" on-invalid="ignore" />
+#    </call>
+#    </service>
+

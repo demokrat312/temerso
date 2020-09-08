@@ -126,6 +126,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      *
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $kitType;
 
@@ -133,6 +134,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      * Укажите количество единиц оборудования
      *
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $cardCount;
 
@@ -140,6 +142,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      * Укажите количество комплектов
      *
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $kitCount;
 
@@ -147,17 +150,20 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      * Укажите количество единиц оборудования в каждом из комплектов(через запятую)
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $kitCardCount;
 
     /**
      * Каталог
+     *
      * 'choices'  => [
      * 'С выборкой из каталога' => 'withCatalog',
      * 'Без выборки из каталога' => 'withoutCatalog',
      * ],
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $withKit;
 

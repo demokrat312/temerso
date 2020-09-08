@@ -47,10 +47,10 @@ class CardRepository extends ServiceEntityRepository
 
     /**
      * @param CardAddToEquipmentData $data
-     * @return Card|null
+     * @return Card[]|array
      * @throws \Exception
      */
-    public function findByCardAddToEquipmentType(CardAddToEquipmentData $data): Card
+    public function findByCardAddToEquipmentType(CardAddToEquipmentData $data)
     {
         $cards = [];
         if (
@@ -89,13 +89,14 @@ class CardRepository extends ServiceEntityRepository
 //            throw new \Exception('Найденно ' . count($cards) . ' карточки. Уточните запрос', ApiParentController::STATUS_CODE_400);
         }
 
-        $card = current($cards);
+//        $card = current($cards);
 
-        if (empty($card)) {
+        if (count($cards) === 0) {
             throw new \Exception('Карточка не найдена', ApiParentController::STATUS_CODE_404);
         }
 
-        return $card;
+//        return $card;
+        return $cards;
     }
 
     /**

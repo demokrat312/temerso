@@ -127,6 +127,9 @@ class EquipmentApiController extends ApiParentController
             /** @var CardRepository $rep */
             $rep = $em->getRepository(Card::class);
             $card = $rep->findByCardAddToEquipmentType($data);
+            if(is_array($card)) {
+                $card = current($card);
+            }
 
             /** @var EquipmentKit $equipmentKit */
             $equipmentKit = $em->getRepository(EquipmentKit::class)->find($data->getId());
@@ -216,13 +219,15 @@ class EquipmentApiController extends ApiParentController
             if ($equipmentKit) {
                 foreach ($cardListData->getList() as $cardList) {
                     try {
-                        $card = $rep->findByCardAddToEquipmentType($cardList);
-
-                        if ($equipmentKit->getCards()->contains($card)) {
+                        $cards = $rep->findByCardAddToEquipmentType($cardList);
+                        foreach ($cards as $card) {
+                            if ($equipmentKit->getCards()->contains($cards)) {
 //                            throw new \Exception('Карточка уже есть в комплекте');
-                        }
+                            }
 
-                        $equipmentKit->addCard($card);
+                            $equipmentKit->addCard($card);
+
+                        }
                     } catch (\Exception $exception) {
                         if ($exception->getCode() === ApiParentController::STATUS_CODE_404) {
                             $over = new EquipmentOver();
