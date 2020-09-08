@@ -35,6 +35,15 @@ class RepairCardImgRequired
      */
     private $required;
 
+    /**
+     * RepairCardImgRequired constructor.
+     * @param $required
+     */
+    public function __construct()
+    {
+        $this->required = false;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -214,7 +214,7 @@ trait CardTrait
         }
         $criteria = Criteria::expr()->eq("repair", $repair);
         $criteria = Criteria::create()->where($criteria);
-        return $this->repairCardImgRequired->matching($criteria)->first() ?: null;
+        return $this->repairCardImgRequired->matching($criteria)->first() ?: (new RepairCardImgRequired());
     }
 
     public function repairCardImgRequiredInput(string $formId, Repair $repair)
