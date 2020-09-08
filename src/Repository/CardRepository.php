@@ -86,7 +86,7 @@ class CardRepository extends ServiceEntityRepository
         }
 
         if (count($cards) > 1) {
-            throw new \Exception('Найденно ' . count($cards) . ' карточки. Уточните запрос', ApiParentController::STATUS_CODE_400);
+//            throw new \Exception('Найденно ' . count($cards) . ' карточки. Уточните запрос', ApiParentController::STATUS_CODE_400);
         }
 
         $card = current($cards);

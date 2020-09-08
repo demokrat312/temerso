@@ -23,10 +23,11 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
 
     const STATUS_SEND_EXECUTION = 1; // Отправлено на исполнение
     const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
-    const STATUS_SAVE = 3; // Результаты сохранены локально (Отправить задание на проверку)
+    const STATUS_SAVE = 3; //  Отправить задание на проверку
     const STATUS_COMPLETE = 4; // Выполнено полностью (Принять от Исполнителя)
     const STATUS_CREATED = 5; // Созданно (или отредактированно)
     const STATUS_REVISION = 6; // Отправленно на доработку (такие же функции как у "Принято на исполнение")
+    const STATUS_CONTINUE = 7; // Результаты Сохранены Локально (идет после Принято на исполнение для испекции. Исполнитель продолжает работу)
 
     const STATUS_TITLE = [
         self::STATUS_SEND_EXECUTION => 'Отправлено на исполнение',
@@ -35,13 +36,15 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
         self::STATUS_COMPLETE => 'Выполнено полностью',
         self::STATUS_CREATED => 'Создано', // Отредактированно
         self::STATUS_REVISION => 'Отправленно на доработку',
+        self::STATUS_CONTINUE => 'Результаты Сохранены Локально',
     ];
 
     const STATUS_ORDER = [
         self::STATUS_CREATED, // 5 - Созданно
         self::STATUS_SEND_EXECUTION, // 1 -  Отправлено на исполнение
         self::STATUS_ACCEPT_EXECUTION, // 2 -  Принято на исполнение
-        self::STATUS_SAVE, // 3 -  Результаты сохранены локально
+        self::STATUS_SAVE, // 3 -  Отправить задание на проверку
+        self::STATUS_CONTINUE, // 7 -  Результаты сохранены локально
         self::STATUS_REVISION, // 6 -  Отправленно на доработку
         self::STATUS_COMPLETE, // 4 -  Выполнено полностью
     ];
@@ -50,7 +53,8 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
     const STATUS_CARD_TEMPORARY = [
         self::STATUS_SEND_EXECUTION,
         self::STATUS_ACCEPT_EXECUTION,
-        self::STATUS_SAVE
+        self::STATUS_SAVE,
+        self::STATUS_CONTINUE,
     ];
 
     /**

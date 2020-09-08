@@ -125,7 +125,7 @@ class TaskTopMenuButtonService
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
                             MarkingAdminController::ROUTER_REMOVE_EXECUTOR,
-                        ))
+                            ))
                         ->setRouteParams(['id' => $this->getObjectId()])
                     ,
                 ])
@@ -142,7 +142,7 @@ class TaskTopMenuButtonService
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                        ))
+                            ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_ACCEPT_EXECUTION])
                     ,
                 ])
@@ -159,7 +159,7 @@ class TaskTopMenuButtonService
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                        ))
+                            ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SAVE])
                     ,
                 ])
@@ -176,7 +176,7 @@ class TaskTopMenuButtonService
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                        ))
+                            ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_COMPLETE])
                     ,
                     (new TopMenuButton())
@@ -187,7 +187,7 @@ class TaskTopMenuButtonService
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
-                        ))
+                            ))
                         ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SEND_EXECUTION])
                     ,
                 ])
@@ -202,7 +202,7 @@ class TaskTopMenuButtonService
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
                             MarkingAdminController::ROUTER_EXCEL,
-                        ))
+                            ))
                         ->setRouteParams(['id' => $this->getObjectId()])
                     ,
                 ])
@@ -210,6 +210,22 @@ class TaskTopMenuButtonService
             (new TopMenuAccess())
                 ->setRoleList([User::ROLE_ADMIN])
                 ->setStatusList([Marking::STATUS_CREATED])
+                ->setModeList([TopMenuButtonService::MODE_SHOW])
+                ->setButtonList([
+                    (new TopMenuButton())
+                        ->setKey(TaskTopMenuButtonService::BTN_SEND_EXECUTION)
+                        ->setTitle('Отправить на исполнение')
+                        ->setIcon('fa-mail-forward')
+                        ->setRoute($this->adminRoute->getActionRouteName(
+                            $this->entityClass,
+                            MarkingAdminController::ROUTER_CHANGE_STATUS,
+                            ))
+                        ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SEND_EXECUTION])
+                    ,
+                ]),
+            (new TopMenuAccess())
+                ->setRoleList([User::ROLE_STAFF])
+                ->setStatusList([Marking::STATUS_CONTINUE])
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
@@ -236,7 +252,7 @@ class TaskTopMenuButtonService
     public function setEntityClass(string $class)
     {
         $this->entityClass = $class;
-        
+
         return $this;
     }
 

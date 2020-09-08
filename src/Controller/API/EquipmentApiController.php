@@ -219,7 +219,7 @@ class EquipmentApiController extends ApiParentController
                         $card = $rep->findByCardAddToEquipmentType($cardList);
 
                         if ($equipmentKit->getCards()->contains($card)) {
-                            throw new \Exception('Карточка уже есть в комплекте');
+//                            throw new \Exception('Карточка уже есть в комплекте');
                         }
 
                         $equipmentKit->addCard($card);
