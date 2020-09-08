@@ -46,15 +46,7 @@ class CardItemAddToEquipmentType extends AbstractType
                     'type' => 'string',
                     'description' => '№ Метки RFID',
                 ],
-            ])
-            ->add('accounting', null, [
-                'required' => false,
-                'documentation' => [
-                    'type' => 'number',
-                    'description' => 'Учет/Инвентаризация',
-                ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

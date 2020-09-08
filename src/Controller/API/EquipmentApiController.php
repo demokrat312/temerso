@@ -236,7 +236,6 @@ class EquipmentApiController extends ApiParentController
                                 ->setSerialNoOfNipple($cardList->getSerialNoOfNipple())
                                 ->setCouplingSerialNumber($cardList->getCouplingSerialNumber())
                                 ->setRfidTagNo($cardList->getRfidTagNo())
-                                ->setAccounting($cardList->getAccounting())
                                 ->setEquipmentKit($equipmentKit)
                                 ;
                             $em->persist($over);
