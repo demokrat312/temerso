@@ -130,7 +130,7 @@
                                                 <td>{{ card.serialNoOfNipple }}</td>
                                                 <td>{{ card.couplingSerialNumber }}</td>
                                                 <td>{{ card.rfidTagNo }}</td>
-                                                <td>{{ card.taskCardOtherFieldsByTask(object).commentProblemWithMark }}</td>{#Оборудование есть, проблема с меткой#}
+                                                <td>{{ card.taskCardOtherFieldsByTask(object.taskTypeId, object.id).commentProblemWithMark }}</td>{#Оборудование есть, проблема с меткой#}
                                                 <td>{{ card.refWearClass }}</td>
                                                 <td>{{ card.outerDiameterOfThePipe }}</td>
                                                 <td>{{ card.pipeWallThickness }}</td>
@@ -171,7 +171,7 @@
                                                         </ul>
                                                     {% endfor %}
                                                 </td>
-                                                <td>{{ card.taskCardOtherFieldsByTask(object).comment }}</td>
+                                                <td>{{ card.taskCardOtherFieldsByTask(object.taskTypeId, object.id).comment }}</td>
                                             </tr>
                                         {% endif %}
                                     {% endfor %}

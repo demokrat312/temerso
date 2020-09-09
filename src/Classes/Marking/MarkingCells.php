@@ -44,7 +44,7 @@ class MarkingCells extends ParentCells
             $this->sheet->setCellValue('D' . $rowCount, $card->getCouplingSerialNumber()); // Серийный № муфты
             $this->sheet->setCellValue('E' . $rowCount, $card->getOuterDiameterOfThePipe()); // Наружный диаметр трубы, (мм)
             $this->sheet->setCellValue('F' . $rowCount, $card->getRfidTagNo()); // № RFID-метки
-            $this->sheet->setCellValue('G' . $rowCount, $card->getTaskCardOtherFieldsByTask($task)->getComment()); // Примечание
+            $this->sheet->setCellValue('G' . $rowCount, $card->getTaskCardOtherFieldsByTask($task->getTaskTypeId(), $task->getId())->getComment()); // Примечание
 
             $rowCount++;
         });

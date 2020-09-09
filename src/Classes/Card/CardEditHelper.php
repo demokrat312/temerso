@@ -12,6 +12,7 @@ namespace App\Classes\Card;
 use App\Classes\ApiParentController;
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Classes\Task\TaskItem;
+use App\Classes\Task\TaskItemInterface;
 use App\Classes\Utils;
 use App\Entity\Card;
 use App\Entity\CardTemporary;
@@ -44,40 +45,12 @@ class CardEditHelper
         $task = $this->getTask($cardEditData);
 
         if ($task && $task instanceof Inspection) {
-            $cardTemporary = $task->getCardTemporary($card);
-            $cardTemporary = $cardTemporary ?: new CardTemporary();
-
-            $cardTemporary
-                ->setCard($card)
-                ->setTaskTypeId($cardEditData->getTaskTypeId())
-            ;
-
-            Utils::copyObject($cardTemporary, $card);
-
-            if ($cardEditData->getRfidTagNo()) {
-                $cardTemporary->setRfidTagNo($cardEditData->getRfidTagNo());
-            }
-            if ($cardEditData->getAccounting()) {
-                $cardTemporary->setAccounting($cardEditData->getAccounting());
-            }
-            if ($cardEditData->getComment()) {
-                $cardTemporary->setComment($cardEditData->getComment());
-            }
-            if ($cardEditData->getCommentProblemWithMark()) {
-                $cardTemporary->setComment($cardEditData->getCommentProblemWithMark());
-                // если есть поле "оборудование естЬ, проблема с меткой", то учет true
-                $cardTemporary->setAccounting(true);
-            }
-
-            $task->addCardTemporary($cardTemporary);
-
-            $this->em->persist($cardTemporary);
-
+            $cardTemporary = $this->cardTempUpdate($cardEditData, $task, $card);
             $response = call_user_func($this->toArray, $cardTemporary, ApiParentController::GROUP_API_DEFAULT);
         } else {
             $this->cardUpdate($cardEditData, $card);
             $this->taskCardOtherFieldsUpdate($cardEditData, $card);
-            $response = (new MarkingCardToTaskCardAdapter())->getCard($card, TaskItem::getTaskClass($cardEditData->getTaskTypeId()));
+            $response = (new MarkingCardToTaskCardAdapter())->getCard($card, $cardEditData->getTaskTypeId(), $cardEditData->getTaskId());
         }
 
         $this->em->flush();
@@ -121,13 +94,15 @@ class CardEditHelper
      */
     private function taskCardOtherFieldsUpdate(CardEditData $cardEditData, ?Card $card)
     {
-        if ($cardEditData->getTaskTypeId() && ($cardEditData->getComment() || $cardEditData->getCommentProblemWithMark())) {
-            $taskCard = $card->getTaskCardOtherFieldsByTask(TaskItem::getTaskClass($cardEditData->getTaskTypeId()));
+        if ($cardEditData->getTaskId() && $cardEditData->getTaskTypeId()) {
+            $taskCard = $card->getTaskCardOtherFieldsByTask($cardEditData->getTaskTypeId(), $cardEditData->getTaskId());
             $taskCard
                 ->setCard($card)
-                ->setTaskTypeId($cardEditData->getTaskTypeId())
-                ->setComment($cardEditData->getComment())
-                ->setCommentProblemWithMark($cardEditData->getCommentProblemWithMark());
+                ->setTaskTypeId($cardEditData->getTaskTypeId() ?? $taskCard->getTaskTypeId())
+                ->setTaskId($cardEditData->getTaskId() ?? $taskCard->getTaskId())
+                ->setComment($cardEditData->getComment() ?? $taskCard->getComment())
+                ->setCommentProblemWithMark($cardEditData->getCommentProblemWithMark() ?? $taskCard->getCommentProblemWithMark())
+            ;
 
             $this->em->persist($taskCard);
         }
@@ -138,8 +113,9 @@ class CardEditHelper
      * если есть id задачи
      *
      * @param CardEditData $cardEditData
+     * @return object|TaskItemInterface
      */
-    private function getTask(CardEditData $cardEditData)
+    private function getTask(CardEditData $cardEditData): ?TaskItemInterface
     {
         $task = null;
         if ($cardEditData->getTaskId() && $cardEditData->getTaskTypeId()) {
@@ -157,5 +133,55 @@ class CardEditHelper
     private function rep(): \Doctrine\Persistence\ObjectRepository
     {
         return $this->em->getRepository(CardTemporary::class);
+    }
+
+    /**
+     * Создаем или получаем из базы временную карточку
+     * Пока только для инспекции
+     *
+     * @param CardEditData $cardEditData
+     * @param TaskItemInterface|Inspection $task
+     * @param Card|null $card
+     * @return CardTemporary
+     */
+    private function cardTempUpdate(CardEditData $cardEditData, Inspection $task, ?Card $card): CardTemporary
+    {
+        // Создаем или получаем из базы временную карточку
+        $cardTemporary = $task->getCardTemporary($card);
+        $cardTemporary = $cardTemporary ?: new CardTemporary();
+
+        // Обезательные поля
+        $cardTemporary
+            ->setCard($card)
+            ->setTaskTypeId($cardEditData->getTaskTypeId());
+
+        // Копируем данные из текущей карточки во временную
+        Utils::copyObject($cardTemporary, $card);
+
+        //<editor-fold desc="Обновляем временную карточку">
+        if ($cardEditData->getRfidTagNo()) {
+            $cardTemporary->setRfidTagNo($cardEditData->getRfidTagNo());
+        }
+        if ($cardEditData->getAccounting()) {
+            $cardTemporary->setAccounting($cardEditData->getAccounting());
+        }
+        if ($cardEditData->getComment()) {
+            $cardTemporary->setComment($cardEditData->getComment());
+        }
+        if ($cardEditData->getCommentProblemWithMark()) {
+            $cardTemporary->setCommentProblemWithMark($cardEditData->getCommentProblemWithMark());
+            // если есть поле "оборудование естЬ, проблема с меткой", то учет true
+            $cardTemporary->setAccounting(true);
+        }
+        if ($cardEditData->getTaskId()) {
+            $cardTemporary->setTaskId($cardEditData->getTaskId());
+        }
+        //</editor-fold>
+
+        // Добавляем временную карточку к задаче
+        $task->addCardTemporary($cardTemporary);
+
+        $this->em->persist($cardTemporary);
+        return $cardTemporary;
     }
 }

@@ -39,7 +39,7 @@
                                             <td>{{ card.serialNoOfNipple }}</td>
                                             <td>{{ card.couplingSerialNumber }}</td>
                                             <td>{{ card.rfidTagNo }}</td>
-                                            <td>{{ card.taskCardOtherFieldsByTask(object).commentProblemWithMark }}</td>
+                                            <td>{{ card.taskCardOtherFieldsByTask(object.taskTypeId, object.id).commentProblemWithMark }}</td>
                                             <td>{{ card.accounting ? 1 : 0 }}</td>
                                             <td>{{ card.repairCardImgRequiredByRepair(object).required ? "Фото обезательно" : '' }}</td>
                                             <td>

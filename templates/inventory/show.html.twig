@@ -37,7 +37,7 @@
                                             <td>{{ card.couplingSerialNumber }}</td>
                                             <td>{{ card.rfidTagNo }}</td>
                                             <td>{{ card.accounting ? 1 : 0 }}</td>
-                                            <td>{{ card.taskCardOtherFieldsByTask(object).commentProblemWithMark }}</td>
+                                            <td>{{ card.taskCardOtherFieldsByTask(object.taskTypeId, object.id).commentProblemWithMark }}</td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

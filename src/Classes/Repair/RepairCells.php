@@ -43,7 +43,7 @@ class RepairCells extends ParentCells
             $this->sheet->setCellValue('C' . $rowCount, $card->getSerialNoOfNipple()); // Серийный № ниппеля
             $this->sheet->setCellValue('D' . $rowCount, $card->getCouplingSerialNumber()); // Серийный № муфты
             $this->sheet->setCellValue('E' . $rowCount, $card->getRfidTagNo()); // № RFID-метки
-            $this->sheet->setCellValue('F' . $rowCount, $card->getTaskCardOtherFieldsByTask($task)->getCommentProblemWithMark()); // Оборудование есть, проблема с меткой
+            $this->sheet->setCellValue('F' . $rowCount, $card->getTaskCardOtherFieldsByTask($task->getTaskTypeId(), $task->getId())->getCommentProblemWithMark()); // Оборудование есть, проблема с меткой
             $this->sheet->setCellValue('G' . $rowCount, $card->getAccounting() ? 1 : 0); // Учет/Инветаризация
             $this->sheet->setCellValue('H' . $rowCount, $card->getRepairCardImgRequiredByRepair($task)->getRequired() ? 'Фото обезательно' : ''); // Обязательность приложения фото
 

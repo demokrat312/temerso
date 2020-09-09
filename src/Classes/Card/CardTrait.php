@@ -61,12 +61,20 @@ trait CardTrait
     private $comment;
 
     /**
-     * Название класса родительской задачи.
+     * Тип родительской задачи.
      * Если карточка вызваеться через задачу
      *
      * @var string
      */
-    private $taskClassName;
+    private $taskTypeId;
+
+    /**
+     * Ключ родительской задачи.
+     * Если карточка вызваеться через задачу
+     *
+     * @var string
+     */
+    private $taskId;
 
     public function __toString()
     {
@@ -145,17 +153,30 @@ trait CardTrait
      * @return TaskCardOtherField
      * @see app/templates/marking/show.html.twig:38
      */
-    public function getTaskCardOtherFieldsByTask($task): TaskCardOtherField
+    public function getTaskCardOtherFieldsByTask(int $taskTypeId, ?int $taskId): TaskCardOtherField
     {
-        if(is_object($task)) {
-            $taskClass = get_class($task);
+//        if(is_object($task)) {
+//            $taskClass = get_class($task);
+//        } else {
+//            $taskClass = $task;
+//        }
+//        $taskTypeId = TaskHelper::ins()->getTypeByEntityClass($taskClass);
+        $expr = Criteria::expr();
+        if(empty($taskId)) {
+            $criteria = Criteria::create()
+                ->where($expr->eq("taskTypeId", $taskTypeId))
+            ;
         } else {
-            $taskClass = $task;
+            $criteria = Criteria::create()
+                ->where(
+                    $expr->andX(
+                        $expr->eq("taskTypeId", $taskTypeId),
+                        $expr->eq("taskId", $taskId)
+                    )
+                );
         }
-        $taskTypeId = TaskHelper::ins()->getTypeByEntityClass($taskClass);
-        $criteria = Criteria::create()->where(Criteria::expr()->eq("taskTypeId", $taskTypeId));
 
-        return $this->getTaskCardOtherFields()->matching($criteria)->first() ?: new TaskCardOtherField();
+        return $this->getTaskCardOtherFields()->matching($criteria)->last() ?: new TaskCardOtherField();
     }
 
     /**
@@ -179,8 +200,8 @@ trait CardTrait
      */
     public function getComment()
     {
-        if($this->getTaskClassName()) {
-            return $this->getTaskCardOtherFieldsByTask($this->getTaskClassName())->getComment();
+        if($this->getTaskTypeId()) {
+            return $this->getTaskCardOtherFieldsByTask($this->getTaskTypeId(), $this->getTaskId())->getComment();
         }
 
         return '';
@@ -189,18 +210,36 @@ trait CardTrait
     /**
      * @return mixed
      */
-    public function getTaskClassName()
+    public function getTaskTypeId()
     {
-        return $this->taskClassName;
+        return $this->taskTypeId;
     }
 
     /**
-     * @param mixed $taskClassName
+     * @param mixed $taskTypeId
      * @return $this
      */
-    public function setTaskClassName($taskClassName)
+    public function setTaskTypeId($taskTypeId)
     {
-        $this->taskClassName = $taskClassName;
+        $this->taskTypeId = $taskTypeId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaskId(): string
+    {
+        return $this->taskId;
+    }
+
+    /**
+     * @param string $taskId
+     * @return $this
+     */
+    public function setTaskId(string $taskId)
+    {
+        $this->taskId = $taskId;
         return $this;
     }
 

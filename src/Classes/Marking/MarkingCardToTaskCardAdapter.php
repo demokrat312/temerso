@@ -18,7 +18,7 @@ use App\Entity\Repair;
  */
 class MarkingCardToTaskCardAdapter
 {
-    public function getCard(Card $card, string $entityClass = null, int $taskId = null)
+    public function getCard(Card $card, int $taskTypeId = null, int $taskId = null)
     {
         $taskCard = new TaskCard();
 
@@ -31,18 +31,18 @@ class MarkingCardToTaskCardAdapter
             ->setRfidTagNo($card->getRfidTagNo())
             ->setAccounting($card->getAccounting())
 //            ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
-            ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
+            ->setImages($card->getImages())
             ->setTaskId($taskId);
 
-        if($entityClass === Repair::class) {
+        if($taskTypeId === TaskItem::TYPE_REPAIR && $taskId) {
             $taskCard->setCardImgRequired($card->getRepairCardImgRequiredByRepair($taskId)->getRequired());
         }
 
-        if ($entityClass) {
+        if ($taskTypeId && $taskId) {
             $taskCard
-                ->setComment($card->getTaskCardOtherFieldsByTask(new $entityClass())->getComment())
-                ->setCommentProblemWithMark($card->getTaskCardOtherFieldsByTask(new $entityClass())->getCommentProblemWithMark())
-                ->setTaskTypeId(TaskItem::TYPE_BY_CLASS[$entityClass]);
+                ->setComment($card->getTaskCardOtherFieldsByTask($taskTypeId, $taskId)->getComment())
+                ->setCommentProblemWithMark($card->getTaskCardOtherFieldsByTask($taskTypeId, $taskId)->getCommentProblemWithMark())
+                ->setTaskTypeId($taskTypeId);
         }
 
 

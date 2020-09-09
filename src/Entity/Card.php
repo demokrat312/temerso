@@ -610,6 +610,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     private $arrival;
 
     /**
+     * @var TaskCardOtherField|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\TaskCardOtherField", mappedBy="card")
      */
     private $taskCardOtherFields;

@@ -40,7 +40,7 @@ class CardEditData
     /**
      * @return mixed
      */
-    public function getTaskId()
+    public function getTaskId(): ?int
     {
         return $this->taskId;
     }
@@ -59,7 +59,7 @@ class CardEditData
     /**
      * @return mixed
      */
-    public function getTaskTypeId()
+    public function getTaskTypeId(): ?int
     {
         return $this->taskTypeId;
     }
@@ -113,7 +113,7 @@ class CardEditData
     /**
      * @return mixed
      */
-    public function getComment()
+    public function getComment(): ?string
     {
         return $this->comment;
     }
@@ -131,7 +131,7 @@ class CardEditData
     /**
      * @return mixed
      */
-    public function getCommentProblemWithMark()
+    public function getCommentProblemWithMark(): ?string
     {
         return $this->commentProblemWithMark;
     }

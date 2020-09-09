@@ -27,4 +27,5 @@ interface TaskItemInterface
     public function removeUser(User $user);
     public function getStatusTitle(): string;
     public function getComment(): ?string;
+    public function getTaskTypeId(): int;
 }

@@ -66,6 +66,14 @@ class CardTemporary
     private $taskTypeId;
 
     /**
+     * Ключ задачи
+     *
+     * @var int
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $taskId;
+
+    /**
      * Ключ карточки
      *
      * @var Card
@@ -504,6 +512,24 @@ class CardTemporary
     public function setTaskTypeId(int $taskTypeId)
     {
         $this->taskTypeId = $taskTypeId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTaskId(): int
+    {
+        return $this->taskId;
+    }
+
+    /**
+     * @param int $taskId
+     * @return $this
+     */
+    public function setTaskId(int $taskId)
+    {
+        $this->taskId = $taskId;
         return $this;
     }
 

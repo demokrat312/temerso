@@ -43,8 +43,8 @@ class InspectionCells extends ParentCells
             $this->sheet->setCellValue('C' . $rowCount, $card->getSerialNoOfNipple()); // Серийный № ниппеля
             $this->sheet->setCellValue('D' . $rowCount, $card->getCouplingSerialNumber()); // Серийный № муфты
             $this->sheet->setCellValue('E' . $rowCount, $card->getRfidTagNo()); // № RFID-метки
-            $this->sheet->setCellValue('F' . $rowCount, $card->getTaskCardOtherFieldsByTask($task   )->getCommentProblemWithMark()); // Оборудование есть, проблема с меткой
-            $this->sheet->setCellValue('G' . $rowCount, $card->getTaskCardOtherFieldsByTask($task)->getComment()); // Комментарий
+            $this->sheet->setCellValue('F' . $rowCount, $card->getTaskCardOtherFieldsByTask($task->getTaskTypeId(), $task->getId()   )->getCommentProblemWithMark()); // Оборудование есть, проблема с меткой
+            $this->sheet->setCellValue('G' . $rowCount, $card->getTaskCardOtherFieldsByTask($task->getTaskTypeId(), $task->getId())->getComment()); // Комментарий
             $this->sheet->setCellValue('H' . $rowCount, $card->getRefWearClass()); // Класс износа
             $this->sheet->setCellValue('I' . $rowCount, $card->getOuterDiameterOfThePipe()); // Наружный диаметр трубы, (мм)
             $this->sheet->setCellValue('J' . $rowCount, $card->getPipeWallThickness()); // Толщина стенки трубы, (мм)

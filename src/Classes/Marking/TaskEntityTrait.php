@@ -10,6 +10,7 @@ namespace App\Classes\Marking;
 
 
 use App\Classes\Task\TaskItem;
+use App\Classes\Task\TaskItemInterface;
 use App\Entity\Card;
 use App\Entity\Marking;
 use App\Entity\User;
@@ -20,7 +21,7 @@ use Swagger\Annotations as SWG;
 /**
  * Trait MarkingTrait
  * @package App\Classes\Marking
- *
+ * @mixin TaskItemInterface
  */
 trait TaskEntityTrait
 {
@@ -77,6 +78,16 @@ trait TaskEntityTrait
     public function getTaskType()
     {
         return TaskItem::TYPE_TITLE[TaskItem::TYPE_BY_CLASS[self::class]];
+    }
+
+    /**
+     * Тип задачи, ключ
+     *
+     * @return int
+     */
+    public function getTaskTypeId(): int
+    {
+        return TaskItem::TYPE_BY_CLASS[self::class];
     }
 
     /**
@@ -147,9 +158,11 @@ trait TaskEntityTrait
      */
     public function getCardList(): Collection
     {
-        $className = self::class;
-        $this->getCards()->map(function(Card $card) use ($className) {
-            $card->setTaskClassName($className);
+        $this->getCards()->map(function (Card $card) {
+            $card
+                ->setTaskTypeId(self::class)
+                ->setTaskId(self::getId())
+            ;
         });
         return $this->getCards();
     }

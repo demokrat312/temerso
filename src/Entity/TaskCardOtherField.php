@@ -24,6 +24,13 @@ class TaskCardOtherField
     private $taskTypeId;
 
     /**
+     * Ключ задачи
+     *
+     * @ORM\Column(type="integer", options={"default" : 0})
+     */
+    private $taskId;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Card", inversedBy="taskCardOtherFields")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -57,6 +64,24 @@ class TaskCardOtherField
     {
         $this->taskTypeId = $taskTypeId;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTaskId()
+    {
+        return $this->taskId;
+    }
+
+    /**
+     * @param mixed $taskId
+     * @return $this
+     */
+    public function setTaskId($taskId)
+    {
+        $this->taskId = $taskId;
         return $this;
     }
 

@@ -52,8 +52,8 @@ class EquipmentCells extends ParentCells
             $this->sheet->setCellValue('C' . $rowCount, $card->getSerialNoOfNipple()); // Серийный № ниппеля
             $this->sheet->setCellValue('D' . $rowCount, $card->getCouplingSerialNumber()); // Серийный № муфты
             $this->sheet->setCellValue('E' . $rowCount, $card->getRfidTagNo()); // № RFID-метки
-            $this->sheet->setCellValue('F' . $rowCount, $card->getTaskCardOtherFieldsByTask($equipment)->getCommentProblemWithMark()); // Оборудование есть, проблема с меткой
-            $this->sheet->setCellValue('G' . $rowCount, ($card->getAccounting() || $card->getTaskCardOtherFieldsByTask($equipment)->getCommentProblemWithMark()) ? 1 : 0); // Учет/Инвентаризация
+            $this->sheet->setCellValue('F' . $rowCount, $card->getTaskCardOtherFieldsByTask($equipment->getTaskTypeId(), $equipment->getId())->getCommentProblemWithMark()); // Оборудование есть, проблема с меткой
+            $this->sheet->setCellValue('G' . $rowCount, ($card->getAccounting() || $card->getTaskCardOtherFieldsByTask($equipment->getTaskTypeId(), $equipment->getId())->getCommentProblemWithMark()) ? 1 : 0); // Учет/Инвентаризация
 
             $rowCount++;
         });
