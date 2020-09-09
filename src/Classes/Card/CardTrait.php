@@ -64,7 +64,7 @@ trait CardTrait
      * Тип родительской задачи.
      * Если карточка вызваеться через задачу
      *
-     * @var string
+     * @var int
      */
     private $taskTypeId;
 
@@ -72,7 +72,7 @@ trait CardTrait
      * Ключ родительской задачи.
      * Если карточка вызваеться через задачу
      *
-     * @var string
+     * @var int
      */
     private $taskId;
 
@@ -226,18 +226,18 @@ trait CardTrait
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTaskId(): string
+    public function getTaskId()
     {
         return $this->taskId;
     }
 
     /**
-     * @param string $taskId
+     * @param int $taskId
      * @return $this
      */
-    public function setTaskId(string $taskId)
+    public function setTaskId($taskId)
     {
         $this->taskId = $taskId;
         return $this;

@@ -500,7 +500,7 @@ class CardTemporary
     /**
      * @return int
      */
-    public function getTaskTypeId(): int
+    public function getTaskTypeId()
     {
         return $this->taskTypeId;
     }
@@ -518,7 +518,7 @@ class CardTemporary
     /**
      * @return int
      */
-    public function getTaskId(): int
+    public function getTaskId()
     {
         return $this->taskId;
     }
