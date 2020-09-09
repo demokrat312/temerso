@@ -509,7 +509,7 @@ class CardTemporary
      * @param int $taskTypeId
      * @return $this
      */
-    public function setTaskTypeId(int $taskTypeId)
+    public function setTaskTypeId($taskTypeId)
     {
         $this->taskTypeId = $taskTypeId;
         return $this;
@@ -527,7 +527,7 @@ class CardTemporary
      * @param int $taskId
      * @return $this
      */
-    public function setTaskId(int $taskId)
+    public function setTaskId($taskId)
     {
         $this->taskId = $taskId;
         return $this;
