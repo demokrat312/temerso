@@ -31,26 +31,20 @@ class CardImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', null, [
-                'documentation' => [
-                    'type' => 'number',
-                    'description' => 'Ключ, карточки',
-                ],
-            ])
             ->add('image', FileType::class, [
                 'required' => true,
-                'constraints' => [
-                    new File([
-//                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/jpeg',
-                            'image/png',
-                            'image/x-png',
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid image type(jpg, png, jpeg)',
-                    ])
-                ],
+//                'constraints' => [
+//                    new File([
+////                        'maxSize' => '1024k',
+//                        'mimeTypes' => [
+//                            'image/jpeg',
+//                            'image/jpeg',
+//                            'image/png',
+//                            'image/x-png',
+//                        ],
+//                        'mimeTypesMessage' => 'Please upload a valid image type(jpg, png, jpeg)',
+//                    ])
+//                ],
                 'documentation' => [
                     'type' => 'file',
                     'description' => 'Изображение',
