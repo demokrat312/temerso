@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Classes\ApiParentController;
 
@@ -39,6 +40,7 @@ class EquipmentKit
      * @var Card[]
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Card")
+     * @OrderBy({"id" = "ASC"})
      * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $cards;

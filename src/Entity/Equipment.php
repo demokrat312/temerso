@@ -12,6 +12,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Classes\ApiParentController;
 
@@ -111,6 +112,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      * @var EquipmentKit[]
      *
      * @ORM\OneToMany(targetEntity="App\Entity\EquipmentKit", mappedBy="equipment",cascade={"persist"})
+     * @OrderBy({"id" = "ASC"})
      * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $kits;

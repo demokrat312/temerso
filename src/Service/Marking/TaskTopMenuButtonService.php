@@ -9,15 +9,19 @@
 namespace App\Service\Marking;
 
 
+use App\Classes\Marking\MarkingAccessHelper;
 use App\Classes\Task\TaskItemInterface;
 use App\Classes\TopMenuButton\TopMenuAccess;
 use App\Classes\TopMenuButton\TopMenuButton;
+use App\Classes\Utils;
 use App\Controller\Admin\MarkingAdminController;
 use App\Entity\Inventory;
 use App\Entity\Marking;
 use App\Entity\User;
 use App\Service\AdminRouteService;
 use App\Service\TopMenuButtonService;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Csrf\TokenStorage\SessionTokenStorage;
 
 class TaskTopMenuButtonService
 {
@@ -30,23 +34,14 @@ class TaskTopMenuButtonService
     const BTN_EXCEL = 'btn_excel'; // Печать в excel
 
     const BTN_TITLE = [
-        self::BTN_REVIEW_SUCCESS => 'Принять от исполнителя и синхронизировать'
+        self::BTN_REVIEW_SUCCESS => 'Принять от исполнителя и синхронизировать',
+        self::BTN_SEND_REVIEW => 'Отправить задание на проверку'
     ];
 
     /**
      * @var array |TopMenuAccess[]
      */
-    private $accessList = [
-//        ['role' => User::ROLE_ADMIN, 'status' => Marking::STATUS_CREATED, 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
-//            TopActionButtonService::BTN_CREATE, TopActionButtonService::BTN_EDIT, TopActionButtonService::BTN_LIST,
-//        ]],
-//        ['role' => User::ROLE_ADMIN, 'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION], 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
-//            TopActionButtonService::BTN_CREATE, TopActionButtonService::BTN_LIST, self::BTN_REMOVE_EXECUTOR,
-//        ]],
-//        ['role' => User::ROLE_INSPECTOR, 'status' => [Marking::STATUS_SEND_EXECUTION], 'mode' => TopActionButtonService::MODE_SHOW, 'buttons' => [
-//            TopActionButtonService::BTN_LIST, self::BTN_ACCEPT_EXECUTION,
-//        ]],
-    ];
+    private $accessList = [];
 
     /**
      * @var TopMenuButtonService
@@ -64,11 +59,16 @@ class TaskTopMenuButtonService
      * @var string
      */
     private $entityClass;
+    /**
+     * @var TokenStorageInterface
+     */
+    private $storage;
 
-    public function __construct(TopMenuButtonService $actionButtonService, AdminRouteService $adminRoute)
+    public function __construct(TopMenuButtonService $actionButtonService, AdminRouteService $adminRoute, TokenStorageInterface $storage)
     {
         $this->actionButtonService = $actionButtonService;
         $this->adminRoute = $adminRoute;
+        $this->storage = $storage;
     }
 
     public function build(string $role, ?int $status, string $mode)
@@ -77,9 +77,10 @@ class TaskTopMenuButtonService
 
         foreach ($this->accessList as $accessItem) {
             $hasRole = empty($accessItem->getRoleList()) || in_array($role, $accessItem->getRoleList());
+            $hasType = empty($accessItem->getTypeList()) || Utils::in_array($this->getType(), $accessItem->getTypeList());
             $hasStatus = empty($accessItem->getStatusList()) || $status === null || in_array($status, $accessItem->getStatusList());
             $hasMode = in_array($mode, $accessItem->getModeList());
-            if ($hasRole && $hasStatus && $hasMode) {
+            if ($hasRole && $hasStatus && $hasMode && $hasType) {
                 $this->actionButtonService->addButtonList($accessItem->getButtonList());
             }
         }
@@ -224,19 +225,19 @@ class TaskTopMenuButtonService
                     ,
                 ]),
             (new TopMenuAccess())
-                ->setRoleList([User::ROLE_STAFF])
+                ->setTypeList([MarkingAccessHelper::USER_TYPE_EXECUTOR])
                 ->setStatusList([Marking::STATUS_CONTINUE])
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
                 ->setButtonList([
                     (new TopMenuButton())
-                        ->setKey(TaskTopMenuButtonService::BTN_SEND_EXECUTION)
-                        ->setTitle('Отправить на исполнение')
+                        ->setKey(TaskTopMenuButtonService::BTN_SEND_REVIEW)
+                        ->setTitle(self::BTN_TITLE[TaskTopMenuButtonService::BTN_SEND_REVIEW])
                         ->setIcon('fa-mail-forward')
                         ->setRoute($this->adminRoute->getActionRouteName(
                             $this->entityClass,
                             MarkingAdminController::ROUTER_CHANGE_STATUS,
                             ))
-                        ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SEND_EXECUTION])
+                        ->setRouteParams(['id' => $this->getObjectId(), 'status' => Marking::STATUS_SAVE])
                     ,
                 ])
             ,
@@ -259,5 +260,29 @@ class TaskTopMenuButtonService
     private function getObjectId()
     {
         return $this->object ? $this->object->getId() : null;
+    }
+
+    private function getType()
+    {
+        /** @var User $userCurrent */
+        $userCurrent = $this->storage->getToken()->getUser();
+
+        $typeList = [];
+
+        if ($this->object && $this->object->getId()) {
+            foreach ($this->object->getUsers() as $user) {
+                if ($user->getId() === $userCurrent->getId()) {
+                    $typeList[] = MarkingAccessHelper::USER_TYPE_EXECUTOR;
+                    break;
+                }
+            }
+            if ($this->object->getCreatedBy()->getId() === $userCurrent->getId()) {
+                $typeList[] = MarkingAccessHelper::USER_TYPE_CREATOR;
+            }
+        } else if (User::ROLE_ADMIN === $userCurrent->getRoleName()) {
+            $typeList[] = MarkingAccessHelper::USER_TYPE_CREATOR;
+        }
+
+        return $typeList;
     }
 }

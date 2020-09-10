@@ -106,6 +106,7 @@ abstract class TaskAdminParent extends MainAdmin
             ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
 
         $em->andWhere($expr->orX($creatorExpr, $executorExpr));
+        $em->orderBy(sprintf('%s.%s', $al, 'id'), 'ASC');
         return $query;
     }
 

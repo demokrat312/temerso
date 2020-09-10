@@ -9,6 +9,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 
 /**
  * Комплект
@@ -49,6 +50,7 @@ class Kit implements DateListenerInterface, CreatedByListenerInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Card")
+     * @OrderBy({"id" = "ASC"})
      */
     private $cards;
 

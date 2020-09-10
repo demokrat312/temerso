@@ -10,6 +10,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -66,6 +67,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Card")
+     * @OrderBy({"id" = "ASC"})
      */
     private $cards;
 

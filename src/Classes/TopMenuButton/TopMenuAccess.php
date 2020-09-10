@@ -15,6 +15,7 @@ class TopMenuAccess
     private $statusList = [];
     private $modeList = [];
     private $buttonList = [];
+    private $typeList = []; // Постановщик или исполнитель
 
     /**
      * @return mixed
@@ -85,6 +86,24 @@ class TopMenuAccess
     public function setButtonList($buttonList)
     {
         $this->buttonList = (array)$buttonList;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTypeList(): array
+    {
+        return $this->typeList;
+    }
+
+    /**
+     * @param array $typeList
+     * @return $this
+     */
+    public function setTypeList(array $typeList)
+    {
+        $this->typeList = $typeList;
         return $this;
     }
 }

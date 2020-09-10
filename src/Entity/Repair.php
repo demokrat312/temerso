@@ -10,6 +10,7 @@ use App\Classes\Task\TaskItemInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 
 /**
  * 9. Комплектация в ремонт
@@ -28,6 +29,7 @@ class Repair implements  DateListenerInterface, CreatedByListenerInterface, Task
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Card", inversedBy="repair")
+     * @OrderBy({"id" = "ASC"})
      */
     private $cards;
 

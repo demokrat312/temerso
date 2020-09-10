@@ -38,7 +38,8 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
 
         $qb
             ->where('m.id = :taskId')
-            ->setParameter('taskId', $taskId);
+            ->setParameter('taskId', $taskId)
+        ;
 
         $this->byAccess($userId, $qb);
 
