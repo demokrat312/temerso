@@ -160,7 +160,7 @@ trait TaskEntityTrait
     {
         $this->getCards()->map(function (Card $card) {
             $card
-                ->setTaskTypeId(self::class)
+                ->setTaskTypeId(self::getTaskTypeId())
                 ->setTaskId(self::getId())
             ;
         });
