@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Classes\Card\CardShowHistoryInterface;
+use App\Classes\Task\TaskCardOtherFieldTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,8 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity(repositoryClass="App\Repository\TaskCardOtherFieldRepository")
  */
-class TaskCardOtherField
+class TaskCardOtherField implements CardShowHistoryInterface
 {
+    use TaskCardOtherFieldTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -49,6 +52,11 @@ class TaskCardOtherField
      * @ORM\Column(type="text", nullable=true)
      */
     private $commentProblemWithMark;
+
+    public function __toString()
+    {
+        return '<td>test</td>';
+    }
 
     public function getId(): ?int
     {

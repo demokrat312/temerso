@@ -22,6 +22,7 @@ use App\Entity\Reference\RefTypeThread;
 use App\Entity\Reference\RefWearClass;
 use App\Entity\Repair;
 use App\Entity\ReturnFromRepair;
+use App\Entity\TaskCardOtherField;
 use App\Form\Type\HistoryCallbackFilter;
 use App\Repository\EquipmentRepository;
 use App\Repository\RepairRepository;
@@ -322,6 +323,9 @@ class CardAdmin extends MainAdmin
                     ->end()
                         ->with('fields', ['class' => 'col-md-12', 'label' => 'Дополнительные поля'])
                             ->add('cardFields', null, ['label' => 'empty', 'template' => '/viewList/cardFields.html.twig'])
+                        ->end()
+                        ->with('taskCardOtherFields', ['class' => 'col-md-12', 'label' => 'Поля связанные с задачами'])
+                            ->add('taskCardOtherFields', null, ['label' => 'empty', 'template' => '/viewList/cardTaskOtherField.html.twig'])
                         ->end()
                         ->with('operationTimeCounter', ['class' => 'col-md-12', 'label' => 'Счетчик по наработке'])
                             ->add('operationTimeCounter', CollectionType::class, ['label' => 'empty', 'template' => '/viewList/operationTimeCounter.html.twig'])

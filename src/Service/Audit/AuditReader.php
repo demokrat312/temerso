@@ -53,25 +53,31 @@ class AuditReader extends \SimpleThings\EntityAudit\AuditReader
                 if ($whereSQL) {
                     $whereSQL .= " AND ";
                 }
-                $whereSQL .= "e." . $class->fieldMappings[$idField]['columnName'] . " = ?";
+                $whereSQL .= "e." . $class->fieldMappings[$idField]['columnName'] . " = :id";
             } else if (isset($class->associationMappings[$idField])) {
                 if ($whereSQL) {
                     $whereSQL .= " AND ";
                 }
-                $whereSQL .= "e." . $class->associationMappings[$idField]['joinColumns'][0] . " = ?";
+                $whereSQL .= "e." . $class->associationMappings[$idField]['joinColumns'][0] . " = :id";
             }
         }
 
         $join = '';
         if ($className === Card::class) {
+            // Дополнительные поля
             $join .= ' LEFT JOIN (select distinct (rev) as rev, card_id
                    from card_fields_audit) field on field.rev = r.id ';
-            $whereSQL .= ' OR field.card_id = 1';
+            $whereSQL .= ' OR field.card_id = :id';
+
+            // Поля из задач (коментарий и др)
+            $join .= ' LEFT JOIN (select distinct (rev) as rev, card_id
+                   from task_card_other_field_audit) task_card_other_field_audit on task_card_other_field_audit.rev = r.id ';
+            $whereSQL .= ' OR task_card_other_field_audit.card_id = :id';
         }
 
         $query = "SELECT r.* FROM " . $this->getConfiguration()->getRevisionTableName() . " r " .
             "LEFT JOIN " . $tableName . " e ON r.id = e." . $this->getConfiguration()->getRevisionFieldName() . $join . " WHERE " . $whereSQL . " ORDER BY r.id DESC";
-        $revisionsData = $this->em->getConnection()->fetchAll($query, array_values($id));
+        $revisionsData = $this->em->getConnection()->fetchAll($query, $id);
 
         $revisions = array();
 

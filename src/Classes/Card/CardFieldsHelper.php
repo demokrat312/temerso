@@ -65,7 +65,7 @@ class CardFieldsHelper
             return [$type, $options];
         };
 
-        // Создаем новый там с дополнительными полями
+        // Создаем новый таб с дополнительными полями
         $formMapper->tab('fieldsFromOption', ['label' => 'Дополнительные поля']);
 
 
