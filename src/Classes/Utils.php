@@ -52,7 +52,7 @@ class Utils
         });
         foreach ($objToMethods as $setMethodTo) {
             $getMethodFrom = 'get' . substr($setMethodTo, 3);
-            if (method_exists($objFrom, $getMethodFrom)) {
+            if (method_exists($objFrom, $getMethodFrom) && $objFrom->{$getMethodFrom}() !== null) {
                 $objTo->{$setMethodTo}($objFrom->{$getMethodFrom}());
             }
         }
