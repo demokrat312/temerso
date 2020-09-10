@@ -17,7 +17,7 @@ use App\Classes\ApiParentController;
 /**
  * Комплектация в аренду. Не подтвержденные карточки
  *
- * @ORM\Entity(repositoryClass="App\Repository\EquipmentCardsNotConfirmedCardNotConfirmedRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EquipmentCardsNotConfirmedCardsNotConfirmedRepository")
  */
 class EquipmentCardsNotConfirmed
 {
