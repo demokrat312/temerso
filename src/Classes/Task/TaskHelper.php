@@ -99,7 +99,7 @@ class TaskHelper
     {
         $entityItem = $this->findTaskEntity($taskId, $taskClass);
 
-        if($taskClass === TaskItem::TYPE_INSPECTION && $statusId === Marking::STATUS_SAVE) {
+        if($taskClass === TaskItem::TYPE_CLASS[TaskItem::TYPE_INSPECTION] && $statusId === Marking::STATUS_SAVE) {
             $statusId = Marking::STATUS_CONTINUE;
         }
 
