@@ -46,7 +46,9 @@ class InspectionAdmin extends TaskAdminParent
         foreach ($inspection->getCards() as $card) {
             $cardTemporary = (new CardTemporary())
                 ->setCard($card)
-                ->setTaskTypeId(TaskItem::getTaskType(get_class($inspection), true));
+                ->setTaskTypeId($inspection->getTaskTypeId())
+                ->setTaskId($inspection->getId())
+            ;
 
             Utils::copyObject($cardTemporary, $card);
 

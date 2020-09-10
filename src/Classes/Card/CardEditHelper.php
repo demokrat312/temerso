@@ -20,6 +20,7 @@ use App\Entity\Inspection;
 use App\Form\Data\Api\Card\CardEditData;
 use App\Repository\CardTemporaryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CardEditHelper
@@ -150,10 +151,14 @@ class CardEditHelper
         $cardTemporary = $task->getCardTemporary($card);
         $cardTemporary = $cardTemporary ?: new CardTemporary();
 
+        if (!$cardEditData->getTaskTypeId() || !$cardEditData->getTaskTypeId()) {
+            throw new BadRequestHttpException('Необходимо передать ключ задачи и тип задачи');
+        }
         // Обезательные поля
         $cardTemporary
             ->setCard($card)
-            ->setTaskTypeId($cardEditData->getTaskTypeId());
+            ->setTaskTypeId($cardEditData->getTaskTypeId())
+            ->setTaskId($cardEditData->getTaskId());
 
         // Копируем данные из текущей карточки во временную
         Utils::copyObject($cardTemporary, $card);
@@ -172,9 +177,6 @@ class CardEditHelper
             $cardTemporary->setCommentProblemWithMark($cardEditData->getCommentProblemWithMark());
             // если есть поле "оборудование естЬ, проблема с меткой", то учет true
             $cardTemporary->setAccounting(true);
-        }
-        if ($cardEditData->getTaskId()) {
-            $cardTemporary->setTaskId($cardEditData->getTaskId());
         }
         //</editor-fold>
 
