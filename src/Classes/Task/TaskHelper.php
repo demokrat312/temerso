@@ -82,6 +82,9 @@ class TaskHelper
         return $markingToTaskAdapter->getTask($entityItem);
     }
 
+    /**
+     * @return TaskItemInterface
+     */
     private function findTaskEntity(int $taskId, string $taskClass)
     {
         $entityItem = $this->em->getRepository($taskClass)->findTask($taskId, $this->user->getId());
@@ -95,6 +98,10 @@ class TaskHelper
     public function updateStatus(int $taskId, string $taskClass, int $statusId): bool
     {
         $entityItem = $this->findTaskEntity($taskId, $taskClass);
+
+        if($taskClass === TaskItem::TYPE_INSPECTION && $statusId === Marking::STATUS_SAVE) {
+            $statusId = Marking::STATUS_CONTINUE;
+        }
 
         $entityItem->setStatus($statusId);
 

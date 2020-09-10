@@ -36,4 +36,12 @@ trait InspectionTrait
 
         return null;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasAccessEditCardTemporary()
+    {
+        return Marking::STATUS_SAVE !== $this->getStatus() &&  in_array($this->getStatus(), Marking::STATUS_CARD_TEMPORARY);
+    }
 }

@@ -48,7 +48,7 @@ class MarkingAccessHelper
         ],
         // Кладовщик. Только просмотр
         [
-            'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION, Marking::STATUS_REVISION],
+            'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION, Marking::STATUS_REVISION, Marking::STATUS_CONTINUE],
             'user_type' => [self::USER_TYPE_EXECUTOR],
             'access' => [self::ACCESS_VIEW],
         ],
@@ -59,12 +59,12 @@ class MarkingAccessHelper
             'access' => [self::ACCESS_CHANGE_STATUS],
             'access_change_status' => [Marking::STATUS_ACCEPT_EXECUTION],
         ],
-        // Исполнитель. Отправить на проверку
+        // Исполнитель. Смена статуса на Отправить на проверку и Результаты Сохранены Локально
         [
             'status' => [Marking::STATUS_ACCEPT_EXECUTION],
             'user_type' => [self::USER_TYPE_EXECUTOR],
             'access' => [self::ACCESS_CHANGE_STATUS],
-            'access_change_status' => [Marking::STATUS_SAVE],
+            'access_change_status' => [Marking::STATUS_SAVE, Marking::STATUS_CONTINUE],
         ],
     ];
 

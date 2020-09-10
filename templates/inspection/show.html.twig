@@ -72,10 +72,16 @@
                                         {% set cardTemporary = object.cardTemporary(card) %}
                                         {% if cardTemporary %}
                                             <tr>
-                                                <td class="text-left">
-                                                    <a class="js-entity-edit" href="{{ path('card_temporary_edit', {id: cardTemporary.id}) }}">
-                                                        {{ cardTemporary.generalName }}</a>
-                                                </td>
+                                                {% if object.hasAccessEditCardTemporary %}
+                                                    <td class="text-left">
+                                                        <a class="js-entity-edit" href="{{ path('card_temporary_edit', {id: cardTemporary.id}) }}">
+                                                            {{ cardTemporary.generalName }}</a>
+                                                    </td>
+                                                {% else %}
+                                                    <td class="text-left">
+                                                         {{ cardTemporary.generalName }}
+                                                    </td>
+                                                {% endif %}
                                                 <td>{{ cardTemporary.pipeSerialNumber }}</td>
                                                 <td>{{ cardTemporary.serialNoOfNipple }}</td>
                                                 <td>{{ cardTemporary.couplingSerialNumber }}</td>
