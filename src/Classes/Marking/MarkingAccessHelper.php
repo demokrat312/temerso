@@ -48,7 +48,7 @@ class MarkingAccessHelper
         ],
         // Кладовщик. Только просмотр
         [
-            'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION, Marking::STATUS_REVISION, Marking::STATUS_CONTINUE],
+            'status' => [Marking::STATUS_SEND_EXECUTION, Marking::STATUS_ACCEPT_EXECUTION, Marking::STATUS_REVISION],
             'user_type' => [self::USER_TYPE_EXECUTOR],
             'access' => [self::ACCESS_VIEW],
         ],
