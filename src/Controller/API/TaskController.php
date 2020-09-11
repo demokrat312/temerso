@@ -88,6 +88,16 @@ class TaskController extends ApiParentController
     /**
      * Меняем статус у задачи по id задачи и типу задачи
      *
+     *
+     *
+     * const STATUS_SEND_EXECUTION = 1; // Отправлено на исполнение
+     * const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
+     * const STATUS_SAVE = 3; //  Отправить задание на проверку
+     * const STATUS_COMPLETE = 4; // Выполнено полностью (Принять от Исполнителя)
+     * const STATUS_CREATED = 5; // Созданно (или отредактированно)
+     * const STATUS_REVISION = 6; // Отправленно на доработку (такие же функции как у "Принято на исполнение")
+     * const STATUS_CONTINUE = 7; // Результаты Сохранены Локально (идет после Принято на исполнение для испекции. Исполнитель продолжает работу)
+     *
      * @Route("change-status", methods={"POST"}, name="api_task_change_status")
      *
      * @SWG\Parameter(

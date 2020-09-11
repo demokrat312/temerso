@@ -23,12 +23,14 @@ trait EquipmentTrait
 {
     public function getTotalCard()
     {
+        $cardCount = $this->getTotalCardWithoutCatalog();
+
         // Если из каталога, то считаем количество карточек из каждого комплекта
-        if ($this->getWithKit() === Equipment::CATALOG_WITH) {
-            $cardCount = $this->getTotalCardWithCatalog();
-        } else {
-            $cardCount = $this->getTotalCardWithoutCatalog();
-        }
+//        if ($this->getWithKit() === Equipment::CATALOG_WITH) {
+//            $cardCount = $this->getTotalCardWithCatalog();
+//        } else {
+//            $cardCount = $this->getTotalCardWithoutCatalog();
+//        }
 
         return $cardCount;
     }

@@ -36,8 +36,6 @@ class AuthController extends AbstractController
      *    @Model(type=\App\Form\Type\Api\Auth\LoginType::class)
      *),
      *
-     * \@SWG\Parameter( name="XDEBUG_SESSION", in="header", required=true, type="string", default="xdebug" )
-     *
      * @SWG\Response(
      *     response="200",
      *     description="jwt",
