@@ -46,7 +46,22 @@ class CardItemAddToEquipmentType extends AbstractType
                     'type' => 'string',
                     'description' => '№ Метки RFID',
                 ],
-            ]);
+            ])
+            ->add('comment', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Примечание/Комментарий',
+                ],
+            ])
+            ->add('commentProblemWithMark', null, [
+                'required' => false,
+                'documentation' => [
+                    'type' => 'string',
+                    'description' => 'Оборудование есть, проблема с меткой',
+                ],
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

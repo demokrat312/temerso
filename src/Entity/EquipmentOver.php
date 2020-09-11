@@ -68,6 +68,13 @@ class EquipmentOver
      */
     private $comment;
 
+    /**
+     * Оборудование есть, проблема с меткой
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $commentProblemWithMark;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -142,6 +149,24 @@ class EquipmentOver
     {
         $this->comment = $comment;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCommentProblemWithMark()
+    {
+        return $this->commentProblemWithMark;
+    }
+
+    /**
+     * @param mixed $commentProblemWithMark
+     * @return $this
+     */
+    public function setCommentProblemWithMark($commentProblemWithMark)
+    {
+        $this->commentProblemWithMark = $commentProblemWithMark;
         return $this;
     }
 }

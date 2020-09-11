@@ -4,8 +4,10 @@ namespace App\Controller\API;
 
 
 use App\Classes\ApiParentController;
+use App\Classes\Card\CardEditHelper;
 use App\Classes\Equipment\EquipmentConfirmationResponse;
 use App\Classes\Equipment\EquipmentErrorResponse;
+use App\Classes\Utils;
 use App\Entity\Card;
 use App\Entity\Equipment;
 use App\Entity\EquipmentCardsNotConfirmed;
@@ -13,6 +15,7 @@ use App\Entity\EquipmentKit;
 use App\Entity\EquipmentOver;
 use App\Entity\User;
 use App\Form\Data\Api\Card\CardAddToEquipmentData;
+use App\Form\Data\Api\Card\CardEditData;
 use App\Form\Data\Api\Card\CardListAddToEquipmentData;
 use App\Form\Data\Api\Equipment\ConfirmationData;
 use App\Form\Type\Api\Card\CardAddToEquipmentType;
@@ -124,12 +127,6 @@ class EquipmentApiController extends ApiParentController
         if ($form->isValid()) {
             /** @var CardAddToEquipmentData $data */
             $data = $form->getData();
-            /** @var CardRepository $rep */
-            $rep = $em->getRepository(Card::class);
-            $card = $rep->findByCardAddToEquipmentType($data);
-            if(is_array($card)) {
-                $card = current($card);
-            }
 
             /** @var EquipmentKit $equipmentKit */
             $equipmentKit = $em->getRepository(EquipmentKit::class)->find($data->getId());
@@ -137,10 +134,53 @@ class EquipmentApiController extends ApiParentController
                 return $this->errorResponse('Комплект с id=' . $data->getId() . ' не найден');
             }
 
-            if ($equipmentKit->getCards()->contains($card)) {
-                return $this->errorResponse('Карточка уже есть в комплекте');
+            /** @var CardRepository $rep */
+            $rep = $em->getRepository(Card::class);
+            try {
+                $card = $rep->findByCardAddToEquipmentType($data);
+            } catch (\Exception $exception) {
+                if ($exception->getCode() === ApiParentController::STATUS_CODE_404) {
+                    $over = new EquipmentOver();
+                    $over
+                        ->setPipeSerialNumber($data->getPipeSerialNumber())
+                        ->setSerialNoOfNipple($data->getSerialNoOfNipple())
+                        ->setCouplingSerialNumber($data->getCouplingSerialNumber())
+                        ->setRfidTagNo($data->getRfidTagNo())
+                        ->setComment($data->getComment())
+                        ->setCommentProblemWithMark($data->getCommentProblemWithMark())
+                        ->setEquipmentKit($equipmentKit);
+                    $em->persist($over);
+                    $equipmentKit->addOver($over);
+                } else {
+                    throw new \Exception($exception->getMessage());
+                }
+
             }
-            $equipmentKit->addCard($card);
+
+            if ($card) {
+                if (is_array($card)) {
+                    $card = current($card);
+                }
+
+                if ($equipmentKit->getCards()->contains($card)) {
+                    return $this->errorResponse('Карточка уже есть в комплекте');
+                }
+
+                // Добавление комментария или проблема с меткой
+                $cardEditHelper = new CardEditHelper($em);
+                if ($data->getComment() || $data->getCommentProblemWithMark()) {
+                    /** @var CardEditData $cardEditData */
+                    $cardEditData = Utils::copyObject(new CardEditData(), $data);
+                    $cardEditData
+                        ->setTaskId($equipmentKit->getEquipment()->getId())
+                        ->setTaskTypeId($equipmentKit->getEquipment()->getTaskTypeId())
+                        ;
+                    $cardEditHelper->taskCardOtherFieldsUpdate($cardEditData, $card);
+                }
+
+                $equipmentKit->addCard($card);
+            }
+
             $em->persist($equipmentKit);
             $em->flush();
 
@@ -217,6 +257,7 @@ class EquipmentApiController extends ApiParentController
 
             // Проверяем каждую карточку и добавляем к комплекту
             if ($equipmentKit) {
+                $cardEditHelper = new CardEditHelper($em);
                 foreach ($cardListData->getList() as $cardList) {
                     try {
                         $cards = $rep->findByCardAddToEquipmentType($cardList);
@@ -225,6 +266,16 @@ class EquipmentApiController extends ApiParentController
 //                            throw new \Exception('Карточка уже есть в комплекте');
                             }
 
+                            // Добавление комментария или проблема с меткой
+                            if ($cardList->getComment() || $cardList->getCommentProblemWithMark()) {
+                                /** @var CardEditData $cardEditData */
+                                $cardEditData = Utils::copyObject(new CardEditData(), $cardList);
+                                $cardEditHelper->taskCardOtherFieldsUpdate(($cardEditData)
+                                    ->setTaskId($equipmentKit->getEquipment()->getId())
+                                    ->setTaskTypeId($equipmentKit->getEquipment()->getTaskTypeId()),
+                                    $card
+                                );
+                            }
                             $equipmentKit->addCard($card);
 
                         }
@@ -236,8 +287,9 @@ class EquipmentApiController extends ApiParentController
                                 ->setSerialNoOfNipple($cardList->getSerialNoOfNipple())
                                 ->setCouplingSerialNumber($cardList->getCouplingSerialNumber())
                                 ->setRfidTagNo($cardList->getRfidTagNo())
-                                ->setEquipmentKit($equipmentKit)
-                                ;
+                                ->setComment($cardList->getComment())
+                                ->setCommentProblemWithMark($cardList->getCommentProblemWithMark())
+                                ->setEquipmentKit($equipmentKit);
                             $em->persist($over);
                         } else {
                             $filterFieldSearch = function (CardAddToEquipmentData $cardList) {

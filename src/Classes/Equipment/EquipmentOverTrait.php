@@ -31,7 +31,8 @@ trait EquipmentOverTrait
 
     public function getTaskCardOtherFieldsByTask() {
         $otherFields = new StdClass();
-        $otherFields->comment = '';
+        $otherFields->comment = $this->getComment();
+        $otherFields->commentProblemWithMark = $this->getCommentProblemWithMark();
 
         return $otherFields;
     }

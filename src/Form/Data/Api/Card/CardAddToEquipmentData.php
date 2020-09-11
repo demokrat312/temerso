@@ -31,6 +31,14 @@ class CardAddToEquipmentData
      * @var string|null
      */
     private $rfidTagNo;
+    /**
+     * @var string|null
+     */
+    private $comment;
+    /**
+     * @var string|null
+     */
+    private $commentProblemWithMark;
 
     /**
      * @return int
@@ -119,6 +127,42 @@ class CardAddToEquipmentData
     public function setRfidTagNo(?string $rfidTagNo)
     {
         $this->rfidTagNo = $rfidTagNo;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string|null $comment
+     * @return $this
+     */
+    public function setComment(?string $comment)
+    {
+        $this->comment = $comment;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCommentProblemWithMark(): ?string
+    {
+        return $this->commentProblemWithMark;
+    }
+
+    /**
+     * @param string|null $commentProblemWithMark
+     * @return $this
+     */
+    public function setCommentProblemWithMark(?string $commentProblemWithMark)
+    {
+        $this->commentProblemWithMark = $commentProblemWithMark;
         return $this;
     }
 }

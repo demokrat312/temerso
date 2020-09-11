@@ -34,7 +34,7 @@ class CardEditHelper
      */
     private $toArray;
 
-    public function __construct(EntityManagerInterface $em, callable $toArray)
+    public function __construct(EntityManagerInterface $em, callable $toArray = null)
     {
         $this->em = $em;
         $this->toArray = $toArray;
@@ -93,7 +93,7 @@ class CardEditHelper
      * @param Card|null $card
      * @return |null
      */
-    private function taskCardOtherFieldsUpdate(CardEditData $cardEditData, ?Card $card)
+    public function taskCardOtherFieldsUpdate(CardEditData $cardEditData, ?Card $card)
     {
         if ($cardEditData->getTaskId() && $cardEditData->getTaskTypeId()) {
             $taskCard = $card->getTaskCardOtherFieldsByTask($cardEditData->getTaskTypeId(), $cardEditData->getTaskId());
