@@ -33,7 +33,7 @@ class EquipmentCells extends ParentCells
         $this->equipment = $equipment;
 
         $this->sheet->setCellValue('B1', $this->getCardSpecified()); // Задано в комплект (суммарное число единиц оборудования, которое указал постановщик задачи)
-        $this->sheet->setCellValue('B2', $equipment->getTotalCard()); // Отобрано в комплект (суммарное число единиц оборудования, которое находится в единичном или множественном комплекте (сумма подкомплектов))
+        $this->sheet->setCellValue('B2', $equipment->getTotalCardWithCatalog()); // Отобрано в комплект (суммарное число единиц оборудования, которое находится в единичном или множественном комплекте (сумма подкомплектов))
         $this->sheet->setCellValue('B3', $equipment->getTenantName()); // значение поля ‘Название компании-арендатора’
         $this->sheet->setCellValue('B4', $equipment->getMainReason()); // значение поля ‘Основание формирования комплекта’
 
@@ -43,10 +43,10 @@ class EquipmentCells extends ParentCells
     /**
      * @param Collection|Card[] $cards
      */
-    public function setCars(int $startRow, TaskItemInterface $equipment, EquipmentKit $equipmentKit)
+    public function setCars(int $startRow, Equipment $equipment, EquipmentKit $equipmentKit)
     {
         $rowCount = $startRow;
-        $equipmentKit->getCards()->map(function (Card $card) use ($equipment, &$rowCount) {
+        $equipment->getCardsFilterConfirmed($equipmentKit)->map(function (Card $card) use ($equipment, &$rowCount) {
             $this->sheet->setCellValue('A' . $rowCount, $card->getGeneralName()); // Наименованеие
             $this->sheet->setCellValue('B' . $rowCount, $card->getPipeSerialNumber()); // Серийный № трубы
             $this->sheet->setCellValue('C' . $rowCount, $card->getSerialNoOfNipple()); // Серийный № ниппеля

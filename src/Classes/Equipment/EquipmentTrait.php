@@ -44,7 +44,7 @@ trait EquipmentTrait
     {
         $cardCount = 0;
         $this->kits->map(function (EquipmentKit $equipmentKit) use (&$cardCount) {
-            $cardCount += $equipmentKit->getCards()->count();
+            $cardCount += $this->getCardsFilterConfirmed($equipmentKit)->count();
         });
 
         return $cardCount;
