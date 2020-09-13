@@ -31,7 +31,7 @@ class EquipmentConfirmationResponse
      */
     private $confirmed;
     /**
-     * Не подтвержденные
+     * Неподтвержденные
      *
      * @var Card[]
      * @Groups(ApiParentController::GROUP_API_DEFAULT)

@@ -77,6 +77,10 @@ abstract class TaskAdminParent extends MainAdmin
         $em = $query->getQueryBuilder();
 
         $statusId = (int)$this->request->get('status');
+        if(!$statusId) {
+            $filter = $this->request->get('filter');
+            $statusId = $filter && isset($filter['status']) ?  $filter['status'] : null;
+        }
 
 
         if($statusId) {

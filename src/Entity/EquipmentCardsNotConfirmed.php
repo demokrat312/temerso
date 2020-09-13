@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Classes\ApiParentController;
 /**
- * Комплектация в аренду. Не подтвержденные карточки
+ * Комплектация в аренду. Неподтвержденные карточки
  *
  * @ORM\Entity(repositoryClass="App\Repository\EquipmentCardsNotConfirmedCardsNotConfirmedRepository")
  */

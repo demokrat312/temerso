@@ -389,7 +389,7 @@ class EquipmentApiController extends ApiParentController
             $rep = $em->getRepository(Equipment::class);
             $equipment = $rep->find($confirmationData->getTaskId());
 
-            //<editor-fold desc="Находим не подтвержденные и не подтвержденные карточки">
+            //<editor-fold desc="Находим Неподтвержденные и Неподтвержденные карточки">
             $confirmedList = [];
             /** @var Card[] $notConfirmedList */
             $notConfirmedList = [];
@@ -404,7 +404,7 @@ class EquipmentApiController extends ApiParentController
             }
             //</editor-fold>
 
-            //<editor-fold desc="Добавляем не подтвержденные">
+            //<editor-fold desc="Добавляем Неподтвержденные">
             foreach ($notConfirmedList as $notConfirmed) {
                 foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
                     if ($notConfirmed->getId() === $cardNotConfirmed->getCard()->getId()) {

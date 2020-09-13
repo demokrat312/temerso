@@ -175,7 +175,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     private $returnFromRent;
 
     /**
-     * Не подтвержденные карточки
+     * Неподтвержденные карточки
      *
      * @var EquipmentCardsNotConfirmed[]
      *

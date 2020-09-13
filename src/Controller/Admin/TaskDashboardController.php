@@ -53,11 +53,27 @@ class TaskDashboardController extends CRUDController
         $blockList = $builder->buildList() ;
         foreach ($blockList as $block) {
             // Добавляем фильтрацию по статусу
-            $block->setRoute($block->getRoute() . '?status=' . Marking::STATUS_SAVE);
+            $block->setRoute($block->getRoute() . '?status=' . Marking::STATUS_SAVE . '&filter[status]=' . Marking::STATUS_SAVE);
         }
         return $this->renderWithExtraParams('task/list.html.twig', [
             'taskList' => $blockList,
             'title' => 'Задания, ожидающие проверку'
+        ]);
+    }
+
+    /**
+     * Задания Выполненые полностью
+     */
+    public function taskListCompletedAction(AdminRouteService $adminRoute) {
+        $builder = new TaskMenuBuilder($adminRoute);
+        $blockList = $builder->buildList() ;
+        foreach ($blockList as $block) {
+            // Добавляем фильтрацию по статусу
+            $block->setRoute($block->getRoute() . '?status=' . Marking::STATUS_COMPLETE . '&filter[status]=' . Marking::STATUS_COMPLETE);
+        }
+        return $this->renderWithExtraParams('task/list.html.twig', [
+            'taskList' => $blockList,
+            'title' => 'Задания, выполненые полностью'
         ]);
     }
 

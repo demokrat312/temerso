@@ -175,6 +175,9 @@ sonata_admin:
                 label: "Документы"
                 items:
                     - App\Admin\ArrivalAdmin
+                    - label: "Выполненные полностью"
+                      route: admin_app_taskdashboard_task_list_completed
+                      roles: [ROLE_ADMIN]
 #                    - label: "Выгрузка документов"
 #                      route: admin_empty
 #                      roles: [ROLE_ADMIN]
