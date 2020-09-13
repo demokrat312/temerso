@@ -10,6 +10,8 @@ namespace App\Form\Type\Api\Card;
 
 
 use App\Form\Data\Api\Card\CardImageData;
+use App\Form\Data\Api\Card\CardImageListData;
+use App\Form\Data\Api\Card\CardImageListItemData;
 use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -17,7 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class CardImageType extends AbstractType
+class CardImageListItemType extends AbstractType
 {
     /**
      * @var Pool
@@ -32,25 +34,19 @@ class CardImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image', FileType::class, [
+            ->add('cardId', null, [
                 'required' => true,
-                'documentation' => [
-                    'type' => 'file',
-                    'description' => 'Изображение',
-                ],
-            ])
-            ->add('taskId', null, [
-                'required' => false,
                 'documentation' => [
                     'type' => 'integer',
                     'description' => 'Ключ, задачи',
                 ],
             ])
-            ->add('taskTypeId', null, [
-                'required' => false,
+            ->add('images', FileType::class, [
+                'required' => true,
+                'multiple' => true,
                 'documentation' => [
-                    'type' => 'integer',
-                    'description' => 'Тип задачи',
+                    'type' => 'file',
+                    'description' => 'Изображения',
                 ],
             ])
         ;
@@ -60,7 +56,7 @@ class CardImageType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
-            'data_class' => CardImageData::class,
+            'data_class' => CardImageListItemData::class,
             'allow_extra_fields' => true,
             'method' => 'POST',
             'block_prefix' => '',

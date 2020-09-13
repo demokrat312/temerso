@@ -73,3 +73,5 @@ services:
 
     security.acl.permission_granting_strategy:
         class: App\Security\PermissionGrantingStrategy
+    app.jwt_token_authenticator:
+        class: App\Security\JWTTokenAuthenticator

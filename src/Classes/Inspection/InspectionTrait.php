@@ -38,6 +38,7 @@ trait InspectionTrait
     }
 
     /**
+     * @see app/templates/inspection/show.html.twig
      * @return bool
      */
     public function hasAccessEditCardTemporary()

@@ -10,14 +10,16 @@ namespace App\Form\Type\Api\Card;
 
 
 use App\Form\Data\Api\Card\CardImageData;
+use App\Form\Data\Api\Card\CardImageListData;
 use Sonata\MediaBundle\Provider\Pool;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class CardImageType extends AbstractType
+class CardImageListType extends AbstractType
 {
     /**
      * @var Pool
@@ -32,12 +34,9 @@ class CardImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('image', FileType::class, [
-                'required' => true,
-                'documentation' => [
-                    'type' => 'file',
-                    'description' => 'Изображение',
-                ],
+            ->add('cards', CollectionType::class, [
+                'entry_type' => CardImageListItemType::class,
+                'allow_add' => true
             ])
             ->add('taskId', null, [
                 'required' => false,
@@ -60,7 +59,7 @@ class CardImageType extends AbstractType
     {
         $resolver->setDefaults(array(
             'csrf_protection' => false,
-            'data_class' => CardImageData::class,
+            'data_class' => CardImageListData::class,
             'allow_extra_fields' => true,
             'method' => 'POST',
             'block_prefix' => '',

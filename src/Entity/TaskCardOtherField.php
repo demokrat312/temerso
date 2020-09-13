@@ -22,6 +22,8 @@ class TaskCardOtherField implements CardShowHistoryInterface
     private $id;
 
     /**
+     * Тип задачи
+     *
      * @ORM\Column(type="integer")
      */
     private $taskTypeId;

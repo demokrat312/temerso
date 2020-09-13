@@ -17,11 +17,18 @@ use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemAdapter;
+use App\Classes\Utils;
 use App\Entity\Card;
+use App\Entity\CardTemporary;
+use App\Entity\Inspection;
+use App\Entity\Marking;
 use App\Entity\User;
 use App\Form\Data\Api\Card\CardEditData;
+use App\Form\Data\Api\Card\CardImageData;
+use App\Form\Data\Api\Card\CardImageListData;
 use App\Form\Data\Api\Card\CardListEditData;
 use App\Form\Type\Api\Card\CardEditType;
+use App\Form\Type\Api\Card\CardImageListType;
 use App\Form\Type\Api\Card\CardImageType;
 use App\Form\Type\Api\Card\CardListEditType;
 use App\Form\Type\Card\CardIdentificationType;
@@ -30,6 +37,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Sonata\MediaBundle\Model\MediaInterface;
 use Swagger\Annotations as SWG;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -143,7 +151,7 @@ class CardController extends ApiParentController
 
         if ($form->isValid()) {
 
-            $toArray = function($object, $group) {
+            $toArray = function ($object, $group) {
                 return $this->toArray($object, $group);
             };
             $cardEditHelper = new CardEditHelper($em, $toArray);
@@ -235,6 +243,21 @@ class CardController extends ApiParentController
      *      description="Изображение"
      * )
      *
+     * @SWG\Parameter(
+     *      name="taskId",
+     *      in="formData",
+     *      required=false,
+     *      type="number",
+     *      description="Ключ задачи"
+     * )
+     * @SWG\Parameter(
+     *      name="taskTypeId",
+     *      in="formData",
+     *      required=false,
+     *      type="number",
+     *      description="Тип родительской задачи"
+     * )
+     *
      * @SWG\Response(
      *     response="200",
      *     description="Если изображение сохранилось возвращаем фразу 'OK!'",
@@ -249,19 +272,129 @@ class CardController extends ApiParentController
         $form->submit(array_merge($request->request->all(), $request->files->all()));
 
         if ($form->isValid()) {
+            /** @var CardImageData $formData */
             $formData = $form->getData();
-//            $card = $em->getRepository(Card::class)->find($formData['id']);
-//            if (!$card) {
-//                return $this->errorResponse('Карточка не найдена');
-//            }
 
-            $media = $this->getMedia($formData['image']);
+            $media = $this->getMedia($formData->getImage());
 
-            $card->addImage($media);
+            //<editor-fold desc="Добавление изображения к временной карточки. Только для испекции для определенных статусов">
+            /** @var Inspection $inspection */
+
+            $hasCardTemporary = false;
+            // Проверяем на испекцию
+            if ($formData->getTaskTypeId() == TaskItem::TYPE_INSPECTION) {
+
+                // Получаем инспекцию
+                $inspection = $em->getRepository(Inspection::class)->find((int)$formData->getTaskId());
+                if (!$inspection) throw new NotFoundHttpException('Задача не найдена');
+
+                // Проверяем на нужный статус и добавляем изображение
+                if (in_array($inspection->getStatus(), Marking::STATUS_CARD_TEMPORARY)) {
+                    $hasCardTemporary = true;
+                    $cardTemporary = $inspection->getCardTemporary($card);
+                    $cardTemporary = $cardTemporary ?: new CardTemporary();
+
+                    $cardTemporary->addImage($media);
+                }
+            }
+
+            //</editor-fold>
+
+            //<editor-fold desc="Добавление изображения к карточке">
+            if (!$hasCardTemporary) {
+                $card->addImage($media);
+                $em->persist($card);
+            }
+            //</editor-fold>
 
             $em->persist($media);
-            $em->persist($card);
+            $em->flush();
 
+            return $this->defaultResponse(self::OK);
+        } else {
+            return $this->formErrorResponse($form);
+        }
+    }
+
+    /**
+     * Загрузка множественных изображений для множественный карточек
+     *
+     * @Route("list/files", methods={"POST"}, name="api_card_list_files")
+     *
+     * @SWG\Parameter(
+     *    name="form",
+     *    in="body",
+     *    description="Данные для загрузки изображений",
+     *    @Model(type=CardImageListData::class)
+     * ),
+     *
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="Если изображение сохранилось возвращаем фразу 'OK!'",
+     *     @SWG\Schema( type="string"),
+     * )
+     *
+     * @Security(name="Bearer")
+     */
+    public function cardFileListAction(Request $request, EntityManagerInterface $em)
+    {
+        $form = $this->createForm(CardImageListType::class);
+        $reqFields = $request->request->all();
+        $reqFiles = $request->files->all();
+        $form->submit(Utils::array_merge_recursive_distinct($reqFields, $reqFiles));
+
+        if ($form->isValid()) {
+            /** @var CardImageListData $formData */
+            $formData = $form->getData();
+
+            /** @var Inspection $inspection */
+            /** @var CardRepository $cardRep */
+
+            //<editor-fold desc="Проверяем на временную карточку">
+            $hasCardTemporary = false;
+            // Проверяем на испекцию
+            if ($formData->getTaskTypeId() == TaskItem::TYPE_INSPECTION) {
+
+                // Получаем инспекцию
+                $inspection = $em->getRepository(Inspection::class)->find((int)$formData->getTaskId());
+                if (!$inspection) throw new NotFoundHttpException('Задача не найдена');
+
+                // Проверяем на нужный статус и добавляем изображение
+                if (in_array($inspection->getStatus(), Marking::STATUS_CARD_TEMPORARY)) {
+                    $hasCardTemporary = true;
+                }
+            }
+            //</editor-fold>
+
+            $cardRep = $em->getRepository(Card::class);
+            foreach ($formData->getCards() as $cardData) {
+                // Получаем карточку
+                $card = $cardRep->find($cardData->getCardId());
+                if (!$card) throw new NotFoundHttpException('Карточка с id=' . $cardData->getCardId() . ' не найдена');
+
+                // Добавляем изображение к временной карточке
+                if ($hasCardTemporary) {
+                    $cardTemporary = $inspection->getCardTemporary($card);
+                    $cardTemporary = $cardTemporary ?: new CardTemporary();
+
+                    foreach ($cardData->getImages() as $imageData) {
+                        $media = $this->getMedia($imageData);
+                        $cardTemporary->addImage($media);
+                        $em->persist($media);
+                    }
+                    $em->persist($cardTemporary);
+                    // К основной карточке
+                } else {
+                    foreach ($cardData->getImages() as $imageData) {
+                        $media = $this->getMedia($imageData);
+                        $card->addImage($media);
+                        $em->persist($media);
+                    }
+                    $em->persist($card);
+                }
+
+            }
             $em->flush();
 
             return $this->defaultResponse(self::OK);
@@ -272,23 +405,28 @@ class CardController extends ApiParentController
 
     private function getMedia($binaryContent)
     {
-        if(empty($binaryContent)) {
+        if (empty($binaryContent)) {
             throw new NotFoundHttpException('Изображение не найдено');
         }
+        if($binaryContent instanceof UploadedFile) {
+            $name = $binaryContent->getClientOriginalName();
+            $uniqId = sha1($name . uniqid()) . '.' . $binaryContent->guessExtension();
+        } else {
+            $name = random_int(11111, 99999);
+            $uniqId = sha1( uniqid() . random_int(11111, 99999));
+        }
+
         $provider = 'sonata.media.provider.image';
         $context = 'card';
 
 
         $media = new Media();
-        $media->setName(isset($_FILES['image'])? $_FILES['image']['name'] : random_int(11111, 99999));
+        $media->setName($name);
         $media->setBinaryContent($binaryContent);
         $media->setContext($context);
         $media->setProviderName($provider);
         $media->setProviderStatus(MediaInterface::STATUS_OK);
-
-        $uniqId = sha1($media->getName().uniqid().random_int(11111, 99999)) . '.' . $media->getBinaryContent()->guessExtension();
         $media->setProviderReference($uniqId);
-
         $media->setEnabled(true);
 
         return $media;
