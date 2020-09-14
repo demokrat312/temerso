@@ -79,6 +79,7 @@ trait EquipmentTrait
     /**
      * Получаем список подтвержденных карточек
      *
+     * @todo Оптимизировать getTaskCardOtherFieldsByTask
      * @return Card[]|ArrayCollection
      */
     public function getCardsFilterConfirmed(EquipmentKit $kit)
@@ -86,7 +87,11 @@ trait EquipmentTrait
         $cards = new ArrayCollection();
         foreach ($kit->getCards() as $card) {
             foreach ($this->getCardsNotConfirmed() as $notConfirmed) {
-                if ($card->getId() === $notConfirmed->getCard()->getId()) {
+                if ($card->getId() === $notConfirmed->getCard()->getId() &&
+                    !$card->getTaskCardOtherFieldsByTask(
+                        $kit->getEquipment()->getTaskTypeId(),
+                        $kit->getEquipment()->getId())->getCommentProblemWithMark()
+                ) {
                     continue 2;
 
                 }
@@ -100,6 +105,7 @@ trait EquipmentTrait
     /**
      * Получаем список не подтвержденных карточек
      *
+     * @todo Оптимизировать getTaskCardOtherFieldsByTask
      * @return Card[]|ArrayCollection
      */
     public function getCardsFilterNotConfirmed(EquipmentKit $kit)
@@ -107,7 +113,11 @@ trait EquipmentTrait
         $cards = new ArrayCollection();
         foreach ($kit->getCards() as $card) {
             foreach ($this->getCardsNotConfirmed() as $notConfirmed) {
-                if ($card->getId() === $notConfirmed->getCard()->getId()) {
+                if ($card->getId() === $notConfirmed->getCard()->getId() &&
+                    !$card->getTaskCardOtherFieldsByTask(
+                        $kit->getEquipment()->getTaskTypeId(),
+                        $kit->getEquipment()->getId())->getCommentProblemWithMark()
+                ) {
                     $cards->add($card);
                     continue 2;
 
