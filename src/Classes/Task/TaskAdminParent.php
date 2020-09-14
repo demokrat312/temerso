@@ -98,7 +98,7 @@ abstract class TaskAdminParent extends MainAdmin
             $expr->in(sprintf('%s.%s', $al, 'status'), ':createdByStatusIds')
         );
         $em
-            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
+            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccessWeb(MarkingAccessHelper::USER_TYPE_CREATOR));
 
         // По доступам для исполнителя(кладовщик)
         $em->leftJoin(sprintf('%s.%s', $al, 'users'), 'users');
@@ -107,7 +107,7 @@ abstract class TaskAdminParent extends MainAdmin
             $expr->in(sprintf('%s.%s', $al, 'status'), ':executorStatusIds')
         );
         $em
-            ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
+            ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccessWeb(MarkingAccessHelper::USER_TYPE_EXECUTOR));
 
         $em->andWhere($expr->orX($creatorExpr, $executorExpr));
         $em->orderBy(sprintf('%s.%s', $al, 'id'), 'ASC');

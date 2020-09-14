@@ -68,14 +68,24 @@ class MarkingAccessHelper
         ],
     ];
 
+    // Только для web
+    private const ACCESS_WEB = [
+        // Кладовщик. Только просмотр
+        [
+            'status' => [Marking::STATUS_CONTINUE],
+            'user_type' => [self::USER_TYPE_EXECUTOR],
+            'access' => [self::ACCESS_VIEW],
+        ],
+    ];
+
 
     /**
      * Список статусов для просмотра
      */
-    static function getShowStatusAccess($userType)
+    static function getShowStatusAccess($userType, $accessList = self::ACCESS)
     {
         $status = [];
-        foreach (self::ACCESS as $access) {
+        foreach ($accessList as $access) {
             $hasUserType = in_array($userType, $access['user_type']);
             $hasAccessView = Utils::in_array([self::ACCESS_EDIT, self::ACCESS_VIEW], $access['access']);
             if ($hasUserType && $hasAccessView) {
@@ -84,6 +94,15 @@ class MarkingAccessHelper
         }
 
         return array_unique($status);
+    }
+
+
+    /**
+     * Список статусов для просмотра, только web
+     */
+    static function getShowStatusAccessWeb($userType)
+    {
+        return self::getShowStatusAccess($userType, array_merge(self::ACCESS, self::ACCESS_WEB));
     }
 
     private static function roleHierarchical(string $roleName)
