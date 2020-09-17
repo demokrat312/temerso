@@ -1,0 +1,26 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field %}
+    <ul class="sonata-ba-show-many-to-many">
+        {% set route_name = field_description.options.route.name %}
+        {% for element in value %}
+            <li>
+                <a target="_blank" href="{% path element, 'reference' %}">
+                    {{ element|render_relation_element(field_description) }}
+                </a>
+                <a target="_blank" class="btn btn-primary" href="/media/download/{{ element.id }}">Загрузить</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

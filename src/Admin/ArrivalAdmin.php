@@ -78,7 +78,7 @@ class ArrivalAdmin extends MainAdmin
                 ->add('numberUnitsInBatch', null, ['label' => 'Количество единиц товара в партии'])
                     ->add('dateArrival', null, ['label' => 'Дата прихода'])
                 ->add('numberAndDatePurchase', null, ['label' => '№ договора покупки, дата покупки'])
-                ->add('files', null, array('label' => 'Приложение сканов'))
+                ->add('files', null, array('label' => 'Приложение сканов', 'template' => 'crud/show/file.html.twig'))
             ->end()->end()
             ->with('cardGeneral', ['label' => 'Основые поля карточные', 'class' => 'col-md-6'])
                 ->add('refTypeEquipment', null, ['label' => 'Тип оборудования (выбор значений из списка)'])
