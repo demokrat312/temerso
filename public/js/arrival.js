@@ -22,10 +22,18 @@
 
         const validateAmount = (event) => {
             const errorMessageTemplate = `Необходимо ввести {require}, вы ввели {enter}`;
-            const requireAmount = $('[name$="[amountCard]"]').val();
+            const requireAmount = $('[name$="[amountCard]"]').val() || 0;
             const $field = $(event.target);
 
-            const enterAmount = $field.val().split(';').length;
+            let fieldValue = $field.val().trim().split(';');
+            const last = [...fieldValue].pop();
+            // Убираем последний пустой элемент
+            if(fieldValue.length && last === '') {
+                fieldValue.splice(-1);
+                $field.val(fieldValue.join(';'))
+            }
+
+            const enterAmount = fieldValue.length;
 
             if (+requireAmount !== +enterAmount) {
                 const errorMessage = errorMessageTemplate

@@ -25,9 +25,11 @@ const CrudEditModel = (function () {
     const init = () => {
         console.info('edit init');
         initEvent();
+        hideToggleTabButton();
     };
 
     const initEvent = () => {
+        $('.nav-tabs li a').on('click', () => hideToggleTabButton());
         $('.js-prev-tab').on('click', () => prevOrNextTabHandler('prev'));
         $('.js-next-tab').on('click', () => prevOrNextTabHandler('next'));
         $('.js-entity-edit').on('click', entityEdit);
@@ -42,7 +44,22 @@ const CrudEditModel = (function () {
 
             $newActiveLi.find('a').trigger('click');
         }
+    };
 
+    const hideToggleTabButton = () => {
+        setTimeout(() => {
+            const $tab = $('.nav-tabs');
+            const $activeLi = $tab.find('li.active');
+
+            const prev = $('.js-prev-tab');
+            const next = $('.js-next-tab');
+
+            prev.show();
+            next.show();
+            if(!$activeLi['prev']('li').length)prev.hide();
+            if(!$activeLi['next']('li').length)next.hide();
+
+        }, 300);
     };
 
     const modalByUrl = (url, options = {}) => {
