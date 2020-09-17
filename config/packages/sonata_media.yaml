@@ -23,6 +23,9 @@ sonata_media:
             allowed_mime_types: ['application/pdf', 'application/x-pdf', 'application/rtf', 'text/html', 'text/rtf', 'text/plain']
     contexts:
         default:
+            download:
+                strategy: sonata.media.security.public_strategy
+                mode: http
             providers:
                 - sonata.media.provider.dailymotion
                 - sonata.media.provider.youtube
@@ -34,6 +37,9 @@ sonata_media:
                 small: { width: 100 , quality: 70}
                 big:   { width: 500 , quality: 70}
         card:
+            download:
+                strategy: sonata.media.security.public_strategy
+                mode: http
             providers:
                 - sonata.media.provider.image
                 - sonata.media.provider.file
@@ -41,18 +47,27 @@ sonata_media:
                 small: { width: 100 , quality: 70}
                 big:   { width: 500 , quality: 70}
         card_inventory:
+            download:
+                strategy: sonata.media.security.public_strategy
+                mode: http
             providers:
                 - sonata.media.provider.image
             formats:
                 small: { width: 100 , quality: 70}
                 big:   { width: 500 , quality: 70}
         card_return_form_rent:
+            download:
+                strategy: sonata.media.security.public_strategy
+                mode: http
             providers:
                 - sonata.media.provider.image
             formats:
                 small: { width: 100 , quality: 70}
                 big:   { width: 500 , quality: 70}
         card_disposal:
+            download:
+                strategy: sonata.media.security.public_strategy
+                mode: http
             providers:
                 - sonata.media.provider.image
                 - sonata.media.provider.file
@@ -60,6 +75,9 @@ sonata_media:
                 small: { width: 100 , quality: 70}
                 big:   { width: 500 , quality: 70}
         arrival:
+            download:
+                strategy: sonata.media.security.public_strategy
+                mode: http
             providers:
                 - sonata.media.provider.image
                 - sonata.media.provider.file

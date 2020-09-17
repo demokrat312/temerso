@@ -19,7 +19,7 @@ file that was distributed with this source code.
                 <a target="_blank" href="{% path element, 'reference' %}">
                     {{ element|render_relation_element(field_description) }}
                 </a>
-                <a target="_blank" class="btn btn-primary" href="/media/download/{{ element.id }}">Загрузить</a>
+                <a target="_blank" class="btn btn-primary" href="{{ path('sonata_media_download', {'id': element.id}) }}">Загрузить</a>
             </li>
         {% endfor %}
     </ul>
