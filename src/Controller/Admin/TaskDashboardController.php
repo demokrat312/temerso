@@ -73,7 +73,7 @@ class TaskDashboardController extends CRUDController
         }
         return $this->renderWithExtraParams('task/list.html.twig', [
             'taskList' => $blockList,
-            'title' => 'Задания, выполненые полностью'
+            'title' => 'Задания, выполненные полностью'
         ]);
     }
 
