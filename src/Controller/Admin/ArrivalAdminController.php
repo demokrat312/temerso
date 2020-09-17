@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * @link https://symfony.com/doc/master/bundles/SonataAdminBundle/cookbook/recipe_custom_action.html
  */
-class ArrivalAdminController extends CRUDController
+class ArrivalAdminController extends DefaultAdminController
 {
     /**
      * @link https://packagist.org/packages/onurb/excel-bundle

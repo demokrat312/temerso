@@ -10,8 +10,11 @@ namespace App\Admin;
 
 use App\Classes\MainAdmin;
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
+use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
+use App\Controller\Admin\MarkingAdminController;
 use App\Entity\Arrival;
 use App\Entity\Card;
+use App\Entity\Marking;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -193,7 +196,15 @@ class ArrivalAdmin extends MainAdmin
         if ($this->isCurrentRoute('create')) {
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_PREV));
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_NEXT));
-            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CREATE_AND_EDIT));
+            $actionButtons->addItem((new ShowModeFooterButtonItem())
+                ->setClasses('btn btn-success')
+                ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
+                ->addIcon('fa-save')
+                ->setRouteAction(MarkingAdminController::ROUTER_SHOW)
+                ->setTitle('Создать партию и карточки в  Каталоге')
+                ,
+                );
+            $this->setShowModeButtons($actionButtons->getButtonList());
         } else {
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_UPDATE_AND_EDIT_AGAIN));
         }
