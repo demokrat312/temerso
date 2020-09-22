@@ -243,8 +243,8 @@ class CardAdmin extends MainAdmin
                             $showMapper->add('restoreReason', null, ['label' => 'Причина востановления']);
                         }
                         $showMapper->add('accounting', null, ['label' => 'Учет/Инвентаризация'])
-                        ->add('images', null, ['label' => 'Изображения'])
-                        ->add('files', null, ['label' => 'Файлы'])
+                        ->add('images', null, ['label' => 'Изображения', 'template' => 'crud/show/file.html.twig'])
+                        ->add('files', null, ['label' => 'Файлы', 'template' => 'crud/show/file.html.twig'])
                         ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
                         ->add('statusTitle', null, ['label' => 'Статус'])
                         ->add('location', null, ['label' => 'Местоположение'])
