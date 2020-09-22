@@ -24,6 +24,6 @@ framework:
     templating:
         engines: ['twig']
     assets:
-        version: 'v2.0.3'
+        version: 'v2.0.4'
     csrf_protection:
         enabled:   false
