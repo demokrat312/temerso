@@ -68,10 +68,11 @@
         const fixFieldValue = (fieldValues) => {
             // Удаляем пустые значения
             fieldValues = fieldValues.filter(fieldValue => fieldValue.trim());
-            // Заменяем , на . и проверяем на число
+            // Заменяем , на .
             fieldValues = fieldValues.map(fieldValue => {
                 const fieldValueString = ('' + fieldValue).replace(/,/g, '.');
-                return parseFloat(fieldValueString);
+                // return parseFloat(fieldValueString);
+                return fieldValueString
             });
 
             return fieldValues;

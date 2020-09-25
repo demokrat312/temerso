@@ -115,7 +115,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Серийный № трубы
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $pipeSerialNumber;
@@ -123,7 +123,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Серийный № ниппеля
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $serialNoOfNipple;
@@ -131,7 +131,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Серийный № муфты
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT, CardIdentificationResponse::GROUP_API_DEFAULT})
      */
     private $couplingSerialNumber;
@@ -139,7 +139,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Серийный № после ремонта
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $serial_no_after_repair;
 
