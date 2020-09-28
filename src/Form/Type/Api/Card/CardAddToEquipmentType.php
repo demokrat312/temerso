@@ -39,21 +39,21 @@ class CardAddToEquipmentType extends AbstractType
             ->add('pipeSerialNumber', null, [
                 'required' => false,
                 'documentation' => [
-                    'type' => 'number',
+                    'type' => 'string',
                     'description' => 'Серийный № трубы',
                 ],
             ])
             ->add('couplingSerialNumber', null, [
                 'required' => false,
                 'documentation' => [
-                    'type' => 'number',
+                    'type' => 'string',
                     'description' => 'Серийный № муфты',
                 ],
             ])
             ->add('serialNoOfNipple', null, [
                 'required' => false,
                 'documentation' => [
-                    'type' => 'number',
+                    'type' => 'string',
                     'description' => 'Серийный № ниппеля',
                 ],
             ])

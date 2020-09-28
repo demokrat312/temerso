@@ -31,19 +31,19 @@ class CardItemType extends AbstractType
             ])
             ->add('pipeSerialNumber', null, [
                 'documentation' => [
-                    'type' => 'number',
+                    'type' => 'string',
                     'description' => 'Серийный № трубы',
                 ],
             ])
             ->add('serialNoOfNipple', null, [
                 'documentation' => [
-                    'type' => 'number',
+                    'type' => 'string',
                     'description' => 'Серийный № ниппеля',
                 ],
             ])
             ->add('couplingSerialNumber', null, [
                 'documentation' => [
-                    'type' => 'number',
+                    'type' => 'string',
                     'description' => 'Серийный № муфты',
                 ],
             ])
