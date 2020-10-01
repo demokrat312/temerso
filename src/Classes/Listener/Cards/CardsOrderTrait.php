@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @mixin TaskItemInterface|CardsOrderListenerInterface
+ * @mixin CardsOrderListenerInterface
  * @see CardsOrderListenerHandler
  */
 trait CardsOrderTrait

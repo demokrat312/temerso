@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Classes\Listener\Cards\CardsOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
@@ -18,9 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\InventoryRepository")
  */
-class Inventory implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
+class Inventory implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface
 {
-    use TaskEntityTrait;
+    use TaskEntityTrait, CardsOrderTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -92,7 +94,7 @@ class Inventory implements DateListenerInterface, CreatedByListenerInterface, Ta
      */
     public function getCards(): Collection
     {
-        return $this->cards;
+        return $this->getCardsWithOrder();;
     }
 
     public function addCard(Card $card): self

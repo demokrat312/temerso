@@ -500,9 +500,8 @@ class CardAdmin extends MainAdmin
                     return true;
                 },
             ])
-//            ->add('arrival', \Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter::class, [
-////                ''
-//            ])
+//            ->add('pipeSerialNumber', \Sonata\DoctrineORMAdminBundle\Filter\ModelAutocompleteFilter::class, [], null, ['property' => 'pipeSerialNumber'])
+            ->add('pipeSerialNumber', null, ['label' => 'Серийный № трубы'])
         ;
     }
 

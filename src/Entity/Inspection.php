@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Classes\Inspection\InspectionTrait;
+use App\Classes\Listener\Cards\CardsOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
@@ -18,9 +20,10 @@ use Doctrine\ORM\Mapping\OrderBy;
  *
  * @ORM\Entity(repositoryClass="App\Repository\InspectionRepository")
  */
-class Inspection implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
+class Inspection implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface
 {
-    use TaskEntityTrait, InspectionTrait;
+    use TaskEntityTrait, InspectionTrait, CardsOrderTrait;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -101,7 +104,7 @@ class Inspection implements DateListenerInterface, CreatedByListenerInterface, T
      */
     public function getCards(): Collection
     {
-        return $this->cards;
+        return $this->getCardsWithOrder();
     }
 
     public function addCard(Card $card): self

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Classes\Listener\Cards\CardsOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
@@ -17,9 +19,9 @@ use Doctrine\ORM\Mapping\OrderBy;
  *
  * @ORM\Entity(repositoryClass="App\Repository\RepairRepository")
  */
-class Repair implements  DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
+class Repair implements  DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface
 {
-    use TaskEntityTrait, RepairTrait;
+    use TaskEntityTrait, RepairTrait, CardsOrderTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -103,7 +105,7 @@ class Repair implements  DateListenerInterface, CreatedByListenerInterface, Task
      */
     public function getCards(): Collection
     {
-        return $this->cards;
+        return $this->getCardsWithOrder();
     }
 
     public function addCard(Card $card): self

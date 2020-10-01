@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Classes\Listener\Cards\CardsOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsOrderTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,8 +17,10 @@ use App\Classes\ApiParentController;
  *
  * @ORM\Entity(repositoryClass="App\Repository\EquipmentKitRepository")
  */
-class EquipmentKit
+class EquipmentKit implements CardsOrderListenerInterface
 {
+    use CardsOrderTrait;
+
     /**
      * Ключ
      *
@@ -100,7 +104,7 @@ class EquipmentKit
      */
     public function getCards(): Collection
     {
-        return $this->cards;
+        return $this->getCardsWithOrder();
     }
 
     /**
