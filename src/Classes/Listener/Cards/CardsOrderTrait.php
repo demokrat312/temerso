@@ -25,7 +25,7 @@ trait CardsOrderTrait
      */
     private $cardsOrder;
 
-    public function getCardsOrder(): array
+    public function getCardsOrder(): ?array
     {
         return $this->cardsOrder;
     }

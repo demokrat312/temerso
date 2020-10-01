@@ -17,7 +17,7 @@ interface CardsOrderListenerInterface
     /** @return Card[] */
     public function getCards(): Collection;
 
-    public function getCardsOrder(): array;
+    public function getCardsOrder(): ?array;
 
     public function setCardsOrder(array $cardsOrder);
 }
