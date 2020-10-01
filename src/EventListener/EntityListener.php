@@ -9,6 +9,8 @@
 namespace App\EventListener;
 
 
+use App\Classes\Listener\Cards\CardsOrderListenerHandler;
+use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\CreatedBy\CreatedByListenerHandler;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerHandler;
@@ -26,11 +28,16 @@ class EntityListener
      * @var CreatedByListenerHandler
      */
     private $createdByListener;
+    /**
+     * @var CardsOrderListenerHandler
+     */
+    private $cardsOrderListenerHandler;
 
     public function __construct(Security $security)
     {
         $this->dateListener = new DateListenerHandler();
         $this->createdByListener = new CreatedByListenerHandler($security);
+        $this->cardsOrderListenerHandler = new CardsOrderListenerHandler();
     }
 
     public function prePersist(LifecycleEventArgs $args)
@@ -42,6 +49,9 @@ class EntityListener
         }
         if ($entity instanceof CreatedByListenerInterface) {
             $this->createdByListener->prePersist($entity);
+        }
+        if ($entity instanceof CardsOrderListenerInterface) {
+            $this->cardsOrderListenerHandler->prePersist($entity);
         }
     }
 

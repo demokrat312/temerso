@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Classes\Listener\Cards\CardsOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
@@ -18,9 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\MarkingRepository")
  */
-class Marking implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
+class Marking implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface
 {
-    use TaskEntityTrait;
+    use TaskEntityTrait, CardsOrderTrait;
 
     const STATUS_SEND_EXECUTION = 1; // Отправлено на исполнение
     const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
@@ -121,7 +123,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
      */
     public function getCards(): Collection
     {
-        return $this->cards;
+        return $this->getCardsWithOrder();
     }
 
     public function addCard($card): self
