@@ -169,6 +169,7 @@ trait TaskEntityTrait
 
     public function __toString()
     {
+        if(!$this->getCreateAt()) return 'error';
 //        return $this->createdBy ? (string)$this->createdBy->getFio() : 'error';
         return sprintf('%s, %s', TaskItem::TYPE_TITLE[$this->getTaskTypeId()], $this->getCreateAt()->format('d.m.Y'));
     }
