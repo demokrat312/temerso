@@ -16,12 +16,14 @@ class PermissionGrantingStrategy extends BasePermissionGrantingStrategy
 {
     public function isGranted(AclInterface $acl, array $masks, array $sids, $administrativeMode = false)
     {
+
+        return parent::isGranted($acl, $masks, $sids, $administrativeMode);
         // @todo переделать. Если права есть то проверяем, иначе пропускаем
-        if ($acl->getObjectAces()) {
+        /*if ($acl->getObjectAces()) {
             return parent::isGranted($acl, $masks, $sids, $administrativeMode);
         }
 
-        return true;
+        return true;*/
     }
 
 }
