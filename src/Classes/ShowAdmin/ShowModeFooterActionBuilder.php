@@ -9,6 +9,10 @@
 namespace App\Classes\ShowAdmin;
 
 
+use App\Controller\Admin\MarkingAdminController;
+use App\Entity\Marking;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 class ShowModeFooterActionBuilder
 {
     const BTN_UPDATE_AND_EDIT_AGAIN = 'btn_update_and_edit_again';
@@ -22,6 +26,9 @@ class ShowModeFooterActionBuilder
     const BTN_CUSTOM_REDIRECT = 'btn_custom_redirect';
     const BTN_CUSTOM_PREV = 'btn_custom_prev';
     const BTN_CUSTOM_NEXT = 'btn_custom_next';
+
+    const BTN_ID_CREATE_TASK = 'btn_id_create_task';
+    const BTN_ID_STATUS_SEND_EXECUTION = 'btn_id_status_send_execution';
 
     /**
      * @var array |ShowModeFooterItemParent[]
@@ -100,6 +107,25 @@ class ShowModeFooterActionBuilder
                 ->setTitle('Далее')
                 ->setButtonType('button')
             ,
+            (new ShowModeFooterButtonItem())
+                ->setId(self::BTN_ID_CREATE_TASK)
+                ->setClasses('btn btn-success')
+                ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
+                ->addIcon('fa-save')
+                ->setRouteAction(MarkingAdminController::ROUTER_SHOW)
+                ->setTitle('Создать задачу')
+            ,
+            (new ShowModeFooterButtonItem())
+                ->setId(self::BTN_ID_STATUS_SEND_EXECUTION)
+                ->setClasses('btn btn-success')
+                ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
+                ->addIcon('fa-save')
+                ->setRouteAction(MarkingAdminController::ROUTER_CHANGE_STATUS)
+                ->setRouteQuery(http_build_query(['status' => Marking::STATUS_SEND_EXECUTION]))
+                ->setTitle('Создать задачу и отправить на исполнение')
+
+            ,
+
         ];
     }
 
@@ -110,6 +136,17 @@ class ShowModeFooterActionBuilder
                 return $menuItem;
             }
         }
+        throw new NotFoundHttpException('Кнопка с названием ' . $key . ' не найденна');
+    }
+
+    public function getDefaultById(string $id)
+    {
+        foreach ($this->buttonDefaultList as $menuItem) {
+            if ($menuItem->getId() === $id) {
+                return $menuItem;
+            }
+        }
+        throw new NotFoundHttpException('Кнопка с id ' . $id . ' не найденна');
     }
 
     public function getDefaultCreate(string $key)

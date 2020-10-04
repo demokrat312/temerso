@@ -18,6 +18,7 @@ abstract class ShowModeFooterItemParent
     private $icon = [];
     private $title;
     private $name;
+    private $id;
 
     abstract function getType(): string;
 
@@ -93,4 +94,21 @@ abstract class ShowModeFooterItemParent
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 }

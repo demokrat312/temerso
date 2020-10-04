@@ -89,7 +89,7 @@ class EquipmentAdmin extends TaskAdminParent
 
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_PREV));
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CUSTOM_NEXT));
-            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CREATE_AND_EDIT));
+            $actionButtons->addItem($actionButtons->getDefaultById(ShowModeFooterActionBuilder::BTN_ID_CREATE_TASK));
 
         } else {
             $editForm
@@ -108,15 +108,7 @@ class EquipmentAdmin extends TaskAdminParent
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_UPDATE_AND_EDIT_AGAIN));
         }
 
-        $actionButtons->addItem((new ShowModeFooterButtonItem())
-            ->setClasses('btn btn-success')
-            ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
-            ->addIcon('fa-save')
-            ->setRouteAction(MarkingAdminController::ROUTER_CHANGE_STATUS)
-            ->setRouteQuery(http_build_query(['status' => Marking::STATUS_SEND_EXECUTION]))
-            ->setTitle('Отправить на исполнение')
-            ,
-            );
+        $actionButtons->addItem($actionButtons->getDefaultById(ShowModeFooterActionBuilder::BTN_ID_STATUS_SEND_EXECUTION));
         $this->setShowModeButtons($actionButtons->getButtonList());
     }
 }

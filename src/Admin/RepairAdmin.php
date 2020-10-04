@@ -55,24 +55,6 @@ class RepairAdmin extends TaskAdminParent
             ->end();
 
 
-        $actionButtons = new ShowModeFooterActionBuilder();
-
-        if ($this->isCurrentRoute('create')) {
-            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_CREATE_AND_EDIT));
-        } else {
-            $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_UPDATE_AND_EDIT_AGAIN));
-        }
-
-        $actionButtons->addItem((new ShowModeFooterButtonItem())
-            ->setClasses('btn btn-success')
-            ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
-            ->addIcon('fa-save')
-            ->setRouteAction(MarkingAdminController::ROUTER_CHANGE_STATUS)
-            ->setRouteQuery(http_build_query(['status' => Marking::STATUS_SEND_EXECUTION]))
-            ->setTitle('Отправить на исполнение')
-            ,
-            );
-
-        $this->setShowModeButtons($actionButtons->getButtonList());
+        $this->formFieldsButton();
     }
 }
