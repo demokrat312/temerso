@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @method EquipmentCardsNotConfirmed[]    findAll()
  * @method EquipmentCardsNotConfirmed[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class EquipmentCardsNotConfirmedCardNotConfirmedRepository extends TaskRepositoryParent
+class EquipmentCardsNotConfirmedRepository extends TaskRepositoryParent
 {
     public function __construct(ManagerRegistry $registry)
     {
