@@ -13,6 +13,7 @@ use App\Classes\ApiParentController;
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemInterface;
+use App\Classes\Task\TaskWithCardsTemporaryInterface;
 use App\Classes\Utils;
 use App\Entity\Card;
 use App\Entity\CardTemporary;
@@ -45,7 +46,7 @@ class CardEditHelper
         $card = $this->getCard($cardEditData);
         $task = $this->getTask($cardEditData);
 
-        if ($task && $task instanceof Inspection) {
+        if ($task && $task instanceof TaskWithCardsTemporaryInterface) {
             $cardTemporary = $this->cardTempUpdate($cardEditData, $task, $card);
             $response = call_user_func($this->toArray, $cardTemporary, ApiParentController::GROUP_API_DEFAULT);
         } else {
@@ -145,7 +146,7 @@ class CardEditHelper
      * @param Card|null $card
      * @return CardTemporary
      */
-    private function cardTempUpdate(CardEditData $cardEditData, Inspection $task, ?Card $card): CardTemporary
+    private function cardTempUpdate(CardEditData $cardEditData, TaskWithCardsTemporaryInterface $task, ?Card $card): CardTemporary
     {
         // Создаем или получаем из базы временную карточку
         $cardTemporary = $task->getCardTemporary($card);

@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use App\Classes\Task\TaskWithCardsTemporaryTrait;
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
 use App\Classes\Task\TaskItemInterface;
+use App\Classes\Task\TaskWithCardsTemporaryInterface;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,9 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\MarkingRepository")
  */
-class Marking implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface
+class Marking implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface, TaskWithCardsTemporaryInterface
 {
-    use TaskEntityTrait, CardsOrderTrait;
+    use TaskEntityTrait, CardsOrderTrait, TaskWithCardsTemporaryTrait;
 
     const STATUS_SEND_EXECUTION = 1; // Отправлено на исполнение
     const STATUS_ACCEPT_EXECUTION = 2; // Принято на исполнение
@@ -105,12 +107,20 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
      */
     private $createdBy;
 
+    /**
+     * Временные карточки
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\CardTemporary")
+     */
+    private $cardsTemporary;
+
     public function __construct()
     {
         $this->status = self::STATUS_CREATED;
 
         $this->cards = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->cardsTemporary = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -226,6 +236,32 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
     public function setCreatedBy(User $createdBy): self
     {
         $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CardTemporary[]
+     */
+    public function getCardsTemporary(): Collection
+    {
+        return $this->cardsTemporary;
+    }
+
+    public function addCardTemporary(CardTemporary $cardTemporary): self
+    {
+        if (!$this->cardsTemporary->contains($cardTemporary)) {
+            $this->cardsTemporary[] = $cardTemporary;
+        }
+
+        return $this;
+    }
+
+    public function removeCardTemporary(CardTemporary $cardTemporary): self
+    {
+        if ($this->cardsTemporary->contains($cardTemporary)) {
+            $this->cardsTemporary->removeElement($cardTemporary);
+        }
 
         return $this;
     }

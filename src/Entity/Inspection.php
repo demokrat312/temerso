@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Classes\Inspection\InspectionTrait;
+use App\Classes\Task\TaskWithCardsTemporaryTrait;
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
 use App\Classes\Task\TaskItemInterface;
+use App\Classes\Task\TaskWithCardsTemporaryInterface;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -20,9 +22,9 @@ use Doctrine\ORM\Mapping\OrderBy;
  *
  * @ORM\Entity(repositoryClass="App\Repository\InspectionRepository")
  */
-class Inspection implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface
+class Inspection implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface, TaskWithCardsTemporaryInterface
 {
-    use TaskEntityTrait, InspectionTrait, CardsOrderTrait;
+    use TaskEntityTrait, InspectionTrait, CardsOrderTrait, TaskWithCardsTemporaryTrait;
 
     /**
      * @ORM\Id()
@@ -79,7 +81,7 @@ class Inspection implements DateListenerInterface, CreatedByListenerInterface, T
     private $returnFromRepair;
 
     /**
-     * Карточки
+     * Временные карточки
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\CardTemporary")
      */

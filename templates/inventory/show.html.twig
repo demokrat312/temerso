@@ -1,4 +1,5 @@
 {# @var \App\Entity\Inventory object #}
+{# @var \App\Entity\CardTemporary cardTemp #}
 {% extends 'crud/show.html.twig' %}
 {% block show_groups %}
     <div class="sonata-ba-show">
@@ -31,13 +32,24 @@
                                     {# @var \App\Entity\Card card #}
                                     {% for card in object.cards %}
                                         <tr>
-                                            <td class="text-left">{{ card.generalName }}</td>
-                                            <td>{{ card.pipeSerialNumber }}</td>
-                                            <td>{{ card.serialNoOfNipple }}</td>
-                                            <td>{{ card.couplingSerialNumber }}</td>
-                                            <td>{{ card.rfidTagNo }}</td>
-                                            <td>{{ card.accounting ? 1 : 0 }}</td>
-                                            <td>{{ card.taskCardOtherFieldsByTask(object.taskTypeId, object.id).commentProblemWithMark }}</td>
+                                            {% if object.cardTemporary(card) %}
+                                                {% set cardTemp = object.cardTemporary(card) %}
+                                                <td class="text-left">{{ cardTemp.generalName }}</td>
+                                                <td>{{ cardTemp.pipeSerialNumber }}</td>
+                                                <td>{{ cardTemp.serialNoOfNipple }}</td>
+                                                <td>{{ cardTemp.couplingSerialNumber }}</td>
+                                                <td>{{ cardTemp.rfidTagNo }}</td>
+                                                <td>{{ cardTemp.accounting ? 1 : 0 }}</td>
+                                                <td>{{ cardTemp.commentProblemWithMark }}</td>
+                                            {% else %}
+                                                <td class="text-left">{{ card.generalName }}</td>
+                                                <td>{{ card.pipeSerialNumber }}</td>
+                                                <td>{{ card.serialNoOfNipple }}</td>
+                                                <td>{{ card.couplingSerialNumber }}</td>
+                                                <td>{{ card.rfidTagNo }}</td>
+                                                <td>{{ card.accounting ? 1 : 0 }}</td>
+                                                <td>{{ card.taskCardOtherFieldsByTask(object.taskTypeId, object.id).commentProblemWithMark }}</td>
+                                            {% endif %}
                                         </tr>
                                     {% endfor %}
                                     </tbody>

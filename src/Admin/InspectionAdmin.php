@@ -24,40 +24,5 @@ class InspectionAdmin extends TaskAdminParent
     protected function configureShowFields(ShowMapper $showMapper)
     {
         parent::configureShowFields($showMapper);
-
-        /** @var Inspection $inspection */
-        $inspection = $this->getRoot()->getSubject();
-        if ($inspection && $inspection->getCardsTemporary()->count() === 0) {
-            $this->createCardTemporary($inspection);
-        }
-    }
-
-    /**
-     * @param Inspection $object
-     */
-    public function postPersist($object)
-    {
-        $this->createCardTemporary($object);
-    }
-
-    private function createCardTemporary(Inspection $inspection)
-    {
-        //<editor-fold desc="Создаем временные карточки">
-        foreach ($inspection->getCards() as $card) {
-            $cardTemporary = (new CardTemporary())
-                ->setCard($card)
-                ->setTaskTypeId($inspection->getTaskTypeId())
-                ->setTaskId($inspection->getId())
-            ;
-
-            Utils::copyObject($cardTemporary, $card);
-
-            $inspection->addCardTemporary($cardTemporary);
-            $this->getEntityManager()->persist($cardTemporary);
-        }
-
-        $this->getEntityManager()->persist($inspection);
-        $this->getEntityManager()->flush();
-        //</editor-fold>
     }
 }

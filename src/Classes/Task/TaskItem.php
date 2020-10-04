@@ -69,7 +69,10 @@ class TaskItem
         ReturnFromRepair::class => self::TYPE_RETURN_FROM_REPAIR,
     ];
 
-    static public function getTaskClass(int $taskTypeId, bool $withException = false)
+    // Задачи у которых есть временные карточки (Маркировка, инвентаризация, инспекция)
+    const TASK_WITH_CARD_TEMPORARY = [self::TYPE_MARKING, self::TYPE_INVENTORY, self::TYPE_INSPECTION,];
+
+    static public function getTaskClass(int $taskTypeId, bool $withException = false): ?string
     {
         if (isset(self::TYPE_CLASS[$taskTypeId])) {
             return self::TYPE_CLASS[$taskTypeId];
@@ -80,7 +83,7 @@ class TaskItem
         }
     }
 
-    static public function getTaskType(string $className, bool $withException = false)
+    static public function getTaskType(string $className, bool $withException = false): ?int
     {
         if (isset(self::TYPE_BY_CLASS[$className])) {
             return self::TYPE_BY_CLASS[$className];

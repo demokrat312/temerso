@@ -44,19 +44,6 @@ class InspectionAdminController extends TaskAdminController
                 $card->setStatus(CardStatusHelper::STATUS_STORE);
                 $em->persist($card);
             });
-
-            // Копируем временные карточки в основные
-            foreach ($taskItem->getCardsTemporary() as $cardTemporary) {
-                foreach ($taskItem->getCards() as $card) {
-                    if($cardTemporary->getCard()->getId() === $card->getId()) {
-                        Utils::copyObject($card, $cardTemporary);
-                        foreach ($cardTemporary->getImages() as $image) {
-                            $card->addImage($image);
-                        }
-                        $em->persist($card);
-                    }
-                }
-            }
         }
     }
 }

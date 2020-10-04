@@ -4,6 +4,9 @@ namespace App\Classes\Task;
 
 use App\Classes\MainAdmin;
 use App\Classes\Marking\MarkingAccessHelper;
+use App\Classes\Utils;
+use App\Entity\CardTemporary;
+use App\Entity\Inspection;
 use App\Service\Marking\TaskTopMenuButtonService;
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
@@ -201,5 +204,33 @@ abstract class TaskAdminParent extends MainAdmin
         $actionButtons->addItem($actionButtons->getDefaultById(ShowModeFooterActionBuilder::BTN_ID_STATUS_SEND_EXECUTION));
 
         $this->setShowModeButtons($actionButtons->getButtonList());
+    }
+
+    public function postPersist($object)
+    {
+        if($object instanceof TaskWithCardsTemporaryInterface) {
+            $this->createCardTemporary($object);
+        }
+    }
+
+    private function createCardTemporary(TaskWithCardsTemporaryInterface $taskWithCardsTemporary)
+    {
+        //<editor-fold desc="Создаем временные карточки">
+        foreach ($taskWithCardsTemporary->getCards() as $card) {
+            $cardTemporary = (new CardTemporary())
+                ->setCard($card)
+                ->setTaskTypeId($taskWithCardsTemporary->getTaskTypeId())
+                ->setTaskId($taskWithCardsTemporary->getId())
+            ;
+
+            Utils::copyObject($cardTemporary, $card);
+
+            $taskWithCardsTemporary->addCardTemporary($cardTemporary);
+            $this->getEntityManager()->persist($cardTemporary);
+        }
+
+        $this->getEntityManager()->persist($taskWithCardsTemporary);
+        $this->getEntityManager()->flush();
+        //</editor-fold>
     }
 }

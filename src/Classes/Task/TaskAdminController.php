@@ -9,7 +9,11 @@
 namespace App\Classes\Task;
 
 
+use App\Classes\Card\CardStatusHelper;
+use App\Classes\Utils;
 use App\Controller\Admin\DefaultAdminController;
+use App\Entity\Card;
+use App\Entity\Inspection;
 use App\Service\Access\MarkingAccessService;
 use App\Entity\Marking;
 use App\Service\AdminRouteService;
@@ -64,10 +68,17 @@ abstract class TaskAdminController extends DefaultAdminController
             return new RedirectResponse($url);
         }
 
+        $newStatus = (int)$request->get('status');
+
+        // Копируем временные карточки в основные при завершении
+        if ($task instanceof TaskWithCardsTemporaryInterface && $newStatus === Marking::STATUS_COMPLETE) {
+            $this->onCompleteCardTemporary($task);
+        }
+
         // Меняем статус и комментарий
-        $this->preChangeStatus($task, (int)$request->get('status'));
+        $this->preChangeStatus($task, $newStatus);
         $task
-            ->setStatus((int)$request->get('status'));
+            ->setStatus($newStatus);
 
         if ($comment = $request->get('comment')) {
             $task->setComment($comment);
@@ -164,5 +175,29 @@ abstract class TaskAdminController extends DefaultAdminController
     {
         return;
     }
+
+    /**
+     * Копируем временные карточки в основные при завершении
+     *
+     * @param TaskWithCardsTemporaryInterface $taskItem
+     * @param $newStatusId
+     */
+    protected function onCompleteCardTemporary(TaskWithCardsTemporaryInterface $taskItem)
+    {
+        $em = $this->getDoctrine()->getManager();
+        // Копируем временные карточки в основные
+        foreach ($taskItem->getCardsTemporary() as $cardTemporary) {
+            foreach ($taskItem->getCards() as $card) {
+                if ($cardTemporary->getCard()->getId() === $card->getId()) {
+                    Utils::copyObject($card, $cardTemporary);
+                    foreach ($cardTemporary->getImages() as $image) {
+                        $card->addImage($image);
+                    }
+                    $em->persist($card);
+                }
+            }
+        }
+    }
+
 
 }
