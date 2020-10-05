@@ -28,7 +28,8 @@ class ShowModeFooterActionBuilder
     const BTN_CUSTOM_NEXT = 'btn_custom_next';
 
     const BTN_ID_CREATE_TASK = 'btn_id_create_task';
-    const BTN_ID_STATUS_SEND_EXECUTION = 'btn_id_status_send_execution';
+    const BTN_ID_STATUS_CREATE_SEND_EXECUTION = 'btn_id_status_create_send_execution';
+    const BTN_ID_STATUS_EDIT_SEND_EXECUTION = 'btn_id_status_edit_send_execution';
 
     /**
      * @var array |ShowModeFooterItemParent[]
@@ -116,14 +117,22 @@ class ShowModeFooterActionBuilder
                 ->setTitle('Создать задачу')
             ,
             (new ShowModeFooterButtonItem())
-                ->setId(self::BTN_ID_STATUS_SEND_EXECUTION)
+                ->setId(self::BTN_ID_STATUS_CREATE_SEND_EXECUTION)
                 ->setClasses('btn btn-success')
                 ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
                 ->addIcon('fa-save')
                 ->setRouteAction(MarkingAdminController::ROUTER_CHANGE_STATUS)
                 ->setRouteQuery(http_build_query(['status' => Marking::STATUS_SEND_EXECUTION]))
                 ->setTitle('Создать задачу и отправить на исполнение')
-
+            ,
+            (new ShowModeFooterButtonItem())
+                ->setId(self::BTN_ID_STATUS_EDIT_SEND_EXECUTION)
+                ->setClasses('btn btn-success')
+                ->setName(ShowModeFooterActionBuilder::BTN_CUSTOM_REDIRECT)
+                ->addIcon('fa-save')
+                ->setRouteAction(MarkingAdminController::ROUTER_CHANGE_STATUS)
+                ->setRouteQuery(http_build_query(['status' => Marking::STATUS_SEND_EXECUTION]))
+                ->setTitle('Сохранить и отправить на исполнение')
             ,
 
         ];

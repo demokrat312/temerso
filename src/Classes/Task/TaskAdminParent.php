@@ -204,11 +204,11 @@ abstract class TaskAdminParent extends MainAdmin
 
         if ($this->isCurrentRoute('create')) {
             $actionButtons->addItem($actionButtons->getDefaultById(ShowModeFooterActionBuilder::BTN_ID_CREATE_TASK));
+            $actionButtons->addItem($actionButtons->getDefaultById(ShowModeFooterActionBuilder::BTN_ID_STATUS_CREATE_SEND_EXECUTION));
         } else {
             $actionButtons->addItem($actionButtons->getDefaultByKey(ShowModeFooterActionBuilder::BTN_UPDATE_AND_EDIT_AGAIN));
+            $actionButtons->addItem($actionButtons->getDefaultById(ShowModeFooterActionBuilder::BTN_ID_STATUS_EDIT_SEND_EXECUTION));
         }
-
-        $actionButtons->addItem($actionButtons->getDefaultById(ShowModeFooterActionBuilder::BTN_ID_STATUS_SEND_EXECUTION));
 
         $this->setShowModeButtons($actionButtons->getButtonList());
     }
