@@ -99,7 +99,7 @@ class CardTemporary
     /**
      * Серийный № трубы
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $pipeSerialNumber;
@@ -107,7 +107,7 @@ class CardTemporary
     /**
      * Серийный № ниппеля
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $serialNoOfNipple;
@@ -115,7 +115,7 @@ class CardTemporary
     /**
      * Серийный № муфты
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $couplingSerialNumber;
@@ -123,14 +123,14 @@ class CardTemporary
     /**
      * Наружный диаметр трубы, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $outer_diameter_of_the_pipe;
 
     /**
      * Толщина стенки трубы, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $pipe_wall_thickness;
 
@@ -151,42 +151,42 @@ class CardTemporary
     /**
      * O.D. Замка ниппель  (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $odlock_nipple;
 
     /**
      * Диаметр носика ниппеля
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $nipple_nose_diameter;
 
     /**
      * O.D. Замка муфта  (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $odlock_coupling;
 
     /**
      * LBC Длина резьбы муфта (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $lbc_thread_length_coupler;
 
     /**
      * QC Диаметр расточки муфта(мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $qc_bore_diameter_coupling;
 
     /**
      * I.D. Замка ниппель  (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $idlock_nipple;
 
@@ -200,28 +200,28 @@ class CardTemporary
     /**
      * Вес трубы (кг)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $weight_of_pipe;
 
     /**
      * Угол заплечика (градус)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $shoulder_angle;
 
     /**
      * Длина под ключ ниппель, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $turnkey_length_nipple;
 
     /**
      * Длина под ключ муфта, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $turnkey_length_coupling;
 
@@ -270,28 +270,28 @@ class CardTemporary
     /**
      * Глубина наминов в зоне работы клиньев max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $depth_of_naminov;
 
     /**
      * Изгиб ниппельного конца max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $nipple_end_bend_max;
 
     /**
      * Изгиб муфтового конца max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $coupling_end_bend_max;
 
     /**
      * Общий изгиб тела трубы max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $the_total_bend_of_the_pipe_body_max;
 
@@ -361,14 +361,14 @@ class CardTemporary
     /**
      * Хардбендинг ниппель (диаметр) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $hardbanding_nipplemm_diameter;
 
     /**
      * Хардбендинг ниппель (высота наплавки) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $hardbanding_nipple_height;
 
@@ -417,21 +417,21 @@ class CardTemporary
     /**
      * Хардбендинг муфта (диаметр) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $hardbanding_coupler_diameter;
 
     /**
      * Хардбендинг муфта (высота наплавки) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $hardbanding_coupling_height_mm;
 
     /**
      * Класс замка муфта
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $lock_class_coupling;
 
