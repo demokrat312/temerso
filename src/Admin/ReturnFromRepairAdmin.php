@@ -55,18 +55,6 @@ class ReturnFromRepairAdmin extends TaskAdminParent
             ;
         }
 
-
-        $em->setParameter('userId', $this->security->getToken()->getUser()->getId());
-
-        // По доступам для постановщика(адимина)
-        $creatorExpr = $expr->andX(
-            $expr->eq(sprintf('%s.%s', $al, 'createdBy'), ':userId'),
-            $expr->in(sprintf('%s.%s', $al, 'status'), ':createdByStatusIds')
-        );
-        $em
-            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
-
-        $em->andWhere($creatorExpr);
         return $query;
 
     }

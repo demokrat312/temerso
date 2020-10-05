@@ -7,6 +7,7 @@ use App\Classes\Marking\MarkingAccessHelper;
 use App\Classes\Utils;
 use App\Entity\CardTemporary;
 use App\Entity\Inspection;
+use App\Entity\User;
 use App\Service\Marking\TaskTopMenuButtonService;
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
 use App\Classes\ShowAdmin\ShowModeFooterButtonItem;
@@ -93,26 +94,32 @@ abstract class TaskAdminParent extends MainAdmin
             ;
         }
 
-        $em->setParameter('userId', $this->security->getToken()->getUser()->getId());
+        $user = $this->security->getToken()->getUser();
 
-        // По доступам для постановщика(адимина)
-        $creatorExpr = $expr->andX(
-            $expr->eq(sprintf('%s.%s', $al, 'createdBy'), ':userId'),
-            $expr->in(sprintf('%s.%s', $al, 'status'), ':createdByStatusIds')
-        );
-        $em
-            ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccessWeb(MarkingAccessHelper::USER_TYPE_CREATOR));
 
-        // По доступам для исполнителя(кладовщик)
-        $em->leftJoin(sprintf('%s.%s', $al, 'users'), 'users');
-        $executorExpr = $expr->andX(
-            $expr->eq('users.id', ':userId'),
-            $expr->in(sprintf('%s.%s', $al, 'status'), ':executorStatusIds')
-        );
-        $em
-            ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccessWeb(MarkingAccessHelper::USER_TYPE_EXECUTOR));
+        // админ видит все
+        if (!Utils::in_array([User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN], $user->getRoles())) {
+            $em->setParameter('userId', $user->getId());
+            // По доступам для постановщика
+            $creatorExpr = $expr->andX(
+                $expr->eq(sprintf('%s.%s', $al, 'createdBy'), ':userId'),
+                $expr->in(sprintf('%s.%s', $al, 'status'), ':createdByStatusIds')
+            );
+            $em
+                ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccessWeb(MarkingAccessHelper::USER_TYPE_CREATOR));
 
-        $em->andWhere($expr->orX($creatorExpr, $executorExpr));
+            // По доступам для исполнителя(кладовщик)
+            $em->leftJoin(sprintf('%s.%s', $al, 'users'), 'users');
+            $executorExpr = $expr->andX(
+                $expr->eq('users.id', ':userId'),
+                $expr->in(sprintf('%s.%s', $al, 'status'), ':executorStatusIds')
+            );
+            $em
+                ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccessWeb(MarkingAccessHelper::USER_TYPE_EXECUTOR));
+            $em->andWhere($expr->orX($creatorExpr, $executorExpr));
+        }
+
+
         $em->orderBy(sprintf('%s.%s', $al, 'id'), 'ASC');
         return $query;
     }

@@ -61,7 +61,8 @@ class ReturnFromRentAdmin extends TaskAdminParent
         }
 
 
-        $em->setParameter('userId', $this->security->getToken()->getUser()->getId());
+        // Админ видит все
+        /*$em->setParameter('userId', $this->security->getToken()->getUser()->getId());
 
         // По доступам для постановщика(адимина)
         $creatorExpr = $expr->andX(
@@ -71,7 +72,7 @@ class ReturnFromRentAdmin extends TaskAdminParent
         $em
             ->setParameter('createdByStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_CREATOR));
 
-        $em->andWhere($creatorExpr);
+        $em->andWhere($creatorExpr);*/
         return $query;
 
     }
