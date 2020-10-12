@@ -97,11 +97,38 @@ class KitController extends ApiParentController
                 ]);
 
             }
+            $cardsOrder = [];
+            $cardsWithoutOrder = [];
+            $maxIndex = 0;
+
             $kit = new Kit();
             $kit->setComment($kitData->getComment());
             foreach ($cards as $card) {
                 $kit->addCard($card);
+
+                // Сохраняем порядок карточек по полю sortOrder
+                foreach ($kitData->getCards() as $cardData) {
+                    if($card->getRfidTagNo() === $cardData->getRfidTagNo() && $cardData->getSortOrder()) {
+                        $maxIndex = $maxIndex >= $cardData->getSortOrder() ? $maxIndex : $cardData->getSortOrder();
+                        $cardsOrder[] = [
+                            'cardId' => $card->getId(),
+                            'index' => $cardData->getSortOrder()
+                        ];
+                        continue 2;
+                    }
+                }
+                $cardsWithoutOrder[] = $card;
             }
+            
+            // Сохроняем порядок для карточек у которых нету порядка
+            foreach ($cardsWithoutOrder as $card) {
+                $cardsOrder[] = [
+                    'cardId' => $card->getId(),
+                    'index' => ++$maxIndex
+                ];
+            }
+
+            $kit->setCardsOrder($cardsOrder);
             $em->persist($kit);
             $em->flush();
 

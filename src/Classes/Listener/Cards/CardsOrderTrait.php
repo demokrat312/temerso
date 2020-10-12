@@ -39,6 +39,7 @@ trait CardsOrderTrait
     {
         if ($this->getCardsOrder()) {
             $cardsOrder = [];
+            $cardWithOutOrder = []; // Карточки которые были добавленны при редактировании
             foreach ($this->cards as $card) {
                 /** @var Card $card */
                 foreach ($this->getCardsOrder() as $orderItem) {
@@ -47,9 +48,11 @@ trait CardsOrderTrait
                         continue 2;
                     }
                 }
+                $cardWithOutOrder[] = $card;
             }
 
             ksort($cardsOrder);
+            array_push($cardsOrder, ...$cardWithOutOrder);
             return new ArrayCollection($cardsOrder);
         }
 

@@ -16,7 +16,7 @@ class CardsOrderListenerHandler
 {
     public function prePersist(CardsOrderListenerInterface $entity)
     {
-        if ($entity->getCards() && $entity->getCards()->count() > 0) {
+        if ($entity->getCards() && $entity->getCards()->count() > 0 && !$entity->getCardsOrder()) {
             $index = 0;
             $cardsOrder = [];
             foreach ($entity->getCards() as $card) {

@@ -21,6 +21,7 @@ class KitCardsType extends AbstractType
     {
         $builder
             ->add('rfidTagNo')
+            ->add('sortOrder')
         ;
     }
 

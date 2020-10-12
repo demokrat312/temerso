@@ -40,7 +40,7 @@ class KitAdmin extends MainAdmin
     {
         $list
             ->add('createAt', null, self::VIEW_LINK)
-            ->add('createdBy')
+            ->add('createdBy', null, self::HIDE_LINK_MANY_TO_ONE)
             ->add('comment');
     }
 

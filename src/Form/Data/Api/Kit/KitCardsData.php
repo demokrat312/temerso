@@ -15,6 +15,10 @@ class KitCardsData
      * @var string|null
      */
     private $rfidTagNo;
+    /**
+     * @var integer|null
+     */
+    private $sortOrder;
 
     /**
      * @return string|null
@@ -31,6 +35,24 @@ class KitCardsData
     public function setRfidTagNo(?string $rfidTagNo)
     {
         $this->rfidTagNo = $rfidTagNo;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int|null $sortOrder
+     * @return $this
+     */
+    public function setSortOrder(?int $sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
         return $this;
     }
 }

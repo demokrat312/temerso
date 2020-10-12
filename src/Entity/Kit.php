@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Classes\Kit\KitTrait;
+use App\Classes\Listener\Cards\CardsOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use DateTimeInterface;
@@ -17,9 +19,9 @@ use Doctrine\ORM\Mapping\OrderBy;
  *
  * @ORM\Entity(repositoryClass="App\Repository\KitRepository")
  */
-class Kit implements DateListenerInterface, CreatedByListenerInterface
+class Kit implements DateListenerInterface, CreatedByListenerInterface, CardsOrderListenerInterface
 {
-    use KitTrait;
+    use KitTrait, CardsOrderTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -123,7 +125,7 @@ class Kit implements DateListenerInterface, CreatedByListenerInterface
      */
     public function getCards(): Collection
     {
-        return $this->cards;
+        return $this->getCardsWithOrder();
     }
 
     public function addCard(Card $card): self
