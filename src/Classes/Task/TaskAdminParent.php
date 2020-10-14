@@ -7,6 +7,7 @@ use App\Classes\Marking\MarkingAccessHelper;
 use App\Classes\Utils;
 use App\Entity\CardTemporary;
 use App\Entity\Inspection;
+use App\Entity\Inventory;
 use App\Entity\User;
 use App\Service\Marking\TaskTopMenuButtonService;
 use App\Classes\ShowAdmin\ShowModeFooterActionBuilder;
@@ -231,6 +232,11 @@ abstract class TaskAdminParent extends MainAdmin
             ;
 
             Utils::copyObject($cardTemporary, $card);
+
+            // При Инвентаризация обнуляем поле "Учет/Инвентаризация"
+            if ($taskWithCardsTemporary instanceof Inventory) {
+                $cardTemporary->setAccounting(0);
+            }
 
             $taskWithCardsTemporary->addCardTemporary($cardTemporary);
             $this->getEntityManager()->persist($cardTemporary);
