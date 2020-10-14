@@ -19,7 +19,7 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
             $this->taskCardJoin($qb);
         }
 
-        $this->byAccess($userId, $qb);
+        $this->byAccess($userId, $qb, [MarkingAccessHelper::ACCESS_VIEW]);
 
         return $qb
             ->getQuery()
@@ -41,14 +41,17 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
             ->setParameter('taskId', $taskId)
         ;
 
-        $this->byAccess($userId, $qb);
+        $this->byAccess($userId, $qb, [
+            MarkingAccessHelper::ACCESS_EDIT,
+            MarkingAccessHelper::ACCESS_VIEW,
+            MarkingAccessHelper::ACCESS_CHANGE_STATUS]);
 
         return $qb
             ->getQuery()
             ->getOneOrNullResult();
     }
 
-    private function byAccess(int $userId, QueryBuilder $qb)
+    private function byAccess(int $userId, QueryBuilder $qb, $hasAccessList)
     {
         $expr = $qb->expr();
 
@@ -68,7 +71,8 @@ abstract class TaskRepositoryParent extends ServiceEntityRepository
             $expr->in('m.status', ':executorStatusIds')
         );
         $qb
-            ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
+            ->setParameter('executorStatusIds', MarkingAccessHelper::getStatusByAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR, $hasAccessList));
+//            ->setParameter('executorStatusIds', MarkingAccessHelper::getShowStatusAccess(MarkingAccessHelper::USER_TYPE_EXECUTOR));
 
 //        $qb->andWhere($expr->orX($creatorExpr, $executorExpr));
         $qb->andWhere($executorExpr);

@@ -11,6 +11,8 @@ namespace App\EventListener;
 
 use App\Classes\Listener\Cards\CardsOrderListenerHandler;
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsWithOrderListenerHandler;
+use App\Classes\Listener\Cards\CardsWithOrderListenerInterface;
 use App\Classes\Listener\CreatedBy\CreatedByListenerHandler;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerHandler;
@@ -32,12 +34,17 @@ class EntityListener
      * @var CardsOrderListenerHandler
      */
     private $cardsOrderListenerHandler;
+    /**
+     * @var CardsWithOrderListenerHandler
+     */
+    private $cardsWithOrderListenerHandler;
 
     public function __construct(Security $security)
     {
         $this->dateListener = new DateListenerHandler();
         $this->createdByListener = new CreatedByListenerHandler($security);
         $this->cardsOrderListenerHandler = new CardsOrderListenerHandler();
+        $this->cardsWithOrderListenerHandler = new CardsWithOrderListenerHandler();
     }
 
     public function prePersist(LifecycleEventArgs $args)
@@ -53,6 +60,9 @@ class EntityListener
         if ($entity instanceof CardsOrderListenerInterface) {
             $this->cardsOrderListenerHandler->prePersist($entity);
         }
+        if ($entity instanceof CardsWithOrderListenerInterface) {
+            $this->cardsWithOrderListenerHandler->prePersist($entity);
+        }
     }
 
     public function preUpdate(LifecycleEventArgs $args)
@@ -61,6 +71,9 @@ class EntityListener
 
         if ($entity instanceof DateListenerInterface) {
             $this->dateListener->preUpdate($entity);
+        }
+        if ($entity instanceof CardsWithOrderListenerInterface) {
+            $this->cardsWithOrderListenerHandler->preUpdate($entity);
         }
     }
 }

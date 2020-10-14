@@ -78,6 +78,7 @@ class KitController extends ApiParentController
             $cards = $rep->findByKit($kitData);
 
             $cardsNotFound = [];
+            $cardsFound = [];
             foreach ($kitData->getCards() as $cardData) {
                 $found = false;
                 foreach ($cards as $card) {
@@ -86,7 +87,9 @@ class KitController extends ApiParentController
                         break;
                     }
                 }
-                if (!$found) {
+                if ($found) {
+                    $cardsFound[] = ['orderNumber' => $cardData->getSortOrder(), 'card' => $card];
+                } else {
                     $cardsNotFound[] = $cardData->getRfidTagNo();
                 }
             }
@@ -95,40 +98,16 @@ class KitController extends ApiParentController
                 return $this->errorResponse('Некоторые карточки не найденны', self::STATUS_CODE_404, [
                     'notFoundCards' => $cardsNotFound
                 ]);
-
             }
-            $cardsOrder = [];
-            $cardsWithoutOrder = [];
-            $maxIndex = 0;
+
+            $cardSorted = $this->cardsSort($cardsFound);
 
             $kit = new Kit();
             $kit->setComment($kitData->getComment());
-            foreach ($cards as $card) {
+            foreach ($cardSorted as $card) {
                 $kit->addCard($card);
-
-                // Сохраняем порядок карточек по полю sortOrder
-                foreach ($kitData->getCards() as $cardData) {
-                    if($card->getRfidTagNo() === $cardData->getRfidTagNo() && $cardData->getSortOrder()) {
-                        $maxIndex = $maxIndex >= $cardData->getSortOrder() ? $maxIndex : $cardData->getSortOrder();
-                        $cardsOrder[] = [
-                            'cardId' => $card->getId(),
-                            'index' => $cardData->getSortOrder()
-                        ];
-                        continue 2;
-                    }
-                }
-                $cardsWithoutOrder[] = $card;
-            }
-            
-            // Сохроняем порядок для карточек у которых нету порядка
-            foreach ($cardsWithoutOrder as $card) {
-                $cardsOrder[] = [
-                    'cardId' => $card->getId(),
-                    'index' => ++$maxIndex
-                ];
             }
 
-            $kit->setCardsOrder($cardsOrder);
             $em->persist($kit);
             $em->flush();
 
@@ -136,5 +115,31 @@ class KitController extends ApiParentController
         } else {
             return $this->formErrorResponse($kitForm);
         }
+    }
+
+    /**
+     * @param array $cards
+     * @return Card[]
+     */
+    private function cardsSort(array $cards): array
+    {
+        $cardsSorted = [];
+        // Добавляем те карточки для которых задан порядок сортировки
+        foreach ($cards as $key => $card) {
+            if($card['orderNumber'] !== null && !isset($cardsSorted[(int)$card['orderNumber']])) {
+                $cardsSorted[(int)$card['orderNumber']] = $card['card'];
+                unset($cards[$key]);
+            }
+        }
+
+        // Сортируем по ключам
+        ksort($cardsSorted);
+
+        // Добавляем остальные
+        foreach ($cards as $card) {
+            $cardsSorted[] = $card['card'];
+        }
+
+        return$cardsSorted;
     }
 }

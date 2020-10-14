@@ -22,9 +22,9 @@ class MarkingAccessHelper
       User::ROLE_STOREKEEPER => self::USER_TYPE_EXECUTOR,
     ];
 
-    private const ACCESS_EDIT = 'access_edit'; // Редактирование
-    private const ACCESS_VIEW = 'access_view'; // Просмотр
-    private const ACCESS_CHANGE_STATUS = 'access_change_status'; // Смена на определенный статус
+    const ACCESS_EDIT = 'access_edit'; // Редактирование
+    const ACCESS_VIEW = 'access_view'; // Просмотр
+    const ACCESS_CHANGE_STATUS = 'access_change_status'; // Смена на определенный статус
 
     private const ACCESS = [
         // Админ. Создание или редактирование, админ может делать что хочет
@@ -94,6 +94,24 @@ class MarkingAccessHelper
         foreach ($accessList as $access) {
             $hasUserType = in_array($userType, $access['user_type']);
             $hasAccessView = Utils::in_array([self::ACCESS_EDIT, self::ACCESS_VIEW], $access['access']);
+            if ($hasUserType && $hasAccessView) {
+                $status = array_merge($status, $access['status']);
+            }
+        }
+
+        return array_unique($status);
+    }
+
+
+    /**
+     * Список статусов для переданного права
+     */
+    static function getStatusByAccess($userType, $hasAccessList = [])
+    {
+        $status = [];
+        foreach (self::ACCESS as $access) {
+            $hasUserType = in_array($userType, $access['user_type']);
+            $hasAccessView = Utils::in_array($hasAccessList, $access['access']);
             if ($hasUserType && $hasAccessView) {
                 $status = array_merge($status, $access['status']);
             }

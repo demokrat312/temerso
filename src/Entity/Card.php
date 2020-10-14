@@ -631,9 +631,9 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     private $repair;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Kit", mappedBy="cards")
+     * @ORM\OneToMany(targetEntity="App\Entity\KitCardOrder", mappedBy="card")
      */
-    private $kit;
+    private $kitCardOrder;
 
     /**
      * Причина списания

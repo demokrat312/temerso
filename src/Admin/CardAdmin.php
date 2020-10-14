@@ -95,6 +95,15 @@ class CardAdmin extends MainAdmin
         $this->classnameLabel = "Card";
     }
 
+    protected function configureDefaultFilterValues(array &$filterValues)
+    {
+        $filterValues = [
+            '_sort_by' => '',
+            '_sort_order' => '',
+        ];
+    }
+
+
     /**
      * Фильтруем по статусу
      *
@@ -493,9 +502,12 @@ class CardAdmin extends MainAdmin
 
                     $qb = $queryBuilder;
                     $qb
-                        ->leftJoin(sprintf('%s.kit', $alias), 'kit')
+                        ->orderBy('kitCardOrder.orderNumber', 'ASC')
+                        ->join(sprintf('%s.kitCardOrder', $alias), 'kitCardOrder')
+                        ->join('kitCardOrder.kit', 'kit')
                         ->andWhere($qb->expr()->eq('kit.id', '?1'),)
                         ->setParameter('1', $value['value']);
+
 
                     return true;
                 },

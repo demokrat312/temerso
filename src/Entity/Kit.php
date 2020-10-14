@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Classes\Kit\KitTrait;
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\Cards\CardsOrderTrait;
+use App\Classes\Listener\Cards\CardsWithOrderListenerInterface;
+use App\Classes\Listener\Cards\CardsWithOrderTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use DateTimeInterface;
@@ -12,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OrderBy;
+use Metadata\Tests\Driver\Fixture\A\A;
 
 /**
  * Комплект
@@ -19,9 +22,9 @@ use Doctrine\ORM\Mapping\OrderBy;
  *
  * @ORM\Entity(repositoryClass="App\Repository\KitRepository")
  */
-class Kit implements DateListenerInterface, CreatedByListenerInterface, CardsOrderListenerInterface
+class Kit implements DateListenerInterface, CreatedByListenerInterface, CardsWithOrderListenerInterface
 {
-    use KitTrait, CardsOrderTrait;
+    use KitTrait, CardsWithOrderTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -51,10 +54,10 @@ class Kit implements DateListenerInterface, CreatedByListenerInterface, CardsOrd
     private $comment;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Card")
      * @OrderBy({"id" = "ASC"})
+     * @ORM\OneToMany(targetEntity="KitCardOrder", mappedBy="kit", cascade={"persist", "remove"})
      */
-    private $cards;
+    private $cardsWithOrder;
 
     public function __toString()
     {
@@ -64,7 +67,7 @@ class Kit implements DateListenerInterface, CreatedByListenerInterface, CardsOrd
 
     public function __construct()
     {
-        $this->cards = new ArrayCollection();
+        $this->cardsWithOrder = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,28 +124,38 @@ class Kit implements DateListenerInterface, CreatedByListenerInterface, CardsOrd
     }
 
     /**
-     * @return Collection|Card[]
+     * @return Collection|KitCardOrder[]
      */
-    public function getCards(): Collection
+    public function getCardsWithOrder(): Collection
     {
-        return $this->getCardsWithOrder();
+        return $this->cardsWithOrder;
     }
 
-    public function addCard(Card $card): self
+    public function addKitCard(KitCardOrder $kitCard): self
     {
-        if (!$this->cards->contains($card)) {
-            $this->cards[] = $card;
+        if (!$this->cardsWithOrder->contains($kitCard)) {
+            $this->cardsWithOrder[] = $kitCard;
+            $kitCard->setKit($this);
         }
 
         return $this;
     }
 
-    public function removeCard(Card $card): self
+    public function removeKitCard(KitCardOrder $kitCard): self
     {
-        if ($this->cards->contains($card)) {
-            $this->cards->removeElement($card);
+        if ($this->cardsWithOrder->contains($kitCard)) {
+            $this->cardsWithOrder->removeElement($kitCard);
+            // set the owning side to null (unless already changed)
+            if ($kitCard->getKit() === $this) {
+                $kitCard->setKit(null);
+            }
         }
 
         return $this;
+    }
+
+    public function addCard(Card $card)
+    {
+        $this->addKitCard((new KitCardOrder())->setCard($card));
     }
 }
