@@ -68,10 +68,10 @@ trait EquipmentTrait
 
     public function getChoiceTitle()
     {
-        return sprintf('%s %s. %s. %s.',
-            $this->getId(),
+        return sprintf('%s. %s.',
+//            $this->getId(),
             $this->getTenantName(),
-            $this->getUpdateAt()->format('Y-m-d'),
+//            $this->getUpdateAt()->format('Y-m-d'),
             $this->getMainReason(),
             );
     }
