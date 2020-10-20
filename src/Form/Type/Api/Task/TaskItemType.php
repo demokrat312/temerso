@@ -73,6 +73,12 @@ class TaskItemType extends AbstractType
                     'description' => 'Список карточек',
                 ],
             ])
+            ->add('sortOrder', null, [
+                'documentation' => [
+                    'type' => 'integer',
+                    'description' => 'Порядковый номер в списке карточек для задачи',
+                ],
+            ])
             ;
     }
 
