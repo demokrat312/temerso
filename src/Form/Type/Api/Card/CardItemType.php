@@ -93,6 +93,12 @@ class CardItemType extends AbstractType
                     'description' => 'Обязательность приложения фото (Для комплектации в ремонт)',
                 ],
             ])
+            ->add('sortOrder', null, [
+                'documentation' => [
+                    'type' => 'integer',
+                    'description' => 'Порядковый номер в списке карточек для задачи',
+                ],
+            ])
         ;
     }
 }
