@@ -32,6 +32,7 @@ class MarkingCardToTaskCardAdapter
             ->setAccounting($card->getAccounting())
 //            ->setImages($card->getImages(Media::CONTEXT_CARD_INVENTORY))
             ->setImages($card->getImages())
+            ->setSortOrder($card->getSortOrder())
             ->setTaskId($taskId);
 
         if($taskTypeId === TaskItem::TYPE_REPAIR && $taskId) {

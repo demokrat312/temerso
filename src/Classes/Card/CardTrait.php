@@ -76,6 +76,13 @@ trait CardTrait
      */
     private $taskId;
 
+    /**
+     * Порядковый номер в списке карточек для задачи
+     *
+     * @var null|int
+     */
+    private $sortOrder;
+
     public function __toString()
     {
             return sprintf('Карточка: %s, статус:  %s', $this->getId(), $this->getStatusTitle());
@@ -271,6 +278,24 @@ trait CardTrait
         ';
         $counter++;
         return $result;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int|null $sortOrder
+     * @return $this
+     */
+    public function setSortOrder(?int $sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+        return $this;
     }
 
 }

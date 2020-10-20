@@ -104,7 +104,7 @@ class Inventory implements DateListenerInterface, CreatedByListenerInterface, Ta
      */
     public function getCards(): Collection
     {
-        return $this->getCardsWithOrder();;
+        return $this->getCardsWithOrder();
     }
 
     public function addCard(Card $card): self

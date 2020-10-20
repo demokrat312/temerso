@@ -53,6 +53,11 @@ trait CardsOrderTrait
 
             ksort($cardsOrder);
             array_push($cardsOrder, ...$cardWithOutOrder);
+
+            // Добавляем порядковый номер карточки
+            foreach ($cardsOrder as $key => $card) {
+                $card->setSortOrder($key);
+            }
             return new ArrayCollection($cardsOrder);
         }
 

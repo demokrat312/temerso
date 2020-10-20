@@ -100,6 +100,14 @@ class TaskCard
     private $accounting;
 
     /**
+     * Порядковый номер в списке карточек для задачи
+     *
+     * @var null|int
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
+     */
+    private $sortOrder;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -330,6 +338,24 @@ class TaskCard
     public function setCardImgRequired($cardImgRequired)
     {
         $this->cardImgRequired = $cardImgRequired;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSortOrder(): ?int
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param int|null $sortOrder
+     * @return $this
+     */
+    public function setSortOrder(?int $sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
         return $this;
     }
 }
