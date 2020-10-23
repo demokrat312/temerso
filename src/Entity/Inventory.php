@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Classes\Inventory\InventoryTrait;
 use App\Classes\Task\TaskWithCardsTemporaryTrait;
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\Cards\CardsOrderTrait;
@@ -24,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Inventory implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface, TaskWithCardsTemporaryInterface
 {
-    use TaskEntityTrait, CardsOrderTrait, TaskWithCardsTemporaryTrait;
+    use InventoryTrait, TaskEntityTrait, CardsOrderTrait, TaskWithCardsTemporaryTrait;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

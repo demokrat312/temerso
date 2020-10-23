@@ -97,14 +97,14 @@ class TaskExcelBuilder
             ->setGeneral($inventory);
 
         if ($inventory->getOver()->count() > 0) {
-            $startRow = 11;
+            $startRow = 14;
             $markingCells
                 ->duplicateRow($startRow, $inventory->getOver()->count())
                 ->setOver($startRow, $inventory);
         }
 
         if ($inventory->getCards()->count() > 0) {
-            $startRow = 6;
+            $startRow = 9;
             $markingCells
                 ->duplicateRow($startRow, $inventory->getCards()->count())
                 ->setCars($startRow, $inventory);

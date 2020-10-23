@@ -23,13 +23,17 @@ class InventoryCells extends ParentCells
      *
      * @param $value
      */
-    public function setGeneral(TaskItemInterface $marking)
+    public function setGeneral(Inventory $inventory)
     {
-        $this->sheet->setCellValue('B1', (string)$marking->getExecutor()); // Исполнитель
-        $this->sheet->setCellValue('B2', $marking->getCards()->count()); // Всего единиц оборудования для маркировки
-        $this->sheet->setCellValue('B3', ''); // Местонахождение инвентаризируемого комплекта
-        $this->sheet->setCellValue('B4', ''); // Основание формирования комплекта
-        $this->sheet->setCellValue('B7', $marking->getCards()->count()); // Всего
+        $this->sheet->setCellValue('B1', (string)$inventory->getExecutor()); // Исполнитель
+        $this->sheet->setCellValue('B2', $inventory->getCards()->count()); // Всего единиц оборудования для инвентаризации
+        $this->sheet->setCellValue('B3', $inventory->deficitCount()); // Недостача
+        $this->sheet->setCellValue('B4', $inventory->getOver()->count()); // Излишек
+        $this->sheet->setCellValue('B5', $inventory->getCards()->count() - $inventory->deficitCount()); // Итого по факту
+        $this->sheet->setCellValue('B6', ''); // Местонахождение инвентаризируемого комплекта
+        $this->sheet->setCellValue('B7', ''); // Основание формирования комплекта
+
+        $this->sheet->setCellValue('B10', $inventory->getCards()->count()); // Всего
 
         return $this;
     }
