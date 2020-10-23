@@ -60,6 +60,7 @@ class Marking implements DateListenerInterface, CreatedByListenerInterface, Task
         self::STATUS_ACCEPT_EXECUTION,
         self::STATUS_SAVE,
         self::STATUS_CONTINUE,
+        self::STATUS_CREATED,
     ];
 
     /**
