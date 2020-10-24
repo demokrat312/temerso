@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method LogApi[]    findAll()
  * @method LogApi[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ApiApiLogRepository extends ServiceEntityRepository
+class LogApiRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -20,15 +20,15 @@ class ApiApiLogRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return KitCard[] Returns an array of KitCard objects
+    //  * @return LogApi[] Returns an array of LogApi objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('k.id', 'ASC')
+            ->orderBy('a.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -37,10 +37,10 @@ class ApiApiLogRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?KitCard
+    public function findOneBySomeField($value): ?LogApi
     {
-        return $this->createQueryBuilder('k')
-            ->andWhere('k.exampleField = :val')
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

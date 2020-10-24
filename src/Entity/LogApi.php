@@ -12,7 +12,7 @@ use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LogRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\LogApiRepository")
  * @ORM\Table(name="log_api")
  */
 class LogApi implements CreatedByListenerInterface
