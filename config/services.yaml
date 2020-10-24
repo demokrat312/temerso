@@ -65,13 +65,13 @@ services:
                 # you can also restrict listeners to a specific Doctrine connection
                 connection: 'default'
 
-#    <service id="security.acl.permission_granting_strategy" class="Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy">
-#    <call method="setAuditLogger">
-#    <argument type="service" id="security.acl.audit_logger" on-invalid="ignore" />
-#    </call>
-#    </service>
-
     security.acl.permission_granting_strategy:
         class: App\Security\PermissionGrantingStrategy
     app.jwt_token_authenticator:
         class: App\Security\JWTTokenAuthenticator
+
+    monolog.processor.request:
+        class: App\Classes\Log\RequestProcessor
+        arguments: ['@request_stack', '@service_container']
+        tags:
+            - { name: monolog.processor, method: processRecord }

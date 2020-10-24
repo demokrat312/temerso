@@ -2,6 +2,8 @@
 // src/EventListener/ExceptionListener.php
 namespace App\EventListener;
 
+use App\Entity\LogApi;
+use App\Service\Log\LogApiService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -9,6 +11,16 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
+    /**
+     * @var LogApiService
+     */
+    private $logApiService;
+
+    public function __construct(LogApiService $logApiService)
+    {
+        $this->logApiService = $logApiService;
+    }
+
     public function onKernelException(ExceptionEvent $event)
     {
         $this->apiException($event);
@@ -46,6 +58,10 @@ class ExceptionListener
         if (in_array('application/json', $request->getAcceptableContentTypes())) {
             $response = $this->createApiResponse($exception);
             $event->setResponse($response);
+
+            if ($this->logApiService->hasLog()) {
+                $this->logApiService->writeResponseLog($event->getThrowable()->getMessage(), LogApi::RESPONSE_TYPE_ERROR);
+            }
         }
     }
 
