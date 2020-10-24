@@ -150,31 +150,33 @@ class CardEditHelper
     {
         // Создаем или получаем из базы временную карточку
         $cardTemporary = $task->getCardTemporary($card);
-        $cardTemporary = $cardTemporary ?: new CardTemporary();
+        if(!$cardTemporary) {
+            $cardTemporary = new CardTemporary();
 
-        if (!$cardEditData->getTaskTypeId() || !$cardEditData->getTaskTypeId()) {
-            throw new BadRequestHttpException('Необходимо передать ключ задачи и тип задачи');
+            if (!$cardEditData->getTaskTypeId() || !$cardEditData->getTaskTypeId()) {
+                throw new BadRequestHttpException('Необходимо передать ключ задачи и тип задачи');
+            }
+            // Обезательные поля
+            $cardTemporary
+                ->setCard($card)
+                ->setTaskTypeId($cardEditData->getTaskTypeId())
+                ->setTaskId($cardEditData->getTaskId());
+
+            // Копируем данные из текущей карточки во временную
+            Utils::copyObject($cardTemporary, $card);
         }
-        // Обезательные поля
-        $cardTemporary
-            ->setCard($card)
-            ->setTaskTypeId($cardEditData->getTaskTypeId())
-            ->setTaskId($cardEditData->getTaskId());
-
-        // Копируем данные из текущей карточки во временную
-        Utils::copyObject($cardTemporary, $card);
 
         //<editor-fold desc="Обновляем временную карточку">
-        if ($cardEditData->getRfidTagNo()) {
+        if ($cardEditData->getRfidTagNo() !== null) {
             $cardTemporary->setRfidTagNo($cardEditData->getRfidTagNo());
         }
-        if ($cardEditData->getAccounting()) {
+        if ($cardEditData->getAccounting() !== null) {
             $cardTemporary->setAccounting($cardEditData->getAccounting());
         }
-        if ($cardEditData->getComment()) {
+        if ($cardEditData->getComment() !== null) {
             $cardTemporary->setComment($cardEditData->getComment());
         }
-        if ($cardEditData->getCommentProblemWithMark()) {
+        if ($cardEditData->getCommentProblemWithMark() !== null) {
             $cardTemporary->setCommentProblemWithMark($cardEditData->getCommentProblemWithMark());
             // если есть поле "оборудование естЬ, проблема с меткой", то учет true
             $cardTemporary->setAccounting(true);
