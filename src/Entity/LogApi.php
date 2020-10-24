@@ -10,6 +10,7 @@ namespace App\Entity;
 
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use App\Classes\Log\LogApiTrait;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LogApiRepository")
@@ -17,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LogApi implements CreatedByListenerInterface
 {
+    use LogApiTrait;
+
     const RESPONSE_TYPE_SUCCESS = 1;
     const RESPONSE_TYPE_ERROR = 2;
 

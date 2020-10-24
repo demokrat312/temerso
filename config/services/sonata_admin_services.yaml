@@ -141,3 +141,10 @@ services:
             - ~
         tags:
             - { name: sonata.admin, manager_type: orm, label: Временная карточка, group: Каталог, show_in_dashboard: true}
+    App\Admin\LogApiAdmin:
+        arguments:
+            - ~
+            - App\Entity\LogApi
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Апи, group: Лог, show_in_dashboard: false}
