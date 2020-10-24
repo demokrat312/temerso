@@ -25,18 +25,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ActionSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var MonologDBHandler
-     */
-    private $monologDBHandler;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-    /**
      * @var LogApiService
      */
     private $logApiService;
@@ -44,11 +32,8 @@ class ActionSubscriber implements EventSubscriberInterface
     /**
      * BeforeActionSubscriber constructor.
      */
-    public function __construct(ContainerInterface $container, EntityManagerInterface $em, LogApiService $logApiService)
+    public function __construct(LogApiService $logApiService)
     {
-        $this->monologDBHandler = $container->get('monolog.db_handler');
-        $this->container = $container;
-        $this->em = $em;
         $this->logApiService = $logApiService;
     }
 
