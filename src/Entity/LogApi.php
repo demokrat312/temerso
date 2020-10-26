@@ -32,7 +32,6 @@ class LogApi implements CreatedByListenerInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $createdBy;
 

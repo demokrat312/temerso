@@ -12,15 +12,15 @@ namespace App\Form\Data\Api\Card;
 class CardIdentificationData
 {
     /**
-     * @var int|null
+     * @var string|null
      */
     private $pipeSerialNumber;
     /**
-     * @var int|null
+     * @var string|null
      */
     private $couplingSerialNumber;
     /**
-     * @var int|null
+     * @var string|null
      */
     private $serialNoOfNipple;
     /**
@@ -29,54 +29,54 @@ class CardIdentificationData
     private $rfidTagNo;
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getPipeSerialNumber(): ?int
+    public function getPipeSerialNumber()
     {
         return $this->pipeSerialNumber;
     }
 
     /**
-     * @param int|null $pipeSerialNumber
+     * @param string|null $pipeSerialNumber
      * @return $this
      */
-    public function setPipeSerialNumber(?int $pipeSerialNumber)
+    public function setPipeSerialNumber($pipeSerialNumber)
     {
         $this->pipeSerialNumber = $pipeSerialNumber;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getCouplingSerialNumber(): ?int
+    public function getCouplingSerialNumber()
     {
         return $this->couplingSerialNumber;
     }
 
     /**
-     * @param int|null $couplingSerialNumber
+     * @param string|null $couplingSerialNumber
      * @return $this
      */
-    public function setCouplingSerialNumber(?int $couplingSerialNumber)
+    public function setCouplingSerialNumber($couplingSerialNumber)
     {
         $this->couplingSerialNumber = $couplingSerialNumber;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getSerialNoOfNipple(): ?int
+    public function getSerialNoOfNipple()
     {
         return $this->serialNoOfNipple;
     }
 
     /**
-     * @param int|null $serialNoOfNipple
+     * @param string|null $serialNoOfNipple
      * @return $this
      */
-    public function setSerialNoOfNipple(?int $serialNoOfNipple)
+    public function setSerialNoOfNipple($serialNoOfNipple)
     {
         $this->serialNoOfNipple = $serialNoOfNipple;
         return $this;
@@ -85,7 +85,7 @@ class CardIdentificationData
     /**
      * @return string|null
      */
-    public function getRfidTagNo(): ?string
+    public function getRfidTagNo()
     {
         return $this->rfidTagNo;
     }
@@ -94,7 +94,7 @@ class CardIdentificationData
      * @param string|null $rfidTagNo
      * @return $this
      */
-    public function setRfidTagNo(?string $rfidTagNo)
+    public function setRfidTagNo($rfidTagNo)
     {
         $this->rfidTagNo = $rfidTagNo;
         return $this;
