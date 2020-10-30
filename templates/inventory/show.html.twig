@@ -12,7 +12,7 @@
                             <h4>Всего единиц оборудования для инвентаризации: <span class="label label-default">{{ object.cards.count }}</span></h4>
                             <h4>Недостача: <span class="label label-default">{{ object.deficitCount }}</span></h4>
                             <h4>Излишек: <span class="label label-default">{{ object.over.count }}</span></h4>
-                            <h4>Итого по факту: <span class="label label-default">{{ object.cards.count - object.deficitCount }}</span></h4>
+                            <h4>Итого по факту: <span class="label label-default">{{ object.totalInFact }}</span></h4>
                             <h4>Местонахождение инвентаризируемого комплекта: <span class="label label-default"></span></h4>
                             <h4>Основание формирования комплекта: <span class="label label-default"></span></h4>
                             {% if object.comment %}

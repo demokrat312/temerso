@@ -27,4 +27,14 @@ trait InventoryTrait
 
         return $count;
     }
+
+    /**
+     * Итого по факту
+     */
+    public function totalInFact()
+    {
+        return $this->getCards()->count()
+            - $this->deficitCount()
+            + $this->getOver()->count();
+    }
 }

@@ -29,7 +29,7 @@ class InventoryCells extends ParentCells
         $this->sheet->setCellValue('B2', $inventory->getCards()->count()); // Всего единиц оборудования для инвентаризации
         $this->sheet->setCellValue('B3', $inventory->deficitCount()); // Недостача
         $this->sheet->setCellValue('B4', $inventory->getOver()->count()); // Излишек
-        $this->sheet->setCellValue('B5', $inventory->getCards()->count() - $inventory->deficitCount()); // Итого по факту
+        $this->sheet->setCellValue('B5', $inventory->totalInFact()); // Итого по факту
         $this->sheet->setCellValue('B6', ''); // Местонахождение инвентаризируемого комплекта
         $this->sheet->setCellValue('B7', ''); // Основание формирования комплекта
 
