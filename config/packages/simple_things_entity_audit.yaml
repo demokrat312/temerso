@@ -4,3 +4,10 @@ simple_things_entity_audit:
         - App\Entity\Card
         - App\Entity\CardFields
         - App\Entity\TaskCardOtherField
+        - App\Entity\Marking
+        - App\Entity\Inventory
+        - App\Entity\Inspection
+        - App\Entity\Equipment
+        - App\Entity\ReturnFromRent
+        - App\Entity\Repair
+        - App\Entity\ReturnFromRepair
