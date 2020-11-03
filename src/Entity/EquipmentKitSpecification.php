@@ -53,9 +53,9 @@ class EquipmentKitSpecification
     /**
      * Наружный диаметр трубы, (мм)
      *
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $outerDiameterOfThePipe;
@@ -63,9 +63,9 @@ class EquipmentKitSpecification
     /**
      * Толщина стенки трубы, (мм)
      *
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $pipeWallThickness;
@@ -83,9 +83,9 @@ class EquipmentKitSpecification
     /**
      * O.D. Замка ниппель  (мм)
      *
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $odlockNipple;
@@ -93,9 +93,9 @@ class EquipmentKitSpecification
     /**
      * I.D. Замка ниппель  (мм)
      *
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $idlockNipple;
@@ -123,9 +123,9 @@ class EquipmentKitSpecification
     /**
      * Длина под ключ ниппель, (мм)
      *
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $turnkeyLengthNipple;
@@ -133,9 +133,9 @@ class EquipmentKitSpecification
     /**
      * Длина под ключ муфта, (мм)
      *
-     * @var float
+     * @var string
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $turnkeyLengthCoupling;
@@ -214,24 +214,24 @@ class EquipmentKitSpecification
         return $this;
     }
 
-    public function getOuterDiameterOfThePipe(): ?float
+    public function getOuterDiameterOfThePipe(): ?string
     {
         return $this->outerDiameterOfThePipe;
     }
 
-    public function setOuterDiameterOfThePipe(?float $outerDiameterOfThePipe): self
+    public function setOuterDiameterOfThePipe(?string $outerDiameterOfThePipe): self
     {
         $this->outerDiameterOfThePipe = $outerDiameterOfThePipe;
 
         return $this;
     }
 
-    public function getPipeWallThickness(): ?float
+    public function getPipeWallThickness(): ?string
     {
         return $this->pipeWallThickness;
     }
 
-    public function setPipeWallThickness(?float $pipeWallThickness): self
+    public function setPipeWallThickness(?string $pipeWallThickness): self
     {
         $this->pipeWallThickness = $pipeWallThickness;
 
@@ -250,24 +250,24 @@ class EquipmentKitSpecification
         return $this;
     }
 
-    public function getOdlockNipple(): ?float
+    public function getOdlockNipple(): ?string
     {
         return $this->odlockNipple;
     }
 
-    public function setOdlockNipple(?float $odlockNipple): self
+    public function setOdlockNipple(?string $odlockNipple): self
     {
         $this->odlockNipple = $odlockNipple;
 
         return $this;
     }
 
-    public function getIdlockNipple(): ?float
+    public function getIdlockNipple(): ?string
     {
         return $this->idlockNipple;
     }
 
-    public function setIdlockNipple(?float $idlockNipple): self
+    public function setIdlockNipple(?string $idlockNipple): self
     {
         $this->idlockNipple = $idlockNipple;
 
@@ -298,24 +298,24 @@ class EquipmentKitSpecification
         return $this;
     }
 
-    public function getTurnkeyLengthNipple(): ?float
+    public function getTurnkeyLengthNipple(): ?string
     {
         return $this->turnkeyLengthNipple;
     }
 
-    public function setTurnkeyLengthNipple(?float $turnkeyLengthNipple): self
+    public function setTurnkeyLengthNipple(?string $turnkeyLengthNipple): self
     {
         $this->turnkeyLengthNipple = $turnkeyLengthNipple;
 
         return $this;
     }
 
-    public function getTurnkeyLengthCoupling(): ?float
+    public function getTurnkeyLengthCoupling(): ?string
     {
         return $this->turnkeyLengthCoupling;
     }
 
-    public function setTurnkeyLengthCoupling(?float $turnkeyLengthCoupling): self
+    public function setTurnkeyLengthCoupling(?string $turnkeyLengthCoupling): self
     {
         $this->turnkeyLengthCoupling = $turnkeyLengthCoupling;
 
