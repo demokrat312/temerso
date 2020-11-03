@@ -29,7 +29,7 @@ class EquipmentRepository extends TaskRepositoryParent
     public function find($id, $lockMode = null, $lockVersion = null)
     {
         $equipment = parent::find($id);
-        if (!$equipment) throw new NotFoundHttpException('Задача с id: ' . $id . " не найдена");
+        if (!$equipment) throw new NotFoundHttpException('Задача с id: ' . (is_array($id) ? current($id) : $id) . " не найдена");
 
         return $equipment;
     }
