@@ -422,7 +422,6 @@ class CardAdmin extends MainAdmin
 
                     $qb = $queryBuilder;
                     $qb
-//                        ->leftJoin('\App\Entity\EquipmentKit', 'kit')
                         ->leftJoin(sprintf('%s.equipmentKit', $alias), 'equipmentKit')
                         ->leftJoin('equipmentKit.equipment', 'equipment')
                         ->andWhere($qb->expr()->eq('equipment.id', '?1'),)
@@ -438,7 +437,7 @@ class CardAdmin extends MainAdmin
                     'class' => Repair::class,
                     'choice_label' => 'choiceTitle',
                     'query_builder' => function (RepairRepository $er) {
-                        return $er->withOutReturnFromRent();
+                        return $er->withOutReturnFromRepair();
                     },
                 ],
                 'callback' => function (ProxyQuery $queryBuilder, $alias, $field, $value) {

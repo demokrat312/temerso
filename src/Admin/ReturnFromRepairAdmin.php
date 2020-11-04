@@ -80,7 +80,7 @@ class ReturnFromRepairAdmin extends TaskAdminParent
                             'choice_label' => 'choiceTitle',
                             'attr' => ['class' => 'js-on-change-repair'],
                             'query_builder' => function (RepairRepository $er) {
-                                return $er->withOutReturnFromRent();
+                                return $er->withOutReturnFromRepair();
                             },
                         ])
                     ->end()

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Classes\Task\TaskRepositoryParent;
+use App\Entity\Marking;
 use App\Entity\Repair;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -22,11 +23,19 @@ class RepairRepository extends TaskRepositoryParent
     /**
      * Не отображаем те которые вернулись из ремонта
      */
-    public function withOutReturnFromRent()
+    public function withOutReturnFromRepair()
     {
-        return $this->createQueryBuilder('repair')
+        $qb = $this->createQueryBuilder('repair');
+        $expr = $qb->expr();
+
+        return $qb
             ->leftJoin('repair.returnFromRepair', 'returnFromRepair')
-            ->where('returnFromRepair.id is null') // Не отображаем те которые уже возвращены
+            ->where($expr->andX(
+                $expr->isNull('returnFromRepair.id'), // Не отображаем те которые уже возвращены
+                $expr->eq('repair.status', Marking::STATUS_COMPLETE), // Отображаем только завершенные задачи
+            ))
+//            ->setParameter('returnFromRepairStatus', Marking::STATUS_COMPLETE)
+            ->where('returnFromRepair.id is null')// Не отображаем те которые уже возвращены
             ->orderBy('repair.id', 'DESC');
     }
 

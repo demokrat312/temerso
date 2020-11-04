@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Classes\Task\TaskRepositoryParent;
 use App\Entity\Equipment;
+use App\Entity\Marking;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -50,9 +51,16 @@ class EquipmentRepository extends TaskRepositoryParent
      */
     public function withOutReturnFromRent()
     {
-        return $this->createQueryBuilder('equipment')
+        $qb = $this->createQueryBuilder('equipment');
+        $expr = $qb->expr();
+
+        return $qb
             ->leftJoin('equipment.returnFromRent', 'rent')
-            ->where('rent.id is null')// Не отображаем те которые уже возвращены
+            ->where($expr->andX(
+                $expr->isNull('rent.id'), // Не отображаем те которые уже возвращены
+                $expr->eq('equipment.status', ':status'), // Отображаем только завершенные задачи
+            ))
+            ->setParameter('status', Marking::STATUS_COMPLETE)
             ->orderBy('equipment.id', 'DESC');
     }
 
