@@ -13,11 +13,18 @@ monolog:
             max_files: 20
 
         # now passed *all* logs, but only if one log is error or higher
-        file_erro_log:
+        file_error_log:
             type: rotating_file
             path: "%kernel.logs_dir%/%kernel.environment%_error.log"
             level: error
             include_stacktraces: true
+            max_files: 20
+
+        # now passed *all* logs, but only if one log is error or higher
+        file_all_log:
+            type: rotating_file
+            path: "%kernel.logs_dir%/%kernel.environment%_all.log"
+            level: DEBUG
             max_files: 20
 
         # still passed *all* logs, and still only logs error or higher

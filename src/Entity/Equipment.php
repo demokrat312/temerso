@@ -170,7 +170,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     private $withKit;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ReturnFromRent", mappedBy="equipment", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\ReturnFromRent", mappedBy="equipment", cascade={"persist"})
      */
     private $returnFromRent;
 
@@ -179,7 +179,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      *
      * @var EquipmentCardsNotConfirmed[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentCardsNotConfirmed", mappedBy="equipment",cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentCardsNotConfirmed", mappedBy="equipment",cascade={"persist"})
      */
     private $cardsNotConfirmed;
 

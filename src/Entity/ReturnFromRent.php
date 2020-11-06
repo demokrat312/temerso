@@ -60,7 +60,7 @@ class ReturnFromRent implements DateListenerInterface, CreatedByListenerInterfac
     private $inspection;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Equipment", inversedBy="returnFromRent", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Equipment", inversedBy="returnFromRent", cascade={"persist"})
      */
     private $equipment;
 
