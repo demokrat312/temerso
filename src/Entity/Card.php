@@ -489,7 +489,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Класс замка муфта
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefLockClassNipple")
      */
     private $lock_class_coupling;
 
@@ -1408,12 +1408,12 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
         return $this;
     }
 
-    public function getLockClassCoupling()
+    public function getLockClassCoupling(): ?RefLockClassNipple
     {
         return $this->lock_class_coupling;
     }
 
-    public function setLockClassCoupling($lock_class_coupling): self
+    public function setLockClassCoupling(?RefLockClassNipple $lock_class_coupling): self
     {
         $this->lock_class_coupling = $lock_class_coupling;
 

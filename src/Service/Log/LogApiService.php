@@ -9,6 +9,7 @@
 namespace App\Service\Log;
 
 
+use App\Classes\Utils;
 use App\Entity\LogApi;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,10 +35,16 @@ class LogApiService
 
         $logApi = new LogApi();
 
+        if($request->getContent()) {
+            $content = $request->getContent();
+        } else {
+            $content = json_encode($request->request->all());
+        }
+
         $logApi
             ->setIp($request->getClientIp())
             ->setUrl($request->getRequestUri())
-            ->setRequestContent($request->getContent())
+            ->setRequestContent($content)
         ;
 
         $this->lastLog = $logApi;
