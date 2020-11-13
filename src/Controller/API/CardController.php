@@ -275,6 +275,8 @@ class CardController extends ApiParentController
             /** @var CardImageData $formData */
             $formData = $form->getData();
 
+            // Если это изображение уже добавлялось, то не добавляем еще раз
+            $hasMedia = false;
             $media = $this->getMedia($formData->getImage());
 
             //<editor-fold desc="Добавление изображения к временной карточки. Только для испекции для определенных статусов">
@@ -294,6 +296,7 @@ class CardController extends ApiParentController
                     $cardTemporary = $inspection->getCardTemporary($card);
                     $cardTemporary = $cardTemporary ?: new CardTemporary();
 
+                    $hasMedia = $this->hasMedia($cardTemporary, $media);
                     $cardTemporary->addImage($media);
                 }
             }
@@ -302,13 +305,19 @@ class CardController extends ApiParentController
 
             //<editor-fold desc="Добавление изображения к карточке">
             if (!$hasCardTemporary) {
+                $hasMedia = $this->hasMedia($card, $media);
                 $card->addImage($media);
                 $em->persist($card);
             }
             //</editor-fold>
 
             $em->persist($media);
-            $em->flush();
+
+            if($hasMedia) {
+                $em->clear();
+            } else {
+                $em->flush();
+            }
 
             return $this->defaultResponse(self::OK);
         } else {
@@ -499,5 +508,22 @@ class CardController extends ApiParentController
         } else {
             return $this->formErrorResponse($form);
         }
+    }
+
+    /**
+     * @param CardTemporary|Card $card
+     * @param Media $media
+     * @return bool
+     */
+    private function hasMedia($card, Media $media): bool
+    {
+        $hasMedia = false;
+        foreach ($card->getImages() as $image) {
+            if ($image->getName() === $media->getName()) {
+                $hasMedia = true;
+                break;
+            }
+        }
+        return $hasMedia;
     }
 }
