@@ -26,6 +26,7 @@ const CrudEditModel = (function () {
         console.info('edit init');
         initEvent();
         hideToggleTabButton();
+        pageSizeScroll();
     };
 
     const initEvent = () => {
@@ -175,6 +176,17 @@ const CrudEditModel = (function () {
         $('html, body').animate({
             scrollTop: $element.offset().top
         }, 300);
+    };
+
+    /**
+     * Задаем фиксированную высоту для элемента не больше чем размер экрана
+     */
+    const pageSizeScroll = () => {
+        $('.js-max-page-height').each((index, element) => {
+            debugger;
+            $element = $(element);
+            $element.css('height', 'calc(100vh - ' + $element.offset().top + 'px)');
+        });
     };
 
     const entityEdit = (e) => {
