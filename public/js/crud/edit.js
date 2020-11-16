@@ -183,7 +183,6 @@ const CrudEditModel = (function () {
      */
     const pageSizeScroll = () => {
         $('.js-max-page-height').each((index, element) => {
-            debugger;
             $element = $(element);
             $element.css('height', 'calc(100vh - ' + $element.offset().top + 'px)');
         });
