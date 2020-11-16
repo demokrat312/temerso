@@ -47,7 +47,7 @@ trait ReturnFromRentTrait
     public function getStatusTitle(): string
     {
         if($this->inspection) {
-            return $this->inspection->getStatusTitle();
+            return 'Инспекция: ' . $this->inspection->getStatusTitle();
         }
 
         return Marking::STATUS_TITLE[$this->status];
