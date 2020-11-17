@@ -1152,16 +1152,17 @@ class CardTemporary
 
         //<editor-fold desc="Не выводим повторяющиеся фотографии">
         $hasImages = [];
-        $image = new ArrayCollection();
+        $imageList = new ArrayCollection();
 
         foreach ($this->images as $image) {
             if(in_array($image->getName(), $hasImages))continue;
 
-            $image->add($image);
+            $imageList->add($image);
             $hasImages[] = $image->getName();
         }
         //</editor-fold>
-        return $image;
+
+        return $imageList;
     }
 
     public function addImage($image): self
