@@ -564,6 +564,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     private $the_ultimate_tensile_load_of_the_pipe;
 
     /**
+     * @var Media[]|Collection
      * @ORM\ManyToMany(targetEntity="App\Application\Sonata\MediaBundle\Entity\Media",cascade={"persist"})     *
      * @ORM\JoinTable(
      *     name="card_image_media",
@@ -1549,7 +1550,20 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
             $criteria = Criteria::create()->where(Criteria::expr()->eq("context", $context));
             return $this->images->matching($criteria);
         }
-        return $this->images;
+
+        //<editor-fold desc="Не выводим повторяющиеся фотографии">
+        $hasImages = [];
+        $image = new ArrayCollection();
+
+        foreach ($this->images as $image) {
+            if(in_array($image->getName(), $hasImages))continue;
+
+            $image->add($image);
+            $hasImages[] = $image->getName();
+        }
+        //</editor-fold>
+
+        return $image;
     }
 
     public function addImage($image): self

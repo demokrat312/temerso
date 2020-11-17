@@ -431,7 +431,7 @@ class CardTemporary
     /**
      * Класс замка муфта
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Reference\RefLockClassNipple")
      */
     private $lock_class_coupling;
 
@@ -1127,12 +1127,12 @@ class CardTemporary
         return $this;
     }
 
-    public function getLockClassCoupling()
+    public function getLockClassCoupling(): ?RefLockClassNipple
     {
         return $this->lock_class_coupling;
     }
 
-    public function setLockClassCoupling($lock_class_coupling): self
+    public function setLockClassCoupling(?RefLockClassNipple $lock_class_coupling): self
     {
         $this->lock_class_coupling = $lock_class_coupling;
 
@@ -1149,7 +1149,19 @@ class CardTemporary
             $criteria = Criteria::create()->where(Criteria::expr()->eq("context", $context));
             return $this->images->matching($criteria);
         }
-        return $this->images;
+
+        //<editor-fold desc="Не выводим повторяющиеся фотографии">
+        $hasImages = [];
+        $image = new ArrayCollection();
+
+        foreach ($this->images as $image) {
+            if(in_array($image->getName(), $hasImages))continue;
+
+            $image->add($image);
+            $hasImages[] = $image->getName();
+        }
+        //</editor-fold>
+        return $image;
     }
 
     public function addImage($image): self
