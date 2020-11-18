@@ -75,48 +75,59 @@ sonata_admin:
             - js/plugin/bootstrap-dialog.min.js
     dashboard:
         blocks:
-            #            - { type: sonata.admin.block.admin_list, position: left }
-            -   class:    col-lg-3 col-xs-6
+            -
                 position: top
-                type:     sonata.admin.block.stats
+                type: sonata.block.service.text
                 settings:
-                    #                    code: sonata.user.admin.card
-                    code: App\Admin\ArrivalAdmin
-                    icon: fa-file-excel-o
-                    text: Приход
-                    color: temerso-color
-                    filters:
-                        status: { type: 3, value: 0 }
-            -   class:    col-lg-3 col-xs-6
-                position: top
-                type:     sonata.admin.block.stats
-                settings:
-                    #                    code: sonata.user.admin.card
-                    code: App\Admin\CardAdmin
-                    icon: fa-newspaper-o
-                    text: Количество карточек
-                    color: temerso-color
-                    filters:
-                        status: { type: 3, value: 0 }
-            -   class:    col-lg-3 col-xs-6
-                position: top
-                type:     sonata.admin.block.stats
-                settings:
-                    code: sonata.user.admin.user
-                    icon: fa-users
-                    text: Список пользователей
-                    color: temerso-color
-                    filters:
-                        status: { type: 3, value: 0 }
+                    content: >
 
-            -   class:    col-lg-3 col-xs-6
-                position: top
-                type:     sonata.admin.block.stats
-                settings:
-                    code:  sonata.user.admin.group
-                    icon:  fa-group
-                    text:  Список ролей
-                    color: temerso-color
+
+
+#            - { type: sonata.admin.block.admin_list, position: left }
+
+
+
+#            -   class:    col-lg-3 col-xs-6
+#                position: top
+#                type:     sonata.admin.block.stats
+#                settings:
+#                    #                    code: sonata.user.admin.card
+#                    code: App\Admin\ArrivalAdmin
+#                    icon: fa-file-excel-o
+#                    text: Приход
+#                    color: temerso-color
+#                    filters:
+#                        status: { type: 3, value: 0 }
+#            -   class:    col-lg-3 col-xs-6
+#                position: top
+#                type:     sonata.admin.block.stats
+#                settings:
+#                    #                    code: sonata.user.admin.card
+#                    code: App\Admin\CardAdmin
+#                    icon: fa-newspaper-o
+#                    text: Количество карточек
+#                    color: temerso-color
+#                    filters:
+#                        status: { type: 3, value: 0 }
+#            -   class:    col-lg-3 col-xs-6
+#                position: top
+#                type:     sonata.admin.block.stats
+#                settings:
+#                    code: sonata.user.admin.user
+#                    icon: fa-users
+#                    text: Список пользователей
+#                    color: temerso-color
+#                    filters:
+#                        status: { type: 3, value: 0 }
+#
+#            -   class:    col-lg-3 col-xs-6
+#                position: top
+#                type:     sonata.admin.block.stats
+#                settings:
+#                    code:  sonata.user.admin.group
+#                    icon:  fa-group
+#                    text:  Список ролей
+#                    color: temerso-color
 
         groups:
             user:
