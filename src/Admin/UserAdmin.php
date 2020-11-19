@@ -9,18 +9,29 @@
 namespace App\Admin;
 
 
+use App\Classes\Utils;
+use App\Entity\User;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelType;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\DoctrineORMAdminBundle\Filter\CallbackFilter;
 use Sonata\UserBundle\Form\Type\SecurityRolesType;
 use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class UserAdmin extends BaseUserAdmin
 {
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection
+            ->remove('acl')
+        ;
+    }
+
     public function configure()
     {
         $this->setTemplate('edit', 'user/edit.html.twig');
@@ -101,6 +112,13 @@ class UserAdmin extends BaseUserAdmin
                     ])
                 ->end()
             ->end();
+
+        if (!$this->isAdmin($this->getCurrentUser())) {
+            $formMapper
+                ->removeGroup('Status', 'Security')
+                ->removeGroup('Groups', 'Security')
+                ->removeGroup('Roles', 'Security', true);
+        }
     }
 
     protected function configureListFields(ListMapper $listMapper): void
@@ -148,5 +166,34 @@ class UserAdmin extends BaseUserAdmin
                     return true;
                 }
             ]);
+    }
+
+    public function checkAccess($action, $object = null)
+    {
+        parent::checkAccess($action, $object);
+        $this->checkUserAccess();
+    }
+
+    private function checkUserAccess()
+    {
+        $curUser = $this->getCurrentUser();
+        if (!$this->isAdmin($curUser)) {
+            $editUser = $this->getSubject();
+            if ($editUser != $curUser) {
+                $redirection = new RedirectResponse($this->getConfigurationPool()->getContainer()->get('router')
+                    ->generate('admin_app_user_show', ['id' => $curUser->getId()]));
+                $redirection->send();
+            }
+        }
+    }
+
+    private function isAdmin(User $user): bool
+    {
+        return Utils::in_array([User::ROLE_ADMIN, User::ROLE_SUPER_ADMIN], $user->getRoles());
+    }
+
+    private function getCurrentUser(): User
+    {
+        return $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
     }
 }
