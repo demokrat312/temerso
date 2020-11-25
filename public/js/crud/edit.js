@@ -204,12 +204,14 @@ const CrudEditModel = (function () {
         setTimeout(() => {
             $('.sonata-ba-field > input.js-file-input').each((_, input) => {
                 const $input = $(input);
+                $input.attr('placeholder', 'Выберите изображение ...');
                 $input.fileinput({
                     browseOnZoneClick: true,
                     dropZoneEnabled: false,
                     allowedFileExtensions: ["jpg", "png", "gif"],
                     showUpload: false,
-                    language: 'ru'
+                    language: 'ru',
+                    msgPlaceholder: 'Выберите изображение ...'
                 });
 
                 $input.one('change', () => {
