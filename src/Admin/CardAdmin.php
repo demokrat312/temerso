@@ -533,7 +533,7 @@ class CardAdmin extends MainAdmin
 
         if(CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
             $formMapper->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
-                'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+                'entry_type' => \App\Classes\Type\MediaType::class,
                 'label' => 'Изображения',
                 'entry_options' => array(
                     'provider' => 'sonata.media.provider.image',
@@ -565,7 +565,7 @@ class CardAdmin extends MainAdmin
                         ->add('disposalReason', TextareaType::class, ['label' => 'Причина списания'])
                         ->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
                             'required' => true,
-                            'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+                            'entry_type' => \App\Classes\Type\MediaType::class,
                             'label' => 'Изображения',
                             'entry_options' => array(
                                 'provider' => 'sonata.media.provider.image',
@@ -724,7 +724,6 @@ class CardAdmin extends MainAdmin
                 // \Sonata\CoreBundle\Form\Type\CollectionType
                 // \Sonata\AdminBundle\Form\Type\CollectionType
                 ->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
-//                    'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
                     'entry_type' => \App\Classes\Type\MediaType::class,
                     'label' => 'Изображения',
                     'entry_options' => array(
