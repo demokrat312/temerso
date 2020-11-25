@@ -64,7 +64,6 @@ class MediaType extends BaseMediaType
             'label' => 'widget_label_binary_content',
             'attr' => [
                 'class' => 'js-file-input',
-                'placeholder' => 'Выберите изображение'
 //                'class' => 'file',
 //                'data-browse-on-zone-click' => true,
 //                'data-drop-zone-enabled' => 'false',

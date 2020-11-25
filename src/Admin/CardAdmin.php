@@ -252,7 +252,7 @@ class CardAdmin extends MainAdmin
                             $showMapper->add('restoreReason', null, ['label' => 'Причина востановления']);
                         }
                         $showMapper->add('accounting', null, ['label' => 'Учет/Инвентаризация'])
-                        ->add('images', null, ['label' => 'Изображения', 'template' => 'crud/show/file.html.twig'])
+                        ->add('images', null, ['label' => 'Выбрать изображение', 'template' => 'crud/show/file.html.twig'])
                         ->add('files', null, ['label' => 'Файлы', 'template' => 'crud/show/file.html.twig'])
                         ->add('ref_type_equipment', null, ['label' => 'Тип оборудования'])
                         ->add('statusTitle', null, ['label' => 'Статус'])
@@ -534,7 +534,7 @@ class CardAdmin extends MainAdmin
         if(CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
             $formMapper->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
                 'entry_type' => \App\Classes\Type\MediaType::class,
-                'label' => 'Изображения',
+                'label' => 'Выбрать изображение',
                 'entry_options' => array(
                     'provider' => 'sonata.media.provider.image',
                     'context' => 'card_return_form_rent',
@@ -566,7 +566,7 @@ class CardAdmin extends MainAdmin
                         ->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
                             'required' => true,
                             'entry_type' => \App\Classes\Type\MediaType::class,
-                            'label' => 'Изображения',
+                            'label' => 'Выбрать изображение',
                             'entry_options' => array(
                                 'provider' => 'sonata.media.provider.image',
                                 'context' => 'card_disposal',
@@ -725,7 +725,7 @@ class CardAdmin extends MainAdmin
                 // \Sonata\AdminBundle\Form\Type\CollectionType
                 ->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
                     'entry_type' => \App\Classes\Type\MediaType::class,
-                    'label' => 'Изображения',
+                    'label' => 'Выбрать изображение',
                     'entry_options' => array(
                         'provider' => 'sonata.media.provider.image',
                         'context' => 'card',
