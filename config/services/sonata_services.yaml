@@ -45,4 +45,14 @@ services:
     security.acl.permission.map:
         class: Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap
 
+    App\Classes\Type\MediaType:
+        class:  App\Classes\Type\MediaType
+        arguments:
+            - '@sonata.media.pool'
+            - ''
+        tags:
+            - { name: 'form.type', alias: 'sonata_media_type' }
+        calls:
+            - setLogger: ['@logger']
+
 

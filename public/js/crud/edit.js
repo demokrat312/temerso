@@ -27,6 +27,7 @@ const CrudEditModel = (function () {
         initEvent();
         hideToggleTabButton();
         pageSizeScroll();
+        initFileInput();
     };
 
     const initEvent = () => {
@@ -34,6 +35,7 @@ const CrudEditModel = (function () {
         $('.js-prev-tab').on('click', () => prevOrNextTabHandler('prev'));
         $('.js-next-tab').on('click', () => prevOrNextTabHandler('next'));
         $('.js-entity-edit').on('click', entityEdit);
+        $('.sonata-collection-add').on('click', initFileInput);
     };
 
     const prevOrNextTabHandler = (prevOrNext) => {
@@ -196,7 +198,25 @@ const CrudEditModel = (function () {
                 modalLinkHandler($modal, {refreshPageOnClose: '.content'});
             }
         });
+    };
 
+    const initFileInput = () => {
+        setTimeout(() => {
+            $('.sonata-ba-field > input.js-file-input').each((_, input) => {
+                const $input = $(input);
+                $input.fileinput({
+                    browseOnZoneClick: true,
+                    dropZoneEnabled: false,
+                    allowedFileExtensions: ["jpg", "png", "gif"],
+                    showUpload: false,
+                    language: 'ru'
+                });
+
+                $input.one('change', () => {
+                    $input.closest('.sonata-ba-field').find('img:last').remove();
+                });
+            });
+        }, 200);
     };
 
     return {

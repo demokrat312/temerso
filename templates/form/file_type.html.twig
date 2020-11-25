@@ -1,0 +1,10 @@
+{# @var \Symfony\Component\Form\FormView form#}
+{% block file_widget %}
+    {% spaceless %}
+        {% set type = type|default('file') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        {% if form.parent.vars.is_image is defined and  form.parent.vars.value.id %}
+            <img src="{% path form.parent.vars.value, 'small' %}" alt="image_photo"/>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

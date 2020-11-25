@@ -70,9 +70,12 @@ sonata_admin:
             - css/general.css
             - css/theme-config.css
             - css/plugin/bootstrap-dialog.min.css
+            - plugins/bootstrap-fileinput/css/fileinput.min.css
 
         extra_javascripts:
             - js/plugin/bootstrap-dialog.min.js
+            - plugins/bootstrap-fileinput/js/fileinput.min.js
+            - plugins/bootstrap-fileinput/js/locales/ru.js
     dashboard:
         blocks:
             -

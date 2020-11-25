@@ -10,5 +10,6 @@ twig:
         - '@SonataCore/Form/datepicker.html.twig'
         - form/adminList/admin_list_type.html.twig
         - form/adminEquipmentKitTemplate/admin_equipment_kit_template_type.html.twig
+        - form/file_type.html.twig
     paths:
         '%kernel.project_dir%/templates': app

@@ -724,7 +724,8 @@ class CardAdmin extends MainAdmin
                 // \Sonata\CoreBundle\Form\Type\CollectionType
                 // \Sonata\AdminBundle\Form\Type\CollectionType
                 ->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
-                    'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+//                    'entry_type' => \Sonata\MediaBundle\Form\Type\MediaType::class,
+                    'entry_type' => \App\Classes\Type\MediaType::class,
                     'label' => 'Изображения',
                     'entry_options' => array(
                         'provider' => 'sonata.media.provider.image',

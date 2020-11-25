@@ -5,6 +5,7 @@
         "php": "^7.1.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "kartik-v/bootstrap-fileinput": "dev-master",
         "lexik/jwt-authentication-bundle": "^2.8",
         "nelmio/api-doc-bundle": "^3.6",
         "onurb/excel-bundle": "^1.0",
