@@ -51,12 +51,12 @@
                 const amountOfKitCards = AdminEquipmentKitModel.getAmountOfKitCards();
 
                 //<editor-fold desc="Проверяем на загаловок">
-                const hasTitle = function(amountOfKitCards) {
+                const hasTitle = function (amountOfKitCards) {
                     const withTitle = amountOfKitCards.filter(item => !!item.title);
 
                     return withTitle.length === amountOfKitCards.length
                 }(amountOfKitCards);
-                if(!hasTitle) {
+                if (!hasTitle) {
                     showError('Ошибка: Необходимо задать название для комплекта ');
                     hasError = true;
                 }
@@ -92,13 +92,28 @@
                 // без выборки из каталога
             } else {
                 /** @type {{title: string: cardsAmount: Number[]}[]} */
+
+                const kitCount = +formData.kitCount || 1;
+
                 const amountOfKitSpecification = AdminEquipmentKitModel.getAmountOfKitSpecification();
-                if (amountOfKitSpecification.length === 0 || amountOfKitSpecification[0].cardsAmount === 0) {
-                    showError('Ошибка: Укажите технические характеристики');
+                // Проверяем количество комплектов созданные == указаным
+                if (kitCount !== amountOfKitSpecification.length) {
+                    showError('Ошибка: Нужно создать ' + kitCount + ' комплект, создано ' + amountOfKitSpecification.length);
                     hasError = true;
-                } else if (amountOfKitSpecification[0].title === '') {
-                    showError('Ошибка: Укажите название комплекта');
-                    hasError = true;
+                } else {
+                    // Проверяем на созданные харектиристики для каждого комплекта
+                    for (let i = 0; i < kitCount; i++) {
+                        if (amountOfKitSpecification[i].title === '') {
+                            // Проверяем на заголовок комплекта для каждого комплекта
+                            showError('Ошибка: Укажите название комплекта');
+                            hasError = true;
+                            break;
+                        } else if (amountOfKitSpecification[i].cardsAmount === 0) {
+                            showError('Ошибка: Укажите технические характеристики для ' + amountOfKitSpecification[i].title);
+                            hasError = true;
+                            break;
+                        }
+                    }
                 }
             }
 
