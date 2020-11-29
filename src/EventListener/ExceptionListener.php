@@ -55,7 +55,8 @@ class ExceptionListener
         $exception = $event->getThrowable();
         $request   = $event->getRequest();
 
-        if (in_array('application/json', $request->getAcceptableContentTypes())) {
+        if (in_array('application/json', $request->getAcceptableContentTypes())
+            || strpos($request->getRequestUri(), '/api') === 0) {
             $response = $this->createApiResponse($exception);
             $event->setResponse($response);
 

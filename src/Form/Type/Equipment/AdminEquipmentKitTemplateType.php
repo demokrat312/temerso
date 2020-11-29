@@ -35,75 +35,12 @@ class AdminEquipmentKitTemplateType extends AbstractType
         $this->pool = $pool;
     }
 
-   /* public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('title')
-            ->add('card', EntityType::class, [
-                'class' => Card::class,
-                'multiple' => true
-            ]);
-
-        $builder->resetViewTransformers();
-        $builder
-            ->addModelTransformer(new CallbackTransformer(
-                function ($collection) {
-                    if (null === $collection) {
-                        return [];
-                    }
-
-                    $array = [];
-                    foreach ($collection as $key => $entity) {
-                        $id = $entity->getId();
-
-                        $array[] = $id;
-                    }
-
-                    return $array;
-                },
-                function ($array) {
-//                    exit;
-                    // transform the string back to an array
-                    return $array;
-                }
-            ), true)
-            ->addViewTransformer(new CallbackTransformer(
-                function ($array) {
-                    if (empty($array)) {
-                        return [];
-                    }
-
-                    $entities = [];
-                    foreach ($array as $key => $id) {
-                        $entity = $this->em->getRepository(Card::class)->find($id);
-
-                        $entities[] = $entity;
-                    }
-
-                    return $entities;
-                },
-                function ($array) {
-                   $entities = [];
-                    foreach ($array as $key => $id) {
-                        $equipmentKit = new EquipmentKit();
-                        $equipmentKit->setTitle($key);
-                        $entity = $this->em->getRepository(Card::class)->find($id);
-
-                        $entities[] = $entity;
-                    }
-
-                    return $entities;
-                }
-            ), true)
-        ;
-    }*/
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['allow_add'] && $options['prototype']) {
             $prototypeOptions = array_replace([
                 'required' => $options['required'],
-                'label' => $options['prototype_name'].'label__',
+                'label' => $options['prototype_name'] . 'label__',
             ], $options['entry_options']);
 
             if (null !== $options['prototype_data']) {
@@ -124,6 +61,7 @@ class AdminEquipmentKitTemplateType extends AbstractType
 
         $builder->addEventSubscriber($resizeListener);
     }
+
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['fieldShowName'] = $options['field_show_name'];
@@ -160,7 +98,6 @@ class AdminEquipmentKitTemplateType extends AbstractType
         ]);
 
 
-
         $resolver->setNormalizer('entry_options', $entryOptionsNormalizer);
         $resolver->setAllowedTypes('delete_empty', ['bool', 'callable']);
     }
@@ -168,6 +105,5 @@ class AdminEquipmentKitTemplateType extends AbstractType
     public function getParent()
     {
         return CollectionType::class;
-//        return \Symfony\Bridge\Doctrine\Form\Type\EntityType::class;
     }
 }

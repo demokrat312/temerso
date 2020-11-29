@@ -49,6 +49,19 @@
                 /** @type {{title: string: cardsAmount: Number[]}[]} */
                     // Количество комплектов и карточек в комплекте
                 const amountOfKitCards = AdminEquipmentKitModel.getAmountOfKitCards();
+
+                //<editor-fold desc="Проверяем на загаловок">
+                const hasTitle = function(amountOfKitCards) {
+                    const withTitle = amountOfKitCards.filter(item => !!item.title);
+
+                    return withTitle.length === amountOfKitCards.length
+                }(amountOfKitCards);
+                if(!hasTitle) {
+                    showError('Ошибка: Необходимо задать название для комплекта ');
+                    hasError = true;
+                }
+                //</editor-fold>
+
                 // Единичный комплект
                 if (formData.kitType === 'single') {
                     if (amountOfKitCards.length !== 1) {
@@ -82,6 +95,9 @@
                 const amountOfKitSpecification = AdminEquipmentKitModel.getAmountOfKitSpecification();
                 if (amountOfKitSpecification.length === 0 || amountOfKitSpecification[0].cardsAmount === 0) {
                     showError('Ошибка: Укажите технические характеристики');
+                    hasError = true;
+                } else if (amountOfKitSpecification[0].title === '') {
+                    showError('Ошибка: Укажите название комплекта');
                     hasError = true;
                 }
             }

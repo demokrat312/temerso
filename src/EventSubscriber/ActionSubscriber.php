@@ -8,13 +8,14 @@
 
 namespace App\EventSubscriber;
 
-use App\Classes\Log\MonologDBHandler;
 use App\Entity\LogApi;
 use App\Service\Log\LogApiService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -28,13 +29,20 @@ class ActionSubscriber implements EventSubscriberInterface
      * @var LogApiService
      */
     private $logApiService;
+    /**
+     * @var SessionInterface|\Symfony\Component\HttpFoundation\Session\Session
+     */
+    private $session;
 
     /**
      * BeforeActionSubscriber constructor.
+     * @param LogApiService $logApiService
+     * @param SessionInterface $session
      */
-    public function __construct(LogApiService $logApiService)
+    public function __construct(LogApiService $logApiService, SessionInterface $session)
     {
         $this->logApiService = $logApiService;
+        $this->session = $session;
     }
 
     public static function getSubscribedEvents()
@@ -83,6 +91,15 @@ class ActionSubscriber implements EventSubscriberInterface
             }
 
             $this->logApiService->writeResponseLog($content, LogApi::RESPONSE_TYPE_SUCCESS);
+        }
+
+        // Удаляем сообщение об успешной созданной записи.
+        $flashBag = $this->session->getFlashBag();
+        $removeMessageList = ['sonata_flash_success'];
+        foreach ($flashBag->keys() as $type) {
+            if (in_array($type, $removeMessageList)) {
+                $flashBag->set($type, array());
+            }
         }
     }
 

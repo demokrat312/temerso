@@ -58,10 +58,16 @@
         const addKit = function (e) {
             e.preventDefault();
 
-            const withKitValue = $withKitInput.val();
+            // Проверяем на загаловок Комплекта
+            if (!$kitTitleInput.val().trim()) {
+                alert('Необходимо задать название комплекта');
+                return;
+            }
+
+            const inputValue = $withKitInput.val();
 
             // С выборкой из каталога
-            if (withKitValue === 'withCatalog') {
+            if (inputValue === 'withCatalog') {
                 $template = $templateCards;
             } else {
                 $template = $templateSpecification;
@@ -85,8 +91,8 @@
             // $kitsArea.prepend($newTemplate);
             $kitsArea.append($newTemplate);
 
-            // Обнуляем заголовок
-            $kitTitleInput.val('');
+            // Задаем название для комплекта по умолчанию. kitCounter равен 0 прибавляем 2 что бы получить порядковый номер
+            $kitTitleInput.val('Комплект ' + (kitCounter + 2));
             kitCounter += 1;
 
             adminListModel.setTableList($newTemplate.find('.js-card-list'));
@@ -219,15 +225,6 @@
          * @returns {Array}
          */
         const getAmountOfKitCards = () => {
-            // const kitsAmount = [];
-            // $kitsArea.find('.js-kit-cards').each((index, htmlElement) => {
-            //     const $kit = $(htmlElement);
-            //     const kitCardsAmount = $kit.find('.js-card-list tbody tr:not(#row-empty)').length;
-            //     kitsAmount.push({title: $kit.find('.panel-title').text(), cardsAmount: kitCardsAmount});
-            // });
-            //
-            // return kitsAmount;
-
             return getAmountOfKit('.js-kit-cards');
         };
 
@@ -238,13 +235,6 @@
          */
         const getAmountOfKitSpecification = () => {
             return getAmountOfKit('.js-kit-specification');
-            // const kitsAmount = [];
-            // return $kitsArea.find('.js-kit-specification').length
-            // $kitsArea.find('.js-kit-specification').each((index, htmlElement) => {
-            //     const $kit = $(htmlElement);
-            //     const kitCardsAmount = $kit.find('.js-card-list tbody tr:not(#row-empty)').length;
-            //     kitsAmount.push({title: $kit.find('.panel-title').text(), cardsAmount: kitCardsAmount});
-            // });
         };
 
         return {init, getAmountOfKitCards, getAmountOfKitSpecification}

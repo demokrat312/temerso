@@ -68,13 +68,16 @@ class CardRepository extends ServiceEntityRepository
                 $qb->setParameter('rFidTagNo', $data->getRfidTagNo());
             }
             if ($data->getPipeSerialNumber()) {
-                $exprAndX[] = $expr->eq('c.pipeSerialNumber', $data->getPipeSerialNumber());
+                $exprAndX[] = $expr->eq('c.pipeSerialNumber', ':pipeSerialNumber');
+                $qb->setParameter('pipeSerialNumber', $data->getPipeSerialNumber());
             }
             if ($data->getCouplingSerialNumber()) {
-                $exprAndX[] = $expr->eq('c.couplingSerialNumber', $data->getCouplingSerialNumber());
+                $exprAndX[] = $expr->eq('c.couplingSerialNumber', ':couplingSerialNumber');
+                $qb->setParameter('couplingSerialNumber', $data->getCouplingSerialNumber());
             }
             if ($data->getSerialNoOfNipple()) {
-                $exprAndX[] = $expr->eq('c.serialNoOfNipple', $data->getSerialNoOfNipple());
+                $exprAndX[] = $expr->eq('c.serialNoOfNipple', ':serialNoOfNipple');
+                $qb->setParameter('serialNoOfNipple', $data->getSerialNoOfNipple());
             }
 
             $cards = $qb
