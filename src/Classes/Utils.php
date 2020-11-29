@@ -9,6 +9,8 @@
 namespace App\Classes;
 
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Функции общего применения
  *
@@ -74,5 +76,25 @@ class Utils
         }
 
         return $merged;
+    }
+
+    public static function filterDuplicate($list, $isCollection = true)
+    {
+        //Костыль. Фильтруем повторяющиеся записи
+        $duplicate = [];
+        $listFiltered = [];
+
+        foreach ($list as $item) {
+            $json = json_encode($item);
+            if (!in_array($json, $duplicate)) {
+                $listFiltered[] = $item;
+                $duplicate[] = $json;
+            }
+        }
+
+        if($isCollection) {
+            return new ArrayCollection($listFiltered);
+        }
+        return $listFiltered;
     }
 }

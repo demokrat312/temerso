@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\Cards\CardsOrderTrait;
+use App\Classes\Utils;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -104,7 +105,7 @@ class EquipmentKit implements CardsOrderListenerInterface
      */
     public function getCards(): Collection
     {
-        return $this->getCardsWithOrder();
+        return Utils::filterDuplicate($this->getCardsWithOrder());
     }
 
     /**
@@ -138,7 +139,7 @@ class EquipmentKit implements CardsOrderListenerInterface
      */
     public function getOver(): Collection
     {
-        return $this->over;
+        return Utils::filterDuplicate($this->over);
     }
 
     public function addOver(EquipmentOver $over): self
