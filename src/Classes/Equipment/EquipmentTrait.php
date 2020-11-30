@@ -120,7 +120,6 @@ trait EquipmentTrait
                 ) {
                     $cards->add($card);
                     continue 2;
-
                 }
             }
         }

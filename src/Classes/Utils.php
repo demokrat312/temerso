@@ -85,7 +85,8 @@ class Utils
         $listFiltered = [];
 
         foreach ($list as $item) {
-            $json = json_encode($item);
+//            $json = json_encode($item);
+            $json = serialize($item);
             if (!in_array($json, $duplicate)) {
                 $listFiltered[] = $item;
                 $duplicate[] = $json;
