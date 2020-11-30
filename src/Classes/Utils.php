@@ -93,8 +93,12 @@ class Utils
             });
 
             foreach ($methodsGet as $methodGet) {
-                if (is_scalar($object->{$methodGet}())) {
-                    $resultString .= (string)$object->{$methodGet}();
+                try {
+                    if (is_scalar($object->{$methodGet}())) {
+                        $resultString .= (string)$object->{$methodGet}();
+                    }
+                } catch (\Throwable $exception) {
+
                 }
             }
 
