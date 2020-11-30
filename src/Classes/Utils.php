@@ -84,16 +84,32 @@ class Utils
         $duplicate = [];
         $listFiltered = [];
 
+        $customString = function ($object) {
+            $resultString = '';
+            $methods = get_class_methods($object);
+            if ($methods[0] === 'getId') unset($methods[0]);
+            $methodsGet = array_filter($methods, function ($methodName) {
+                return strpos($methodName, 'get') === 0;
+            });
+
+            foreach ($methodsGet as $methodGet) {
+                if (is_scalar($object->{$methodGet}())) {
+                    $resultString .= (string)$object->{$methodGet}();
+                }
+            }
+
+            return $resultString;
+        };
+
         foreach ($list as $item) {
-//            $json = json_encode($item);
-            $json = serialize($item);
-            if (!in_array($json, $duplicate)) {
+            $objectString = $customString($item);
+            if (!in_array($objectString, $duplicate)) {
                 $listFiltered[] = $item;
-                $duplicate[] = $json;
+                $duplicate[] = $objectString;
             }
         }
 
-        if($isCollection) {
+        if ($isCollection) {
             return new ArrayCollection($listFiltered);
         }
         return $listFiltered;
