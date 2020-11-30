@@ -149,11 +149,12 @@ class UserAdmin extends BaseUserAdmin
     protected function configureDatagridFilters(DatagridMapper $filterMapper): void
     {
         $filterMapper
-            ->add('username')
-            ->add('email')
-            ->add('groups')
-            ->add('firstname')
+            ->add('username', null, array('global_search' => false))
+            ->add('email', null, array('global_search' => false))
+            ->add('groups', null, array('global_search' => false))
+            ->add('firstname', null, array('global_search' => false))
             ->add('all', CallbackFilter::class, [
+                'global_search' => false,
                 'callback' => function ($queryBuilder, $alias, $field, $value) {
                     if (!$value['value']) {
                         return false;
