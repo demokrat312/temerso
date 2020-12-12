@@ -127,6 +127,7 @@ abstract class TaskAdminParent extends MainAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
+        parent::configureRoutes($collection);
         $collection
             ->add(MarkingAdminController::ROUTER_CHANGE_STATUS, $this->getRouterIdParameter() . '/change-status')
             ->add(MarkingAdminController::ROUTER_REMOVE_EXECUTOR, $this->getRouterIdParameter() . '/remove-executor')

@@ -83,11 +83,11 @@
                             aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}</a>
             {% endif %}
 
-            {% if admin.isAclEnabled() and admin.hasRoute('acl') and admin.hasAccess('acl', object) %}
-                <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fa fa-users"
-                                                                                               aria-hidden="true"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}
-                </a>
-            {% endif %}
+{#            {% if admin.isAclEnabled() and admin.hasRoute('acl') and admin.hasAccess('acl', object) %}#}
+{#                <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fa fa-users"#}
+{#                                                                                               aria-hidden="true"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}#}
+{#                </a>#}
+{#            {% endif %}#}
         {% else %}
             {% if admin.hasroute('edit') and admin.hasAccess('edit') %}
                 <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fa fa-save"

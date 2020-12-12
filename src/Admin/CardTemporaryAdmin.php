@@ -60,6 +60,7 @@ class CardTemporaryAdmin extends MainAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
+        parent::configureRoutes($collection);
         if(CardListHelper::ins()->isAjax()) {
             $collection
                 ->remove('delete')

@@ -11,6 +11,7 @@ namespace App\Classes;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 abstract class MainAdmin extends AbstractAdmin
 {
@@ -24,6 +25,12 @@ abstract class MainAdmin extends AbstractAdmin
     ];
 
     protected $showModeButtons = [];
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        parent::configureRoutes($collection);
+        $collection->remove('acl');
+    }
 
     protected function configureListFields(ListMapper $list)
     {
@@ -49,8 +56,4 @@ abstract class MainAdmin extends AbstractAdmin
         $this->showModeButtons = $showModeButtons;
         return $this;
     }
-
-
-
-
 }

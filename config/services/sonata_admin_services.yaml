@@ -43,7 +43,7 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, label: Приход, group: Документы, show_in_dashboard: true, icon: '<i class="fa fa-file-excel-o"></i>'}
     App\Admin\ReferenceDashboardAdmin:
-        arguments: [~, App\Entity\Arrival, App\Controller\Admin\ReferenceDashboardController]
+        arguments: [~, App\Classes\Dashboard\ReferenceDashboardAdmin, App\Controller\Admin\ReferenceDashboardController]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Настройки, group: Каталог, show_in_dashboard: true, icon: '<i class="fa fa-file-excel-o"></i>'}
     App\Admin\MarkingAdmin:

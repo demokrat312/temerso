@@ -32,14 +32,15 @@ class CardDiscardedAdmin extends MainAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
+        parent::configureRoutes($collection);
         $collection
-        ->add('history');
+            ->add('history');
     }
 
-    public function getContainer(){
+    public function getContainer()
+    {
         return $this->getConfigurationPool()->getContainer();
     }
-
 
 
     /**
@@ -129,8 +130,7 @@ class CardDiscardedAdmin extends MainAdmin
             ->add('the_ultimate_tensile_load_of_the_pipe', null, ['label' => 'Предельная растягивающая нагрузка трубы, Кн'])
             ->end()->with('fields', ['class' => 'col-md-6', 'label' => 'Дополнительные поля'])
             ->add('cardFields', null, ['label' => 'empty', 'template' => '/viewList/cardFields.html.twig'])
-            ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -251,7 +251,6 @@ class CardDiscardedAdmin extends MainAdmin
             ->add('the_ultimate_torque_of_the_tube', null, ['label' => 'Предельный  момент кручения  трубы, кНм'])
             ->add('the_ultimate_tensile_load_of_the_pipe', null, ['label' => 'Предельная растягивающая нагрузка трубы, Кн'])
             ->end()->end()->tab('media', ['label' => 'Медиа'])->with('media', ['label' => 'Медиа'])
-
             // \Symfony\Component\Form\Extension\Core\Type\CollectionType
             // \Sonata\Form\Type\CollectionType
             // \Sonata\CoreBundle\Form\Type\CollectionType
@@ -313,8 +312,7 @@ class CardDiscardedAdmin extends MainAdmin
 //                    'mode' => 'tree','multiple' => true,
 //                ],
 //            ])
-            ->end()->end()
-        ;
+            ->end()->end();
 
         $fieldsHelper = new CardFieldsHelper($this->getContainer()->get('doctrine.orm.entity_manager'));
 

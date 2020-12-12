@@ -10,6 +10,10 @@
                 <source>list.label_fio</source>
                 <target>ФИО</target>
             </trans-unit>
+            <trans-unit id="group">
+                <source>Group</source>
+                <target>Группа</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

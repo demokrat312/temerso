@@ -20,6 +20,7 @@ class LogApiAdmin extends MainAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
+        parent::configureRoutes($collection);
         $collection
             ->remove('export')
             ->remove('acl')

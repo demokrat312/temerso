@@ -84,7 +84,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Наработка моточасов
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $operating_hours;
 
@@ -100,7 +100,7 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
      * это поле наврено нужно будет удалить
      * @see Card::$rfidTagNo
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rfid_tag_serial_no;
 
@@ -146,14 +146,14 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Наружный диаметр трубы, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $outer_diameter_of_the_pipe;
 
     /**
      * Толщина стенки трубы, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pipe_wall_thickness;
 
@@ -181,63 +181,63 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * O.D. Замка ниппель  (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $odlock_nipple;
 
     /**
      * D.F.  Фаска ниппель (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $dfchamfer_nipple;
 
     /**
      * LPC   Длина резьбы ниппель (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lpc_thread_length_nipple;
 
     /**
      * Диаметр носика ниппеля
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nipple_nose_diameter;
 
     /**
      * O.D. Замка муфта  (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $odlock_coupling;
 
     /**
      * D.F.  Фаска муфта (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $dfchamfer_coupling;
 
     /**
      * LBC Длина резьбы муфта (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $lbc_thread_length_coupler;
 
     /**
      * QC Диаметр расточки муфта(мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $qc_bore_diameter_coupling;
 
     /**
      * I.D. Замка ниппель  (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $idlock_nipple;
 
@@ -251,28 +251,28 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Вес трубы (кг)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $weight_of_pipe;
 
     /**
      * Угол заплечика (градус)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $shoulder_angle;
 
     /**
      * Длина под ключ ниппель, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $turnkey_length_nipple;
 
     /**
      * Длина под ключ муфта, (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $turnkey_length_coupling;
 
@@ -328,28 +328,28 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Глубина наминов в зоне работы клиньев max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $depth_of_naminov;
 
     /**
      * Изгиб ниппельного конца max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nipple_end_bend_max;
 
     /**
      * Изгиб муфтового конца max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $coupling_end_bend_max;
 
     /**
      * Общий изгиб тела трубы max (мм)
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $the_total_bend_of_the_pipe_body_max;
 
@@ -419,14 +419,14 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Хардбендинг ниппель (диаметр) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hardbanding_nipplemm_diameter;
 
     /**
      * Хардбендинг ниппель (высота наплавки) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hardbanding_nipple_height;
 
@@ -475,14 +475,14 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Хардбендинг муфта (диаметр) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hardbanding_coupler_diameter;
 
     /**
      * Хардбендинг муфта (высота наплавки) мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $hardbanding_coupling_height_mm;
 
@@ -496,21 +496,21 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Миним. ширина упорного уступа ниппеля при эксцентрич износе мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $min_the_width_thrust_shoulder;
 
     /**
      * Миним. ширина упорного уступа муфты при эксцентрич износе мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $min_width_stop_shoulder;
 
     /**
      * Миним. Длина переходного участка высадки miu,  мм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $min_length_transition_section;
 
@@ -524,42 +524,42 @@ class Card implements DateListenerInterface, CreatedByListenerInterface
     /**
      * Минимальный момент свинчивания замка, кНм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $the_minimum_moment;
 
     /**
      * Максимальный момент свинчивания замка, кНм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $the_maximum_moment;
 
     /**
      * Предельный  момент кручения  замка, кНм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $the_limiting_moment;
 
     /**
      * Предельная растягивающая нагрузка замка, Кн
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $the_ultimate_tensile;
 
     /**
      * Предельный  момент кручения  трубы, кНм
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $the_ultimate_torque_of_the_tube;
 
     /**
      * Предельная растягивающая нагрузка трубы, Кн
      *
-     * @ORM\Column(type="float", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $the_ultimate_tensile_load_of_the_pipe;
 
