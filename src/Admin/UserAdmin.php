@@ -59,8 +59,6 @@ class UserAdmin extends BaseUserAdmin
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
-        // Убирае роли, пользователю не нужны
-        $formMapper->removeGroup('Roles', 'Security');
         // define group zoning
         $formMapper
             ->tab('User')
@@ -123,9 +121,12 @@ class UserAdmin extends BaseUserAdmin
         if (!$this->isAdmin($this->getCurrentUser())) {
             $formMapper
                 ->removeGroup('Status', 'Security')
-                ->removeGroup('Groups', 'Security')
-                ->removeGroup('Roles', 'Security', true);
+                ->removeGroup('Groups', 'Security', true)
+                ;
         }
+
+        // Убирае роли, пользователю не нужны
+        $formMapper->removeGroup('Roles', 'Security', true);
     }
 
     protected function configureListFields(ListMapper $listMapper): void
