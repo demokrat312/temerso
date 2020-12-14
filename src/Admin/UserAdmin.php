@@ -59,6 +59,8 @@ class UserAdmin extends BaseUserAdmin
 
     protected function configureFormFields(FormMapper $formMapper): void
     {
+        // Убирае роли, пользователю не нужны
+        $formMapper->removeGroup('Roles', 'Security');
         // define group zoning
         $formMapper
             ->tab('User')
