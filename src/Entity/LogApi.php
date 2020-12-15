@@ -31,7 +31,7 @@ class LogApi implements CreatedByListenerInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", cascade={"persist"})
      */
     private $createdBy;
 
