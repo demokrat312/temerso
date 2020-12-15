@@ -29,6 +29,7 @@ class KitAdmin extends MainAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
+        parent::configureRoutes($collection);
         $collection
             ->remove('create')
             ->remove('edit')

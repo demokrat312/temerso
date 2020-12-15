@@ -138,6 +138,7 @@ class CardAdmin extends MainAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
+        parent::configureRoutes($collection);
         $collection
             ->add('history')
             ->add(CardAdminController::ROUTER_DISPOSAL, CardAdminController::ROUTER_DISPOSAL)
