@@ -35,12 +35,12 @@ class ParentCells implements CellsInterface
         $newRowInsert = $rowCount - 1;
         $nextRow = $startRow + 1;
 
-        // Вставляем строку, после указанной
-        $this->sheet->insertNewRowBefore($nextRow, $newRowInsert);
-        // Копируем стили
-        //$this->sheet->duplicateStyle($this->sheet->getStyle($startRowCell), $endRowCell);
-
-        $this->duplicateStyle($startRow, $startRow, $newRowInsert );
+        if($newRowInsert) {
+            // Вставляем строку, после указанной
+            $this->sheet->insertNewRowBefore($nextRow, $newRowInsert);
+            // Копируем стили
+            $this->duplicateStyle($startRow, $startRow, $newRowInsert );
+        }
 
 //        echo 'from: ' . $startRowCell . '; to: '. $endRowCell;exit;
 
