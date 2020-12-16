@@ -452,7 +452,7 @@ class CardTemporary
     /**
      * Учет/Инвентаризация. По умолчанию у создаваемых карточек будет проставляться 1.
      *
-     * @ORM\Column(type="boolean", options={"default" : 1})
+     * @ORM\Column(type="boolean", options={"default" : 1}, nullable=true)
      * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $accounting;
@@ -1188,7 +1188,7 @@ class CardTemporary
         return $this->accounting;
     }
 
-    public function setAccounting(bool $accounting): self
+    public function setAccounting(?bool $accounting): self
     {
         $this->accounting = $accounting;
 

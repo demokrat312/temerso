@@ -22,7 +22,7 @@ trait InventoryTrait
     {
         $count = 0;
         foreach ($this->getCardsTemporary() as $cardTemporary) {
-            if(!$cardTemporary->getAccounting())$count++;
+            if($cardTemporary->getAccounting() === false)$count++;
         }
 
         return $count;

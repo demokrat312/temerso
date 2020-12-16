@@ -236,7 +236,7 @@ abstract class TaskAdminParent extends MainAdmin
 
             // При Инвентаризация обнуляем поле "Учет/Инвентаризация"
             if ($taskWithCardsTemporary instanceof Inventory) {
-                $cardTemporary->setAccounting(0);
+                $cardTemporary->setAccounting(null);
             }
 
             $taskWithCardsTemporary->addCardTemporary($cardTemporary);
