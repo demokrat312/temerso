@@ -114,7 +114,7 @@
                                         <tbody>
                                         {# @var \App\Entity\Card card #}
                                         <tr class="bg-info">
-                                            <td colspan="8">Подтвержденные карточки</td>
+                                            <td colspan="8">Подтвержденные метки</td>
                                         </tr>
                                         {% for card in object.cardsFilterConfirmed(kit) %}
                                             <tr>
@@ -137,7 +137,7 @@
                                             </tr>
                                         {% endfor %}
                                         <tr class="bg-warning">
-                                            <td colspan="8">Неподтвержденные карточки</td>
+                                            <td colspan="8">Неподтвержденные метки</td>
                                         </tr>
                                         {% for card in object.cardsFilterNotConfirmed(kit) %}
                                             <tr>
