@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Swagger\Annotations as SWG;
+use App\Classes\ApiParentController;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Излишек(Инвентаризация)
@@ -19,9 +21,12 @@ use Swagger\Annotations as SWG;
 class InventoryOver
 {
     /**
+     * Ключ
+     *
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $id;
 
@@ -29,6 +34,7 @@ class InventoryOver
      * Серийный № трубы
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $pipeSerialNumber;
 
@@ -36,6 +42,7 @@ class InventoryOver
      * Серийный № ниппеля
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $serialNoOfNipple;
 
@@ -43,6 +50,7 @@ class InventoryOver
      * Серийный № муфты
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $couplingSerialNumber;
 
@@ -50,6 +58,7 @@ class InventoryOver
      * № Метки RFID
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $rfidTagNo;
 
@@ -62,6 +71,7 @@ class InventoryOver
      * Комментарий
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups(ApiParentController::GROUP_API_DEFAULT)
      */
     private $comment;
 
