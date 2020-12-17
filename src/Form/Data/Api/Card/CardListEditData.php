@@ -16,7 +16,7 @@ class CardListEditData
     /**
      * Список карточек
      *
-     * @var CardEditForListData[]
+     * @var CardEditData[]
      *
      * @Assert\Count(min = 1, minMessage = "Задайте хотябы одну карточку")
      * @Assert\Valid()
@@ -24,7 +24,7 @@ class CardListEditData
     private $list;
 
     /**
-     * @return CardEditForListData[]
+     * @return CardEditData[]
      */
     public function getList()
     {

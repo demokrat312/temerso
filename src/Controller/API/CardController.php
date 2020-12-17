@@ -206,23 +206,19 @@ class CardController extends ApiParentController
             /** @var CardListEditData $data */
             $data = $form->getData();
             $errors = [];
-            $cardRep = $em->getRepository(Card::class);
 
             foreach ($data->getList() as $cardData) {
-                /** @var Card $card */
-                $card = $cardRep->find($cardData->getId());
-                if (!$card) {
-                    $errors[] = $cardData->getId();
-                    continue;
-                }
-                $card->setRfidTagNo($cardData->getRfidTagNo());
-                $em->persist($card);
+                $toArray = function ($object, $group) {
+                    return $this->toArray($object, $group);
+                };
+                $cardEditHelper = new CardEditHelper($em, $toArray);
+
+                $cardEditHelper->edit($cardData);
             }
 
             if (count($errors) > 0) {
                 return $this->errorResponse('Некоторые карточки не найденны', self::STATUS_CODE_404, ['cardsIdNotFound' => $errors]);
             }
-            $em->flush();
             return $this->defaultResponse(self::OK);
         }
 

@@ -11,12 +11,47 @@ namespace App\Form\Data\Api\Card;
 
 class CardEditData
 {
+    /**
+     * Ключ карточки
+     *
+     * @var int|null
+     */
     private $id;
+    /**
+     * Ключ, задачи
+     *
+     * @var int|null
+     */
     private $taskId;
+    /**
+     * Тип задачи
+     *
+     * @var int|null
+     */
     private $taskTypeId;
+    /**
+     * Метки RFID
+     *
+     * @var string|null
+     */
     private $rfidTagNo;
+    /**
+     * Учет/Инвентаризация
+     *
+     * @var integer|null
+     */
     private $accounting;
+    /**
+     * Примечание
+     *
+     * @var string|null
+     */
     private $comment;
+    /**
+     * Оборудование есть, проблема с меткой(для инспекции)
+     *
+     * @var string|null
+     */
     private $commentProblemWithMark;
 
     /**

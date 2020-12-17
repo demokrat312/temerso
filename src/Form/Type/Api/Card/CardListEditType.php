@@ -21,7 +21,7 @@ class CardListEditType extends AbstractType
     {
         $builder
             ->add('list', CollectionType::class, [
-                'entry_type' => CardEditForListType::class,
+                'entry_type' => CardEditType::class,
                 'allow_add' => true,
                 'documentation' => [
                     'description' => 'Список карточек',
