@@ -1205,7 +1205,7 @@ class CardTemporary
 
     /**
      * @param mixed $comment
-     * @return $this
+     * @return self
      */
     public function setComment($comment)
     {

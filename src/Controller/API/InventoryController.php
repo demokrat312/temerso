@@ -71,6 +71,16 @@ class InventoryController extends ApiParentController
                 return $this->errorResponse('Инвентаризация по указаному id не найдена');
             }
 
+            //<editor-fold desc="Удаляем старый излишек">
+            if ($inventory->getIsRevision()) {
+                $inventory->setIsRevision(false);
+                foreach ($inventory->getOver() as $inventoryOverRemove) {
+                    $inventory->removeOver($inventoryOverRemove);
+                    $em->remove($inventoryOverRemove);
+                }
+            }
+            //</editor-fold>
+
             foreach ($data->getOverList() as $inventoryOver) {
                 $inventory->addOver($inventoryOver);
             }
