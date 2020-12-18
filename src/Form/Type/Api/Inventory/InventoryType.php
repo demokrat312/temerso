@@ -36,12 +36,12 @@ class InventoryType extends AbstractType
                     'description' => 'Излишек, список',
                 ],
                 'allow_add' => true,
-                'constraints' => [
-                    new Assert\Count([
-                        'min' => 1,
-                        'minMessage' => 'Хотя бы одна запись',
-                    ])
-                ],
+//                'constraints' => [
+//                    new Assert\Count([
+//                        'min' => 1,
+//                        'minMessage' => 'Хотя бы одна запись',
+//                    ])
+//                ],
             ]);
     }
 
