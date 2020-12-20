@@ -262,10 +262,6 @@ class EquipmentApiController extends ApiParentController
                     try {
                         $cards = $rep->findByCardAddToEquipmentType($cardList);
                         foreach ($cards as $card) {
-                            if ($equipmentKit->getCards()->contains($cards)) {
-//                            throw new \Exception('Карточка уже есть в комплекте');
-                            }
-
                             // Добавление комментария или проблема с меткой
                             if ($cardList->getComment() || $cardList->getCommentProblemWithMark()) {
                                 /** @var CardEditData $cardEditData */
@@ -276,8 +272,14 @@ class EquipmentApiController extends ApiParentController
                                     $card
                                 );
                             }
-                            $equipmentKit->addCard($card);
 
+                            if ($equipmentKit->getCards()->contains($card)) {
+//                            throw new \Exception('Карточка уже есть в комплекте');
+                                continue;
+                            } else if($equipmentKit->getEquipment()->getWithKit() === Equipment::CATALOG_WITHOUT) {
+                                // Если задача без выборки из католога, то добавляем карточку
+                                $equipmentKit->addCard($card);
+                            }
                         }
                     } catch (\Exception $exception) {
                         if ($exception->getCode() === ApiParentController::STATUS_CODE_404) {

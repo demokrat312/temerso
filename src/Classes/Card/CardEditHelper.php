@@ -18,6 +18,7 @@ use App\Classes\Utils;
 use App\Entity\Card;
 use App\Entity\CardTemporary;
 use App\Entity\Inspection;
+use App\Entity\TaskCardOtherField;
 use App\Form\Data\Api\Card\CardEditData;
 use App\Repository\CardTemporaryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -97,7 +98,9 @@ class CardEditHelper
     public function taskCardOtherFieldsUpdate(CardEditData $cardEditData, ?Card $card)
     {
         if ($cardEditData->getTaskId() && $cardEditData->getTaskTypeId()) {
+            // Получаем TaskCardOtherField из базы или создаем новую
             $taskCard = $card->getTaskCardOtherFieldsByTask($cardEditData->getTaskTypeId(), $cardEditData->getTaskId());
+            // Обновляем поля
             $taskCard
                 ->setCard($card)
                 ->setTaskTypeId($cardEditData->getTaskTypeId() ?? $taskCard->getTaskTypeId())

@@ -162,12 +162,6 @@ trait CardTrait
      */
     public function getTaskCardOtherFieldsByTask(int $taskTypeId, ?int $taskId): TaskCardOtherField
     {
-//        if(is_object($task)) {
-//            $taskClass = get_class($task);
-//        } else {
-//            $taskClass = $task;
-//        }
-//        $taskTypeId = TaskHelper::ins()->getTypeByEntityClass($taskClass);
         $expr = Criteria::expr();
         if(empty($taskId)) {
             $criteria = Criteria::create()
