@@ -4,6 +4,7 @@
 namespace App\Classes\Equipment;
 
 
+use App\Entity\Card;
 use App\Entity\EquipmentKit;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -15,18 +16,18 @@ trait EquipmentKitTrait
     /**
      * Список подтвержденных карточек
      *
-     * @var string
+     * @var Card[]
      * @api Поле нужно только для документации
-     * @see CardTrait::getCardListConfirmed()
+     * @see EquipmentKitTrait::getCardListConfirmed()
      */
     private $cardListConfirmed;
 
     /**
      * Список подтвержденных карточек
      *
-     * @var string
+     * @var Card[]
      * @api Поле нужно только для документации
-     * @see CardTrait::getCardListNotConfirmed()
+     * @see EquipmentKitTrait::getCardListNotConfirmed()
      */
     private $cardListNotConfirmed;
 
