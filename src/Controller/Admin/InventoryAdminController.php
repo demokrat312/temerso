@@ -9,6 +9,7 @@
 namespace App\Controller\Admin;
 
 
+use App\Classes\Inventory\RevisionControllerTrait;
 use App\Classes\Task\TaskAdminController;
 use App\Classes\Task\TaskItemInterface;
 use App\Entity\Inventory;
@@ -16,6 +17,8 @@ use App\Entity\Marking;
 
 class InventoryAdminController extends TaskAdminController
 {
+    use RevisionControllerTrait;
+
     function getEntityClass(): string
     {
         return Inventory::class;
@@ -33,26 +36,9 @@ class InventoryAdminController extends TaskAdminController
             foreach ($taskItem->getCardsTemporary() as $cardTemporary) {
                 $cardTemporary
                     ->setAccounting(false)
-                    ->setAccounting(false)
                     ->setComment(null)
                     ->setCommentProblemWithMark(null);
             }
         }
-    }
-
-    /**
-     * Проверяем если задача "Отправленно на доработку"
-     *
-     * Статус Отправленно на доработку не используется, понять что произошло это действие,
-     * можно если текущий статус задачи "Отправить задание на проверку"
-     * и меняем задачу на статус "Отправлено на исполнение"
-     *
-     * @param int $currentStatusId
-     * @param int $newStatusId
-     * @return bool
-     */
-    private function isRevision(int $currentStatusId, int $newStatusId)
-    {
-        return $currentStatusId === Marking::STATUS_SAVE && $newStatusId === Marking:: STATUS_SEND_EXECUTION;
     }
 }

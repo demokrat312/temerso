@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Classes\Equipment\EquipmentKitTrait;
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\Cards\CardsOrderTrait;
 use App\Classes\Utils;
@@ -20,7 +21,7 @@ use App\Classes\ApiParentController;
  */
 class EquipmentKit implements CardsOrderListenerInterface
 {
-    use CardsOrderTrait;
+    use CardsOrderTrait, EquipmentKitTrait;
 
     /**
      * Ключ

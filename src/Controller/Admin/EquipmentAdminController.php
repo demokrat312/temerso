@@ -10,14 +10,18 @@ namespace App\Controller\Admin;
 
 
 use App\Classes\Card\CardStatusHelper;
+use App\Classes\Inventory\RevisionControllerTrait;
 use App\Classes\Task\TaskAdminController;
 use App\Classes\Task\TaskItemInterface;
 use App\Entity\Card;
 use App\Entity\Equipment;
+use App\Entity\Inventory;
 use App\Entity\Marking;
 
 class EquipmentAdminController extends TaskAdminController
 {
+    use RevisionControllerTrait;
+
     function getEntityClass(): string
     {
         return Equipment::class;
@@ -38,6 +42,11 @@ class EquipmentAdminController extends TaskAdminController
                 $card->setStatus(CardStatusHelper::STATUS_RENT);
                 $em->persist($card);
             });
+        }
+
+        // Если "Отправленно на доработку", то сбрасываем комментарий
+        if ($this->isRevision($taskItem->getStatus(), $newStatusId)) {
+            $taskItem->setIsRevision(true);
         }
     }
 }

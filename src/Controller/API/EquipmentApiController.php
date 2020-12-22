@@ -257,6 +257,17 @@ class EquipmentApiController extends ApiParentController
 
             // Проверяем каждую карточку и добавляем к комплекту
             if ($equipmentKit) {
+                //<editor-fold desc="Проверяем на "Отправленно на доработку"">
+                $equipment = $equipmentKit->getEquipment();
+                if($equipment->getIsRevision()) {
+                    $equipment->setIsRevision(false);
+                    // Удаляем не подтвержденные
+                    foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
+                        $equipmentKit->removeCardsNotConfirmed($cardNotConfirmed);
+                        $em->remove($cardNotConfirmed);
+                    }
+                }
+                //</editor-fold>
                 $cardEditHelper = new CardEditHelper($em);
                 foreach ($cardListData->getList() as $cardList) {
                     try {
@@ -267,8 +278,8 @@ class EquipmentApiController extends ApiParentController
                                 /** @var CardEditData $cardEditData */
                                 $cardEditData = Utils::copyObject(new CardEditData(), $cardList);
                                 $cardEditHelper->taskCardOtherFieldsUpdate(($cardEditData)
-                                    ->setTaskId($equipmentKit->getEquipment()->getId())
-                                    ->setTaskTypeId($equipmentKit->getEquipment()->getTaskTypeId()),
+                                    ->setTaskId($equipment->getId())
+                                    ->setTaskTypeId($equipment->getTaskTypeId()),
                                     $card
                                 );
                             }
@@ -276,7 +287,7 @@ class EquipmentApiController extends ApiParentController
                             if ($equipmentKit->getCards()->contains($card)) {
 //                            throw new \Exception('Карточка уже есть в комплекте');
                                 continue;
-                            } else if($equipmentKit->getEquipment()->getWithKit() === Equipment::CATALOG_WITHOUT) {
+                            } else if($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
                                 // Если задача без выборки из католога, то добавляем карточку
                                 $equipmentKit->addCard($card);
                             }

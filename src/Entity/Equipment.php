@@ -183,6 +183,15 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      */
     private $cardsNotConfirmed;
 
+    /**
+     * Поле нужно для очистки $over.
+     * Если задачу отправять на "Отправленно на доработку", то в поле выставляем true,
+     * при сохранении излишка, поле меняем на false и чистим старый излишек.
+     *
+     * @ORM\Column(type="boolean", options={"default" : "0"})
+     */
+    private $isRevision;
+
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
@@ -492,6 +501,24 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsRevision()
+    {
+        return $this->isRevision;
+    }
+
+    /**
+     * @param mixed $isRevision
+     * @return $this
+     */
+    public function setIsRevision($isRevision)
+    {
+        $this->isRevision = $isRevision;
         return $this;
     }
 }

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Classes\Equipment\EquipmentOverTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Classes\ApiParentController;
 
 /**
  * Излишек/Не найденные записи (Комплектация в ремонт)
@@ -32,6 +34,7 @@ class EquipmentOver
      * Серийный № трубы
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $pipeSerialNumber;
 
@@ -39,6 +42,7 @@ class EquipmentOver
      * Серийный № ниппеля
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $serialNoOfNipple;
 
@@ -46,6 +50,7 @@ class EquipmentOver
      * Серийный № муфты
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $couplingSerialNumber;
 
@@ -53,6 +58,7 @@ class EquipmentOver
      * № Метки RFID
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $rfidTagNo;
 
@@ -65,6 +71,7 @@ class EquipmentOver
      * Комментарий
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $comment;
 
@@ -72,6 +79,7 @@ class EquipmentOver
      * Оборудование есть, проблема с меткой
      *
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({ApiParentController::GROUP_API_DEFAULT})
      */
     private $commentProblemWithMark;
 
