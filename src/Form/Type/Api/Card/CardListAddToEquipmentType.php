@@ -36,10 +36,10 @@ class CardListAddToEquipmentType extends AbstractType
                 'entry_type' => CardItemAddToEquipmentType::class,
                 'required' => true,
                 'constraints' => [
-                    new Assert\Count([
-                        'min' => 1,
-                        'minMessage' => 'Хотя бы одна карточка',
-                    ]),
+//                    new Assert\Count([
+//                        'min' => 1,
+//                        'minMessage' => 'Хотя бы одна карточка',
+//                    ]),
                 ],
                 'allow_add' => true,
                 'documentation' => [

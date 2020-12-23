@@ -266,6 +266,13 @@ class EquipmentApiController extends ApiParentController
                         $equipment->removeCardsNotConfirmed($cardNotConfirmed);
                         $em->remove($cardNotConfirmed);
                     }
+                    // Удаляем излишек
+                    foreach ($equipment->getKits() as $kit) {
+                        foreach ($kit->getOver() as $over) {
+                            $kit->removeOver($over);
+                            $em->remove($over);
+                        }
+                    }
                 }
                 //</editor-fold>
                 $cardEditHelper = new CardEditHelper($em);
