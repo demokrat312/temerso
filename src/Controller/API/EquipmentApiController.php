@@ -263,7 +263,7 @@ class EquipmentApiController extends ApiParentController
                     $equipment->setIsRevision(false);
                     // Удаляем не подтвержденные
                     foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
-                        $equipmentKit->removeCardsNotConfirmed($cardNotConfirmed);
+                        $equipment->removeCardsNotConfirmed($cardNotConfirmed);
                         $em->remove($cardNotConfirmed);
                     }
                 }
