@@ -12,6 +12,8 @@ namespace App\Classes\Task;
 use App\Classes\ApiParentController;
 use App\Entity\Inventory;
 use App\Entity\Marking;
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Serializer;
 
@@ -20,11 +22,11 @@ class TaskHelper
     use InstanceTrait;
 
     /**
-     * @var ?EntityManagerInterface
+     * @var EntityManagerInterface
      */
     private $em;
     /**
-     * @var ?User
+     * @var User
      */
     private $user;
 
@@ -74,7 +76,7 @@ class TaskHelper
     public function findTask(int $taskId, string $taskClass)
     {
         $entityItem = $this->findTaskEntity($taskId, $taskClass);
-        if(!$entityItem) {
+        if (!$entityItem) {
             return null;
         }
 
@@ -87,19 +89,17 @@ class TaskHelper
      */
     private function findTaskEntity(int $taskId, string $taskClass)
     {
-        $entityItem = $this->em->getRepository($taskClass)->findTask($taskId, $this->user->getId());
-        if (!$entityItem) {
-            return null;
-        }
-
-        return $entityItem;
+        /** @var \App\Classes\Task\TaskRepositoryParent $rep */
+        $rep = $this->em->getRepository($taskClass);
+        return $rep->findTask($taskId, $this->user->getId());
     }
 
     public function updateStatus(int $taskId, string $taskClass, int $statusId): bool
     {
         $entityItem = $this->findTaskEntity($taskId, $taskClass);
+        if (!$entityItem) return false;
 
-        if($taskClass === TaskItem::TYPE_CLASS[TaskItem::TYPE_INSPECTION] && $statusId === Marking::STATUS_SAVE) {
+        if ($taskClass === TaskItem::TYPE_CLASS[TaskItem::TYPE_INSPECTION] && $statusId === Marking::STATUS_SAVE) {
             $statusId = Marking::STATUS_CONTINUE;
         }
 

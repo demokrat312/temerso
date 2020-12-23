@@ -17,6 +17,7 @@ interface TaskItemInterface
 {
     public function getId(): ?int;
     public function getStatus(): ?int;
+    public function setStatus(int $status);
     public function getCreatedBy(): User;
     public function getExecutor(): ?User;
     /** @var Card[] */

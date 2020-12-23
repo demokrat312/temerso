@@ -195,6 +195,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
     public function __construct()
     {
         $this->status = Marking::STATUS_CREATED;
+        $this->isRevision = false;
 
         $this->files = new ArrayCollection();
         $this->users = new ArrayCollection();
