@@ -273,6 +273,15 @@ class EquipmentApiController extends ApiParentController
                             $em->remove($over);
                         }
                     }
+                    if($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
+                        // Удаляем Остальные карточки
+                        foreach ($equipment->getKits() as $kit) {
+                            foreach ($kit->getCards() as $card) {
+                                $kit->removeCard($card);
+                            }
+                            $em->persist($kit);
+                        }
+                    }
                 }
                 //</editor-fold>
                 $cardEditHelper = new CardEditHelper($em);
