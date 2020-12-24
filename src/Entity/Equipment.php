@@ -179,7 +179,7 @@ class Equipment implements DateListenerInterface, CreatedByListenerInterface, Ta
      *
      * @var EquipmentCardsNotConfirmed[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentCardsNotConfirmed", mappedBy="equipment",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentCardsNotConfirmed", mappedBy="equipment",cascade={"persist", "remove"})
      */
     private $cardsNotConfirmed;
 

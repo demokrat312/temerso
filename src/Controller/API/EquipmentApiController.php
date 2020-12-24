@@ -282,6 +282,7 @@ class EquipmentApiController extends ApiParentController
                             $em->persist($kit);
                         }
                     }
+                    $em->persist($equipment);
                 }
                 //</editor-fold>
                 $cardEditHelper = new CardEditHelper($em);
