@@ -74,7 +74,7 @@ class EquipmentKit implements CardsOrderListenerInterface
      *
      * @var EquipmentOver[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentOver", mappedBy="equipmentKit")
+     * @ORM\OneToMany(targetEntity="App\Entity\EquipmentOver", mappedBy="equipmentKit", cascade={"persist", "remove"})
      */
     private $over;
 

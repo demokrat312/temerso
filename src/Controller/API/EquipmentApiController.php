@@ -173,8 +173,7 @@ class EquipmentApiController extends ApiParentController
                     $cardEditData = Utils::copyObject(new CardEditData(), $data);
                     $cardEditData
                         ->setTaskId($equipmentKit->getEquipment()->getId())
-                        ->setTaskTypeId($equipmentKit->getEquipment()->getTaskTypeId())
-                        ;
+                        ->setTaskTypeId($equipmentKit->getEquipment()->getTaskTypeId());
                     $cardEditHelper->taskCardOtherFieldsUpdate($cardEditData, $card);
                 }
 
@@ -257,34 +256,10 @@ class EquipmentApiController extends ApiParentController
 
             // Проверяем каждую карточку и добавляем к комплекту
             if ($equipmentKit) {
-                //<editor-fold desc="Проверяем на "Отправленно на доработку"">
                 $equipment = $equipmentKit->getEquipment();
-                if($equipment->getIsRevision()) {
-                    $equipment->setIsRevision(false);
-                    // Удаляем не подтвержденные
-                    foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
-                        $equipment->removeCardsNotConfirmed($cardNotConfirmed);
-                        $em->remove($cardNotConfirmed);
-                    }
-                    // Удаляем излишек
-                    foreach ($equipment->getKits() as $kit) {
-                        foreach ($kit->getOver() as $over) {
-                            $kit->removeOver($over);
-                            $em->remove($over);
-                        }
-                    }
-                    if($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
-                        // Удаляем Остальные карточки
-                        foreach ($equipment->getKits() as $kit) {
-                            foreach ($kit->getCards() as $card) {
-                                $kit->removeCard($card);
-                            }
-                            $em->persist($kit);
-                        }
-                    }
-                    $em->persist($equipment);
-                }
-                //</editor-fold>
+                $this->removeOnRevision($em, $equipment);
+                $this->removeOld($em, $equipment, $equipmentKit);
+
                 $cardEditHelper = new CardEditHelper($em);
                 foreach ($cardListData->getList() as $cardList) {
                     try {
@@ -304,7 +279,7 @@ class EquipmentApiController extends ApiParentController
                             if ($equipmentKit->getCards()->contains($card)) {
 //                            throw new \Exception('Карточка уже есть в комплекте');
                                 continue;
-                            } else if($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
+                            } else if ($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
                                 // Если задача без выборки из католога, то добавляем карточку
                                 $equipmentKit->addCard($card);
                             }
@@ -476,5 +451,55 @@ class EquipmentApiController extends ApiParentController
             return $this->formErrorResponse($form);
         }
 
+    }
+
+    /**
+     * Проверяем на "Отправленно на доработку"
+     *
+     * @param EntityManagerInterface $em
+     * @param $equipmentKit
+     * @return Equipment
+     */
+    protected function removeOnRevision(EntityManagerInterface $em, Equipment $equipment)
+    {
+        //<editor-fold desc="Проверяем на "Отправленно на доработку"">
+        if ($equipment->getIsRevision()) {
+            $equipment->setIsRevision(false);
+            // Удаляем не подтвержденные
+            foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
+                $equipment->removeCardsNotConfirmed($cardNotConfirmed);
+                $em->remove($cardNotConfirmed);
+            }
+            $em->persist($equipment);
+        }
+        return $equipment;
+        //</editor-fold>
+    }
+
+    /**
+     * Удаляем старые записи при получении новых
+     *
+     * @param EntityManagerInterface $em
+     * @param $equipmentKit
+     * @return Equipment
+     */
+    protected function removeOld(EntityManagerInterface $em, Equipment $equipment, EquipmentKit $equipmentKit)
+    {
+        // Удаляем излишек
+        foreach ($equipmentKit->getOver() as $over) {
+            $equipmentKit->removeOver($over);
+            $em->remove($over);
+        }
+
+        // Удаляем Остальные карточки
+        if ($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
+            foreach ($equipmentKit->getCards() as $card) {
+                $equipmentKit->removeCard($card);
+            }
+        }
+        $em->persist($equipmentKit);
+        $em->persist($equipment);
+
+        return $equipment;
     }
 }
