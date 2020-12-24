@@ -497,6 +497,7 @@ class EquipmentApiController extends ApiParentController
                 $equipmentKit->removeCard($card);
             }
         }
+
         $em->persist($equipmentKit);
         $em->persist($equipment);
 

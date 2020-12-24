@@ -145,17 +145,22 @@ class EquipmentKit implements CardsOrderListenerInterface
 
     public function addOver(EquipmentOver $over): self
     {
-        if (!$this->cards->contains($over)) {
-            $this->cards[] = $over;
+        if (!$this->over->contains($over)) {
+            $this->over[] = $over;
         }
 
         return $this;
     }
 
+    public function clearOver()
+    {
+        $this->over->clear();
+    }
+
     public function removeOver(EquipmentOver $over): self
     {
-        if ($this->cards->contains($over)) {
-            $this->cards->removeElement($over);
+        if ($this->over->contains($over)) {
+            $this->over->removeElement($over);
         }
 
         return $this;
