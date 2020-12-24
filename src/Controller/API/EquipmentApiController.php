@@ -490,6 +490,7 @@ class EquipmentApiController extends ApiParentController
             $equipmentKit->removeOver($over);
             $em->remove($over);
         }
+        $equipmentKit->clearOver();
 
         // Удаляем Остальные карточки
         if ($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
