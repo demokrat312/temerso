@@ -9,9 +9,11 @@
 namespace App\Controller\Admin;
 
 
+use App\Classes\Card\CardEditHelper;
 use App\Classes\Card\CardStatusHelper;
 use App\Classes\Inventory\RevisionControllerTrait;
 use App\Classes\Task\TaskAdminController;
+use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemInterface;
 use App\Entity\Card;
 use App\Entity\Equipment;
@@ -47,6 +49,13 @@ class EquipmentAdminController extends TaskAdminController
         // Если "Отправленно на доработку", то сбрасываем комментарий
         if ($this->isRevision($taskItem->getStatus(), $newStatusId)) {
             $taskItem->setIsRevision(true);
+            $cardEditHelper = new CardEditHelper($this->getDoctrine()->getManager());
+            foreach ($taskItem->getKits() as $kit) {
+                foreach ($kit->getCards() as $card) {
+                    // Убнуляем дополнительные поля карточки
+                    $cardEditHelper->taskCardOtherFieldsReset($card, TaskItem::TYPE_EQUIPMENT, $taskItem->getId());
+                }
+            }
         }
     }
 }

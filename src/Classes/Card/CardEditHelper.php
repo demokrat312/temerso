@@ -22,6 +22,7 @@ use App\Entity\TaskCardOtherField;
 use App\Form\Data\Api\Card\CardEditData;
 use App\Repository\CardTemporaryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -36,6 +37,11 @@ class CardEditHelper
      */
     private $toArray;
 
+    /**
+     * CardEditHelper constructor.
+     * @param EntityManagerInterface|ObjectManager $em
+     * @param callable|null $toArray
+     */
     public function __construct(EntityManagerInterface $em, callable $toArray = null)
     {
         $this->em = $em;
@@ -106,8 +112,27 @@ class CardEditHelper
                 ->setTaskTypeId($cardEditData->getTaskTypeId() ?? $taskCard->getTaskTypeId())
                 ->setTaskId($cardEditData->getTaskId() ?? $taskCard->getTaskId())
                 ->setComment($cardEditData->getComment() ?? $taskCard->getComment())
-                ->setCommentProblemWithMark($cardEditData->getCommentProblemWithMark() ?? $taskCard->getCommentProblemWithMark())
-            ;
+                ->setCommentProblemWithMark($cardEditData->getCommentProblemWithMark() ?? $taskCard->getCommentProblemWithMark());
+
+            $this->em->persist($taskCard);
+        }
+    }
+
+    /**
+     * @param CardEditData $cardEditData
+     * @param Card|null $card
+     * @return |null
+     */
+    public function taskCardOtherFieldsReset(?Card $card, int $taskTypeId, int $taskId)
+    {
+        // Получаем TaskCardOtherField из базы или создаем новую
+        $taskCard = $card->getTaskCardOtherFieldsByTask($taskTypeId, $taskId);
+        // Если карточка есть в базе, то обнуляем
+        if ($taskCard->getId()) {
+            // Обновляем поля
+            $taskCard
+                ->setComment(null)
+                ->setCommentProblemWithMark(null);
 
             $this->em->persist($taskCard);
         }
@@ -153,7 +178,7 @@ class CardEditHelper
     {
         // Создаем или получаем из базы временную карточку
         $cardTemporary = $task->getCardTemporary($card);
-        if(!$cardTemporary) {
+        if (!$cardTemporary) {
             $cardTemporary = new CardTemporary();
 
             if (!$cardEditData->getTaskTypeId() || !$cardEditData->getTaskTypeId()) {
