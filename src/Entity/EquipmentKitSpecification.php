@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Classes\Equipment\EquipmentKitSpecificationTrait;
 use App\Entity\Reference\RefHardbandingNipple;
 use App\Entity\Reference\RefInnerCoating;
 use App\Entity\Reference\RefThreadCoating;
@@ -19,6 +20,8 @@ use Swagger\Annotations as SWG;
  */
 class EquipmentKitSpecification
 {
+    use EquipmentKitSpecificationTrait;
+
     /**
      * Ключ
      *

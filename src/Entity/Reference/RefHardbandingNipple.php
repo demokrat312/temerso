@@ -4,6 +4,7 @@ namespace App\Entity\Reference;
 
 use Doctrine\ORM\Mapping as ORM;
 use Swagger\Annotations as SWG;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * 8)Хардбендинг (ниппель)
@@ -31,11 +32,13 @@ class RefHardbandingNipple extends \App\Classes\Reference\ReferenceParent
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $value;
 

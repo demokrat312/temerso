@@ -35,6 +35,7 @@ class RefTypeDisembarkation extends \App\Classes\Reference\ReferenceParent
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({\App\Classes\ApiParentController::GROUP_API_DEFAULT})
      */
     private $value;
 
