@@ -73,7 +73,7 @@ trait EquipmentKitSpecificationTrait
      */
     public function getRefTypeEquipmentTitle(): string
     {
-        return $this->refTypeEquipment ? $this->refTypeEquipment->getValue() : null;
+        return $this->refTypeEquipment ? $this->refTypeEquipment->getValue() : '';
     }
 
     /**
@@ -82,7 +82,7 @@ trait EquipmentKitSpecificationTrait
      */
     public function getRefTypeDisembarkationTitle(): string
     {
-        return $this->refTypeDisembarkation ? $this->refTypeDisembarkation->getValue() : null;
+        return $this->refTypeDisembarkation ? $this->refTypeDisembarkation->getValue() : '';
     }
 
     /**
@@ -91,7 +91,7 @@ trait EquipmentKitSpecificationTrait
      */
     public function getRefTypeThreadTitle(): string
     {
-        return $this->refTypeThread ? $this->refTypeThread->getValue() : null;
+        return $this->refTypeThread ? $this->refTypeThread->getValue() : '';
     }
 
     /**
@@ -100,7 +100,7 @@ trait EquipmentKitSpecificationTrait
      */
     public function getRefThreadCoatingTitle(): string
     {
-        return $this->refThreadCoating ? $this->refThreadCoating->getValue() : null;
+        return $this->refThreadCoating ? $this->refThreadCoating->getValue() : '';
     }
 
     /**
@@ -109,7 +109,7 @@ trait EquipmentKitSpecificationTrait
      */
     public function getRefInnerCoatingTitle(): string
     {
-        return $this->refInnerCoating ? $this->refInnerCoating->getValue() : null;
+        return $this->refInnerCoating ? $this->refInnerCoating->getValue() : '';
     }
 
     /**
@@ -118,7 +118,7 @@ trait EquipmentKitSpecificationTrait
      */
     public function getRefHardbandingCouplingTitle(): string
     {
-        return $this->refHardbandingCoupling ? $this->refHardbandingCoupling->getValue() : null;
+        return $this->refHardbandingCoupling ? $this->refHardbandingCoupling->getValue() : '';
     }
 
 
