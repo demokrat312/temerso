@@ -24,6 +24,7 @@ use App\Form\Type\Equipment\ConfirmationType;
 use App\Repository\CardRepository;
 use App\Repository\EquipmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -119,6 +120,7 @@ class EquipmentApiController extends ApiParentController
      * )
      *
      * @Security(name="Bearer")
+     * @throws Exception
      */
     public function addCard(Request $request, EntityManagerInterface $em)
     {
@@ -138,7 +140,7 @@ class EquipmentApiController extends ApiParentController
             $rep = $em->getRepository(Card::class);
             try {
                 $card = $rep->findByCardAddToEquipmentType($data);
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 if ($exception->getCode() === ApiParentController::STATUS_CODE_404) {
                     $over = new EquipmentOver();
                     $over
@@ -152,7 +154,7 @@ class EquipmentApiController extends ApiParentController
                     $em->persist($over);
                     $equipmentKit->addOver($over);
                 } else {
-                    throw new \Exception($exception->getMessage());
+                    throw new Exception($exception->getMessage());
                 }
 
             }
@@ -257,8 +259,8 @@ class EquipmentApiController extends ApiParentController
             // Проверяем каждую карточку и добавляем к комплекту
             if ($equipmentKit) {
                 $equipment = $equipmentKit->getEquipment();
-                $this->removeOnRevision($em, $equipment);
-                $this->removeOld($em, $equipment, $equipmentKit);
+                $this->onRevision($em, $equipment);
+                $this->removeOverAndCard($em, $equipment, $equipmentKit);
 
                 $cardEditHelper = new CardEditHelper($em);
                 foreach (Utils::filterDuplicate($cardListData->getList()) as $cardList) {
@@ -284,7 +286,7 @@ class EquipmentApiController extends ApiParentController
                                 $equipmentKit->addCard($card);
                             }
                         }
-                    } catch (\Exception $exception) {
+                    } catch (Exception $exception) {
                         if ($exception->getCode() === ApiParentController::STATUS_CODE_404) {
                             $over = new EquipmentOver();
                             $over
@@ -394,7 +396,7 @@ class EquipmentApiController extends ApiParentController
             $rep = $em->getRepository(Equipment::class);
             $equipment = $rep->find($confirmationData->getTaskId());
 
-            //<editor-fold desc="Находим Неподтвержденные и Неподтвержденные карточки">
+            //<editor-fold desc="Находим подтвержденные и Неподтвержденные карточки">
             $confirmedList = [];
             /** @var Card[] $notConfirmedList */
             $notConfirmedList = [];
@@ -460,16 +462,11 @@ class EquipmentApiController extends ApiParentController
      * @param $equipmentKit
      * @return Equipment
      */
-    protected function removeOnRevision(EntityManagerInterface $em, Equipment $equipment)
+    protected function onRevision(EntityManagerInterface $em, Equipment $equipment)
     {
         //<editor-fold desc="Проверяем на "Отправленно на доработку"">
         if ($equipment->getIsRevision()) {
             $equipment->setIsRevision(false);
-            // Удаляем не подтвержденные
-            foreach ($equipment->getCardsNotConfirmed() as $cardNotConfirmed) {
-                $equipment->removeCardsNotConfirmed($cardNotConfirmed);
-                $em->remove($cardNotConfirmed);
-            }
             $em->persist($equipment);
         }
         return $equipment;
@@ -483,7 +480,7 @@ class EquipmentApiController extends ApiParentController
      * @param $equipmentKit
      * @return Equipment
      */
-    protected function removeOld(EntityManagerInterface $em, Equipment $equipment, EquipmentKit $equipmentKit)
+    protected function removeOverAndCard(EntityManagerInterface $em, Equipment $equipment, EquipmentKit $equipmentKit)
     {
         // Удаляем излишек
         foreach ($equipmentKit->getOverAll() as $over) {
@@ -494,7 +491,7 @@ class EquipmentApiController extends ApiParentController
 
         // Удаляем Остальные карточки
         if ($equipment->getWithKit() === Equipment::CATALOG_WITHOUT) {
-            foreach ($equipmentKit->getCards() as $card) {
+            foreach ($equipmentKit->getCardsAll() as $card) {
                 $equipmentKit->removeCard($card);
             }
         }

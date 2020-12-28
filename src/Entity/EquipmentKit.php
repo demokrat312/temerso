@@ -112,6 +112,14 @@ class EquipmentKit implements CardsOrderListenerInterface
     /**
      * @return Collection|Card[]
      */
+    public function getCardsAll(): Collection
+    {
+        return $this->getCardsWithOrder();
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
     public function getCard(): Collection
     {
         return $this->cards;
