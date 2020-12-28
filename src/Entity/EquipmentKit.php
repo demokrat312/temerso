@@ -143,6 +143,14 @@ class EquipmentKit implements CardsOrderListenerInterface
         return Utils::filterDuplicate($this->over);
     }
 
+    /**
+     * @return Collection|EquipmentOver[]
+     */
+    public function getOverAll(): Collection
+    {
+        return $this->over;
+    }
+
     public function addOver(EquipmentOver $over): self
     {
         if (!$this->over->contains($over)) {

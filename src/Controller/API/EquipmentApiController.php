@@ -261,7 +261,7 @@ class EquipmentApiController extends ApiParentController
                 $this->removeOld($em, $equipment, $equipmentKit);
 
                 $cardEditHelper = new CardEditHelper($em);
-                foreach ($cardListData->getList() as $cardList) {
+                foreach (Utils::filterDuplicate($cardListData->getList()) as $cardList) {
                     try {
                         $cards = $rep->findByCardAddToEquipmentType($cardList);
                         foreach ($cards as $card) {
@@ -486,7 +486,7 @@ class EquipmentApiController extends ApiParentController
     protected function removeOld(EntityManagerInterface $em, Equipment $equipment, EquipmentKit $equipmentKit)
     {
         // Удаляем излишек
-        foreach ($equipmentKit->getOver() as $over) {
+        foreach ($equipmentKit->getOverAll() as $over) {
             $equipmentKit->removeOver($over);
             $em->remove($over);
         }
