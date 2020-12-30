@@ -89,7 +89,7 @@ class CardEditHelper
         if ($cardEditData->getRfidTagNo()) {
             $card->setRfidTagNo($cardEditData->getRfidTagNo());
         }
-        if ($cardEditData->getAccounting()) {
+        if ($this->isAllowEditAccounting($cardEditData->getAccounting(), $cardEditData->getTaskTypeId())) {
             $card->setAccounting($cardEditData->getAccounting());
         }
 
@@ -216,5 +216,18 @@ class CardEditHelper
 
         $this->em->persist($cardTemporary);
         return $cardTemporary;
+    }
+
+    /**
+     * Проверяем можно ли перезаписывать поле accounting
+     */
+    private function isAllowEditAccounting(?int $accounting, ?int $taskTypeId)
+    {
+        // Если нет значения, то ничего не делаем
+        if ($accounting === null) return false;
+        // Если карточка без задачи или привязанна к процессу инвентаризация, то редактируем
+        if ($taskTypeId !== null || $taskTypeId === TaskItem::TYPE_INVENTORY) return true;
+
+        return false;
     }
 }
