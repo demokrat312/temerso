@@ -89,6 +89,7 @@ class CardEditHelper
         if ($cardEditData->getRfidTagNo()) {
             $card->setRfidTagNo($cardEditData->getRfidTagNo());
         }
+        echo $this->isAllowEditAccounting($cardEditData->getAccounting(), $cardEditData->getTaskTypeId()) ? 1 : 2;
         if ($this->isAllowEditAccounting($cardEditData->getAccounting(), $cardEditData->getTaskTypeId())) {
             $card->setAccounting($cardEditData->getAccounting());
         }
@@ -226,7 +227,7 @@ class CardEditHelper
         // Если нет значения, то ничего не делаем
         if ($accounting === null) return false;
         // Если карточка без задачи или привязанна к процессу инвентаризация, то редактируем
-        if ($taskTypeId !== null || $taskTypeId === TaskItem::TYPE_INVENTORY) return true;
+        if ($taskTypeId === null || $taskTypeId === TaskItem::TYPE_INVENTORY) return true;
 
         return false;
     }
