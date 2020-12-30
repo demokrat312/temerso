@@ -89,7 +89,6 @@ class CardEditHelper
         if ($cardEditData->getRfidTagNo()) {
             $card->setRfidTagNo($cardEditData->getRfidTagNo());
         }
-        echo $this->isAllowEditAccounting($cardEditData->getAccounting(), $cardEditData->getTaskTypeId()) ? 1 : 2;
         if ($this->isAllowEditAccounting($cardEditData->getAccounting(), $cardEditData->getTaskTypeId())) {
             $card->setAccounting($cardEditData->getAccounting());
         }
