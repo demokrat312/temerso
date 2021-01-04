@@ -118,4 +118,17 @@ class Utils
         }
         return $listFiltered;
     }
+
+    public static function findById($objectList, ?int $id)
+    {
+        $find = null;
+        if(!$id)return $find;
+        foreach ($objectList as $object) {
+            if (is_object($object) && method_exists($object, 'getId') && $object->getId() === $id) {
+                $find = $object;
+                break;
+            }
+        }
+        return $find;
+    }
 }

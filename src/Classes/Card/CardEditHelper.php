@@ -167,7 +167,7 @@ class CardEditHelper
 
     /**
      * Создаем или получаем из базы временную карточку
-     * Пока только для инспекции
+     * При определенных статусах
      *
      * @param CardEditData $cardEditData
      * @param TaskItemInterface|Inspection $task
@@ -211,10 +211,19 @@ class CardEditHelper
         }
         //</editor-fold>
 
-        // Добавляем временную карточку к задаче
-        $task->addCardTemporary($cardTemporary);
+        // Если можно создавать временные карточки
+        if ($task->allowEditCardTemporary()) {
+            // Добавляем временную карточку к задаче, если такая карточка есть то обновляем
+            $cardTemporaryFind = Utils::findById($task->getCardsTemporary(), $cardTemporary->getId());
+            if ($cardTemporaryFind) {
+                Utils::copyObject($cardTemporaryFind, $cardTemporary);
+                $this->em->persist($cardTemporaryFind);
+            } else {
+                $task->addCardTemporary($cardTemporary);
+                $this->em->persist($cardTemporary);
+            }
+        }
 
-        $this->em->persist($cardTemporary);
         return $cardTemporary;
     }
 

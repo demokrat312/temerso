@@ -28,7 +28,7 @@ trait TaskWithCardsTemporaryTrait
     public function getCardTemporary(Card $card): ?CardTemporary
     {
         // Отображаем временные карточки только на этих статусах
-        if (in_array($this->getStatus(), Marking::STATUS_CARD_TEMPORARY)) {
+        if ($this->allowEditCardTemporary()) {
             foreach ($this->getCardsTemporary() as $cardTemporary) {
                 if ($card->getId() === $cardTemporary->getCard()->getId()) {
                     return $cardTemporary;
@@ -37,5 +37,10 @@ trait TaskWithCardsTemporaryTrait
         }
 
         return null;
+    }
+
+    public function allowEditCardTemporary(): bool
+    {
+        return in_array($this->getStatus(), Marking::STATUS_CARD_TEMPORARY);
     }
 }
