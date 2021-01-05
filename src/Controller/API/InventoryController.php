@@ -9,6 +9,7 @@
 namespace App\Controller\API;
 
 use App\Classes\ApiParentController;
+use App\Classes\Utils;
 use App\Entity\Inventory;
 use App\Form\Data\Api\Inventory\InventoryData;
 use App\Form\Type\Api\Inventory\InventoryType;
@@ -81,7 +82,8 @@ class InventoryController extends ApiParentController
             }
             //</editor-fold>
 
-            foreach ($data->getOverList() as $inventoryOver) {
+            $overList = Utils::filterDuplicate($data->getOverList());
+            foreach ($overList as $inventoryOver) {
                 $inventory->addOver($inventoryOver);
             }
 
