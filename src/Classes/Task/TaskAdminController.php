@@ -9,11 +9,13 @@
 namespace App\Classes\Task;
 
 
+use App\Classes\Card\CardEditHelper;
 use App\Classes\Card\CardStatusHelper;
 use App\Classes\Utils;
 use App\Controller\Admin\DefaultAdminController;
 use App\Entity\Card;
 use App\Entity\Inspection;
+use App\Form\Data\Api\Card\CardEditData;
 use App\Service\Access\MarkingAccessService;
 use App\Entity\Marking;
 use App\Service\AdminRouteService;
@@ -185,14 +187,24 @@ abstract class TaskAdminController extends DefaultAdminController
     protected function onCompleteCardTemporary(TaskWithCardsTemporaryInterface $taskItem)
     {
         $em = $this->getDoctrine()->getManager();
+        $cardEditHelper = new CardEditHelper($em);
         // Копируем временные карточки в основные
         foreach ($taskItem->getCardsTemporary() as $cardTemporary) {
             foreach ($taskItem->getCards() as $card) {
                 if ($cardTemporary->getCard()->getId() === $card->getId()) {
+                    // Обновляем карточку
                     Utils::copyObject($card, $cardTemporary);
+                    // Изображения
                     foreach ($cardTemporary->getImages() as $image) {
                         $card->addImage($image);
                     }
+                    // Дополнительные поля
+                    $cardEditHelper->taskCardOtherFieldsUpdate((new CardEditData())
+                        ->setTaskId($taskItem->getId())
+                        ->setTaskTypeId($taskItem->getTaskTypeId())
+                        ->setComment($cardTemporary->getComment())
+                        ->setCommentProblemWithMark($cardTemporary->getCommentProblemWithMark())
+                        , $card);
                     $em->persist($card);
                 }
             }

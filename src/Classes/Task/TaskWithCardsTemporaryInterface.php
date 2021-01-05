@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\Collection;
  */
 interface TaskWithCardsTemporaryInterface extends TaskItemInterface
 {
+    /** @return CardTemporary[] */
     public function getCardsTemporary(): Collection;
 
     public function getCardTemporary(Card $card): ?CardTemporary;
