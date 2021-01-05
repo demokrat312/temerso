@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Classes\Inventory\InventoryTrait;
+use App\Classes\Task\RevisionInterface;
 use App\Classes\Task\TaskWithCardsTemporaryTrait;
 use App\Classes\Listener\Cards\CardsOrderListenerInterface;
 use App\Classes\Listener\Cards\CardsOrderTrait;
@@ -23,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\InventoryRepository")
  */
-class Inventory implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface, TaskWithCardsTemporaryInterface
+class Inventory implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, CardsOrderListenerInterface, TaskWithCardsTemporaryInterface, RevisionInterface
 {
     use InventoryTrait, TaskEntityTrait, CardsOrderTrait, TaskWithCardsTemporaryTrait;
     /**

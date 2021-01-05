@@ -7,6 +7,7 @@ use App\Classes\Equipment\EquipmentTrait;
 use App\Classes\Listener\CreatedBy\CreatedByListenerInterface;
 use App\Classes\Listener\Date\DateListenerInterface;
 use App\Classes\Marking\TaskEntityTrait;
+use App\Classes\Task\RevisionInterface;
 use App\Classes\Task\TaskItemInterface;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,7 +22,7 @@ use App\Classes\ApiParentController;
  *
  * @ORM\Entity(repositoryClass="App\Repository\EquipmentRepository")
  */
-class Equipment implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface
+class Equipment implements DateListenerInterface, CreatedByListenerInterface, TaskItemInterface, RevisionInterface
 {
     use TaskEntityTrait, EquipmentTrait;
 

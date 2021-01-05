@@ -145,7 +145,7 @@ class CardEditHelper
      * @param CardEditData $cardEditData
      * @return object|TaskItemInterface
      */
-    private function getTask(CardEditData $cardEditData): ?TaskItemInterface
+    public function getTask(CardEditData $cardEditData): ?TaskItemInterface
     {
         $task = null;
         if ($cardEditData->getTaskId() && $cardEditData->getTaskTypeId()) {
@@ -155,14 +155,6 @@ class CardEditHelper
         }
 
         return $task;
-    }
-
-    /**
-     * @return \Doctrine\Persistence\ObjectRepository
-     */
-    private function rep(): \Doctrine\Persistence\ObjectRepository
-    {
-        return $this->em->getRepository(CardTemporary::class);
     }
 
     /**

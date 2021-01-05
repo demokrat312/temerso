@@ -13,10 +13,12 @@ use App\Application\Sonata\MediaBundle\Entity\Media;
 use App\Classes\ApiParentController;
 use App\Classes\Card\CardEditHelper;
 use App\Classes\Card\CardIdentificationResponse;
+use App\Classes\Card\CardTemporaryHelper;
 use App\Classes\Marking\MarkingCardToTaskCardAdapter;
 use App\Classes\Task\TaskHelper;
 use App\Classes\Task\TaskItem;
 use App\Classes\Task\TaskItemAdapter;
+use App\Classes\Task\TaskWithCardsTemporaryInterface;
 use App\Classes\Utils;
 use App\Entity\Card;
 use App\Entity\CardTemporary;
@@ -207,17 +209,31 @@ class CardController extends ApiParentController
             $data = $form->getData();
             $errors = [];
 
-            foreach ($data->getList() as $cardData) {
+            if ($data->getList()) {
+                //<editor-fold desc="Необходимые обработчики">
                 $toArray = function ($object, $group) {
                     return $this->toArray($object, $group);
                 };
                 $cardEditHelper = new CardEditHelper($em, $toArray);
+                //</editor-fold>
 
-                $cardEditHelper->edit($cardData);
-            }
+                //<editor-fold desc="Проверяем на временные карточки, если есть то удаляем">
+                $task = $cardEditHelper->getTask(reset($data->getList()));
+                if (CardTemporaryHelper::isAllowEditCardTemporary($task)) {
+                    /** @var TaskWithCardsTemporaryInterface $task */
+                    foreach ($task->getCardsTemporary() as $cardTemporary) {
+                        $em->remove($cardTemporary);
+                    }
+                    $em->flush();
+                }
+                //</editor-fold>
+                foreach ($data->getList() as $cardData) {
+                    $cardEditHelper->edit($cardData);
+                }
 
-            if (count($errors) > 0) {
-                return $this->errorResponse('Некоторые карточки не найденны', self::STATUS_CODE_404, ['cardsIdNotFound' => $errors]);
+                if (count($errors) > 0) {
+                    return $this->errorResponse('Некоторые карточки не найденны', self::STATUS_CODE_404, ['cardsIdNotFound' => $errors]);
+                }
             }
             return $this->defaultResponse(self::OK);
         }
@@ -309,7 +325,7 @@ class CardController extends ApiParentController
 
             $em->persist($media);
 
-            if($hasMedia) {
+            if ($hasMedia) {
                 $em->clear();
             } else {
                 $em->flush();
@@ -413,12 +429,12 @@ class CardController extends ApiParentController
         if (empty($binaryContent)) {
             throw new NotFoundHttpException('Изображение не найдено');
         }
-        if($binaryContent instanceof UploadedFile) {
+        if ($binaryContent instanceof UploadedFile) {
             $name = $binaryContent->getClientOriginalName();
             $uniqId = sha1($name . uniqid()) . '.' . $binaryContent->guessExtension();
         } else {
             $name = random_int(11111, 99999);
-            $uniqId = sha1( uniqid() . random_int(11111, 99999));
+            $uniqId = sha1(uniqid() . random_int(11111, 99999));
         }
 
         $provider = 'sonata.media.provider.image';

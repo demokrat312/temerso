@@ -23,4 +23,6 @@ interface TaskWithCardsTemporaryInterface extends TaskItemInterface
     public function getCardTemporary(Card $card): ?CardTemporary;
 
     public function addCardTemporary(CardTemporary $cardTemporary);
+
+    public function allowEditCardTemporary(): bool;
 }
