@@ -195,6 +195,7 @@ class TaskTopMenuButtonService
             ,
             (new TopMenuAccess())
                 ->setModeList([TopMenuButtonService::MODE_SHOW])
+                ->setStatusList([Marking::STATUS_COMPLETE])
                 ->setButtonList([
                     (new TopMenuButton())
                         ->setKey(TaskTopMenuButtonService::BTN_EXCEL)

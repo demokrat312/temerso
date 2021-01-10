@@ -153,6 +153,7 @@
             const $table = $button.closest('.form-group').find('table');
             const $tableHead = $table.find('thead tr');
             const $tableBody = $table.find('tbody');
+            const currentIndex = $button.closest('.js-kit-template').data('kit_index');
 
             $tableHead.html('');
             $tableBody.html('');
@@ -189,7 +190,7 @@
                                 </th>`)
                             );
 
-                            const inputPath = specificationInputName.replace('__name__', kitCounter - 1);
+                            const inputPath = specificationInputName.replace('__name__', currentIndex);
                             $tableBodyTr.append(
                                 $(`<td class="sonata-ba-list-field sonata-ba-list-field-text">
                                     ${title}
