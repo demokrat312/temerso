@@ -40,7 +40,7 @@ class ReturnFromRepairAdminController extends TaskAdminController
         $returnFromRepair->setStatus(Marking::STATUS_COMPLETE);
         $em->persist($returnFromRepair);
 
-        $this->getRequest()->getSession()->getFlashBag()->add("success", 'Комплект успешно возвращен из аренды');
+        $this->getRequest()->getSession()->getFlashBag()->add("success", 'Комплект успешно возвращен из ремонта');
         // 2)изменить стаутус у карточек
         $returnFromRepair->getRepair()->getCards()->map(function (Card $card) use (&$em) {
             $card->setStatus(CardStatusHelper::STATUS_STORE);
