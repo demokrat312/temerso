@@ -14,7 +14,7 @@ class ReferenceDashboardAdmin extends MainAdmin
 
     protected function configureFormFields(FormMapper $form)
     {
-        $url = $this->generateUrl('list', ['filter' => ['broken' => ['value' => 1]]]);
+        $url = $this->generateUrl('list');
         header('Location: ' . $url);
         die();
     }
