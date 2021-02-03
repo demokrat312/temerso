@@ -185,7 +185,7 @@ class CardAdmin extends MainAdmin
             ]);
 
             if (in_array('EDIT', $this->getAccess())) {
-                (new TopMenuButton())
+                $this->topMenuButton->addButton((new TopMenuButton())
                     ->setKey(TaskTopMenuButtonService::BTN_REMOVE_EXECUTOR)
                     ->setTitle('Списать Карточку')
                     ->setIcon('fa-mail-forward')
@@ -193,7 +193,7 @@ class CardAdmin extends MainAdmin
                         $this->getClass(),
                         'edit',
                         ))
-                    ->setRouteParams(['id' => $object->getId(), 'action' => self::ACTION_DISPOSAL]);
+                    ->setRouteParams(['id' => $object->getId(), 'action' => self::ACTION_DISPOSAL]));
             }
         }
 
