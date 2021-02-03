@@ -121,8 +121,7 @@ class CardAdmin extends MainAdmin
 
         $em
             ->andWhere($expr->neq(sprintf('%s.%s', $al, 'status'), ':statusId'))
-            ->setParameter('statusId', CardStatusHelper::STATUS_BROKEN)
-        ;
+            ->setParameter('statusId', CardStatusHelper::STATUS_BROKEN);
 
 
         return $query;
@@ -141,10 +140,9 @@ class CardAdmin extends MainAdmin
         parent::configureRoutes($collection);
         $collection
             ->add('history')
-            ->add(CardAdminController::ROUTER_DISPOSAL, CardAdminController::ROUTER_DISPOSAL)
-        ;
+            ->add(CardAdminController::ROUTER_DISPOSAL, CardAdminController::ROUTER_DISPOSAL);
 
-        if(CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
+        if (CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
             $collection->remove('delete');
         }
     }
@@ -157,13 +155,16 @@ class CardAdmin extends MainAdmin
      */
     public function configureActionButtons($action, $object = null)
     {
-        if($action !== 'show') return parent::configureActionButtons($action, $object);
+        if ($action !== 'show') return parent::configureActionButtons($action, $object);
 
-        if($object->getStatus() === CardStatusHelper::STATUS_BROKEN) {
+        if ($object->getStatus() === CardStatusHelper::STATUS_BROKEN) {
             $this->topMenuButton->addButtonList([
                 (new TopMenuButton())->setKey(TopMenuButtonService::BTN_HISTORY),
                 (new TopMenuButton())->setKey(TopMenuButtonService::BTN_LIST),
-                (new TopMenuButton())
+            ]);
+
+            if (in_array('EDIT', $this->getAccess())) {
+                $this->topMenuButton->addButton((new TopMenuButton())
                     ->setKey(TaskTopMenuButtonService::BTN_REMOVE_EXECUTOR)
                     ->setTitle('Восстановить карточку')
                     ->setIcon('fa-mail-forward')
@@ -172,8 +173,8 @@ class CardAdmin extends MainAdmin
                         'edit',
                         ))
                     ->setRouteParams(['id' => $object->getId(), 'action' => self::ACTION_RESTORE])
-                ,
-            ]);
+                );
+            }
 
         } else {
             $this->topMenuButton->addButtonList([
@@ -181,6 +182,9 @@ class CardAdmin extends MainAdmin
                 (new TopMenuButton())->setKey(TopMenuButtonService::BTN_EDIT),
                 (new TopMenuButton())->setKey(TopMenuButtonService::BTN_HISTORY),
                 (new TopMenuButton())->setKey(TopMenuButtonService::BTN_LIST),
+            ]);
+
+            if (in_array('EDIT', $this->getAccess())) {
                 (new TopMenuButton())
                     ->setKey(TaskTopMenuButtonService::BTN_REMOVE_EXECUTOR)
                     ->setTitle('Списать Карточку')
@@ -189,9 +193,8 @@ class CardAdmin extends MainAdmin
                         $this->getClass(),
                         'edit',
                         ))
-                    ->setRouteParams(['id' => $object->getId(), 'action' => self::ACTION_DISPOSAL])
-                ,
-            ]);
+                    ->setRouteParams(['id' => $object->getId(), 'action' => self::ACTION_DISPOSAL]);
+            }
         }
 
         return $this->topMenuButton->getList();
@@ -468,12 +471,12 @@ class CardAdmin extends MainAdmin
                     $parts = $qb->getDQLPart('where')->getParts();
                     $qb->resetDQLPart('where');
                     foreach ($parts as $key => $part) {
-                        if($part instanceof Comparison && $part->getLeftExpr() === $alias . '.status') {
+                        if ($part instanceof Comparison && $part->getLeftExpr() === $alias . '.status') {
                             unset($parts[$key]);
                             /** @var \Doctrine\ORM\Query\Parameter[] $parameters */
                             $parameters = $qb->getParameters();
                             foreach ($parameters as $key => $parameter) {
-                                if($parameter->getName() === 'statusId') {
+                                if ($parameter->getName() === 'statusId') {
                                     unset($parameters[$key]);
                                 }
                             }
@@ -522,17 +525,17 @@ class CardAdmin extends MainAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
-        if($this->request->getMethod() === 'POST') {
+        if ($this->request->getMethod() === 'POST') {
             $form = $this->request->get($this->getUniqid());
             $action = $form['action'] ?? null;
-        } else if($this->getSubject()->getStatus() === CardStatusHelper::STATUS_BROKEN) {
+        } else if ($this->getSubject()->getStatus() === CardStatusHelper::STATUS_BROKEN) {
             $action = self::ACTION_RESTORE;
         } else {
             $action = $this->request->query->get('action');
         }
 
 
-        if(CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
+        if (CardListHelper::ins()->requestFrom(ReturnFromRepair::class)) {
             $formMapper->add('images', \Sonata\AdminBundle\Form\Type\CollectionType::class, array(
                 'entry_type' => \App\Classes\Type\MediaType::class,
                 'label' => 'Выбрать изображение',
@@ -546,14 +549,14 @@ class CardAdmin extends MainAdmin
                 'by_reference' => false,
                 'allow_delete' => true,
             ));
-        }else if($action) {
+        } else if ($action) {
             if ($action === self::ACTION_DISPOSAL) {
                 $fileOrImageEmptyCounter = 0;
-                $fileOrImageConstraints = function($object, ExecutionContextInterface $context) use (&$fileOrImageEmptyCounter) {
-                    /** @var $object \Doctrine\Common\Collections\ArrayCollection|PersistentCollection  */
-                    if($object->count() === 0) {
+                $fileOrImageConstraints = function ($object, ExecutionContextInterface $context) use (&$fileOrImageEmptyCounter) {
+                    /** @var $object \Doctrine\Common\Collections\ArrayCollection|PersistentCollection */
+                    if ($object->count() === 0) {
                         $fileOrImageEmptyCounter++;
-                        if($fileOrImageEmptyCounter >= 2) {
+                        if ($fileOrImageEmptyCounter >= 2) {
                             $context->addViolation('Нужно добавить хотя бы одно изображение или файл');
                         }
                     }
