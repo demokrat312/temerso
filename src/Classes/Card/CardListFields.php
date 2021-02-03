@@ -21,7 +21,7 @@ class CardListFields
 {
     use InstanceTrait;
 
-    private function getDefault(ListMapper $listMapper)
+    private function getDefault(ListMapper $listMapper, array $accessList)
     {
         $actionsOptions = [
             'label' => 'Действия',
@@ -35,9 +35,11 @@ class CardListFields
                     ]
                 ],
                 'delete' => [],
-                CardAdminController::ROUTER_DISPOSAL => ['template' => 'card/list_action_disposal.html.twig']
             ]
         ];
+        if (in_array('EDIT', $accessList)) {
+            $actionsOptions['action'][CardAdminController::ROUTER_DISPOSAL] = ['template' => 'card/list_action_disposal.html.twig'];
+        }
 
         $listMapper
             ->add('pipeSerialNumber', null, array_merge(MainAdmin::VIEW_LINK, ['label' => 'Серийный № трубы', 'sortable' => true,]))
@@ -50,9 +52,9 @@ class CardListFields
             ->add('_action', null, $actionsOptions);
     }
 
-    public function getFields(ListMapper $listMapper)
+    public function getFields(ListMapper $listMapper, array $accessList)
     {
-        $this->getDefault($listMapper);
+        $this->getDefault($listMapper, $accessList);
 
         if (CardListHelper::ins()->requestFrom(Repair::class)) {
             $this->repair($listMapper);

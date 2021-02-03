@@ -351,7 +351,7 @@ class CardAdmin extends MainAdmin
     {
         parent::configureListFields($listMapper);
 
-        CardListFields::ins()->getFields($listMapper);
+        CardListFields::ins()->getFields($listMapper, $this->getAccess());
 
     }
 
