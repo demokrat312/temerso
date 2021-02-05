@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * W (Промыв),
  * TD (Повреждение резьбы),
  * Tcorr (Коррозия резьбы),
- * MD  (Механическое повреждение)
+ * MD (Механическое повреждение)
  *
  * @ORM\Entity(repositoryClass="App\Repository\Reference\NippleThreadConditionRepository")
  */
