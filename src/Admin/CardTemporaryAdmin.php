@@ -89,7 +89,7 @@ class CardTemporaryAdmin extends MainAdmin
                     ->add('outer_diameter_of_the_pipe', null, ['label' => 'Наружный диаметр трубы, (мм)'])
                     ->add('pipe_wall_thickness', null, ['label' => 'Толщина стенки трубы, (мм)'])
                     ->add('ref_type_disembarkation', null, ['label' => 'Тип высадки'])
-                    ->add('ref_type_thread', ModelType::class, ['label' => 'Внутреннее покрытие', 'btn_add' => false])
+                    ->add('ref_type_thread', ModelType::class, ['label' => 'Тип резьбы', 'btn_add' => false])
                     ->add('odlock_nipple', null, ['label' => 'O.D. Замка ниппель  (мм)'])
                     ->add('nipple_nose_diameter', null, ['label' => 'Диаметр носика ниппеля'])
                     ->add('odlock_coupling', null, ['label' => 'O.D. Замка муфта  (мм)'])
