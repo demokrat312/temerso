@@ -2,9 +2,11 @@ $(document).ready(function () {
     CrudEditModel.init();
 });
 const CrudEditModel = (function () {
+    const modalId = 'edit_dialog';
+    let $formEl;
 
     const modalTemplate = `
-            <div class="modal fade" id="edit_dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="${modalId}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -24,6 +26,7 @@ const CrudEditModel = (function () {
 
     const init = () => {
         console.info('edit init');
+        $formEl = $('.sonata-ba-form form:first');
         initEvent();
         hideToggleTabButton();
         pageSizeScroll();
@@ -36,6 +39,7 @@ const CrudEditModel = (function () {
         $('.js-next-tab').on('click', () => prevOrNextTabHandler('next'));
         $('.js-entity-edit').on('click', entityEdit);
         $('.sonata-collection-add').on('click', initFileInput);
+        $formEl.on('submit', formOnSubmit);
     };
 
     const prevOrNextTabHandler = (prevOrNext) => {
@@ -59,8 +63,8 @@ const CrudEditModel = (function () {
 
             prev.show();
             next.show();
-            if(!$activeLi['prev']('li').length)prev.hide();
-            if(!$activeLi['next']('li').length)next.hide();
+            if (!$activeLi['prev']('li').length) prev.hide();
+            if (!$activeLi['next']('li').length) next.hide();
 
         }, 300);
     };
@@ -88,7 +92,7 @@ const CrudEditModel = (function () {
                     modal({...options, ...{close: true}});
                 } else {
                     modal({...options, ...{body: html}});
-                    Admin.shared_setup($modal);
+                    Admin.shared_setup($('#' + modalId));
                 }
             }
         });
@@ -108,7 +112,7 @@ const CrudEditModel = (function () {
         });
         $element.find('form').each(function (index, formElement) {
             if (formElement.action.includes('/')) {
-                $form = $(formElement);
+                const $form = $(formElement);
                 $form.submit(function (event) {
                     event.preventDefault();
                     const link = event.target.getAttribute('action');
@@ -130,25 +134,26 @@ const CrudEditModel = (function () {
                 refreshPageOnClose: false,
                 body: '',
                 button: '<button type="button" class="btn btn-primary">Добавить</button>',
-                showCallback: ($modal) => {
+                showCallback: () => {
                     console.log('showCallback')
                 },
-                buttonCallback: (e, $modal) => {
+                buttonCallback: () => {
                     console.log('buttonCallback')
                 },
             }, ...options
         };
 
         // удаляем старую форму
-        $('#edit_dialog').modal('hide'); // closes all active pop ups.
+        $('#' + modalId)
+            .modal('hide') // closes all active pop ups.
+            .remove();
         $('.modal-backdrop').remove(); // removes the grey overlay.
-        $('#edit_dialog').remove();
-        $('body').css('padding-right', '0'); // При открытии добавляет, при закрытие убираеться(но если 2 форма то добавляеться еще раз)
-        $('body').removeClass('fixed');
-        $('body').removeClass('modal-open');
+        $('body')
+            .css('padding-right', '0') // При открытии добавляет, при закрытие убираеться(но если 2 форма то добавляеться еще раз)
+            .removeClass('fixed')
+            .removeClass('modal-open');
 
         if (modalOptions.close === true) {
-            console.log('close');
             if (modalOptions.refreshPageOnClose) {
                 $.get(location.href, (html) => {
                     $(modalOptions.refreshPageOnClose).html(html);
@@ -157,9 +162,8 @@ const CrudEditModel = (function () {
             }
             return
         }
-        ;
 
-        $modal = $(
+        const $modal = $(
             modalTemplate
                 .replace('{title}', modalOptions.title)
                 .replace('{body}', modalOptions.body)
@@ -185,8 +189,8 @@ const CrudEditModel = (function () {
      */
     const pageSizeScroll = () => {
         $('.js-max-page-height').each((index, element) => {
-            $element = $(element);
-            $element.css('height', 'calc(100vh - ' + $element.offset().top + 'px)');
+            const $element = $(element);
+            $(element).css('height', 'calc(100vh - ' + $element.offset().top + 'px)');
         });
     };
 
@@ -221,9 +225,47 @@ const CrudEditModel = (function () {
         }, 200);
     };
 
+
+    let isFormEditValidCallback = null;
+    const setIsFormEditValidCallBack = (callback) => {
+        isFormEditValidCallback = callback;
+    }
+    let $buttonContainer = null;
+    const formOnSubmit = (e) => {
+        if (isFormEditValidCallback === null) return;
+        e.preventDefault();
+        const $buttonClicked = $(document.activeElement);
+        if(!$buttonContainer) {
+            $buttonContainer = $buttonClicked.closest('.form-actions');
+        }
+        if (isFormEditValidCallback(e)) {
+            $formEl.unbind('submit', formOnSubmit);
+            $formEl.trigger('submit');
+        } else {
+            console.error('valid false');
+            setTimeout(() => {
+                $buttonContainer.find('button').each((_, element) => element.removeAttribute('disabled'))
+            }, 1000)
+        }
+    }
+
+    /**
+     * Функция для тестирования. Заполнение необходимых полей
+     */
+    const fillRequired = () => {
+        $formEl.find('[name][required]').each((_, element) => {
+            if (!element.value) {
+                element.value = '111';
+                $(element).trigger('change');
+            }
+        })
+    }
+
     return {
         init,
         modalByUrl,
         modalLinkHandler,
+        setIsFormEditValidCallBack,
+        fillRequired
     }
 })();
